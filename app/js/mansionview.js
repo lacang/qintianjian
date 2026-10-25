@@ -3,11 +3,11 @@
 // 全部可点：点星点/宿名/下方标签均出详情卡；赤道·黄道一键切换。
 import {
   mansionSnapshot, zhiSu, MANSIONS, MANSION_BY_NAME, SISHOU_COLOR, GU_DU_ZHOUTIAN,
-} from '../vendor/liuyao-core.js?v=118';
-import { $, nowDate, pad, escapeHtml, toSec } from './state.js?v=118';
-import { siyuLongitudes, solarParams } from './solartime.js?v=118';
-import { initMansion3D } from './mansion3d.js?v=118';
-import { getPlace } from './geo.js?v=118';
+} from '../vendor/liuyao-core.js?v=119';
+import { $, nowDate, pad, escapeHtml, toSec } from './state.js?v=119';
+import { siyuLongitudes, solarParams } from './solartime.js?v=119';
+import { initMansion3D } from './mansion3d.js?v=119';
+import { getPlace } from './geo.js?v=119';
 // 观测地：二十八宿的中星/值宿随经度变，按当前地点算（v111：不再固定北京）
 function obsNow() { const p = getPlace(); return { lat: p.lat, lonEast: p.lon }; }
 
@@ -18,7 +18,7 @@ const MS_KEY = { 角:'ms-jiao', 亢:'ms-kang', 氐:'ms-di', 房:'ms-fang', 心:'
   柳:'ms-liu', 星:'ms-xing', 张:'ms-zhang', 翼:'ms-yi', 轸:'ms-zhen' };
 const MS_BODY_KEY = { sun:'ms-sun', moon:'ms-moon' };
 
-import { guideHTML, T } from './tipview.js?v=118';
+import { guideHTML, T } from './tipview.js?v=119';
 
 let frame = localStorage.getItem('qt-mansion-frame') === 'ect' ? 'ect' : 'eqd';
 // 选中项：{t:'body', id} 或 {t:'mansion', name}

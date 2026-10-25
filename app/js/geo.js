@@ -5,7 +5,7 @@
 //   · 手动拼音/中文搜城市（离线城市库 citydata.js，无任何网络请求）
 //   · 当前地点持久化在 localStorage，变更时广播，页面按需重渲染
 // 边界：本命出生地仍用 state.BIRTH（沈阳），不受这里影响；这里只管"此刻在哪"这类排盘/天象用。
-import { CITIES } from './citydata.js?v=118';
+import { CITIES } from './citydata.js?v=119';
 
 const KEY = 'qintian.place.v1';
 const listeners = [];

@@ -6,6 +6,21 @@
 
 ---
 
+## v119 · 2026-10-26 · 修塔罗三连点击硬 bug（切不回塔罗 / 全部翻开 / 开牌解局）
+
+- **背景**：主人真机三连报：①塔罗牌桌 ☰ 切雷诺曼后，分类栏点「塔罗」回不去，只能回主页重进；②选完牌「全部翻开」按钮点了没反应；③「开牌解局」按钮同样哑火。实测后确认**三个症状是两个独立 bug**。
+- **Bug A（切不回塔罗）根因**：分类切换的 document 委托（`tarotview.js` data-tr-cat 分支）只做 `body.innerHTML = renderTarot()`。切到雷诺曼时其自带完整 UI 与 document 委托所以能抽牌；但塔罗首屏依赖 `mountTarot()→enterTable()` 主动落座牌桌，重绘静态壳后**没人调 mountTarot**，只剩空 `#tr-result`，表现为白屏/回不去。v115「雷诺曼撤独立页并入塔罗分类栏」时漏了反向切换的落座。
+- **Bug A 修法（1 行）**：切换处理里记下 `cat`，`if (cat === 'tarot') mountTarot();`——重绘壳后补落座。
+- **Bug B（全部翻开/开牌解局/自动抽牌三按钮全哑火）根因**：牌桌 `.trt-stagepos` 是盖满全屏的手势透传层（`position:absolute;inset:0;z-index:6;pointer-events:none`，为让空白处触摸落到下层画布拖牌），而 `#trt-flipall`（全部翻开）、`#trt-read`（开牌解局）、`#trt-autodraw`（自动抽牌）三个按钮直接渲染在这层内，**自身没声明 pointer-events:auto**，点击全部穿透到画布，root 的 click 委托收不到 → 三个按钮形同摆设。v108 全屏牌桌改版引入，一直存在。
+- **Bug B 修法（2 行 CSS）**：`.trt-flipallbtn{pointer-events:auto;…}`、`.trt-readbtn{pointer-events:auto;…}`；透传层本身保持 `pointer-events:none`（牌堆/扇面触摸逻辑不回归）。
+- **怎么验**：
+  1. 新增桩测 `v91_src/check_tarot_v119.mjs`（14 断言）：修复前 Bug A 断言先红（切回无 .tr-table），修复后 14/14 全绿；CSS 契约锁死「层 none / 两按钮 auto」+ 委托链完整。
+  2. **云浏览器真机路径实测**（Chrome/146，390×844 移动视口，本地修复版 8919）：塔罗→☰→雷诺曼→分类栏切回，连测 3 次往返不白屏（eval 取证 `.tr-table` 在、cat=tarot、分类栏 on 态正确）；切 auto 抽法→金按钮探针 computedStyle `{layer:"none",btn:"auto"}`→点「自动抽牌」进翻牌幕（3 牌背+全部翻开）→点「全部翻开」自动跳解局页（圣杯十/太阳/权杖十 + 逐位牌义 + Waite 原判词 + 再抽一局），「再抽一局」可回桌；全程 console/page error 为 0。截图归档 `browser/screenshots/tarot-v119/01~07.png`。
+  3. 手动模式「开牌解局」与「全部翻开」共用同一透传层根因与同一 CSS 修复，解局渲染函数在验收3全链路已覆盖。
+- **影响面**：只动塔罗牌桌；雷诺曼视图、其他术数页零改动。
+
+---
+
 ## v118 · 2026-10-25 · 修阳宅/玄空 24 山半度边界（B-P2-01，评审止血第⑤步）
 
 - **背景**：审计 B-P2-01 + 评审《工程化整改基线》第 3 节点名的唯一真实计算红灯。24 山每山 15°，山 M[k] 中线 = 15k，分界点 b_k = 7.5+15k 位于山 k 与山 k+1 几何正中。两套 core 都用 `Math.floor((d+7.5)/15)%24`，导致**分界点被归到角度较大的下一山**，与项目自定金标准 `edge.mjs`（172.5° 必须=坐壬向丙）相反；352.5° 也错判成子（应壬）。

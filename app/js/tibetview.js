@@ -5,9 +5,9 @@
 // 纯本地、随机起卦，不接任何 AI。只做「机器按古法机械演卦 + 文献给原典 + 人判断」。
 // 繇辞据 OTDO 公开古藏文转写自译，参考英译理解、陈践/格桑央京中译校读，不照抄单一译本；
 // 原卷残缺处如实标「手稿不载/残」，绝不臆补。
-import { $, escapeHtml, toast } from './state.js?v=118';
-import { DICE_ORACLES, DICE_MISSING, DICE_SOURCE, diceGod } from './tibetdata_dice.js?v=118';
-import { COIN_MARKS, COIN_RULE, COIN_SOURCE, coinTonePair } from './tibetdata_coin.js?v=118';
+import { $, escapeHtml, toast } from './state.js?v=119';
+import { DICE_ORACLES, DICE_MISSING, DICE_SOURCE, diceGod } from './tibetdata_dice.js?v=119';
+import { COIN_MARKS, COIN_RULE, COIN_SOURCE, coinTonePair } from './tibetdata_coin.js?v=119';
 
 let inited = false;
 let mode = 'dice';        // 'dice' | 'coin'

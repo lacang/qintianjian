@@ -1,8 +1,8 @@
 // 地点条 + 选点弹层：全盘面共用的地址入口（定位优先 / 拼音手选）
 // 主人 v111 要求："所有命盘里边都是可以去选地址的"、"定位最方便，手动选择用拼音的方式"
 // 做法：往各盘面页顶栏注入一枚地点胶囊，点开弹层；选完写回 geo.js 中心并广播，页面按需重渲染。
-import { getPlace, setPlace, resetPlace, searchCity, locate, fmtCoord, onPlaceChange } from './geo.js?v=118';
-import { toast } from './state.js?v=118';
+import { getPlace, setPlace, resetPlace, searchCity, locate, fmtCoord, onPlaceChange } from './geo.js?v=119';
+import { toast } from './state.js?v=119';
 
 // 需要地址的页面（抽牌/历史等与地点无关，不挂）
 const VIEWS_WITH_PLACE = [

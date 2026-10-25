@@ -6,7 +6,7 @@
 // 力量=15 Metelo、太阳=16 Olivo、恶魔=17 Ipeo、隐士=18 Lentulo、塔=20 Nenbroto；
 // 学术未定 5 张（Postumio→女祭司、Lenpio→皇后、Falco→皇帝、Tulio→审判、Sabino→教皇）按位置序+研究界推测分配，manifest 标注「推测」。
 // 1491 年原版无逆位传统（逆位系统为 18 世纪 Etteilla 之后），故本牌组关闭逆位。
-import { getDeck, registerDeck } from '../vendor/liuyao-core.js?v=118';
+import { getDeck, registerDeck } from '../vendor/liuyao-core.js?v=119';
 
 const SB_DIR = './assets/cards-sb/';
 

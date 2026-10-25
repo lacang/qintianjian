@@ -3,15 +3,15 @@
  * 五步：定坐向 → 九宫标房(门主灶) → 元运与居住者 → 门外形势 → 八宅直断
  * 纯本地：vendor/bazhai-core.js 翻卦 + yangzhai-judge.js 直断，不接 AI、不联网。
  */
-import { $, $$, cfg, birthDate, escapeHtml } from '../state.js?v=118';
+import { $, $$, cfg, birthDate, escapeHtml } from '../state.js?v=119';
 import {
   DIR8_LIST, MOUNTAINS_24, dir8At, mountainsAt, lifeGua, GROUP_NAME, chartFor,
-} from '../../vendor/bazhai-core.js?v=118';
+} from '../../vendor/bazhai-core.js?v=119';
 import {
   judgeYangzhai, fourJiDirs, ROOM_LABEL, SOURCES, SOURCE_NOTE,
-} from './yangzhai-judge.js?v=118';
-import { judgeXuankong, SOURCES as XK_SOURCES, SOURCE_NOTE as XK_NOTE } from './yangzhai-xuankong.js?v=118';
-import { judgeJinsuo, judgeSanheWater, JINSUO_NOTE, SANHE_NOTE } from './yangzhai-jinsuo.js?v=118';
+} from './yangzhai-judge.js?v=119';
+import { judgeXuankong, SOURCES as XK_SOURCES, SOURCE_NOTE as XK_NOTE } from './yangzhai-xuankong.js?v=119';
+import { judgeJinsuo, judgeSanheWater, JINSUO_NOTE, SANHE_NOTE } from './yangzhai-jinsuo.js?v=119';
 
 const DIRS9 = ['西北', '北', '东北', '西', '中', '东', '西南', '南', '东南'];
 const ROOM_KINDS = ['door', 'master', 'second', 'living', 'kitchen', 'bath'];

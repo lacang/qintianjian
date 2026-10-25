@@ -7,7 +7,7 @@
 // 牌义判词：全部沿用 Waite 1910 现代对照（与索拉·布斯卡同法），非各原版年代语境，特此声明。
 // v105：四副历史牌组开启逆位——牌义判词本为 Waite 1910 现代对照，逆位义同源映射；
 // 历史原版年代早于逆位读法传统（18 世纪 Etteilla 之后），分层声明、不冒充原版语境。
-import { getDeck, registerDeck } from '../vendor/liuyao-core.js?v=118';
+import { getDeck, registerDeck } from '../vendor/liuyao-core.js?v=119';
 
 let registered = false;
 

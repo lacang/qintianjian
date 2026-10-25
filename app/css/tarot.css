@@ -368,10 +368,10 @@
 .trt-stackc:nth-child(2){transform:translate(-1px,-2px);}
 .trt-stackc:nth-child(3){transform:translate(1px,0);}
 .trt-stacktop{position:absolute;inset:0;}
-.trt-flipallbtn{padding:12px 22px;font-size:14px;border-radius:22px;font-weight:600;color:#201708;
+.trt-flipallbtn{pointer-events:auto;padding:12px 22px;font-size:14px;border-radius:22px;font-weight:600;color:#201708;
   border:1px solid #e9c874;background:linear-gradient(180deg,#f0d48c,#c8a35c);
   box-shadow:0 8px 22px rgba(201,168,90,.3);}
-.trt-readbtn{padding:13px 26px;font-size:15px;border-radius:24px;font-weight:700;color:#1d1408;letter-spacing:1px;
+.trt-readbtn{pointer-events:auto;padding:13px 26px;font-size:15px;border-radius:24px;font-weight:700;color:#1d1408;letter-spacing:1px;
   border:1px solid #ffe4a0;background:linear-gradient(180deg,#f6dd99,#d2ab63);
   box-shadow:0 10px 28px rgba(233,200,116,.4),0 0 0 4px rgba(233,200,116,.12);
   animation:trt-glow 1.8s ease-in-out infinite;}

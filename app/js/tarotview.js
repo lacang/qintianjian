@@ -3,12 +3,12 @@
 //      78 张原版牌面本地内置（复用 vendor/liuyao-core 的 rws 牌组数据，不自行绘制），
 //      画面描述 scene 与牌图严格对应；正/逆位中性牌义 + Waite 1910《Pictorial Key》原判词。
 //      综合倾向由 tarotval_rws 的传统倾向惯例表机械合参，非命定；流派/史实分层，不接 AI。
-import { $, escapeHtml as esc, toast } from './state.js?v=118';
-import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=118';
-import { renderLenormand } from './lenormandview.js?v=118';
-import { rwsVal } from './tarotval_rws.js?v=118';
-import { ensureSolaBusca } from './tarotdeck-sb.js?v=118';
-import { ensureHistDecks } from './tarotdeck-hist.js?v=118';
+import { $, escapeHtml as esc, toast } from './state.js?v=119';
+import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=119';
+import { renderLenormand } from './lenormandview.js?v=119';
+import { rwsVal } from './tarotval_rws.js?v=119';
+import { ensureSolaBusca } from './tarotdeck-sb.js?v=119';
+import { ensureHistDecks } from './tarotdeck-hist.js?v=119';
 ensureSolaBusca();
 ensureHistDecks();
 
@@ -912,9 +912,12 @@ export function initTarot() {
     const cb = e.target.closest('[data-tr-cat]');
     if (cb) {
       closeMenu();
-      try { localStorage.setItem(CAT_KEY, cb.getAttribute('data-tr-cat')); } catch {}
+      const cat = cb.getAttribute('data-tr-cat');
+      try { localStorage.setItem(CAT_KEY, cat); } catch {}
       const body = $('#tarot-body');
       if (body) body.innerHTML = renderTarot();
+      // v119 修复：重绘只换了静态壳，塔罗首屏须主动落座牌桌（切雷诺曼再切回白屏根因）
+      if (cat === 'tarot') mountTarot();
       return;
     }
     // 改牌组/牌阵/抽法：关抽屉，重发一局
