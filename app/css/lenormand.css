@@ -1,0 +1,201 @@
+/* ============ 小雷诺曼 Petit Lenormand v89 ============ */
+.ln-wrap{padding:12px 12px 40px;max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+
+.ln-intro{padding:14px 16px;}
+.ln-intro h2{margin:0;font-size:18px;font-weight:700;color:#6b3d12;letter-spacing:.5px;}
+.ln-sub{margin:6px 0 0;font-size:12.5px;color:#9a7b4f;}
+.ln-hist{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(120,72,20,.2);}
+.ln-hist p{margin:8px 0 0;font-size:12.5px;line-height:1.8;color:#4a3a28;}
+.ln-hist b{color:#8a4a17;}
+.ln-readm{background:rgba(201,122,46,.08);border-radius:10px;padding:9px 11px;}
+
+.ln-ctl{padding:14px 16px;display:flex;flex-direction:column;gap:11px;}
+.ln-qlabel{display:block;font-size:12px;color:#8a6a40;font-weight:600;}
+.ln-qinput{width:100%;margin-top:5px;padding:11px 13px;border-radius:11px;border:1px solid rgba(120,72,20,.22);
+  background:rgba(255,255,255,.7);font-size:14px;color:#3a2a18;box-sizing:border-box;font-family:inherit;}
+.ln-qinput:focus{outline:none;border-color:#c97a2e;box-shadow:0 0 0 3px rgba(201,122,46,.15);}
+.ln-ctlrow{display:flex;gap:8px;}
+.ln-seg{display:flex;gap:6px;flex-wrap:wrap;}
+.ln-seg button{padding:8px 14px;border-radius:20px;border:1px solid rgba(120,72,20,.25);
+  background:rgba(255,250,240,.6);color:#7a5a30;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.16s;}
+.ln-seg button.on{background:linear-gradient(135deg,#a8541f,#c97a2e);color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(168,84,31,.3);}
+.ln-spreads{flex:1;}
+.ln-castbtn{padding:13px 30px;border:none;border-radius:30px;cursor:pointer;font-size:15px;font-weight:700;
+  color:#fff;background:linear-gradient(135deg,#a8541f,#d1843a);box-shadow:0 6px 18px rgba(168,84,31,.35);transition:.16s;font-family:inherit;}
+.ln-castbtn:active{transform:scale(.96);}
+
+/* 结果 */
+.ln-result:empty{display:none;}
+.ln-q{font-size:13px;color:#6b4a28;background:rgba(201,122,46,.1);border-radius:10px;padding:9px 13px;margin-bottom:10px;font-weight:600;}
+
+/* 方向卡复用 dv/v 体系 */
+.ln-verdict{margin-bottom:12px;}
+
+/* 牌行 */
+.ln-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.ln-row5{gap:6px;}
+.ln-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  width:96px;padding:8px 6px 7px;border-radius:13px;border:1px solid rgba(120,72,20,.22);
+  background:linear-gradient(180deg,#fdf8ec,#f6ead0);cursor:pointer;font-family:inherit;transition:.16s;flex:0 0 auto;}
+.ln-row5 .ln-card{width:84px;}
+.ln-card:active{transform:scale(.95);}
+.ln-pos{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:9.5px;line-height:1.2;
+  white-space:nowrap;background:#8a4a17;color:#fff;padding:2px 7px;border-radius:9px;max-width:104px;overflow:hidden;text-overflow:ellipsis;}
+.ln-num{position:absolute;top:5px;left:7px;font-size:10px;font-weight:700;color:#b08a55;}
+.ln-skat{position:absolute;top:5px;right:7px;font-size:10px;color:#c0392b;font-weight:700;}
+.ln-ic{margin:8px 0 3px;color:#6b3d12;}
+.ln-svg{width:46px;height:46px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.ln-name{font-size:13px;font-weight:700;color:#5a3818;}
+
+/* 九宫 */
+.ln-grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:0 auto 12px;}
+.ln-grid9 .ln-card{width:auto;}
+
+/* 组合 */
+.ln-blk-t{font-size:13px;font-weight:700;color:#8a4a17;margin:0 0 8px;}
+.ln-pairs{background:rgba(255,250,240,.6);border:1px solid rgba(120,72,20,.15);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
+.ln-pairlist{display:flex;flex-direction:column;gap:7px;}
+.ln-pair{font-size:12.5px;line-height:1.6;color:#4a3a28;}
+.ln-pair em{color:#c0392b;font-style:normal;font-weight:700;}
+
+/* 逐张 */
+.ln-detail{display:flex;flex-direction:column;gap:9px;}
+.ln-line{padding:11px 13px;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(120,72,20,.12);}
+.ln-line-h{display:flex;align-items:center;gap:10px;}
+.ln-line-h b{font-size:14px;color:#5a3818;}
+.ln-line-pos{font-size:11px;color:#9a7b4f;margin-left:8px;}
+.ln-line-ic{display:inline-flex;flex:0 0 auto;}
+.ln-line-ic .ln-svg{width:32px;height:32px;}
+.ln-tag{margin-left:auto;font-size:11px;font-weight:700;padding:2px 10px;border-radius:14px;color:#fff;}
+.tg-g{background:#3d8b5f;} .tg-b{background:#c0453a;} .tg-n{background:#9a8a6a;}
+.ln-line-core{margin:7px 0 0;font-size:13px;line-height:1.65;color:#3a2a18;}
+.ln-line-old{margin:5px 0 0;font-size:11.5px;line-height:1.6;color:#8a6a40;}
+
+/* 九宫主题 */
+.ln-nine-theme{background:rgba(201,122,46,.08);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
+.ln-nine-c{display:flex;gap:12px;align-items:center;}
+.ln-nine-c b{font-size:15px;color:#6b3d12;}
+.ln-nine-c p{margin:4px 0 0;font-size:12.5px;line-height:1.6;color:#4a3a28;}
+
+/* 大桌布 */
+.ln-gt{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;margin-bottom:12px;}
+.ln-gtc{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:3px 1px 2px;border-radius:7px;border:1px solid rgba(120,72,20,.2);background:#fdf8ec;cursor:pointer;font-family:inherit;transition:.14s;}
+.ln-gtc:active{transform:scale(.92);}
+.ln-gtc-n{position:absolute;top:2px;left:3px;font-size:7.5px;color:#b08a55;font-weight:700;}
+.ln-gtc-ic{color:#6b3d12;}
+.ln-gtc-ic .ln-svg{width:26px;height:26px;stroke-width:2.2;}
+.ln-gtc-z{font-size:8.5px;color:#5a3818;font-weight:600;margin-top:1px;line-height:1;}
+.ln-sig{background:linear-gradient(180deg,#e8b96a,#d99a3e);border-color:#a8541f;box-shadow:0 0 0 2px rgba(168,84,31,.35);}
+.ln-sig .ln-gtc-ic{color:#5a2f0a;} .ln-sig .ln-gtc-z{color:#3a2008;}
+.ln-zones{background:rgba(255,250,240,.6);border:1px solid rgba(120,72,20,.15);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
+.ln-zone{display:flex;gap:8px;font-size:11.5px;line-height:1.5;padding:4px 0;border-bottom:1px dotted rgba(120,72,20,.12);}
+.ln-zone:last-child{border-bottom:none;}
+.ln-zone b{flex:0 0 132px;color:#8a4a17;font-weight:700;}
+.ln-zone span{color:#4a3a28;}
+.ln-gtnote{font-size:11px;line-height:1.65;color:#9a7b4f;background:rgba(120,72,20,.05);border-radius:10px;padding:9px 12px;}
+
+/* 图鉴 */
+.ln-gal{padding:12px 16px;}
+.ln-galtoggle{width:100%;padding:11px;border:1px solid rgba(120,72,20,.25);border-radius:11px;
+  background:rgba(255,250,240,.7);color:#7a5a30;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;}
+.ln-galbody[hidden]{display:none;}
+.ln-galgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.ln-galcard{position:relative;display:flex;flex-direction:column;align-items:center;padding:9px 3px 7px;
+  border-radius:11px;border:1px solid rgba(120,72,20,.2);background:linear-gradient(180deg,#fdf8ec,#f6ead0);cursor:pointer;font-family:inherit;}
+.ln-gnum{position:absolute;top:4px;left:6px;font-size:9px;color:#b08a55;font-weight:700;}
+.ln-gskat{position:absolute;top:4px;right:6px;font-size:9px;color:#c0392b;font-weight:700;}
+.ln-gic{color:#6b3d12;}
+.ln-gic .ln-svg{width:34px;height:34px;}
+.ln-gname{font-size:11px;font-weight:700;color:#5a3818;margin-top:2px;}
+.ln-src{margin-top:12px;font-size:10.5px;line-height:1.7;color:#9a7b4f;}
+
+/* 弹层 */
+.lnf-head{display:flex;gap:14px;align-items:center;margin-bottom:14px;}
+.lnf-ic{flex:0 0 92px;width:92px;height:148px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#fdf8ec,#f0dcb8);border:1px solid rgba(120,72,20,.25);color:#6b3d12;}
+.lnf-svg-big{width:70px;height:70px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.lnf-names b{font-size:18px;color:#5a3818;}
+.lnf-sub{font-size:12px;color:#9a7b4f;margin-top:3px;}
+.lnf-skat{font-size:12px;color:#c0392b;font-weight:700;margin-top:4px;}
+.lnf-sec{margin-bottom:13px;}
+.lnf-sec p{margin:5px 0 0;font-size:13.5px;line-height:1.75;color:#3a2a18;}
+.lnf-kws{display:flex;flex-wrap:wrap;gap:6px;}
+.lnf-kw{font-size:12px;padding:3px 11px;border-radius:14px;background:rgba(201,122,46,.12);color:#8a4a17;font-weight:600;}
+
+/* 亲手抽牌 */
+.ln-picking{margin-bottom:12px;}
+.ln-pickbar{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(168,84,31,.1),rgba(201,122,46,.06));
+  border:1px solid rgba(168,84,31,.22);border-radius:14px;padding:13px 15px;margin-bottom:10px;}
+.ln-deck{position:relative;flex:0 0 76px;width:76px;height:104px;border:none;border-radius:12px;cursor:pointer;
+  background:
+    repeating-linear-gradient(45deg,#7a3d12 0 6px,#8a4a17 6px 12px);
+  box-shadow:0 6px 16px rgba(90,47,10,.4), inset 0 0 0 2px rgba(255,240,210,.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#f3e0bd;transition:.15s;font-family:inherit;}
+.ln-deck:active{transform:translateY(2px) scale(.97);}
+.ln-deckpat{font-size:30px;line-height:1;color:#f0cf94;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+.ln-decknum{font-size:11px;font-weight:700;background:rgba(0,0,0,.28);padding:2px 9px;border-radius:10px;}
+.ln-pickinfo{flex:1;}
+.ln-pickprog{font-size:15px;font-weight:700;color:#6b3d12;}
+.ln-pickprog b{color:#c0561f;font-size:18px;}
+.ln-pickhint{font-size:11.5px;line-height:1.6;color:#8a6a40;margin-top:3px;}
+.ln-pickactions{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.ln-fillbtn,.ln-resetbtn{flex:1;min-width:120px;padding:10px;border-radius:22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;}
+.ln-fillbtn{border:none;color:#fff;background:linear-gradient(135deg,#a8541f,#d1843a);box-shadow:0 4px 12px rgba(168,84,31,.3);}
+.ln-resetbtn{border:1px solid rgba(120,72,20,.3);background:rgba(255,250,240,.7);color:#7a5a30;}
+.ln-fillbtn:active,.ln-resetbtn:active{transform:scale(.97);}
+
+/* 抽牌空位 */
+.ln-slot{border-style:dashed;border-color:rgba(168,84,31,.4);background:rgba(255,250,240,.35);}
+.ln-slotmark{font-size:26px;color:#cda86a;font-weight:700;margin:10px 0 4px;}
+.ln-slotname{color:#b8946a;font-weight:600;}
+.ln-gtslot{background:rgba(255,250,240,.25);border-style:dashed;border-color:rgba(168,84,31,.35);align-items:center;}
+.ln-gtslot .ln-slotmark.sm{font-size:15px;margin:0;color:#cda86a;}
+
+@media (max-width:380px){
+  .ln-galgrid{grid-template-columns:repeat(3,1fr);}
+  .ln-gt{gap:2px;}
+  .ln-gtc-ic .ln-svg{width:22px;height:22px;}
+  .ln-gtc-z{font-size:7.5px;}
+  .ln-card{width:88px;}
+  .ln-deck{flex-basis:66px;width:66px;height:92px;}
+}
+
+/* ---------- v102 · Dondorf-Gibson 历史真图渲染约束（180×282 版式） ---------- */
+/* v100 真机 bug 复盘：.ln-img 此前无任何尺寸规则，610×1000 原图按自然尺寸渲染，
+   直接撑爆 96px 卡片（真机所见「显示异常」）；且原 lenormand1.de 扫描图带 4 处
+   www.Lenormand1.de 水印，已整套换为 wopc.co.uk 收藏 Dondorf 印 Gibson 1920s
+   无水印历史真图，见 assets/lenormand-gibson/ 与 lenormand-historic/README.md。 */
+.ln-img{display:block;width:100%;aspect-ratio:180/282;object-fit:cover;object-position:center top;
+  border-radius:5px;border:1px solid rgba(120,72,20,.22);background:#fdf8ec;
+  box-shadow:0 1px 3px rgba(90,47,10,.18);user-select:none;pointer-events:none;}
+.ln-card .ln-img{margin:2px 0 3px;}
+.ln-gic .ln-img{width:58px;margin:0;}
+.ln-line-ic .ln-img{width:34px;border-radius:4px;box-shadow:none;}
+.ln-nine-c .ln-line-ic .ln-img{width:46px;}
+.ln-gtc-ic .ln-img{width:26px;margin:0 auto;border-radius:3px;box-shadow:none;}
+.ln-img-big{width:min(200px,54vw);border-radius:8px;box-shadow:0 4px 14px rgba(90,47,10,.3);}
+
+/* ---------- v103 · 单牌弹层：大图 + 暗底文字适配 ---------- */
+/* v102 真机反馈（弹层截图）：①牌面太小——.lnf-ic 容器锁死 92×148，图在弹层里被压成小图，
+   四周留白多；②字体颜色不对——牌义文字沿用亮色卡配色（#3a2a18 深棕正文、#8a4a17 块标题、
+   #8a6a40 古法段），叠在 .tip-card 深色玻璃底（#1b2126→#12171a）上对比度崩、几乎不可读。
+   修法：弹层改单栏居中、牌面放大到 min(230px,62vw)（约 230×361，原 92×148 的 6 倍面积），
+   文字全部换暗底亮色系（与塔罗弹层 tip-* 家族一致）；主视图亮背景的 .ln-blk-t/.ln-line-old
+   不受影响，用 .tip-card 后代选择器只在弹层内覆盖。 */
+.lnf-head{flex-direction:column;gap:10px;margin-bottom:14px;}
+.lnf-ic{flex:0 0 auto;width:auto;height:auto;display:block;background:none;border:none;border-radius:0;box-shadow:none;}
+.lnf-ic .ln-img{width:min(230px,62vw);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.45);}
+.lnf-meta{text-align:center;}
+.lnf-names{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;}
+.lnf-names b{font-size:19px;color:#f2e8d0;}
+.lnf-sub{color:rgba(214,207,190,.72);}
+.lnf-skat{color:#e8b07e;}
+.lnf-kws{justify-content:center;}
+.lnf-kw{background:rgba(200,163,92,.16);border:1px solid rgba(200,163,92,.34);color:#e8cf9c;}
+.lnf-sec p{color:rgba(230,224,209,.92);}
+.tip-card .ln-blk-t{color:var(--gold,#c8a35c);}
+.tip-card .ln-line-old{color:rgba(208,202,186,.7);}
+
+/* ---------- v105：控制区分组标签（牌阵/抽法两组按钮加小标，消除混排歧义） ---------- */
+.ln-grp{flex:0 0 auto;font-size:12px;color:#8a7b62;letter-spacing:3px;align-self:center;padding:2px 6px 2px 0;}

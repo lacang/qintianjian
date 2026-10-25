@@ -1,0 +1,3 @@
+[project]
+name = "Pages application"
+project_type = "web"

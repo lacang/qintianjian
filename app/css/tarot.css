@@ -1,0 +1,492 @@
+/* 塔罗 · 韦特 RWS 样式  钦天监 v92 */
+/* 暖金 + 深紫（丝绒）+ 羊皮纸米；牌面用 1909 RWS 原版真图 */
+
+.tr-wrap{display:flex;flex-direction:column;gap:14px;}
+.tr-intro h2{margin:0 0 6px;font-size:20px;letter-spacing:1px;}
+.tr-sub{margin:0 0 10px;color:var(--text-dim,#8a7e63);font-size:13px;line-height:1.6;}
+.tr-hist p{font-size:12.5px;line-height:1.75;color:var(--text-dim,#8a7e63);margin:8px 0;}
+.tr-hist b{color:var(--text,#e8ddc0);}
+.tr-histtoggle,.tr-galtoggle{background:none;border:none;color:#c9a85a;font-size:13px;padding:6px 0;cursor:pointer;text-align:left;width:100%;}
+.tr-histtoggle:active,.tr-galtoggle:active{opacity:.7;}
+.tr-src{font-size:11px;color:#7a6f55;line-height:1.6;}
+
+/* 控制区 */
+.tr-seg{display:flex;flex-wrap:wrap;gap:6px;}
+.tr-seg button{flex:0 0 auto;padding:7px 12px;border-radius:8px;border:1px solid rgba(201,168,90,.3);
+  background:rgba(255,255,255,.04);color:var(--text-dim,#8a7e63);font-size:12.5px;cursor:pointer;}
+.tr-seg button.on{background:linear-gradient(180deg,rgba(201,168,90,.28),rgba(201,168,90,.14));
+  border-color:#c9a85a;color:#f3e4b4;font-weight:600;}
+.tr-ctl{display:flex;flex-direction:column;gap:10px;}
+.tr-qlabel{font-size:12px;color:var(--text-dim,#8a7e63);display:flex;flex-direction:column;gap:6px;}
+.tr-qinput{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:9px;border:1px solid rgba(201,168,90,.25);
+  background:rgba(0,0,0,.18);color:var(--text,#e8ddc0);font-size:14px;}
+.tr-qinput::placeholder{color:#6c6250;}
+.tr-ctlrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.tr-ctlrow2{justify-content:space-between;}
+.tr-modes{flex:1;}
+.tr-revtoggle{padding:7px 12px;border-radius:8px;border:1px solid rgba(201,168,90,.3);
+  background:rgba(255,255,255,.04);color:var(--text-dim,#8a7e63);font-size:12px;cursor:pointer;white-space:nowrap;}
+.tr-revtoggle.on{border-color:#8a6fb5;color:#c9b6e6;background:rgba(138,111,181,.18);}
+.tr-castbtn{padding:13px;border-radius:11px;border:1px solid #c9a85a;
+  background:linear-gradient(180deg,#caa95c,#a37f33);color:#241a08;font-size:15px;font-weight:700;
+  letter-spacing:2px;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.3);}
+.tr-castbtn:active{transform:translateY(1px);}
+
+.tr-result{display:flex;flex-direction:column;gap:12px;}
+.tr-q{font-size:13px;color:#d9c89a;background:rgba(201,168,90,.1);border-left:3px solid #c9a85a;
+  padding:8px 12px;border-radius:0 8px 8px 0;}
+
+/* 倾向卡（沿用全局 v-good 等底色） */
+.tr-verdict{border-radius:11px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,.12);}
+.tr-verdict .dv-arrow{font-size:14px;line-height:1.5;}
+.tr-verdict.v-good .dv-arrow{color:#86efac;}
+.tr-verdict.v-mild .dv-arrow{color:#7dd3fc;}
+.tr-verdict.v-flat .dv-arrow{color:#cbd5e1;}
+.tr-verdict.v-warn .dv-arrow{color:#fcd34d;}
+.tr-verdict.v-bad .dv-arrow{color:#fca5a5;}
+.tr-verdict .dv-title{margin:0 0 3px;font-size:13.5px;letter-spacing:.06em;color:inherit;font-weight:700;}
+.tr-verdict .dv-detail{font-size:12px;line-height:1.6;color:rgba(255,255,255,.78);}
+
+/* 牌阵行（真图） */
+.tr-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.tr-row3 .tr-card{flex:1 1 0;min-width:92px;max-width:150px;}
+.tr-row1{display:flex;justify-content:center;}
+.tr-row1 .tr-card{width:150px;}
+
+.tr-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:7px 6px 8px;border-radius:10px;border:1px solid rgba(201,168,90,.32);
+  background:linear-gradient(180deg,#f4ead0,#e7d8b0);color:#3a2c12;cursor:pointer;min-width:84px;
+  box-shadow:0 2px 7px rgba(0,0,0,.28);}
+.tr-card:active{transform:translateY(1px);}
+.tr-pos{align-self:stretch;text-align:center;font-size:9.5px;line-height:1.25;color:#8a6f2e;min-height:24px;}
+.tr-img{width:100%;aspect-ratio:860/1433;border-radius:5px;object-fit:cover;display:block;background:#2a2118;}
+.tr-name{font-size:12px;font-weight:700;color:#2e2208;line-height:1.2;text-align:center;}
+.tr-revtag{position:absolute;top:4px;right:5px;z-index:2;font-size:9px;background:#8a6fb5;color:#fff;
+  border-radius:4px;padding:1px 4px;}
+.tr-card.tr-rev .tr-img{transform:rotate(180deg);}
+
+/* 空位（抽牌） */
+.tr-slot{background:repeating-linear-gradient(45deg,rgba(201,168,90,.05),rgba(201,168,90,.05) 6px,rgba(201,168,90,.1) 6px,rgba(201,168,90,.1) 12px);
+  border-style:dashed;color:#9a8a64;justify-content:center;}
+.tr-slotmark{font-size:26px;color:#a8966a;}
+.tr-slotname{color:#a8966a;font-weight:400;}
+.tr-slot .tr-pos{position:absolute;top:7px;left:0;right:0;}
+
+/* 逐张牌义 */
+.tr-detail{display:flex;flex-direction:column;gap:9px;}
+.tr-blk-t{font-size:12.5px;font-weight:700;color:#d8bd76;letter-spacing:1px;margin:2px 0 6px;}
+.tr-line{border:1px solid rgba(201,168,90,.2);border-radius:10px;padding:10px 12px;background:rgba(255,255,255,.03);}
+.tr-line-h{display:flex;align-items:center;gap:10px;}
+.tr-line-img{width:38px;height:63px;flex:0 0 38px;border-radius:5px;object-fit:cover;background:#2a2118;}
+.tr-line-img.is-rev{transform:rotate(180deg);}
+.tr-line-h b{font-size:14px;}
+.tr-alt{font-size:11px;color:#9a8a64;font-family:Georgia,serif;margin-left:4px;}
+.tr-line-pos{display:block;font-size:11px;color:var(--text-dim,#8a7e63);margin-top:2px;}
+.tr-line-tags{margin-left:auto;display:flex;gap:5px;}
+.tr-line-tags span{font-size:10.5px;padding:2px 7px;border-radius:6px;}
+.tr-line-mean{margin:8px 0 4px;font-size:13px;line-height:1.7;color:var(--text,#e8ddc0);}
+.tr-line-icon{margin:4px 0 0;font-size:11.5px;line-height:1.7;color:#8f8366;}
+.tr-line-icon em,.tr-line-mean em{color:#c9a85a;font-style:normal;font-weight:600;}
+.tr-line-old{margin:6px 0 0;font-size:11px;line-height:1.7;color:#7a6f55;font-family:Georgia,serif;font-style:italic;}
+.tr-line-old em{font-style:normal;color:#8d7c54;font-family:inherit;}
+
+/* 三牌叙事链 */
+.tr-pairs{border:1px solid rgba(138,111,181,.25);border-radius:10px;padding:10px 12px;background:rgba(138,111,181,.06);}
+.tr-chain{margin:4px 0 0;font-size:12.5px;line-height:1.8;color:#cfc1e6;}
+
+/* 凯尔特十字 */
+.tr-cross{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;align-items:flex-start;}
+.tr-cross-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.tr-cross-stack{position:relative;width:104px;height:172px;}
+.tr-cross-stack .tr-card{position:absolute;top:0;left:0;width:88px;}
+.tr-c1{z-index:1;}
+.tr-c2{z-index:2;transform:rotate(90deg);}
+.tr-cross-below{display:grid;grid-template-columns:repeat(4,minmax(70px,84px));gap:8px;}
+.tr-cross-below .tr-pos{font-size:9px;min-height:22px;}
+.tr-cross-s{display:grid;grid-template-columns:repeat(2,minmax(70px,84px));gap:8px;align-content:start;}
+.tr-cross-s .tr-pos{font-size:9px;min-height:22px;}
+.tr-zones{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.tr-zone{display:flex;justify-content:space-between;gap:8px;font-size:12px;border:1px solid rgba(201,168,90,.18);
+  border-radius:8px;padding:7px 10px;background:rgba(255,255,255,.03);}
+.tr-zone b{color:#d8bd76;font-weight:600;white-space:nowrap;}
+.tr-zone span{color:var(--text-dim,#b3a680);text-align:right;}
+.tr-crossnote{grid-column:1/-1;font-size:11px;line-height:1.6;color:#7a6f55;margin:4px 0 0;}
+
+/* 亲手抽牌 */
+.tr-picking{display:flex;flex-direction:column;gap:12px;}
+.tr-pickbar{display:flex;gap:14px;align-items:center;}
+.tr-deck{position:relative;width:80px;height:126px;flex:0 0 auto;border-radius:10px;cursor:pointer;
+  border:1px solid rgba(201,168,90,.4);color:#e6d49a;
+  background:repeating-linear-gradient(45deg,#3a2c52,#3a2c52 8px,#43335f 8px,#43335f 16px);
+  box-shadow:0 4px 14px rgba(0,0,0,.4),2px 2px 0 rgba(0,0,0,.25);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;}
+.tr-deck:active{transform:translateY(1px);}
+.tr-deckpat{font-size:30px;color:#c9a85a;}
+.tr-decknum{position:absolute;bottom:7px;right:8px;font-size:11px;color:#cdbd8a;}
+.tr-pickinfo{flex:1;}
+.tr-pickprog{font-size:14px;color:#e0d2a4;margin-bottom:4px;}
+.tr-pickprog b{color:#f3e4b4;font-size:17px;}
+.tr-pickhint{font-size:11.5px;line-height:1.6;color:var(--text-dim,#8a7e63);}
+.tr-pickactions{display:flex;gap:8px;}
+.tr-fillbtn,.tr-resetbtn{padding:8px 14px;border-radius:9px;font-size:12.5px;cursor:pointer;}
+.tr-fillbtn{border:1px solid #c9a85a;background:rgba(201,168,90,.18);color:#ecd9a0;}
+.tr-resetbtn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:var(--text-dim,#b3a680);}
+
+/* 78 张图鉴（分组） */
+.tr-galgrp{margin-bottom:14px;}
+.tr-galgrp-t{font-size:12.5px;font-weight:700;color:#d8bd76;margin:0 0 8px;letter-spacing:1px;}
+.tr-galgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:9px;}
+.tr-galcard{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 5px;border-radius:10px;
+  border:1px solid rgba(201,168,90,.28);background:linear-gradient(180deg,#f4ead0,#e7d8b0);color:#3a2c12;cursor:pointer;}
+.tr-galcard:active{transform:translateY(1px);}
+.tr-gimg{width:100%;aspect-ratio:860/1433;border-radius:5px;object-fit:cover;display:block;background:#2a2118;}
+.tr-gname{font-size:11px;font-weight:700;line-height:1.2;text-align:center;}
+
+/* 弹层 */
+.trf-head{display:flex;gap:13px;align-items:flex-start;margin-bottom:8px;}
+.trf-img{width:96px;flex:0 0 96px;border-radius:9px;border:1px solid rgba(0,0,0,.25);
+  background:#2a2118;display:block;box-shadow:0 3px 10px rgba(0,0,0,.3);}
+.trf-names b{font-size:18px;color:#2e2208;}
+.trf-names{margin-bottom:5px;}
+.trf-names .tg-g,.trf-names .tg-b,.trf-names .tg-n{margin-left:6px;}
+.trf-sub{font-size:13px;color:#6e6044;font-family:Georgia,serif;margin:3px 0;}
+.trf-old{font-size:11px;color:#8a6f2e;margin-top:2px;}
+.trf-sec{margin-top:12px;}
+.trf-sec p{margin:5px 0 0;font-size:13px;line-height:1.8;color:#3f3420;}
+.trf-kws{display:flex;flex-wrap:wrap;gap:6px;}
+.trf-kw{font-size:11.5px;padding:3px 9px;border-radius:20px;background:rgba(110,79,23,.12);color:#5d4415;}
+.trf-sec .tr-line-old{color:#6d6044;font-style:italic;}
+.trf-note{background:rgba(138,111,181,.1);border-left:3px solid #8a6fb5;border-radius:0 7px 7px 0;
+  padding:7px 10px;font-size:11.5px;line-height:1.7;color:#4a4030;margin-top:12px;}
+
+/* ===== v99 牌组切换 / SB ===== */
+.tr-decks{margin:8px 0 4px;}
+.tr-revoff{font-size:12px;color:#8a94ac;align-self:center;padding:5px 10px;border:1px dashed #333c52;border-radius:8px;}
+.trf-sec .trf-sb{background:#171b26;border:1px solid #2a3145;}
+
+/* ---------- 三合一分类条（塔罗|雷诺曼） ---------- */
+.tr-catbar{display:flex;gap:8px;margin:0 auto 12px;width:max-content;padding:5px;border-radius:14px;
+  background:rgba(30,26,20,.42);border:1px solid rgba(232,200,122,.22)}
+.tr-catbar button{border:1px solid transparent;background:none;color:var(--ink-dim,#b9ac93);
+  font:inherit;font-size:15px;letter-spacing:2px;padding:7px 22px;border-radius:10px;cursor:pointer;transition:all .18s}
+.tr-catbar button.on{background:linear-gradient(180deg,rgba(232,200,122,.20),rgba(232,200,122,.08));
+  color:var(--gold,#e8c87a);border-color:rgba(232,200,122,.45);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.tr-catbar button:not(.on):hover{color:var(--gold,#e8c87a)}
+
+/* ============ v101 洗牌动画 · 扇形抽牌 · 放大与可读性 ============ */
+
+/* --- 幕一：洗牌动画（散开-旋转-聚拢，stagger） --- */
+.tr-shuffling{padding:26px 12px 18px;text-align:center}
+.tr-shuf-stage{position:relative;height:190px;margin:6px auto 14px;width:240px}
+.tr-shufcard{position:absolute;left:50%;top:50%;width:74px;height:118px;margin:-59px 0 0 -37px;
+  border-radius:8px;background:linear-gradient(160deg,#3a2f1d 0%,#241c10 55%,#3a2f1d 100%);
+  border:1px solid #8a744a;box-shadow:0 2px 8px rgba(0,0,0,.45);
+  background-image:repeating-linear-gradient(45deg,transparent 0 9px,rgba(201,168,90,.08) 9px 10px);
+  animation:trshuf 1.7s cubic-bezier(.36,.07,.35,1) both;animation-delay:calc(var(--i) * .07s)}
+.tr-shufcard::after{content:'✦';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#c9a85a;font-size:20px;opacity:.85}
+@keyframes trshuf{
+  0%{transform:translate(0,0) rotate(0)}
+  18%{transform:translate(calc(var(--dx) * 1.25),calc(var(--dy) * 1.4 - 18px)) rotate(calc(var(--dx) * .55deg))}
+  46%{transform:translate(calc(var(--dx) * -.6),calc(var(--dy) * .3 + 8px)) rotate(calc(var(--dx) * -.35deg))}
+  72%{transform:translate(calc(var(--dx) * .3),calc(var(--dy) * -.5)) rotate(calc(var(--dx) * .2deg))}
+  100%{transform:translate(0,0) rotate(0)}
+}
+.tr-shuf-text{font-size:14px;color:#cdbd8a;letter-spacing:.14em;line-height:1.7}
+
+/* --- 幕二：扇形抽牌 --- */
+.tr-picking{padding:16px 10px 18px}
+.tr-pick-head{font-size:15px;color:#e8dfc6;text-align:center;margin-bottom:2px}
+.tr-pick-head b{color:#e9c874;font-size:17px}
+.tr-curpos{display:inline-block;padding:1px 10px;border-radius:10px;background:rgba(233,200,116,.14);
+  border:1px solid rgba(233,200,116,.4);margin-left:2px}
+.tr-pick-tip{font-size:12px;color:#9a8d68;text-align:center;margin:4px 0 12px;letter-spacing:.04em}
+
+/* 位置预览（小） */
+.tr-fanprev{display:flex;gap:6px;justify-content:center;margin:2px auto 14px;flex-wrap:wrap}
+.tr-fanprev1 .tr-fslot{width:104px}
+.tr-fslot{display:flex;flex-direction:column;align-items:center;gap:3px;width:64px}
+.tr-fslot-card{width:100%;aspect-ratio:860/1433;border-radius:6px;background:#171310;
+  border:1px solid #3d3320;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  transition:border-color .25s, box-shadow .25s}
+.tr-fslot-q{color:#6b5c3b;font-size:18px;font-weight:700}
+.tr-fslot-back{display:block;width:100%;height:100%;
+  background:linear-gradient(160deg,#3a2f1d 0%,#241c10 55%,#3a2f1d 100%);
+  background-image:repeating-linear-gradient(45deg,transparent 0 9px,rgba(201,168,90,.08) 9px 10px)}
+.tr-fslot.got .tr-fslot-card{border-color:#8a744a}
+.tr-fslot.cur .tr-fslot-card{border-color:#e9c874;box-shadow:0 0 0 2px rgba(233,200,116,.25),0 0 14px rgba(233,200,116,.18)}
+.tr-fslot.cur .tr-fslot-pos{color:#e9c874;font-weight:700}
+.tr-fslot-pos{font-size:10px;color:#8a7d60;text-align:center;line-height:1.25}
+.tr-fanprev .tr-cross-stack{width:52px;height:84px}
+.tr-fanprev .tr-cross-stack .tr-fslot{position:absolute;top:0;left:0;width:46px}
+
+/* 扇形本体 */
+.tr-fan{display:flex;justify-content:center;align-items:flex-end;height:190px;margin:4px 0 2px;
+  padding:0 6px}
+.tr-fancard{position:relative;flex:0 1 46px;height:150px;margin:0 -9px;border:none;padding:0;cursor:pointer;
+  border-radius:7px;background:linear-gradient(160deg,#3a2f1d 0%,#241c10 55%,#3a2f1d 100%);
+  background-image:repeating-linear-gradient(45deg,transparent 0 9px,rgba(201,168,90,.08) 9px 10px);
+  border:1px solid #8a744a;box-shadow:0 3px 10px rgba(0,0,0,.5);
+  transform:rotate(var(--r)) translateY(var(--ty));
+  transition:transform .22s cubic-bezier(.34,1.4,.5,1), box-shadow .22s, border-color .22s;
+  animation:trfanin .5s cubic-bezier(.3,1.25,.45,1) both;animation-delay:calc(var(--z) * .022s)}
+.tr-fancard::after{content:'✦';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:rgba(201,168,90,.55);font-size:15px}
+@keyframes trfanin{from{opacity:0;transform:rotate(var(--r)) translateY(calc(var(--ty) + 46px)) scale(.92)}
+  to{opacity:1;transform:rotate(var(--r)) translateY(var(--ty)) scale(1)}}
+.tr-fancard:hover{border-color:#e9c874;box-shadow:0 6px 16px rgba(233,200,116,.22);z-index:30;
+  transform:rotate(var(--r)) translateY(calc(var(--ty) - 12px)) scale(1.06)}
+.tr-fancard:active{transform:rotate(var(--r)) translateY(calc(var(--ty) - 4px)) scale(1.02)}
+.tr-fanfoot{display:flex;justify-content:center;align-items:center;gap:7px;margin:10px 0 12px;
+  font-size:12px;color:#9a8d68}
+
+/* ============ 牌面整体放大 ============ */
+.tr-row1 .tr-card{width:196px}
+.tr-row3 .tr-card{flex:1 1 0;min-width:106px;max-width:184px}
+.tr-cross-stack{width:116px;height:192px}
+.tr-cross-stack .tr-card{width:100px}
+.tr-cross-below{grid-template-columns:repeat(4,minmax(84px,100px))}
+.tr-cross-s{grid-template-columns:repeat(2,minmax(84px,100px))}
+.fcb{width:92px;height:146px;perspective:700px}
+
+/* 弹窗牌面放大 + 可读性 */
+.trf-img{width:150px;flex:0 0 150px;border-radius:11px}
+.trf-head{gap:15px;margin-bottom:10px}
+.trf-names b{font-size:19px}
+.trf-sub{font-size:14px}
+.trf-old{font-size:13px}
+.trf-sec{margin-top:12px}
+.trf-sec p{margin:6px 0 0;font-size:15px;line-height:1.95;color:#3f3420}
+.trf-kw{font-size:13.5px;padding:3px 12px}
+.tr-blk-t{font-size:14px}
+
+/* 弹窗容器可读性（通用 tip-card，塔罗弹层最受益） */
+.tip-card{max-height:82%;padding:20px 20px calc(26px + var(--safe-b,0px))}
+.tip-card .tip-head{margin-bottom:12px}
+.tip-card .tip-term{font-size:20px}
+.tip-card .tip-body{font-size:15px;line-height:1.95;color:#d8cfae}
+.tip-card .tip-body p{font-size:15px;line-height:1.95}
+.trf-note{font-size:12.5px;line-height:1.8;color:#8a7f60;border-left:3px solid #6b5c3b;
+  padding:8px 12px;background:rgba(0,0,0,.25);border-radius:6px;margin-top:14px}
+
+/* ---------- v104 · 小牌比例按牌组 + 弹窗大图暗底亮字 + 扇形牌背重做 ---------- */
+/* 比例根因：各牌组扫描比例不同（SB .54 / Marseille .526 / Visconti .5 / Vieville .553 / Wirth .592，
+   RWS .60），此前硬编码 860/1433，历史牌组小牌被拉胖、上下裁切。JS 按牌组注入 --card-r。 */
+.tr-img,.tr-gimg,.tr-fslot-card{aspect-ratio:var(--card-r,860/1433);}
+.tr-line-img{height:auto;aspect-ratio:var(--card-r,860/1433);}
+.fcb{width:92px;height:auto;aspect-ratio:var(--card-r,860/1433);}
+.tr-cross-stack{width:116px;height:auto;aspect-ratio:var(--card-r,860/1433);}
+
+/* 弹窗：单栏居中大图（对齐雷诺曼 v103 方案）+ 暗底亮字（.trf-* 原为亮卡配色，
+   叠 .tip-card 暗玻璃底不可读，真机截图实锤） */
+.trf-head{flex-direction:column;align-items:center;gap:10px;margin-bottom:12px;}
+.trf-img{width:min(230px,62vw);flex:none;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.5);}
+.trf-meta{text-align:center;width:100%;}
+.trf-names{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.trf-names b{font-size:19px;color:#f2e8d0;}
+.trf-sub{color:rgba(214,207,190,.75);}
+.trf-old{color:#e8b07e;}
+.trf-kws{justify-content:center;}
+.trf-kw{background:rgba(200,163,92,.16);border:1px solid rgba(200,163,92,.34);color:#e8cf9c;}
+.trf-sec p{color:rgba(230,224,209,.92);}
+.trf-note{background:rgba(138,111,181,.14);border-left-color:#8a6fb5;color:rgba(214,207,190,.78);}
+.tip-card .tr-blk-t{color:var(--gold,#c8a35c);}
+.tip-card .trf-sec .tr-line-old{color:rgba(208,202,186,.72);}
+
+/* 扇形牌背重做：真机旧版织纹太淡（远看空轮廓线框），改实底丝绒 + 双线金边 +
+   中心徽记 + 顶部星点，按下抬升金光反馈 */
+.tr-fancard{flex-basis:54px;background:
+    radial-gradient(circle at 50% 30%,rgba(233,200,116,.10) 0 18%,transparent 40%),
+    repeating-linear-gradient(45deg,transparent 0 8px,rgba(201,168,90,.07) 8px 9px),
+    linear-gradient(165deg,#4a3a20 0%,#241a0e 48%,#38290f 100%);
+  border:1px solid #9a7f4e;outline:1px solid rgba(154,127,78,.35);outline-offset:-4px;
+  box-shadow:0 4px 12px rgba(0,0,0,.55);}
+.tr-fancard::after{content:'✦';color:rgba(233,200,116,.85);font-size:19px;
+  text-shadow:0 0 10px rgba(233,200,116,.5);}
+.tr-fancard:hover{border-color:#e9c874;box-shadow:0 8px 22px rgba(233,200,116,.3);}
+.tr-fancard:active{transform:rotate(var(--r)) translateY(calc(var(--ty) - 14px)) scale(1.08);
+  border-color:#ffe4a0;box-shadow:0 12px 26px rgba(233,200,116,.45);z-index:40;}
+
+/* ---------- v105：控制区分组标签（牌阵/抽法两组按钮加小标，消除混排歧义） ---------- */
+.tr-grp{flex:0 0 auto;font-size:12px;color:#8a94ac;letter-spacing:3px;align-self:center;padding:2px 6px 2px 0;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+
+/* ================= v109 全屏牌桌：进塔罗即落座 · fixed 独立舞台（修扇面圆心） · 顶栏设置 ================= */
+.tr-table{position:fixed;left:0;right:0;top:0;bottom:calc(56px + env(safe-area-inset-bottom,0px));
+  z-index:90;margin:0 auto;
+  background:
+    radial-gradient(1.6px 1.6px at 18% 22%, rgba(255,255,255,.5), transparent 60%),
+    radial-gradient(1.2px 1.2px at 72% 12%, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(1.4px 1.4px at 84% 46%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(1.2px 1.2px at 30% 60%, rgba(255,255,255,.3), transparent 60%),
+    radial-gradient(1.5px 1.5px at 60% 74%, rgba(255,255,255,.32), transparent 60%),
+    radial-gradient(ellipse at 50% 0%, #1c1830 0%, #12101f 42%, #0a0910 100%);
+  touch-action:none;user-select:none;-webkit-user-select:none;max-width:560px;
+  animation:trt-fade .3s ease;}
+@keyframes trt-fade{from{opacity:0}to{opacity:1}}
+/* 顶栏：左 ☰ 设置 · 中文案 · 右 ↺ 重新发牌 */
+.trt-exit{position:absolute;top:calc(12px + var(--safe-t,0px));left:14px;z-index:8;width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(201,168,90,.4);background:rgba(10,9,16,.55);color:#c9a85a;font-size:16px;line-height:1;}
+.trt-reshuffle{position:absolute;top:calc(12px + var(--safe-t,0px));right:14px;z-index:8;width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(201,168,90,.4);background:rgba(10,9,16,.55);color:#c9a85a;font-size:16px;line-height:1;padding:0;}
+.trt-topbar{position:absolute;top:calc(15px + var(--safe-t,0px));left:58px;right:58px;z-index:7;text-align:center;
+  font-size:13px;color:rgba(214,207,190,.78);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.trt-moon{position:absolute;top:10%;left:50%;transform:translateX(-50%);font-size:40px;opacity:.16;
+  filter:drop-shadow(0 0 16px rgba(240,220,160,.5));pointer-events:none;}
+.trt-canvas{position:absolute;inset:0;z-index:2;}
+.trt-slot{position:absolute;width:var(--trt-w);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;}
+.trt-slotmark{display:block;width:100%;aspect-ratio:var(--card-r,860/1433);border-radius:8px;
+  border:1.5px dashed rgba(201,168,90,.3);background:rgba(201,168,90,.035);}
+.trt-poslabel{font-size:9px;letter-spacing:1px;color:rgba(201,168,90,.5);white-space:nowrap;}
+.trt-filled .trt-poslabel{color:rgba(201,168,90,.72);}
+.trt-card{display:block;width:100%;height:auto;aspect-ratio:var(--card-r,860/1433);cursor:pointer;}
+.trt-filled{transform:translate(-50%,-50%) rotate(var(--rot,0deg));transition:transform .28s cubic-bezier(.2,.9,.3,1.2);z-index:3;}
+.trt-filled.is-flip{transform:translate(-50%,-50%) rotate(0deg);z-index:4;}
+.trt-revface img{transform:rotate(180deg);}
+/* 提示：顶部胶囊，位于顶栏与槽位之间 */
+.trt-hint{position:absolute;top:calc(56px + var(--safe-t,0px));left:50%;transform:translateX(-50%);
+  width:94%;text-align:center;z-index:7;pointer-events:none;}
+.trt-hint span{display:inline-block;max-width:100%;padding:6px 15px;border-radius:15px;font-size:11.5px;
+  letter-spacing:.3px;color:rgba(230,224,208,.92);background:rgba(14,12,26,.66);
+  border:1px solid rgba(201,168,90,.22);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  text-shadow:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* v109/v114：舞台全屏、牌悬空其上，取消 overflow 裁切 */
+.trt-stagepos{position:absolute;left:0;right:0;top:0;bottom:0;z-index:6;
+  display:flex;align-items:flex-end;justify-content:center;pointer-events:none;}
+.trt-stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-end;touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:none;}
+.trt-stage-label{position:absolute;bottom:calc(8px + var(--safe-b,0px));left:50%;transform:translateX(-50%);
+  font-size:9.5px;letter-spacing:1px;color:rgba(201,168,90,.58);
+  white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.8);
+  padding-right:70px;max-width:100%;box-sizing:border-box;pointer-events:none;}
+.trt-stage-stack{position:absolute;left:0;right:0;bottom:calc(8px + var(--safe-b,0px));height:calc(var(--trt-w) * 1.78);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}
+.trt-stack{position:relative;width:calc(var(--trt-w) * .9);aspect-ratio:var(--card-r,860/1433);cursor:grab;touch-action:none;pointer-events:auto;}
+.trt-stack:active{cursor:grabbing;}
+.trt-stackc{position:absolute;inset:0;}
+.trt-stackc:nth-child(1){transform:translate(-3px,-4px);}
+.trt-stackc:nth-child(2){transform:translate(-1px,-2px);}
+.trt-stackc:nth-child(3){transform:translate(1px,0);}
+.trt-stacktop{position:absolute;inset:0;}
+.trt-flipallbtn{padding:12px 22px;font-size:14px;border-radius:22px;font-weight:600;color:#201708;
+  border:1px solid #e9c874;background:linear-gradient(180deg,#f0d48c,#c8a35c);
+  box-shadow:0 8px 22px rgba(201,168,90,.3);}
+.trt-readbtn{padding:13px 26px;font-size:15px;border-radius:24px;font-weight:700;color:#1d1408;letter-spacing:1px;
+  border:1px solid #ffe4a0;background:linear-gradient(180deg,#f6dd99,#d2ab63);
+  box-shadow:0 10px 28px rgba(233,200,116,.4),0 0 0 4px rgba(233,200,116,.12);
+  animation:trt-glow 1.8s ease-in-out infinite;}
+@keyframes trt-glow{0%,100%{box-shadow:0 10px 28px rgba(233,200,116,.35),0 0 0 4px rgba(233,200,116,.1)}50%{box-shadow:0 10px 34px rgba(233,200,116,.6),0 0 0 6px rgba(233,200,116,.18)}}
+/* 右下：展牌形式切换圆钮（独立于舞台，避免被 overflow 裁） */
+.trt-layoutbtn{position:absolute;right:14px;bottom:calc(10px + var(--safe-b,0px));z-index:8;
+  width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,168,90,.42);
+  background:rgba(18,15,32,.72);color:#d9c88e;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);}
+.trt-layoutbtn span{font-size:16px;line-height:1;}
+.trt-layoutbtn small{font-size:8px;letter-spacing:1px;color:rgba(214,207,190,.72);margin-top:2px;white-space:nowrap;}
+.trt-drag{position:fixed;left:0;top:0;z-index:120;pointer-events:none;width:var(--trt-w);
+  transform:translate(-50%,-50%);will-change:transform;}
+.trt-dragcard{width:calc(var(--trt-w) * 1.02);aspect-ratio:var(--card-r,860/1433);}
+
+
+/* ================= v108/v109：米边纸牌 · 展牌三式 · 9 牌阵 · 牌桌设置抽屉 ================= */
+/* 统一纸牌背：象牙白窄卡边 + 深紫星空（占星猫 Star Cat 质感），小圆角 */
+.trpc{box-sizing:border-box;border-radius:6px;border:2px solid #ece2cb;
+  background:
+    radial-gradient(1.4px 1.4px at 22% 16%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1.1px 1.1px at 68% 26%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(1.2px 1.2px at 38% 58%, rgba(255,255,255,.42), transparent 60%),
+    radial-gradient(1.3px 1.3px at 80% 66%, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(1.1px 1.1px at 28% 80%, rgba(255,255,255,.36), transparent 60%),
+    radial-gradient(1.2px 1.2px at 58% 40%, rgba(255,255,255,.34), transparent 60%),
+    linear-gradient(160deg,#2c2456 0%,#1b1638 48%,#120f2a 100%);
+  background-color:#1b1638;
+  box-shadow:0 6px 16px rgba(0,0,0,.5),0 0 0 1px rgba(236,226,203,.28);}
+.tr-shufcard{border-width:2px;}
+
+/* 扇面式：圆心固定牌桌底部中央，基角 0=中牌竖直向上（v110 修：v108/109 误用 -90°；v114 修：舞台全屏、牌悬空其上、取消裁切） */
+.trt-stage-fan{position:absolute;left:0;right:0;top:0;bottom:0;height:auto;overflow:visible;}
+.trf-item{position:absolute;left:50%;bottom:30px;width:var(--cw);z-index:1;
+  aspect-ratio:var(--card-r,860/1433);margin-left:calc(var(--cw) / -2);
+  transform-origin:50% 100%;
+  transform:rotate(var(--a,0deg)) translateY(calc(-1 * var(--R,120px)));
+  will-change:transform;cursor:pointer;transition:filter .14s ease;pointer-events:auto;}
+.trf-card{display:block;width:100%;height:100%;}
+/* v116 半抽出定格（占星猫式）：选中牌仍夹在原列、保持原角度，只沿自身轴向扇面外探一截；
+   z-index 压到邻牌之下 → 牌身下半截被相邻牌盖住（底部与牌堆重叠），只有越过扇面弧顶的上半截
+   探出、倾斜独立，定格「已抽出、未翻面」。绝不整张贴到扇面上方。 */
+.trf-item.is-pick{z-index:0;filter:brightness(1.16);
+  transform:rotate(var(--a,0deg)) translateY(calc(-1 * var(--R,120px) - var(--pick-lift, 34px))) scale(1.02);
+  transition:transform .2s cubic-bezier(.2,.8,.3,1.1),filter .15s ease;}
+.trf-item.is-hidden{opacity:0;}
+/* v115 拱桥展牌式已撤下（主人定），相关 .trg-* 样式一并移除 */
+.trt-stacktop.is-pick{transform:translateY(-10px) scale(1.05);filter:brightness(1.18);}
+.trt-stacktop.is-hidden{opacity:0;}
+/* v115 切牌动画：顶牌从牌堆顶抬起、越过牌堆划弧，落回堆底（配合 JS 480ms 后轮转牌序） */
+.trt-cutfly{position:fixed;z-index:130;pointer-events:none;opacity:0;will-change:transform,opacity;}
+.trt-cutfly.is-cut{opacity:1;
+  animation:trt-cut .46s cubic-bezier(.45,.06,.35,1) forwards;}
+@keyframes trt-cut{
+  0%  {transform:translate(0,0) rotate(0deg);}
+  45% {transform:translate(calc(-1 * var(--cut-dx,36px)), calc(-1 * var(--cut-dy,58px))) rotate(-15deg);}
+  100%{transform:translate(calc(var(--cut-dx,36px) * .42), 14px) rotate(7deg);opacity:.0;}
+}
+/* 拖动经过空槽时发光，提示"就放这儿" */
+.trt-slot.is-near .trt-slotmark{border-color:#f0d48c;box-shadow:0 0 0 3px rgba(233,200,116,.22),0 0 20px rgba(233,200,116,.5);background:rgba(233,200,116,.08);}
+
+/* 空槽横置水印（凯尔特十字第二张） */
+.trt-slotmark.is-h{transform:rotate(90deg);}
+
+/* 结果页：通用坐标阵图（六芒星/关系/二择一/周运/十二宫） */
+.tr-board{position:relative;width:100%;max-width:520px;margin:6px auto 2px;
+  background:linear-gradient(180deg,rgba(20,17,34,.55),rgba(12,10,20,.55));
+  border:1px solid rgba(201,168,90,.18);border-radius:14px;}
+.trb-cell{position:absolute;transform:translate(-50%,-50%);width:var(--cw);padding:0;border:0;background:none;cursor:pointer;}
+.trb-cell img{display:block;width:100%;border-radius:5px;border:1.5px solid #ece2cb;
+  box-shadow:0 3px 8px rgba(0,0,0,.45);}
+.trb-cell.tr-rev img{transform:rotate(180deg);}
+.trb-lab{display:block;position:relative;left:50%;transform:translateX(-50%);
+  font-size:8px;letter-spacing:.5px;color:rgba(201,168,90,.72);margin-top:2px;white-space:nowrap;}
+
+/* 结果页操作条 */
+.tr-resbar{display:flex;gap:10px;margin:6px 0 10px;}
+.tr-resbtn{flex:1;padding:12px;font-size:14px;border-radius:22px;font-weight:600;color:#201708;
+  border:1px solid #e9c874;background:linear-gradient(180deg,#f0d48c,#c8a35c);
+  box-shadow:0 6px 18px rgba(201,168,90,.25);}
+.tr-resbtn-ghost{flex:0 0 auto;background:rgba(18,15,32,.6);color:#d9c88e;border:1px solid rgba(201,168,90,.4);box-shadow:none;}
+
+/* 牌桌设置抽屉 */
+.tr-menu{max-height:86vh;display:flex;flex-direction:column;}
+.tr-menu .tip-body{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.trm-cat{display:flex;gap:8px;margin-bottom:12px;}
+.trm-cat button{flex:1;padding:9px;border-radius:16px;font-size:13px;
+  border:1px solid rgba(201,168,90,.3);background:rgba(18,15,32,.5);color:rgba(214,207,190,.75);}
+.trm-cat button.on{background:linear-gradient(180deg,#f0d48c,#c8a35c);color:#201708;border-color:#e9c874;font-weight:700;}
+.trm-sec{margin-bottom:14px;}
+.trm-sec .tr-blk-t{margin-bottom:7px;}
+.trm-wrap{flex-wrap:wrap;gap:7px;}
+.trm-q{width:100%;box-sizing:border-box;}
+.trm-links{display:flex;flex-direction:column;gap:8px;}
+.trm-links button{padding:11px 14px;text-align:left;border-radius:12px;font-size:13px;
+  border:1px solid rgba(201,168,90,.3);background:rgba(18,15,32,.5);color:rgba(214,207,190,.85);}
+.tr-seg{display:flex;flex-wrap:wrap;gap:7px;}
+.tr-seg button{padding:7px 13px;border-radius:15px;font-size:12.5px;
+  border:1px solid rgba(201,168,90,.3);background:rgba(18,15,32,.5);color:rgba(214,207,190,.78);}
+.tr-seg button.on{background:linear-gradient(180deg,#f0d48c,#c8a35c);color:#201708;border-color:#e9c874;font-weight:700;}
+.tr-revtoggle{padding:7px 13px;border-radius:15px;font-size:12.5px;border:1px solid rgba(150,120,200,.4);
+  background:rgba(40,30,70,.6);color:#c9b8e8;}
+.tr-revtoggle.on{background:linear-gradient(180deg,#b79ff0,#8a6cd0);color:#1a1030;border-color:#c4a8f5;font-weight:700;}
+.tr-revoff{font-size:11.5px;color:rgba(214,207,190,.5);padding:7px 4px;}
+.tr-qinput{width:100%;box-sizing:border-box;padding:11px 13px;border-radius:12px;font-size:14px;
+  border:1px solid rgba(201,168,90,.28);background:rgba(10,9,16,.6);color:#e6e0d0;}
+
+/* 图鉴/说明 全屏页（在文档流 #tr-result 内） */
+.tr-galpage h2,.tr-aboutpage h2{margin:8px 0 12px;font-size:18px;}
+.tr-galpage-h{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.tr-galback{flex:0 0 auto;padding:7px 14px;border-radius:16px;font-size:13px;
+  border:1px solid rgba(201,168,90,.4);background:rgba(18,15,32,.6);color:#d9c88e;}
+.tr-galgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px;}
+.tr-galcard{padding:0;border:0;background:none;cursor:pointer;text-align:center;}
+.tr-galcard img{width:100%;border-radius:6px;border:1.5px solid #ece2cb;box-shadow:0 3px 8px rgba(0,0,0,.4);}
+.tr-gname{display:block;font-size:10px;color:rgba(214,207,190,.78);margin-top:4px;}
+.tr-galgrp-t{margin:14px 0 8px;font-size:13px;color:rgba(201,168,90,.85);}
+.tr-aboutpage .tr-castbtn{width:100%;margin-top:14px;}

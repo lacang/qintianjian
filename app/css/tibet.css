@@ -1,0 +1,107 @@
+/* ============ 敦煌古藏文占卜 v88 ============ */
+.tb-wrap{padding:12px 12px 40px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+.tb-tabs{display:flex;gap:8px;position:sticky;top:0;z-index:5;padding:4px 0;}
+.tb-tab{flex:1;padding:10px 8px;border-radius:12px;border:1px solid rgba(120,72,20,.25);
+  background:rgba(255,250,240,.6);color:#7a5a30;font-size:13px;font-weight:600;cursor:pointer;
+  transition:.18s;font-family:inherit;}
+.tb-tab.on{background:linear-gradient(135deg,#a8541f,#c97a2e);color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px rgba(168,84,31,.32);}
+
+.tb-intro{padding:14px 16px;}
+.tb-introt{font-size:17px;font-weight:700;color:#6b3d12;letter-spacing:.5px;}
+.tb-introt span{display:block;font-size:11px;color:#9a7b4f;font-weight:400;margin-top:3px;letter-spacing:.3px;}
+.tb-intro p{margin:9px 0 0;font-size:13px;line-height:1.75;color:#4a3a28;}
+.tb-intro b{color:#8a4a17;}
+
+.tb-cast{padding:14px 16px;display:flex;flex-direction:column;gap:10px;align-items:center;}
+.tb-qinput{width:100%;padding:11px 13px;border-radius:11px;border:1px solid rgba(120,72,20,.22);
+  background:rgba(255,255,255,.7);font-size:14px;color:#3a2a18;box-sizing:border-box;font-family:inherit;}
+.tb-qinput:focus{outline:none;border-color:#c97a2e;box-shadow:0 0 0 3px rgba(201,122,46,.15);}
+.tb-castbtn{padding:12px 30px;border:none;border-radius:30px;cursor:pointer;font-size:15px;font-weight:700;
+  color:#fff;background:linear-gradient(135deg,#a8541f,#d1843a);box-shadow:0 6px 18px rgba(168,84,31,.35);
+  transition:.16s;font-family:inherit;}
+.tb-castbtn:active{transform:scale(.96);}
+.tb-castmeta{font-size:11px;color:#9a7b4f;text-align:center;line-height:1.6;}
+
+/* 结果与方向卡 */
+.tb-result{padding:16px;text-align:center;}
+.tb-diceface{display:flex;justify-content:center;gap:12px;margin-bottom:10px;}
+.tb-die{color:#8a4a17;}
+.tb-multi{font-size:11px;font-weight:400;color:#8a6a40;}
+.tb-olist{display:flex;flex-direction:column;gap:10px;}
+
+.tb-ocard{padding:13px 15px;border-left:4px solid rgba(0,0,0,.12);}
+.tb-ocard.v-good{border-left-color:#3d8b5f;background:linear-gradient(180deg,rgba(61,139,95,.10),rgba(255,255,255,.55));}
+.tb-ocard.v-bad{border-left-color:#c0453a;background:linear-gradient(180deg,rgba(192,69,58,.10),rgba(255,255,255,.55));}
+.tb-ocard.v-flat{border-left-color:#9a8a6a;background:linear-gradient(180deg,rgba(154,138,106,.12),rgba(255,255,255,.55));}
+.tb-ohead{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px;}
+.tb-oface{display:inline-flex;gap:3px;}
+.tb-oface .tb-die{color:#8a4a17;}
+.tb-olvl{font-size:14px;font-weight:800;padding:2px 11px;border-radius:20px;color:#fff;}
+.v-good .tb-olvl{background:#3d8b5f;}
+.v-bad .tb-olvl{background:#c0453a;}
+.v-flat .tb-olvl{background:#9a8a6a;}
+.tb-otag{font-size:10.5px;color:#8a4a17;background:rgba(201,122,46,.14);padding:2px 8px;border-radius:10px;}
+.tb-oline{margin-left:auto;font-size:10px;color:#a0865e;}
+.tb-otext{font-size:13.5px;line-height:1.85;color:#3a2a18;text-align:justify;}
+.tb-ogod{margin-top:8px;font-size:11.5px;color:#7a5a30;font-style:italic;border-top:1px dashed rgba(120,72,20,.18);padding-top:7px;}
+
+/* 查阅网格 */
+.tb-section{padding:14px 16px;}
+.tb-sectitle{font-size:15px;font-weight:700;color:#6b3d12;margin-bottom:11px;}
+.tb-sectitle span{font-size:11px;font-weight:400;color:#9a7b4f;margin-left:6px;}
+.tb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.tb-cell{position:relative;padding:11px 4px;border-radius:10px;border:1px solid rgba(120,72,20,.18);
+  background:rgba(255,255,255,.6);cursor:pointer;font-family:inherit;transition:.14s;}
+.tb-cell:active{transform:scale(.94);}
+.tb-cf{font-size:13px;font-weight:700;color:#5a4326;}
+.tb-cn{position:absolute;top:2px;right:4px;font-size:8.5px;font-style:normal;color:#c97a2e;}
+.tb-cell.v-good{border-top:3px solid #3d8b5f;}
+.tb-cell.v-bad{border-top:3px solid #c0453a;}
+.tb-cell.v-flat{border-top:3px solid #9a8a6a;}
+.tb-legend{margin-top:11px;font-size:11px;color:#7a5a30;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+.tb-legend .lg{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;}
+.tb-legend .lg.g{background:#3d8b5f;}.tb-legend .lg.b{background:#c0453a;}.tb-legend .lg.n{background:#9a8a6a;}
+
+/* 金钱 */
+.tb-coins{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;}
+.tb-coin{display:flex;flex-direction:column;align-items:center;gap:4px;width:74px;height:74px;
+  border-radius:50%;justify-content:center;background:linear-gradient(145deg,#e8c883,#c89543);
+  color:#5a3a10;font-size:30px;font-weight:800;box-shadow:0 5px 14px rgba(168,110,30,.4),inset 0 2px 4px rgba(255,255,255,.5);}
+.tb-coin i{font-size:10px;font-style:normal;font-weight:600;}
+.tb-coinplus{font-size:22px;color:#a8541f;font-weight:700;}
+.tb-coinnote{margin-top:10px;font-size:11px;color:#7a5a30;line-height:1.7;text-align:left;
+  background:rgba(120,72,20,.06);border-radius:9px;padding:9px 11px;}
+.tb-marks{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.tb-mark{padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;
+  border:1px solid rgba(120,72,20,.18);border-radius:12px;background:rgba(255,255,255,.6);font-family:inherit;transition:.14s;}
+.tb-mark:active{transform:scale(.95);}
+.tb-mark-glyph{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:21px;font-weight:800;background:linear-gradient(145deg,#e8c883,#c89543);color:#5a3a10;}
+.tb-mark-glyph.m{background:linear-gradient(145deg,#9a8a8a,#6a5a5a);color:#fff;}
+.tb-mark-glyph.p{box-shadow:0 0 0 2px rgba(61,139,95,.25);}
+.tb-mark-zh{font-size:12px;font-weight:700;color:#5a4326;}
+.tb-mark-mean{font-size:9.5px;color:#9a7b4f;text-align:center;line-height:1.4;}
+
+/* 源流 */
+.tb-src p{margin:0 0 9px;font-size:12.5px;line-height:1.85;color:#4a3a28;}
+.tb-src p:last-child{margin-bottom:0;}
+.tb-src b{color:#8a4a17;}
+
+/* 弹层 */
+.tb-sheet-src{margin-top:12px;padding-top:9px;border-top:1px dashed rgba(120,72,20,.2);
+  font-size:10px;color:#a0865e;line-height:1.6;word-break:break-all;}
+.tb-mark-lg{width:74px;height:74px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;
+  justify-content:center;font-size:36px;font-weight:800;background:linear-gradient(145deg,#e8c883,#c89543);color:#5a3a10;}
+.tb-mark-lg.m{background:linear-gradient(145deg,#9a8a8a,#6a5a5a);color:#fff;}
+.tbf-name{text-align:center;font-size:16px;font-weight:700;color:#6b3d12;margin-bottom:12px;}
+.tbf-name i{font-size:12px;color:#9a7b4f;font-style:italic;font-weight:400;margin-left:6px;}
+.tbf-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(120,72,20,.1);font-size:13px;}
+.tbf-row span{color:#9a7b4f;} .tbf-row b{color:#3a2a18;font-weight:600;text-align:right;}
+.tbf-note{margin-top:11px;font-size:12.5px;line-height:1.8;color:#4a3a28;}
+
+@media (max-width:380px){
+  .tb-grid{grid-template-columns:repeat(3,1fr);}
+  .tb-marks{grid-template-columns:repeat(3,1fr);}
+  .tb-tab{font-size:12px;padding:9px 4px;}
+}

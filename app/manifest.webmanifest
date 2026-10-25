@@ -1,0 +1,16 @@
+{
+  "name": "钦天监 · 自用命理工作台",
+  "short_name": "钦天监",
+  "description": "个人自用：六爻排盘与天时卦钟。只排盘，不解卦。纯本地运行。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1113",
+  "theme_color": "#0e1113",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

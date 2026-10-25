@@ -1,0 +1,28 @@
+/* v111 行星时 · 择时对照表（天象页） */
+.php-card{
+  margin:10px 0 14px;padding:12px 12px 10px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(233,200,116,.18);border-radius:12px;
+}
+.php-ctl{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+.php-ctl input{
+  height:32px;padding:0 8px;font-size:13px;color:#e6edf3;
+  background:#0d1114;border:1px solid rgba(233,200,116,.22);border-radius:8px;outline:none;
+}
+.php-ctl input:focus{border-color:rgba(233,200,116,.55);}
+.php-cur{font-size:12.5px;line-height:1.7;color:#cfd8e3;margin-bottom:6px;}
+.php-cur b{color:#e9c874;}
+.php-head{font-size:11.5px;color:#8d9aa6;margin-bottom:6px;}
+.php-list{max-height:320px;overflow:auto;border-top:1px solid rgba(255,255,255,.06);padding-top:4px;}
+.php-row{
+  display:flex;align-items:baseline;gap:8px;padding:6px 4px;
+  border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;
+}
+.php-row.is-cur{background:rgba(233,200,116,.12);border-radius:6px;}
+.php-no{width:30px;flex:none;color:#7d8894;font-size:11px;}
+.php-time{width:86px;flex:none;color:#9aa7b3;font-variant-numeric:tabular-nums;}
+.php-planet{
+  width:30px;flex:none;font-weight:600;color:var(--pc,#ccc);
+  text-shadow:0 0 8px color-mix(in srgb, var(--pc,#ccc) 45%, transparent);
+}
+.php-key{flex:1;color:#b9c3ce;font-size:11.5px;line-height:1.5;}
+.php-note{margin-top:8px;font-size:11px;line-height:1.7;color:#6f7b87;}

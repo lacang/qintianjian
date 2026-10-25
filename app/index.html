@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#0e1113" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="钦天监" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="stylesheet" href="./css/style.css?v=117" />
+<link rel="stylesheet" href="./css/tibet.css?v=117" />
+<link rel="stylesheet" href="./css/lenormand.css?v=117" />
+<link rel="stylesheet" href="./css/tarot.css?v=117" />
+<link rel="stylesheet" href="./css/vedic.css?v=117" />
+<link rel="stylesheet" href="./css/zhuyou.css?v=117" />
+<link rel="stylesheet" href="./css/place.css?v=117" />
+<link rel="stylesheet" href="./css/planet-hour.css?v=117" />
+<link rel="stylesheet" href="./css/yangzhai.css?v=117" />
+<title>钦天监 · 命理星象工作台</title>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ 钦天监首页（纯展示） ============ -->
+  <section class="view active" id="view-home">
+    <header class="topbar">
+      <div class="brand">钦天监</div>
+      <div class="top-right"><button class="copy-btn" id="copy-home">复制</button></div>
+    </header>
+
+    <div class="qintian-strip">
+      <div class="gz-line">
+        <span id="home-sizhu" class="sizhu"></span>
+        <span id="clock-time" class="clock-digital"></span>
+      </div>
+      <div class="meta-line">
+        <span id="home-nongli"></span>
+        <span class="dot">·</span>
+        <span id="home-jianchu"></span>
+      </div>
+    </div>
+
+    <div class="now-gua glass-card">
+      <div class="ng-head">
+        <div class="now-gua-title" id="now-gua-title"></div>
+      </div>
+      <div class="ng-body">
+        <div class="ng-hex" id="now-gua-hex"></div>
+        <div class="ng-info">
+          <div class="now-gua-names" id="now-gua-names"></div>
+          <div class="now-gua-countdown" id="now-gua-countdown"></div>
+        </div>
+      </div>
+      <div class="ng-foot">
+        <button class="btn ghost mini" id="btn-cast-now" type="button">详细 ›</button>
+      </div>
+    </div>
+
+    <div class="meridian-strip" id="home-meridian"></div>
+
+    <div class="sky-strip" id="home-sky"></div>
+
+    <div id="tianxiang-body"><div class="qt-skeleton tianxiang"></div></div>
+
+    <div id="rhythm-body"><div class="qt-skeleton rhythm"></div></div>
+
+    <div class="today-card-wrap" id="today-card-body"><div class="qt-skeleton today"></div></div>
+  </section>
+
+  <!-- ============ 问问（先选问题 → 推荐术数） ============ -->
+  <section class="view" id="view-ask">
+    <header class="topbar">
+      <div class="brand">问问</div>
+      <div class="top-right"></div>
+    </header>
+    <div id="ask-body"></div>
+  </section>
+
+  <!-- ============ 八字 ============ -->
+  <section class="view subview" id="view-bazi">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">八字</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="bazi">码</button>
+        <button class="copy-btn" id="copy-bazi">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-bazi" data-scope="birth" data-label="出生时间">
+      <span class="tb-label">出生时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">默认</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="bazi-body"></div>
+  </section>
+
+  <!-- ============ 梅花 ============ -->
+  <section class="view subview" id="view-meihua">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">梅花易数</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="meihua">码</button>
+        <button class="copy-btn" id="copy-meihua">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-meihua" data-scope="now" data-label="起盘时间">
+      <span class="tb-label">起盘时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="meihua-body"></div>
+  </section>
+
+  <!-- ============ 奇门遁甲 ============ -->
+  <section class="view subview" id="view-qimen">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">奇门遁甲</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="qimen">码</button>
+        <button class="copy-btn" id="copy-qimen">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-qimen" data-scope="now" data-label="起盘时间">
+      <span class="tb-label">起盘时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="qimen-body"></div>
+  </section>
+
+  <!-- ============ 本命星盘（西方古典占星） ============ -->
+  <section class="view subview" id="view-astro">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">本命星盘</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="astro">码</button>
+        <button class="copy-btn" id="copy-astro">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-astro" data-scope="birth" data-label="出生时间">
+      <span class="tb-label">出生时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">默认</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="astro-body"></div>
+  </section>
+
+  <!-- ============ 印度占星（吠陀 Jyotisha） ============ -->
+  <section class="view subview" id="view-vedic">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">印度占星</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="vedic">码</button>
+        <button class="copy-btn" id="copy-vedic">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-vedic" data-scope="birth" data-label="出生时间">
+      <span class="tb-label">出生时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">默认</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="vedic-body"></div>
+  </section>
+
+  <section class="view subview" id="view-zhuyou">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">符箓 · 祝由</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="zhuyou">码</button>
+        <button class="copy-btn" id="copy-zhuyou">复制</button>
+      </div>
+    </header>
+    <div class="subview-body" id="zhuyou-body"></div>
+  </section>
+
+  <!-- ============ 阳宅·八宅 ============ -->
+  <section class="view subview" id="view-yangzhai">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">阳宅 · 八宅看房子</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-yangzhai">复制</button>
+      </div>
+    </header>
+    <div class="subview-body" id="yangzhai-body"></div>
+  </section>
+
+  <!-- ============ 紫微斗数 ============ -->
+  <section class="view subview" id="view-ziwei">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">紫微斗数</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="ziwei">码</button>
+        <button class="copy-btn" id="copy-ziwei">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-ziwei" data-scope="birth" data-label="出生时间">
+      <span class="tb-label">出生时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">默认</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="ziwei-body"></div>
+  </section>
+
+  <!-- ============ 当下天象 ============ -->
+  <section class="view subview" id="view-sky">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">当下天象</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-sky">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-sky" data-scope="now" data-label="观测时间">
+      <span class="tb-label">观测时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="sky-body"></div>
+  </section>
+
+  <!-- ============ 天球仪 · 实时 3D 宇宙 ============ -->
+  <section class="view subview" id="view-globe">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">天球仪</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-globe">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-globe" data-scope="now" data-label="观测时间">
+      <span class="tb-label">观测时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">定位</button>
+    </div>
+    <div class="subview-body gl-body" id="globe-body"></div>
+  </section>
+
+  <!-- ============ 实时二十八宿躔次（中国传统星象） ============ -->
+  <section class="view subview" id="view-mansion">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">二十八宿 · 实时躔次</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="sky">码</button>
+        <button class="copy-btn" id="copy-mansion">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-mansion" data-scope="now" data-label="观测时间">
+      <span class="tb-label">观测时间</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">排盘</button>
+    </div>
+    <div class="subview-body" id="mansion-body"></div>
+  </section>
+
+  <!-- ============ 大六壬 ============ -->
+  <section class="view subview" id="view-daliuren">
+    <header class="topbar">
+      <button class="icon-btn" data-back>&#8249;</button>
+      <div class="brand">大六壬 · 起课</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-daliuren">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-daliuren" data-scope="now" data-label="占时">
+      <span class="tb-label">占时</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">起课</button>
+    </div>
+    <div class="subview-body" id="daliuren-body"></div>
+  </section>
+
+  <!-- ============ 小六壬 ============ -->
+  <section class="view subview" id="view-xiaoliuren">
+    <header class="topbar">
+      <button class="icon-btn" data-back>&#8249;</button>
+      <div class="brand">小六壬 · 掐指课</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-xiaoliuren">复制</button>
+      </div>
+    </header>
+    <div class="time-bar" id="tb-xiaoliuren" data-scope="now" data-label="占时">
+      <span class="tb-label">占时</span>
+      <input type="datetime-local" class="tb-input" />
+      <button class="tb-btn" type="button" data-act="reset">此刻</button>
+      <button class="tb-btn primary" type="button" data-act="go">起课</button>
+    </div>
+    <div class="subview-body" id="xiaoliuren-body"></div>
+  </section>
+
+  <!-- ============ 阿拉伯地占（世界占卜典籍库·第一种） ============ -->
+  <section class="view subview" id="view-geomancy">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">地占 · 沙占 ʿIlm al-raml</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-geomancy">复制</button>
+      </div>
+    </header>
+    <div class="subview-body" id="geomancy-body"></div>
+  </section>
+
+  <!-- ============ 敦煌古藏文占卜（世界占卜典籍库·第二种） ============ -->
+  <section class="view subview" id="view-tibetan">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">敦煌藏占 · 骰占与金钱神课</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-tibetan">复制</button>
+      </div>
+    </header>
+    <div class="subview-body" id="tibetan-body"></div>
+  </section>
+
+  <!-- v115 起小雷诺曼并入塔罗页牌组分类，独立入口撤下（lenormandview 仍供塔罗页内嵌调用） -->
+  <section class="view subview" id="view-tarot">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">塔罗历史牌组 · Tarot</div>
+      <div class="top-right">
+        <button class="copy-btn" id="copy-tarot">复制</button>
+      </div>
+    </header>
+    <div class="subview-body" id="tarot-body"></div>
+  </section>
+
+  <!-- ============ 卡牌（塔罗牌桌） ============ -->
+  <section class="view subview" id="view-cards">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">卡牌 · 牌桌</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="cards">码</button>
+        <button class="copy-btn" id="copy-cards">复制</button>
+      </div>
+    </header>
+    <div class="subview-body" id="cards-body"></div>
+  </section>
+
+  <!-- ============ 起卦 ============ -->
+  <section class="view" id="view-cast">
+    <header class="topbar">
+      <div class="brand">起卦</div>
+      <div class="top-right">
+        <button class="code-btn" data-code="input">输码</button>
+      </div>
+    </header>
+
+    <div class="cast-tabs">
+      <button class="cast-tab active" data-tab="coins"><svg class="ti" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><rect x="9" y="9" width="6" height="6" rx=".6"/></svg>摇铜钱</button>
+      <button class="cast-tab" data-tab="tianji"><svg class="ti" viewBox="0 0 24 24"><path d="M13.2 2.4L5 13.4h6l-1.2 8.2L18.8 10h-6z"/></svg>天机</button>
+      <button class="cast-tab" data-tab="manual"><svg class="ti" viewBox="0 0 24 24"><path d="M4 20l4.2-1L18.4 8.8l-3.2-3.2L5 15.8z"/><path d="M15.2 5.6l3.2 3.2"/></svg>手录</button>
+    </div>
+
+    <div class="zi-row" id="zi-row">
+      <span class="zi-lab">晚子时换日</span>
+      <div class="zi-seg">
+        <button type="button" class="zi-opt" data-zi="23">23点</button>
+        <button type="button" class="zi-opt" data-zi="00">0点</button>
+      </div>
+      <span class="zi-note"></span>
+    </div>
+    <div class="zi-row" id="tst-row">
+      <span class="zi-lab">真太阳时</span>
+      <div class="zi-seg" id="tst-seg">
+        <button type="button" class="zi-opt" data-tst="off">关</button>
+        <button type="button" class="zi-opt" data-tst="on">开</button>
+      </div>
+      <span class="zi-note"></span>
+    </div>
+
+    <!-- 摇铜钱 -->
+    <div class="cast-pane active" data-pane="coins">
+      <p class="hint">心诚于中。每轮三枚铜钱，共六轮，自下而上成卦。结果自动留档，可复制复现码。</p>
+      <div class="coins-stage" id="coins-stage">
+        <div class="coin" data-i="0"></div>
+        <div class="coin" data-i="1"></div>
+        <div class="coin" data-i="2"></div>
+      </div>
+      <div class="coin-result" id="coin-result"></div>
+      <div class="yao-stack" id="coin-yaos"></div>
+      <button class="btn btn-primary big" id="btn-toss">摇第 1 轮</button>
+    </div>
+
+    <!-- 天机（时间起卦） -->
+    <div class="cast-pane" data-pane="tianji">
+      <p class="hint">以指定时刻按梅花易数起卦（年月日时定上卦、下卦与动爻），只由时刻决定、不含随机数。同一时辰内卦象相同，同一时刻必得同一卦，可复现；也可先占未来时刻。</p>
+      <div class="manual-time">
+        <span class="mt-label">起卦时间</span>
+        <input type="datetime-local" id="tianji-time" class="mt-input" />
+        <button class="mt-now" id="tianji-time-now" type="button">此刻</button>
+      </div>
+      <p class="mt-echo" id="tianji-time-echo"></p>
+      <div class="tianji-seal" id="tianji-seal">易</div>
+      <button class="btn btn-primary big" id="btn-tianji">天机起卦</button>
+    </div>
+
+    <!-- 手录 -->
+    <div class="cast-pane" data-pane="manual">
+      <p class="hint">逐爻点选阴阳，再点右侧「动」标记动爻。自上而下排列。</p>
+      <div class="manual-time">
+        <span class="mt-label">起卦时间</span>
+        <input type="datetime-local" id="manual-time" class="mt-input" />
+        <button class="mt-now" id="manual-time-now" type="button">此刻</button>
+      </div>
+      <p class="mt-echo" id="manual-time-echo"></p>
+      <div class="manual-list" id="manual-list"></div>
+      <button class="btn btn-primary big" id="btn-manual-cast">排盘</button>
+    </div>
+
+    <!-- 其他排盘入口归集到起卦页底部 -->
+    <div class="more-pan">
+      <div class="more-pan-title"><span>更多排盘</span><i>命 / 卜 / 相 / 占</i></div>
+      <div id="more-cards"></div>
+    </div>
+  </section>
+
+  <!-- ============ 排盘 ============ -->
+  <section class="view" id="view-pan">
+    <header class="topbar">
+      <button class="icon-btn" id="pan-back">‹</button>
+      <div class="brand">排盘</div>
+      <div class="pan-toggles">
+        <button class="text-toggle" id="toggle-shensha">隐藏神煞</button>
+        <button class="text-toggle" id="toggle-cangyao">隐藏藏爻</button>
+        <button class="code-btn" id="btn-code-pan">码</button>
+        <button class="copy-btn" id="btn-copy">复制</button>
+      </div>
+    </header>
+
+    <div class="question-row">
+      <div class="gender-switch">
+        <button class="g-btn" id="gender-male">男</button>
+        <button class="g-btn" id="gender-female">女</button>
+      </div>
+      <input class="question-input" id="question-input" type="text" placeholder="请输入所占事由（可留空）" />
+      <button class="btn q-save" id="btn-q-save" type="button">保存</button>
+    </div>
+
+    <div class="pan" id="pan-body"></div>
+
+    <div class="verdict" id="verdict-body"></div>
+
+    <div class="jingzhuan" id="jingzhuan-body"></div>
+
+    <div class="najia" id="najia-body"></div>
+
+    <div class="reading" id="reading-body"></div>
+
+    <div class="pan-actions">
+      <button class="btn btn-primary" id="btn-pin">★ 星标留存</button>
+      <button class="btn" id="btn-goto-cases">查看案例</button>
+    </div>
+  </section>
+
+  <!-- ============ 案例库 ============ -->
+  <section class="view" id="view-history">
+    <header class="topbar">
+      <div class="brand">案例</div>
+      <div class="top-right"><button class="text-toggle" id="case-clear">清未星标</button></div>
+    </header>
+    <div class="case-filter" id="case-filter"></div>
+    <div class="case-stat" id="case-stat"></div>
+    <div class="history-list" id="history-list"></div>
+  </section>
+
+  <!-- ============ 全局右下角返回（子视图/牌桌使用，主 tab 页隐藏） ============ -->
+  <button class="global-back" id="global-back" type="button" aria-label="返回主页">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h5v-5.5h3V20h5v-9.5"/></svg>
+  </button>
+
+  <!-- ============ 底部导航 ============ -->
+  <nav class="tabbar">
+    <button class="tab active" data-view="home"><span class="tab-ico"><svg class="ti" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4v2.6M12 18v2.6M3.4 12h2.6M18 12h2.6"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/></svg></span><span>钦天监</span></button>
+    <button class="tab" data-view="ask"><span class="tab-ico"><svg class="ti" viewBox="0 0 24 24"><path d="M4 5.6h16v10.2H9.6L5.4 19.4v-3.6H4z"/><path d="M9.9 10.6a2.3 2.3 0 1 1 3 2.1c-.5.2-.8.6-.8 1.1"/><circle cx="12.1" cy="15.3" r=".75" fill="currentColor" stroke="none"/></svg></span><span>问问</span></button>
+    <button class="tab" data-view="cast"><span class="tab-ico"><svg class="ti" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><rect x="9" y="9" width="6" height="6" rx=".6"/></svg></span><span>起卦</span></button>
+    <button class="tab" data-view="history"><span class="tab-ico"><svg class="ti" viewBox="0 0 24 24"><path d="M6.4 4h11.2v16H6.4z"/><path d="M9.4 8.4h5.2M9.4 12h5.2M9.4 15.6h3.2"/></svg></span><span>案例</span></button>
+  </nav>
+
+  <!-- ============ 复现码面板 ============ -->
+  <div class="code-sheet" id="code-sheet">
+    <div class="cs-mask" id="cs-mask"></div>
+    <div class="cs-card">
+      <div class="cs-head">
+        <span class="cs-title" id="cs-title">复现码</span>
+        <button class="cs-x" id="cs-close" type="button">✕</button>
+      </div>
+      <div class="cs-block" id="cs-cur-block">
+        <div class="cs-label">本盘复现码 · 把这个码给别人，他粘进来就能打开同一盘</div>
+        <div class="cs-code" id="cs-cur">—</div>
+        <div class="cs-row">
+          <button class="btn btn-primary" id="cs-copy" type="button">复制码</button>
+          <button class="btn" id="cs-pin" type="button">★ 星标留存</button>
+        </div>
+      </div>
+      <div class="cs-block">
+        <div class="cs-label">粘贴复现码 · 任意起盘页都能打开</div>
+        <input class="cs-input" id="cs-input" type="text" placeholder="粘贴 QT1- 开头的码" autocomplete="off" spellcheck="false" />
+        <div class="cs-row"><button class="btn" id="cs-open" type="button">打开此盘</button></div>
+      </div>
+      <p class="cs-hint" id="cs-hint"></p>
+    </div>
+  </div>
+
+  <!-- ============ 星标备注弹窗 ============ -->
+  <div class="code-sheet" id="note-sheet">
+    <div class="cs-mask" id="nt-mask"></div>
+    <div class="cs-card">
+      <div class="cs-head">
+        <span class="cs-title" id="nt-title">星标备注</span>
+        <button class="cs-x" id="nt-close" type="button">✕</button>
+      </div>
+      <div class="cs-block">
+        <div class="cs-label" id="nt-label">给这一盘写个备注，方便日后辨认（必填）</div>
+        <textarea class="cs-input nt-area" id="nt-input" rows="3" placeholder="例如：问 11 月跳槽机会，师姐推荐的岗"></textarea>
+        <p class="cs-hint" id="nt-hint"></p>
+        <div class="cs-row">
+          <button class="btn btn-primary" id="nt-ok" type="button">保存星标</button>
+          <button class="btn danger" id="nt-unpin" type="button" style="display:none">取消星标</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script type="module" src="./js/main.js?v=117"></script>
+</body>
+</html>

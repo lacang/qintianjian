@@ -1,0 +1,42 @@
+{
+  "name": "@zimiao/liuyao-core",
+  "version": "0.1.0",
+  "description": "六爻装卦引擎内核（纯 TS、框架无关、浏览器/Node 离线可用）",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "astronomy-engine": "2.1.19",
+    "auseklis": "0.4.0",
+    "caelus": "0.25.0",
+    "iztro": "2.6.2",
+    "lunar-javascript": "1.7.7",
+    "mingpan": "0.1.8"
+  },
+  "devDependencies": {
+    "liuyao": "0.5.1",
+    "tsup": "^8.3.5",
+    "typescript": "~5.6.3",
+    "vitest": "^2.1.8"
+  },
+  "license": "MIT",
+  "private": true
+}

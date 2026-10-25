@@ -1,0 +1,592 @@
+[
+ {
+  "file": "major-00-fool.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 00.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_00.jpg",
+  "license": "Public domain",
+  "sbCard": 0,
+  "sbName": "Mato",
+  "correspondence": "确定:学界公认Fool"
+ },
+ {
+  "file": "major-01-magician.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 01.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_01.jpg",
+  "license": "Public domain",
+  "sbCard": 1,
+  "sbName": "Panfilio",
+  "correspondence": "学术:Bagatto/魔术师(可能鉴定)"
+ },
+ {
+  "file": "major-02-priestess.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 02.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_02.jpg",
+  "license": "Public domain",
+  "sbCard": 2,
+  "sbName": "Postumio",
+  "correspondence": "推测:C序位置2=Popess,多源支持"
+ },
+ {
+  "file": "major-03-empress.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 03.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_03.jpg",
+  "license": "Public domain",
+  "sbCard": 3,
+  "sbName": "Lenpio",
+  "correspondence": "推测:C序位置3=Empress"
+ },
+ {
+  "file": "major-17-star.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 04.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_04.jpg",
+  "license": "Public domain",
+  "sbCard": 4,
+  "sbName": "Mario",
+  "correspondence": "确定:Stelle/星(Di Vincenzo)"
+ },
+ {
+  "file": "major-14-temperance.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 05.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_05.jpg",
+  "license": "Public domain",
+  "sbCard": 5,
+  "sbName": "Catulo",
+  "correspondence": "学术:Temperanza/节制(持groma)"
+ },
+ {
+  "file": "major-06-lovers.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 06.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_06.jpg",
+  "license": "Public domain",
+  "sbCard": 6,
+  "sbName": "Sesto",
+  "correspondence": "学术:Amore/恋人(持火炬)"
+ },
+ {
+  "file": "major-07-chariot.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 07.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_07.jpg",
+  "license": "Public domain",
+  "sbCard": 7,
+  "sbName": "Deo Tauro",
+  "correspondence": "确定:Carro/战车,位置一致"
+ },
+ {
+  "file": "major-11-justice.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 08.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_08.jpg",
+  "license": "Public domain",
+  "sbCard": 8,
+  "sbName": "Nerone",
+  "correspondence": "确定:Giustizia/正义(RWS序11)"
+ },
+ {
+  "file": "major-04-emperor.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 09.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_09.jpg",
+  "license": "Public domain",
+  "sbCard": 9,
+  "sbName": "Falco",
+  "correspondence": "推测:论坛研究Chess-King=Emperor"
+ },
+ {
+  "file": "major-10-wheel.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 10.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_10.jpg",
+  "license": "Public domain",
+  "sbCard": 10,
+  "sbName": "Venturio",
+  "correspondence": "确定:Fortuna/命运之轮,位置一致"
+ },
+ {
+  "file": "major-20-judgement.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 11.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_11.jpg",
+  "license": "Public domain",
+  "sbCard": 11,
+  "sbName": "Tulio",
+  "correspondence": "推测:举火炬仰视如Angelo/审判"
+ },
+ {
+  "file": "major-18-moon.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 12.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_12.jpg",
+  "license": "Public domain",
+  "sbCard": 12,
+  "sbName": "Carbone",
+  "correspondence": "确定:Luna/月亮"
+ },
+ {
+  "file": "major-13-death.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 13.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_13.jpg",
+  "license": "Public domain",
+  "sbCard": 13,
+  "sbName": "Catone",
+  "correspondence": "确定:Morte/死神,位置一致"
+ },
+ {
+  "file": "major-12-hanged.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 14.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_14.jpg",
+  "license": "Public domain",
+  "sbCard": 14,
+  "sbName": "Bocho",
+  "correspondence": "确定:Traditore/倒吊人"
+ },
+ {
+  "file": "major-08-strength.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 15.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_15.jpg",
+  "license": "Public domain",
+  "sbCard": 15,
+  "sbName": "Metelo",
+  "correspondence": "学术:Fortezza/力量持柱(RWS序8)"
+ },
+ {
+  "file": "major-19-sun.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 16.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_16.jpg",
+  "license": "Public domain",
+  "sbCard": 16,
+  "sbName": "Olivo",
+  "correspondence": "确定:Sol/太阳"
+ },
+ {
+  "file": "major-15-devil.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 17.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_17.jpg",
+  "license": "Public domain",
+  "sbCard": 17,
+  "sbName": "Ipeo",
+  "correspondence": "学术:Diavolo/恶魔"
+ },
+ {
+  "file": "major-09-hermit.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 18.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_18.jpg",
+  "license": "Public domain",
+  "sbCard": 18,
+  "sbName": "Lentulo",
+  "correspondence": "学术:Tempo-Eremita/隐士(火焰代沙漏)"
+ },
+ {
+  "file": "major-05-hierophant.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 19.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_19.jpg",
+  "license": "Public domain",
+  "sbCard": 19,
+  "sbName": "Sabino",
+  "correspondence": "推测:剩余分配Papa/教皇"
+ },
+ {
+  "file": "major-16-tower.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 20.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_20.jpg",
+  "license": "Public domain",
+  "sbCard": 20,
+  "sbName": "Nenbroto",
+  "correspondence": "确定:Sagitta/箭=塔,天火焚城"
+ },
+ {
+  "file": "major-21-world.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 21.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_21.jpg",
+  "license": "Public domain",
+  "sbCard": 21,
+  "sbName": "Nabuchodenasor",
+  "correspondence": "确定:Mondo/世界,位置一致"
+ },
+ {
+  "file": "cups-ace.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 22.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_22.jpg",
+  "license": "Public domain",
+  "sbCard": 22
+ },
+ {
+  "file": "cups-02.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 23.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_23.jpg",
+  "license": "Public domain",
+  "sbCard": 23
+ },
+ {
+  "file": "cups-03.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 24.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_24.jpg",
+  "license": "Public domain",
+  "sbCard": 24
+ },
+ {
+  "file": "cups-04.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 25.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_25.jpg",
+  "license": "Public domain",
+  "sbCard": 25
+ },
+ {
+  "file": "cups-05.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 26.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_26.jpg",
+  "license": "Public domain",
+  "sbCard": 26
+ },
+ {
+  "file": "cups-06.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 27.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_27.jpg",
+  "license": "Public domain",
+  "sbCard": 27
+ },
+ {
+  "file": "cups-07.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 28.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_28.jpg",
+  "license": "Public domain",
+  "sbCard": 28
+ },
+ {
+  "file": "cups-08.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 29.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_29.jpg",
+  "license": "Public domain",
+  "sbCard": 29
+ },
+ {
+  "file": "cups-09.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 30.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_30.jpg",
+  "license": "Public domain",
+  "sbCard": 30
+ },
+ {
+  "file": "cups-10.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 31.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_31.jpg",
+  "license": "Public domain",
+  "sbCard": 31
+ },
+ {
+  "file": "cups-page.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 32.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_32.jpg",
+  "license": "Public domain",
+  "sbCard": 32
+ },
+ {
+  "file": "cups-knight.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 33.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_33.jpg",
+  "license": "Public domain",
+  "sbCard": 33
+ },
+ {
+  "file": "cups-queen.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 34.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_34.jpg",
+  "license": "Public domain",
+  "sbCard": 34
+ },
+ {
+  "file": "cups-king.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 35.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_35.jpg",
+  "license": "Public domain",
+  "sbCard": 35
+ },
+ {
+  "file": "pentacles-ace.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 36.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_36.jpg",
+  "license": "Public domain",
+  "sbCard": 36
+ },
+ {
+  "file": "pentacles-02.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 37.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_37.jpg",
+  "license": "Public domain",
+  "sbCard": 37
+ },
+ {
+  "file": "pentacles-03.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 38.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_38.jpg",
+  "license": "Public domain",
+  "sbCard": 38
+ },
+ {
+  "file": "pentacles-04.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 39.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_39.jpg",
+  "license": "Public domain",
+  "sbCard": 39
+ },
+ {
+  "file": "pentacles-05.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 40.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_40.jpg",
+  "license": "Public domain",
+  "sbCard": 40
+ },
+ {
+  "file": "pentacles-06.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 41.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_41.jpg",
+  "license": "Public domain",
+  "sbCard": 41
+ },
+ {
+  "file": "pentacles-07.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 42.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_42.jpg",
+  "license": "Public domain",
+  "sbCard": 42
+ },
+ {
+  "file": "pentacles-08.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 43.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_43.jpg",
+  "license": "Public domain",
+  "sbCard": 43
+ },
+ {
+  "file": "pentacles-09.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 44.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_44.jpg",
+  "license": "Public domain",
+  "sbCard": 44
+ },
+ {
+  "file": "pentacles-10.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 45.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_45.jpg",
+  "license": "Public domain",
+  "sbCard": 45
+ },
+ {
+  "file": "pentacles-page.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 46.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_46.jpg",
+  "license": "Public domain",
+  "sbCard": 46
+ },
+ {
+  "file": "pentacles-knight.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 47.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_47.jpg",
+  "license": "Public domain",
+  "sbCard": 47
+ },
+ {
+  "file": "pentacles-queen.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 48.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_48.jpg",
+  "license": "Public domain",
+  "sbCard": 48
+ },
+ {
+  "file": "pentacles-king.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 49.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_49.jpg",
+  "license": "Public domain",
+  "sbCard": 49
+ },
+ {
+  "file": "wands-ace.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 50.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_50.jpg",
+  "license": "Public domain",
+  "sbCard": 50
+ },
+ {
+  "file": "wands-02.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 51.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_51.jpg",
+  "license": "Public domain",
+  "sbCard": 51
+ },
+ {
+  "file": "wands-03.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 52.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_52.jpg",
+  "license": "Public domain",
+  "sbCard": 52
+ },
+ {
+  "file": "wands-04.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 53.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_53.jpg",
+  "license": "Public domain",
+  "sbCard": 53
+ },
+ {
+  "file": "wands-05.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 54.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_54.jpg",
+  "license": "Public domain",
+  "sbCard": 54
+ },
+ {
+  "file": "wands-06.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 55.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_55.jpg",
+  "license": "Public domain",
+  "sbCard": 55
+ },
+ {
+  "file": "wands-07.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 56.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_56.jpg",
+  "license": "Public domain",
+  "sbCard": 56
+ },
+ {
+  "file": "wands-08.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 57.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_57.jpg",
+  "license": "Public domain",
+  "sbCard": 57
+ },
+ {
+  "file": "wands-09.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 58.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_58.jpg",
+  "license": "Public domain",
+  "sbCard": 58
+ },
+ {
+  "file": "wands-10.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 59.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_59.jpg",
+  "license": "Public domain",
+  "sbCard": 59
+ },
+ {
+  "file": "wands-page.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 60.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_60.jpg",
+  "license": "Public domain",
+  "sbCard": 60
+ },
+ {
+  "file": "wands-knight.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 61.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_61.jpg",
+  "license": "Public domain",
+  "sbCard": 61
+ },
+ {
+  "file": "wands-queen.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 62.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_62.jpg",
+  "license": "Public domain",
+  "sbCard": 62
+ },
+ {
+  "file": "wands-king.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 63.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_63.jpg",
+  "license": "Public domain",
+  "sbCard": 63
+ },
+ {
+  "file": "swords-ace.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 64.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_64.jpg",
+  "license": "Public domain",
+  "sbCard": 64
+ },
+ {
+  "file": "swords-02.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 65.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_65.jpg",
+  "license": "Public domain",
+  "sbCard": 65
+ },
+ {
+  "file": "swords-03.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 66.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_66.jpg",
+  "license": "Public domain",
+  "sbCard": 66
+ },
+ {
+  "file": "swords-04.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 67.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_67.jpg",
+  "license": "Public domain",
+  "sbCard": 67
+ },
+ {
+  "file": "swords-05.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 68.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_68.jpg",
+  "license": "Public domain",
+  "sbCard": 68
+ },
+ {
+  "file": "swords-06.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 69.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_69.jpg",
+  "license": "Public domain",
+  "sbCard": 69
+ },
+ {
+  "file": "swords-07.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 70.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_70.jpg",
+  "license": "Public domain",
+  "sbCard": 70
+ },
+ {
+  "file": "swords-08.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 71.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_71.jpg",
+  "license": "Public domain",
+  "sbCard": 71
+ },
+ {
+  "file": "swords-09.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 72.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_72.jpg",
+  "license": "Public domain",
+  "sbCard": 72
+ },
+ {
+  "file": "swords-10.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 73.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_73.jpg",
+  "license": "Public domain",
+  "sbCard": 73
+ },
+ {
+  "file": "swords-page.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 74.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_74.jpg",
+  "license": "Public domain",
+  "sbCard": 74
+ },
+ {
+  "file": "swords-knight.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 75.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_75.jpg",
+  "license": "Public domain",
+  "sbCard": 75
+ },
+ {
+  "file": "swords-queen.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 76.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_76.jpg",
+  "license": "Public domain",
+  "sbCard": 76
+ },
+ {
+  "file": "swords-king.jpg",
+  "commonsTitle": "File:Sola Busca tarot card 77.jpg",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sola_Busca_tarot_card_77.jpg",
+  "license": "Public domain",
+  "sbCard": 77
+ }
+]

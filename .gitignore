@@ -1,0 +1,33 @@
+# ===== 依赖 =====
+node_modules/
+**/node_modules/
+
+# ===== 构建产物 =====
+liuyao-core/dist/
+*.tsbuildinfo
+
+# ===== 桩测/打包产物（bundle 与打平的同名源由 build.sh 生成）=====
+_lnsrc/ln_stub_test/*.mjs
+_lnsrc/ln_stub_test/tarotview.js
+_lnsrc/ln_stub_test/lenormandview.js
+/tmp/
+*.log
+
+# ===== 大体积语料库（古籍原文，代码运行不引用；按需另行管理）=====
+data/
+
+# ===== 历史版本快照 / 素材备份 / 构建中间层 =====
+v88_src/
+v89_src/
+v91_src/
+.kb_build/
+_lnsrc/backup_lenormand1_dondorf/
+_lnsrc/gibson_cards/
+_lnsrc/*.jpg
+对标素材/
+qintian-standalone-v84.zip
+
+# ===== 系统/编辑器杂文件 =====
+.DS_Store
+Thumbs.db
+sed[A-Za-z0-9]*

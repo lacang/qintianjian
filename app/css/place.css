@@ -1,0 +1,59 @@
+/* v111 地点条 / 选点弹层 —— 与 style.css 分文件，避免动大文件时冲突 */
+.place-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  height:30px;padding:0 10px;margin-right:6px;
+  border:1px solid rgba(233,200,116,.34);border-radius:15px;
+  background:rgba(233,200,116,.08);color:#e8d9b0;
+  font-size:12px;line-height:1;cursor:pointer;white-space:nowrap;
+}
+.place-chip:active{background:rgba(233,200,116,.16);}
+.pc-dot{width:6px;height:6px;border-radius:50%;background:#e9c874;box-shadow:0 0 6px rgba(233,200,116,.8);flex:none;}
+.pc-name{font-weight:600;}
+.pc-tag{font-size:10px;opacity:.72;}
+
+.place-modal{position:fixed;inset:0;z-index:220;display:flex;align-items:center;justify-content:center;}
+.pm-mask{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(2px);}
+.pm-panel{
+  position:relative;width:min(420px,92vw);max-height:82vh;overflow:auto;
+  background:#12161a;border:1px solid rgba(233,200,116,.28);border-radius:14px;
+  padding:16px 16px 12px;box-shadow:0 18px 50px rgba(0,0,0,.6);
+}
+.pm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.pm-head b{font-size:15px;color:#e9d9b0;}
+.pm-x{background:none;border:none;color:#8d9aa6;font-size:17px;cursor:pointer;padding:2px 6px;}
+.pm-cur{font-size:11.5px;color:#8d9aa6;margin-bottom:10px;}
+.pm-actions{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.pm-search input{
+  width:100%;height:38px;padding:0 12px;font-size:14px;
+  background:#0d1114;border:1px solid rgba(233,200,116,.22);border-radius:9px;color:#e6edf3;outline:none;
+}
+.pm-search input:focus{border-color:rgba(233,200,116,.55);}
+.pm-list{margin-top:10px;max-height:44vh;overflow:auto;}
+.pm-item{
+  display:flex;align-items:baseline;gap:8px;width:100%;text-align:left;
+  padding:9px 8px;margin-bottom:4px;border:1px solid rgba(255,255,255,.06);
+  border-radius:9px;background:rgba(255,255,255,.03);color:#e6edf3;cursor:pointer;
+}
+.pm-item:active{background:rgba(233,200,116,.14);border-color:rgba(233,200,116,.4);}
+.pmi-name{font-size:14px;font-weight:600;}
+.pmi-prov{font-size:11px;color:#7d8894;}
+.pmi-coord{margin-left:auto;font-size:11px;color:#9aa7b3;font-variant-numeric:tabular-nums;}
+.pm-empty{font-size:12px;color:#6f7b87;padding:10px 2px;line-height:1.6;}
+.pm-note{margin-top:10px;font-size:11px;color:#6f7b87;line-height:1.6;}
+
+/* 三维星球不可用时的兜底文案（别只留一块黑） */
+.ms3-fallback{padding:26px 18px;font-size:13px;line-height:1.8;color:#8d9aa6;text-align:center;}
+
+/* v111 天球仪：观测地说明 + WebGL 不可用/上下文丢失兜底（别只留一块黑） */
+.gl-place{margin:6px 2px 2px;font-size:11.5px;line-height:1.6;color:#7f8b97;text-align:center;}
+.gl-fallback{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:26px 20px;font-size:13px;line-height:1.9;color:#93a0ac;text-align:center;
+  background:rgba(10,13,18,.72);border-radius:12px;
+}
+/* 占星"重置城市"下拉（v111 起为全量城市） */
+.am-select{
+  height:32px;max-width:min(320px,72vw);padding:0 10px;font-size:13px;
+  background:#0d1114;color:#e6edf3;border:1px solid rgba(233,200,116,.24);border-radius:9px;outline:none;
+}
+.am-select:focus{border-color:rgba(233,200,116,.55);}

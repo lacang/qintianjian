@@ -1,0 +1,97 @@
+/* ============ 印度占星 · 吠陀 Jyotisha（v93） ============ */
+.vd-ov{background:linear-gradient(160deg,#1a2128,#141a1f);border:1px solid var(--line);border-radius:14px;padding:14px 14px 6px;margin-bottom:14px}
+.vd-ov-row{display:flex;gap:10px;margin-bottom:10px}
+.vd-ov-item{flex:1;min-width:0;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:9px 11px}
+.vd-ov-wide{flex:1 1 100%}
+.vd-ov-k{font-size:11.5px;color:var(--ink-faint);letter-spacing:1px;margin-bottom:4px}
+.vd-ov-v{font-size:15px;color:var(--ink);font-weight:600;letter-spacing:.5px}
+.vd-ov-v small{font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:4px}
+
+.vd-guide{background:rgba(200,163,92,.07);border:1px solid rgba(200,163,92,.22);border-radius:10px;padding:11px 13px;margin:6px 0 8px}
+.vd-guide-hd{font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
+.vd-guide ol{margin:0;padding-left:18px}
+.vd-guide li{font-size:12.5px;line-height:1.75;color:var(--ink-dim)}
+.vd-guide-tip{font-size:11.5px;color:var(--ink-faint);margin-top:6px}
+
+.vd-card{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:14px}
+.vd-card-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:11px}
+.vd-card-hd h3{margin:0;font-size:15px;color:var(--ink);letter-spacing:1px;font-weight:600}
+.vd-hd-note{font-size:11px;color:var(--ink-faint)}
+
+/* D1 南印度式 12 宫格：3 列 × 4 行，按星座顺序 */
+.vd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.vd-cell{position:relative;background:var(--bg-3);border:1px solid var(--line);border-radius:9px;padding:8px 8px 9px;min-height:78px;display:flex;flex-direction:column}
+.vd-cell-asc{border-color:var(--gold);box-shadow:0 0 0 1px rgba(200,163,92,.4) inset,0 0 14px rgba(200,163,92,.15)}
+.vd-cell-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.vd-csign{font-size:13px;font-weight:700;color:var(--ink)}
+.vd-cell-asc .vd-csign{color:var(--gold)}
+.vd-chouse{font-size:10.5px;color:var(--ink-faint)}
+.vd-cell-asc .vd-chouse{color:var(--gold)}
+.vd-cgrahas{display:flex;flex-wrap:wrap;gap:5px;flex:1;align-content:flex-start}
+.vd-g{background:transparent;border:0;padding:0;cursor:pointer;font-family:inherit;font-size:17px;font-weight:700;line-height:1;position:relative}
+.vd-g i{font-style:normal;font-size:9px;color:var(--ink-faint);margin-left:1px}
+.vd-empty{color:var(--ink-faint);opacity:.4;font-size:15px}
+.vd-clord{font-size:10px;color:var(--ink-faint);margin-top:4px}
+.vd-grid-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--ink-dim)}
+.vd-grid-legend .vd-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.vd-rx{font-style:normal;color:var(--ink-faint)}
+
+/* 九曜明细 */
+.vd-graha-list{display:flex;flex-direction:column}
+.vd-graha-row{display:flex;align-items:center;gap:9px;padding:9px 2px;border-top:1px solid rgba(255,255,255,.05);font-size:13px}
+.vd-graha-row:first-child{border-top:0}
+.vd-glyph{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:50%;font-size:14px;font-weight:700;flex-shrink:0;cursor:default}
+.vd-glyph-sm{width:22px;height:22px;font-size:12px;cursor:default}
+.vd-gname{width:62px;color:var(--ink);flex-shrink:0}
+.vd-gname small{display:block;font-size:9.5px;color:var(--ink-faint);font-weight:400}
+.vd-gpos{flex:1;color:var(--ink-dim);min-width:0}
+.vd-ghouse{width:42px;color:var(--ink-dim);font-size:12px;flex-shrink:0}
+.vd-gd9{width:62px;font-size:12px;color:var(--ink-faint);flex-shrink:0}
+.vd-gdg{width:42px;flex-shrink:0}
+.vd-grx{width:42px;font-size:11px;color:var(--ink-faint);flex-shrink:0}
+.vd-tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:11px;line-height:1.4}
+.vd-tag.dg-exalt{background:rgba(127,208,150,.16);color:#7fd096;border:1px solid rgba(127,208,150,.3)}
+.vd-tag.dg-own{background:rgba(200,163,92,.15);color:var(--gold);border:1px solid rgba(200,163,92,.3)}
+.vd-tag.dg-debil{background:rgba(224,107,81,.14);color:#e0856f;border:1px solid rgba(224,107,81,.3)}
+
+/* 大运时间线 */
+.vd-dasa-list{display:flex;flex-direction:column}
+.vd-dasa-row{display:flex;align-items:center;gap:10px;padding:8px 2px;border-top:1px solid rgba(255,255,255,.05);font-size:13px}
+.vd-dasa-row:first-child{border-top:0}
+.vd-dasa-row.is-cur{background:rgba(200,163,92,.08);border-radius:8px;padding-left:8px;padding-right:8px;margin:0 -8px}
+.vd-dasa-g{width:48px;font-weight:700;flex-shrink:0}
+.vd-dasa-age{width:120px;color:var(--ink-dim);font-size:12.5px;flex-shrink:0}
+.vd-dasa-year{flex:1;color:var(--ink-faint);font-size:11.5px}
+.vd-dasa-now{font-size:10.5px;color:#101316;background:var(--gold);border-radius:20px;padding:2px 9px;font-weight:700;flex-shrink:0}
+.vd-sub-note{font-size:11.5px;color:var(--ink-faint);margin-top:9px;padding-top:9px;border-top:1px dashed var(--line)}
+
+/* Drishti */
+.vd-asp-list{display:flex;flex-direction:column;gap:8px}
+.vd-asp-row{display:flex;align-items:center;gap:8px;font-size:12.5px;flex-wrap:wrap}
+.vd-asp-kind{color:var(--gold);font-size:12px}
+.vd-asp-arrow{color:var(--ink-faint)}
+.vd-asp-note{color:var(--ink-faint);font-size:11.5px;width:100%;padding-left:30px;margin-top:-2px}
+.vd-none{font-size:12.5px;color:var(--ink-faint);padding:6px 0}
+
+/* 瑜伽 */
+.vd-yoga-list{display:flex;flex-direction:column;gap:9px}
+.vd-yoga-row{display:flex;gap:10px;background:var(--bg-3);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.vd-yoga-row.is-ok{border-color:rgba(200,163,92,.35)}
+.vd-yoga-row.is-no{opacity:.62}
+.vd-yoga-mark{font-size:16px;font-weight:700;width:18px;flex-shrink:0}
+.vd-yoga-row.is-ok .vd-yoga-mark{color:var(--gold)}
+.vd-yoga-row.is-no .vd-yoga-mark{color:var(--ink-faint)}
+.vd-yoga-name{font-size:13.5px;color:var(--ink);font-weight:600}
+.vd-yoga-name small{font-size:10.5px;color:var(--ink-faint);font-weight:400;margin-left:5px}
+.vd-yoga-members{font-size:12px;margin:3px 0}
+.vd-yoga-note{font-size:11.5px;color:var(--ink-faint);line-height:1.6}
+
+/* 底注 */
+.vd-foot{margin-top:4px;padding:0 2px}
+.vd-foot p{font-size:11.5px;line-height:1.8;color:var(--ink-faint);margin:0 0 8px}
+.vd-foot .vd-src{color:#5c666e}
+
+@media(max-width:380px){
+  .vd-gname{width:54px}
+  .vd-dasa-age{width:104px}
+}

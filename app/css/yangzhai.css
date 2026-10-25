@@ -1,0 +1,189 @@
+/* 钦天监·阳宅 yangzhai.css —— 深色金调，移动优先 */
+.yz-wrap{max-width:560px;margin:0 auto;padding:14px 14px 40px;color:#e6e2d8}
+.yz-hero h2{margin:6px 0 6px;font-size:20px;letter-spacing:.08em;color:#e8c170;font-weight:600}
+.yz-hero p{margin:0 0 12px;font-size:13px;color:#a8a492;line-height:1.6}
+
+/* 步骤条 */
+.yz-steps{display:flex;gap:4px;margin-bottom:12px}
+.yz-step{flex:1;text-align:center;font-size:11px;color:#6b6856;padding:7px 2px;border-bottom:2px solid #2a2d32;letter-spacing:.03em;white-space:nowrap}
+.yz-step.on{color:#e8c170;border-color:#e8c170;font-weight:700}
+.yz-step.done{color:#8d8978;border-color:#4a4d52}
+
+/* 卡片 */
+.yz-card{background:#171a1f;border:1px solid #2a2d32;border-radius:12px;padding:14px;margin-bottom:12px}
+.yz-card h4{margin:0 0 8px;font-size:14px;color:#c9b97a;letter-spacing:.06em}
+.yz-small{font-size:12px;color:#8d8978;line-height:1.6;margin:0 0 10px}
+.yz-muted{color:#6b6856}
+
+/* 模式切换 / 选择器 */
+.yz-mode{display:flex;gap:8px;margin-bottom:10px}
+.yz-mode button{flex:1;background:#171a1f;border:1px solid #2a2d32;color:#c9b97a;border-radius:8px;padding:9px 0;font-size:13px;letter-spacing:.1em}
+.yz-mode button.sel{background:#2a2419;border-color:#e8c170;color:#e8c170;font-weight:700}
+.yz-sel{display:grid;gap:8px}
+.yz-sel8{grid-template-columns:repeat(4,1fr)}
+.yz-sel24{grid-template-columns:repeat(6,1fr)}
+.yz-sel button{background:#171a1f;border:1px solid #2a2d32;color:#c9b97a;border-radius:8px;padding:12px 0;font-size:15px;letter-spacing:.1em;cursor:pointer}
+.yz-sel24 button{font-size:14px;padding:10px 0}
+.yz-sel button:active{transform:scale(.95)}
+.yz-sel button.sel{background:#2a2419;border-color:#e8c170;color:#e8c170;font-weight:700;box-shadow:0 0 0 1px #e8c170 inset}
+.yz-wrap input[type=number],.yz-wrap select{width:100%;padding:11px 12px;background:#13161a;border:1px solid #2a2d32;color:#e6e2d8;border-radius:8px;font-size:14px;-webkit-appearance:none;appearance:none}
+.yz-wrap input:focus,.yz-wrap select:focus{outline:none;border-color:#e8c170}
+
+/* 罗盘 */
+.yz-compass{position:relative;width:180px;height:180px;margin:6px auto 4px;border-radius:50%;
+  background:radial-gradient(circle at center,#2a2419 0%,#1c1610 62%,#130f0b 100%);
+  border:2px solid #6b5a2e;box-shadow:inset 0 0 0 1px #2a2d32,0 8px 18px rgba(0,0,0,.5)}
+.yz-compass::before{content:"";position:absolute;inset:14px;border-radius:50%;border:1px dashed #6b5a2e88}
+.yz-compass::after{content:"";position:absolute;inset:44px;border-radius:50%;border:1px solid #6b5a2e55}
+.yz-needle{position:absolute;left:50%;top:50%;width:4px;height:72px;margin-left:-2px;margin-top:-72px;
+  background:linear-gradient(180deg,#d63030,#d63030cc);border-radius:2px;transform-origin:bottom center;transform:rotate(0)}
+.yz-north{position:absolute;top:7px;left:50%;margin-left:-7px;font-size:11px;color:#e8c170;font-weight:700}
+.yz-readout{text-align:center;font-size:26px;font-weight:300;color:#e8c170;font-variant-numeric:tabular-nums;margin:8px 0 4px}
+.yz-row2{display:flex;gap:10px;margin-top:8px}
+.yz-warnline{font-size:12px;color:#f0c95a;line-height:1.55;margin:10px 0 0}
+.yz-warn{background:#2a2317;border-left:3px solid #f0c95a;padding:9px 11px;font-size:12px;color:#f0c95a;border-radius:5px;margin:8px 0;line-height:1.5}
+.yz-read{font-size:13px;line-height:1.6;padding:4px 2px}
+.yz-read b{color:#8ec27a}
+
+/* 按钮 */
+.yz-btn{display:block;width:100%;padding:13px;border-radius:9px;font-size:15px;letter-spacing:.14em;font-weight:700;text-align:center;cursor:pointer;border:1px solid #6b5a2e}
+.yz-btn.primary{background:linear-gradient(180deg,#3a2f20,#2a2419);color:#f0d78a}
+.yz-btn.primary:active{transform:scale(.98)}
+.yz-btn.ghost{background:#171a1f;color:#c9b97a;border-color:#3a3d42;font-weight:600}
+.yz-btn:disabled{opacity:.4;pointer-events:none}
+.yz-nav{display:flex;gap:10px;margin:6px 0 14px}
+.yz-nav .yz-btn{margin:0}
+
+/* 功能区按钮 */
+.yz-funcs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.yz-func{position:relative;background:#171a1f;border:1px solid #2a2d32;color:#c9b97a;border-radius:9px;padding:11px 4px;font-size:13px;cursor:pointer}
+.yz-func .yz-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.yz-func.sel{background:#2a2419;border-color:#e8c170;color:#e8c170;font-weight:700}
+.yz-func.placed::after{content:"✓";position:absolute;top:2px;right:6px;font-size:11px;color:#8ec27a}
+.yz-func[data-n]:not([data-n="0"])::before{content:attr(data-n);position:absolute;top:-7px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#e8c170;color:#0b0d10;font-size:11px;font-weight:800;line-height:17px}
+.yz-dot.yz-door{background:#e8c170}.yz-dot.yz-master{background:#8ec27a}.yz-dot.yz-second{background:#6fae8a}
+.yz-dot.yz-living{background:#7fb0d6}.yz-dot.yz-kitchen{background:#e06a5a}.yz-dot.yz-bath{background:#b08fd0}
+.yz-hint{font-size:12px;color:#f0c95a;text-align:center;min-height:16px;margin:2px 0 10px}
+
+/* 九宫 */
+.yz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:#2a2d32;border:1px solid #2a2d32;border-radius:6px;max-width:380px;margin:0 auto}
+.yz-cell{position:relative;aspect-ratio:1/1;background:#13161a;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:3px}
+.yz-cell:active{background:#1d2127}
+.yz-cell.hl{background:rgba(232,193,112,.18);box-shadow:inset 0 0 0 2px #e8c170;z-index:2}
+.yz-clabel{position:absolute;top:3px;left:5px;font-size:10px;color:#6b6856;letter-spacing:.08em}
+.yz-chips{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;padding-top:12px}
+.yz-chip{font-size:9px;font-weight:700;color:#0b0d10;border-radius:8px;padding:1px 5px;line-height:1.4;white-space:nowrap}
+.yz-chip.yz-door{background:#e8c170}.yz-chip.yz-master{background:#8ec27a}.yz-chip.yz-second{background:#6fae8a}
+.yz-chip.yz-living{background:#7fb0d6}.yz-chip.yz-kitchen{background:#e06a5a;color:#fff}.yz-chip.yz-bath{background:#b08fd0}
+.yz-compass-n{text-align:center;font-size:11px;color:#8d8978;margin:8px 0}
+
+/* 表单 */
+.yz-field{display:block;margin-bottom:12px}
+.yz-field:last-child{margin-bottom:0}
+.yz-field span{display:block;font-size:12px;color:#8d8978;margin-bottom:6px;letter-spacing:.08em}
+.yz-okbox{display:none;background:#1a2417;border-left:3px solid #8ec27a;padding:10px 12px;border-radius:5px;font-size:13px;color:#a6cf92;margin-top:10px;line-height:1.6}
+.yz-okbox b{color:#cfe8b8}
+
+/* 形势勾选 */
+.yz-checklist label{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid #1f2227;cursor:pointer;font-size:14px;color:#c9b97a;line-height:1.5}
+.yz-checklist label:last-child{border-bottom:0}
+.yz-checklist input{margin-top:3px;accent-color:#e8c170;width:16px;height:16px;flex:none}
+
+/* ===== 结果页 ===== */
+.yz-score{border-radius:14px;padding:18px 16px;text-align:center;margin-bottom:16px;border:1px solid}
+.yz-score-num{font-size:46px;font-weight:300;line-height:1}
+.yz-score-num span{font-size:16px;margin-left:3px}
+.yz-score-txt{font-size:17px;font-weight:700;margin:8px 0 4px;letter-spacing:.06em}
+.yz-score-meta{font-size:12px;color:#a8a492}
+.yz-score-good{background:linear-gradient(180deg,#1d2c1a,#16201a);border-color:#3f6a35}
+.yz-score-good .yz-score-num,.yz-score-good .yz-score-txt{color:#a6cf92}
+.yz-score-warn{background:linear-gradient(180deg,#2b2616,#201c12);border-color:#6a5a2e}
+.yz-score-warn .yz-score-num,.yz-score-warn .yz-score-txt{color:#f0d28a}
+.yz-score-bad{background:linear-gradient(180deg,#2c1a18,#21141a);border-color:#6a3535}
+.yz-score-bad .yz-score-num,.yz-score-bad .yz-score-txt{color:#e89a8c}
+
+.yz-sec-title{font-size:14px;color:#e8c170;letter-spacing:.1em;font-weight:700;margin:18px 2px 10px;padding-left:9px;border-left:3px solid #e8c170}
+
+.yz-vcard{border-radius:11px;padding:13px 14px;margin-bottom:10px;border:1px solid #2a2d32;background:#171a1f;border-left-width:3px}
+.yz-vcard.good{border-left-color:#8ec27a;background:linear-gradient(90deg,#1a2417,#171a1f 40%)}
+.yz-vcard.warn{border-left-color:#f0c95a;background:linear-gradient(90deg,#241f14,#171a1f 40%)}
+.yz-vcard.bad{border-left-color:#e06a5a;background:linear-gradient(90deg,#261817,#171a1f 40%)}
+.yz-vcard.neutral{border-left-color:#7fb0d6;background:linear-gradient(90deg,#16202a,#171a1f 40%)}
+.yz-vt{font-size:14px;font-weight:700;margin-bottom:6px}
+.yz-vcard.good .yz-vt{color:#a6cf92}.yz-vcard.warn .yz-vt{color:#f0d28a}.yz-vcard.bad .yz-vt{color:#e89a8c}.yz-vcard.neutral .yz-vt{color:#9fc4dd}
+.yz-vcard p{margin:0 0 7px;font-size:13px;color:#c4c0b2;line-height:1.65}
+.yz-do{color:#e8c170!important;font-size:13px!important}
+.yz-src{font-size:11px;color:#6b6856;line-height:1.5;border-top:1px dashed #2a2d32;padding-top:7px;margin-top:2px}
+
+/* 四吉四凶 */
+.yz-jibox{background:#14171b;border:1px solid #2a2d32;border-radius:11px;padding:13px 14px;margin-bottom:10px}
+.yz-jibox b{display:block;font-size:13px;color:#c9b97a;margin-bottom:8px}
+.yz-jibox b.yz-xiongt{margin-top:11px;color:#d98a7c}
+.yz-jitags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.yz-jitags span{font-size:12px;padding:4px 10px;border-radius:14px;background:#1d2c1a;color:#a6cf92;border:1px solid #3f6a35}
+.yz-jitags.good span{background:#1d2c1a;color:#a6cf92;border-color:#3f6a35}
+.yz-jitags.bad span{background:#2c1a18;color:#e89a8c;border-color:#6a3535}
+.yz-jibox .yz-small{margin-top:9px;margin-bottom:0}
+
+/* 依据折叠 */
+.yz-note{margin-top:16px;background:#14171b;border:1px solid #2a2d32;border-radius:10px;padding:10px 14px;font-size:12px;color:#8d8978;line-height:1.65}
+.yz-note summary{color:#c9b97a;font-size:13px;cursor:pointer;letter-spacing:.04em}
+.yz-note p{margin:8px 0 0}
+.yz-srclist{margin:8px 0 0;padding-left:18px}
+.yz-srclist li{margin-bottom:7px}
+.yz-srclist b{color:#c9b97a}
+.yz-note + .yz-btn{margin-top:14px}
+
+@media(min-width:720px){
+  .yz-wrap{max-width:640px}
+  .yz-grid{max-width:440px}
+}
+
+/* ===== v98：朝向折叠区 & 拼豆选单 ===== */
+.yz-more{margin-top:12px;border-top:1px dashed #2a2d32;padding-top:10px}
+.yz-more summary{font-size:12px;color:#c9b97a;cursor:pointer;letter-spacing:.04em;user-select:none}
+.yz-more[open] summary{margin-bottom:12px}
+.yz-more .yz-field{margin-top:12px}
+.yz-sensor{margin-top:12px;padding-top:2px}
+
+.yz-sheet-mask{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;display:flex;align-items:flex-end;justify-content:center;animation:yz-fade .15s ease}
+.yz-sheet{width:100%;max-width:560px;background:#171a1f;border:1px solid #2a2d32;border-bottom:0;border-radius:14px 14px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom));max-height:72vh;overflow:auto;animation:yz-up .18s ease}
+@keyframes yz-up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+@keyframes yz-fade{from{opacity:0}to{opacity:1}}
+.yz-sheet-h{font-size:14px;color:#e8c170;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.yz-sheet-x{color:#8d8978;cursor:pointer;padding:2px 10px;font-size:15px}
+.yz-sheet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.yz-sheet-item{position:relative;background:#13161a;border:1px solid #2a2d32;color:#c9b97a;border-radius:9px;padding:13px 4px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.yz-sheet-item:active{transform:scale(.96)}
+.yz-sheet-item.on{background:#2a2419;border-color:#e8c170;color:#e8c170;font-weight:700}
+.yz-sheet-item em{position:absolute;top:2px;right:6px;font-style:normal;font-size:11px;color:#8ec27a}
+.yz-sheet-clear{width:100%;margin-top:10px;background:none;border:1px dashed #3a3d42;color:#8d8978;border-radius:8px;padding:9px;font-size:12px;cursor:pointer}
+
+/* ===== v99 玄空飞星并列区块 ===== */
+.yz-xk{margin-top:14px;padding-top:6px;border-top:1px dashed #333c52;}
+.yz-xk-off{margin-top:14px;padding:10px 12px;border:1px dashed #333c52;border-radius:10px;background:#12151e;}
+.yz-xk-off b{color:#d8cba0;font-size:13px;}
+.yz-xk-off p{margin:6px 0 0;font-size:12.5px;color:#9aa3b8;line-height:1.6;}
+.yz-xk-meta{font-size:12px;color:#aab3c8;margin:2px 0 8px;letter-spacing:.5px;}
+.yz-xkboard{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:320px;margin:4px 0 8px;}
+.yz-xkcell{background:#171b26;border:1px solid #2a3145;border-radius:8px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;position:relative;}
+.yz-xkcell .ms,.yz-xkcell .fs{font-size:15px;font-weight:600;color:#c9d4ea;line-height:1.1;}
+.yz-xkcell .ms.wang,.yz-xkcell .fs.wang{color:#e8c170;text-shadow:0 0 8px #e8c17066;}
+.yz-xkcell em{font-style:normal;font-size:9.5px;color:#6d7689;letter-spacing:1px;}
+
+/* ---------- 金锁玉关砂水表 / 三合十二宫 ---------- */
+.yz-jsgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:8px 0}
+.yz-jscell{display:flex;flex-direction:column;align-items:center;padding:5px 2px;border-radius:8px;
+  background:rgba(30,26,20,.35);border:1px solid rgba(232,200,122,.14);font-size:14px}
+.yz-jscell i{font-style:normal;font-size:10px;color:var(--ink-dim,#b9ac93);margin:1px 0}
+.yz-jscell b{font-weight:600;font-size:11px}
+.yz-jscell.wsha b{color:#d8b56a}
+.yz-jscell.wshui b{color:#7fb8d8}
+.yz-shcycle{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
+.yz-shc{display:flex;flex-direction:column;align-items:center;padding:4px 9px;border-radius:8px;
+  background:rgba(30,26,20,.35);border:1px solid rgba(232,200,122,.12);font-size:14px}
+.yz-shc b{font-weight:600;font-size:11px;color:var(--ink-dim,#b9ac93)}
+.yz-shc.hi{border-color:rgba(216,181,106,.5);background:rgba(216,181,106,.12)}
+.yz-shc.hi b{color:#d8b56a}
+.yz-shc.lo{border-color:rgba(190,90,90,.4)}
+.yz-shc.lo b{color:#c88}
