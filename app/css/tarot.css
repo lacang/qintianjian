@@ -164,15 +164,6 @@
 .tr-revoff{font-size:12px;color:#8a94ac;align-self:center;padding:5px 10px;border:1px dashed #333c52;border-radius:8px;}
 .trf-sec .trf-sb{background:#171b26;border:1px solid #2a3145;}
 
-/* ---------- 三合一分类条（塔罗|雷诺曼） ---------- */
-.tr-catbar{display:flex;gap:8px;margin:0 auto 12px;width:max-content;padding:5px;border-radius:14px;
-  background:rgba(30,26,20,.42);border:1px solid rgba(232,200,122,.22)}
-.tr-catbar button{border:1px solid transparent;background:none;color:var(--ink-dim,#b9ac93);
-  font:inherit;font-size:15px;letter-spacing:2px;padding:7px 22px;border-radius:10px;cursor:pointer;transition:all .18s}
-.tr-catbar button.on{background:linear-gradient(180deg,rgba(232,200,122,.20),rgba(232,200,122,.08));
-  color:var(--gold,#e8c87a);border-color:rgba(232,200,122,.45);box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.tr-catbar button:not(.on):hover{color:var(--gold,#e8c87a)}
-
 /* ============ v101 洗牌动画 · 扇形抽牌 · 放大与可读性 ============ */
 
 /* --- 幕一：洗牌动画（散开-旋转-聚拢，stagger） --- */
@@ -277,7 +268,7 @@
 .fcb{width:92px;height:auto;aspect-ratio:var(--card-r,860/1433);}
 .tr-cross-stack{width:116px;height:auto;aspect-ratio:var(--card-r,860/1433);}
 
-/* 弹窗：单栏居中大图（对齐雷诺曼 v103 方案）+ 暗底亮字（.trf-* 原为亮卡配色，
+/* 弹窗：单栏居中大图 + 暗底亮字（.trf-* 原为亮卡配色，
    叠 .tip-card 暗玻璃底不可读，真机截图实锤） */
 .trf-head{flex-direction:column;align-items:center;gap:10px;margin-bottom:12px;}
 .trf-img{width:min(230px,62vw);flex:none;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.5);}
@@ -457,10 +448,6 @@
 /* 牌桌设置抽屉 */
 .tr-menu{max-height:86vh;display:flex;flex-direction:column;}
 .tr-menu .tip-body{overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.trm-cat{display:flex;gap:8px;margin-bottom:12px;}
-.trm-cat button{flex:1;padding:9px;border-radius:16px;font-size:13px;
-  border:1px solid rgba(201,168,90,.3);background:rgba(18,15,32,.5);color:rgba(214,207,190,.75);}
-.trm-cat button.on{background:linear-gradient(180deg,#f0d48c,#c8a35c);color:#201708;border-color:#e9c874;font-weight:700;}
 .trm-sec{margin-bottom:14px;}
 .trm-sec .tr-blk-t{margin-bottom:7px;}
 .trm-wrap{flex-wrap:wrap;gap:7px;}

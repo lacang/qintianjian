@@ -5,9 +5,9 @@
 // 自由：点扇形牌让它跳起来预览（可改选）→拖到任意位置松手落位，落好的牌还能再拖动。
 import {
   listSpreads, getDeck, drawSpread, readingToText,
-} from '../vendor/liuyao-core.js?v=119';
-import { $ } from './state.js?v=119';
-import { guideHTML, T } from './tipview.js?v=119';
+} from '../vendor/liuyao-core.js?v=120';
+import { $ } from './state.js?v=120';
+import { guideHTML, T } from './tipview.js?v=120';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (
@@ -42,7 +42,7 @@ const FREE_KEY = 'qt-cards-free-v1';
 const freeSpread = {
   id: FREE_SPREAD_ID, name: '自由排阵', count: 78, type: '自由',
   intro: '不设牌位，按住扇形里的牌抽出，拖到你想放的位置松手落位。',
-  reversal: true, deckKinds: ['tarot', 'lenormand', 'oracle'],
+  reversal: true, deckKinds: ['tarot', 'oracle'],
   positions: [], free: true,
 };
 

@@ -2350,7 +2350,7 @@ body:has(#view-cards.cd-fullscreen){overflow:hidden}
 .rt-verdict[open]>summary .rt-sum-arrow{transform:rotate(180deg)}
 .rt-verdict-body{padding:4px 0 0;animation:rt-rise .4s ease-out both}
 .rt-late{animation:rt-rise .5s .5s ease-out both}
-/* 牌背（塔罗/雷诺曼翻牌） */
+/* 牌背（塔罗翻牌） */
 .fcb-wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
 .fcb{position:relative;width:74px;aspect-ratio:var(--card-r,860/1433);border-radius:8px;cursor:pointer;perspective:600px;
   background:none;border:none;padding:0}

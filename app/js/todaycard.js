@@ -1,9 +1,9 @@
 // 今日日课卡（M5 场景1）：把钦天监首页已显示的四柱/农历/节气/子午流注/当下天象
 // 合成一张可读的"日课"卡，一键复制给外部 AI 或存档。
 // 红线：只报事实与典籍口径的中性描述，不给"今日宜/忌""吉凶"判断。
-import { getDayCalendar, getMeridian, shouyeTianxiang } from '../vendor/liuyao-core.js?v=119';
-import { siZhuZi } from './zischool.js?v=119';
-import { $ } from './state.js?v=119';
+import { getDayCalendar, getMeridian, shouyeTianxiang } from '../vendor/liuyao-core.js?v=120';
+import { siZhuZi } from './zischool.js?v=120';
+import { $ } from './state.js?v=120';
 
 const P_CN = { sun:'太阳', moon:'月亮', mercury:'水星', venus:'金星', mars:'火星',
   jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星' };

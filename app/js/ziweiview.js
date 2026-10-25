@@ -4,11 +4,11 @@
 // M8-a：点宫位→底部详情面板；三方四正高亮（本宫/对宫/三合三档）；只看重点；一键复制本宫。
 // M8-b：宫干四化（飞化）路径追踪（起点→化×→星→落宫，自化/飞入区分，独立配色）；
 //        飞入本宫清单；双宫对照台（只列客观事实，不做自然语言解读）。
-import { paiZiwei } from '../vendor/liuyao-core.js?v=119';
-import { judgeZiwei, verdictCardHtml } from './verdicts.js?v=119';
-import { birthArgs, $, copyText } from './state.js?v=119';
-import { guideHTML, T } from './tipview.js?v=119';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=119';
+import { paiZiwei } from '../vendor/liuyao-core.js?v=120';
+import { judgeZiwei, verdictCardHtml } from './verdicts.js?v=120';
+import { birthArgs, $, copyText } from './state.js?v=120';
+import { guideHTML, T } from './tipview.js?v=120';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=120';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (

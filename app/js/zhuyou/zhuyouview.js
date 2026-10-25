@@ -5,14 +5,14 @@
 //   ③ 白话"怎么用"导读一句话（依原典文字机械归纳，不创作新内容）
 //   ④ 学术内容（考据/辨伪/传承）折叠进条目内层，不打断使用
 //   ⑤ 吞服与急病安全提示：页顶红带 + 条目级红标
-import { ZHUYOU_ITEMS } from './zhuyou-data.js?v=119';
-import { JINJING_ITEMS } from './zhuyou-data-jinjing.js?v=119';
-import { SHISANKE_ITEMS } from './zhuyou-data-shisanke.js?v=119';
+import { ZHUYOU_ITEMS } from './zhuyou-data.js?v=120';
+import { JINJING_ITEMS } from './zhuyou-data-jinjing.js?v=120';
+import { SHISANKE_ITEMS } from './zhuyou-data-shisanke.js?v=120';
 import {
   EVIDENCE, STATE, LINEAGE, SITUATIONS, FU_PARTS, SOURCES,
   PSEUDO_LAYERS, OFFICE_ANCHORS,
-} from './zhuyou-meta.js?v=119';
-import { $, esc } from './zhuyou-util.js?v=119';
+} from './zhuyou-meta.js?v=120';
+import { $, esc } from './zhuyou-util.js?v=120';
 
 const EV_KLASS = { HIGH: 'zy-ev-h', MEDIUM: 'zy-ev-m', LOW: 'zy-ev-l' };
 const ST_KLASS = { THEORY: 'zy-st-t', RITUAL: 'zy-st-r', REPRO: 'zy-st-p' };

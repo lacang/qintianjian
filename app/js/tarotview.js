@@ -3,12 +3,11 @@
 //      78 张原版牌面本地内置（复用 vendor/liuyao-core 的 rws 牌组数据，不自行绘制），
 //      画面描述 scene 与牌图严格对应；正/逆位中性牌义 + Waite 1910《Pictorial Key》原判词。
 //      综合倾向由 tarotval_rws 的传统倾向惯例表机械合参，非命定；流派/史实分层，不接 AI。
-import { $, escapeHtml as esc, toast } from './state.js?v=119';
-import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=119';
-import { renderLenormand } from './lenormandview.js?v=119';
-import { rwsVal } from './tarotval_rws.js?v=119';
-import { ensureSolaBusca } from './tarotdeck-sb.js?v=119';
-import { ensureHistDecks } from './tarotdeck-hist.js?v=119';
+import { $, escapeHtml as esc, toast } from './state.js?v=120';
+import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=120';
+import { rwsVal } from './tarotval_rws.js?v=120';
+import { ensureSolaBusca } from './tarotdeck-sb.js?v=120';
+import { ensureHistDecks } from './tarotdeck-hist.js?v=120';
 ensureSolaBusca();
 ensureHistDecks();
 
@@ -76,19 +75,9 @@ let state = {
   tableFlip: null,              // 牌桌：各槽位是否已翻开
   tableUnbind: null,            // 牌桌事件解绑
   fanShift: 0,                  // 扇面整副角位移（deg）
-  tablePick: null,              // v110：点选待拖的牌 {idx}（只探出，不飞出）
-  cat: 'tarot'                  // 三合一分类：tarot | lenormand
+  tablePick: null               // v110：点选待拖的牌 {idx}（只探出，不飞出）
 };
 
-const CAT_KEY = 'qintian.cards.cat';
-export function curCat() { try { return localStorage.getItem(CAT_KEY) || 'tarot'; } catch { return 'tarot'; } }
-function catBarHTML() {
-  const c = curCat();
-  return `<div class="tr-catbar">
-    <button data-tr-cat="tarot" class="${c === 'tarot' ? 'on' : ''}">塔罗</button>
-    <button data-tr-cat="lenormand" class="${c === 'lenormand' ? 'on' : ''}">雷诺曼</button>
-  </div>`;
-}
 
 // ---------- 洗牌（78 张，带随机正逆） ----------
 function shuffled() {
@@ -306,7 +295,7 @@ function tableHTML() {
   </div>`;
 }
 
-// v109：牌桌设置抽屉（牌组 / 牌阵 / 抽法 / 逆位 / 所问 / 典籍说明 / 图鉴 / 切雷诺曼）
+// v109：牌桌设置抽屉（牌组 / 牌阵 / 抽法 / 逆位 / 所问 / 典籍说明 / 图鉴）
 function menuHTML() {
   const dk = deck();
   const deckBtns = listDecks().filter(x => x.kind === 'tarot').map(x =>
@@ -319,10 +308,6 @@ function menuHTML() {
       <div class="tip-head"><span class="tip-kicker">牌桌设置</span><span class="tip-term">钦天监 · 塔罗</span>
         <button class="tip-x" type="button" data-tr-menuclose aria-label="关闭">✕</button></div>
       <div class="tip-body">
-        <div class="trm-cat">
-          <button data-tr-cat="tarot" class="on">塔罗</button>
-          <button data-tr-cat="lenormand">雷诺曼</button>
-        </div>
         <div class="trm-sec"><div class="tr-blk-t">牌组</div><div class="tr-seg trm-wrap">${deckBtns}</div></div>
         <div class="trm-sec"><div class="tr-blk-t">牌阵</div><div class="tr-seg trm-wrap">${spreadBtns}</div></div>
         <div class="trm-sec"><div class="tr-blk-t">抽法</div><div class="tr-seg">
@@ -599,8 +584,7 @@ const DECK_R = { rws: '860/1433', sb: '474/877', marseille: '463/880', vieville:
 // v109：塔罗主屏不再是设置页——进视图即落座全屏牌桌；牌组/牌阵/抽法/逆位/提问/图鉴
 // 全部在牌桌顶栏 ☰ 设置抽屉里。主屏文档流只留 #tr-result 承载结果页 / 图鉴页 / 说明页。
 export function renderTarot() {
-  if (curCat() === 'lenormand') return catBarHTML() + renderLenormand();
-  return catBarHTML() + `<div class="tr-wrap" style="--card-r:${DECK_R[curDeckId()] || '860/1433'}">
+  return `<div class="tr-wrap" style="--card-r:${DECK_R[curDeckId()] || '860/1433'}">
     <div id="tr-result" class="tr-result"></div>
   </div>`;
 }
@@ -643,7 +627,6 @@ function rerender() {
 // v109 首次切到塔罗视图：直接落座牌桌（无已开结果/未在特殊页时）。
 // 由 main.js 在渲染塔罗视图后调用。
 export function mountTarot() {
-  if (curCat() === 'lenormand') return;
   if (state.phase === 'table' && state.pickDeck) { paintTable(); return; }
   if (state.phase === 'gallery' || state.phase === 'about' || state.phase === 'shuffling' || state.revealing) {
     rerender(); return;
@@ -908,18 +891,6 @@ export function initTarot() {
     if (e.target.closest('[data-tr-reshuffle]')) { enterTable(); return; }
     if (e.target.closest('[data-tr-reset]')) { resetDraw(); return; }
     if (e.target.closest('#tr-revtoggle')) { state.useRev = !state.useRev; try { localStorage.setItem('qintian.tarot.rev', state.useRev ? '1' : '0'); } catch {} closeMenu(); enterTable(); return; }
-    // 切塔罗/雷诺曼（菜单内）
-    const cb = e.target.closest('[data-tr-cat]');
-    if (cb) {
-      closeMenu();
-      const cat = cb.getAttribute('data-tr-cat');
-      try { localStorage.setItem(CAT_KEY, cat); } catch {}
-      const body = $('#tarot-body');
-      if (body) body.innerHTML = renderTarot();
-      // v119 修复：重绘只换了静态壳，塔罗首屏须主动落座牌桌（切雷诺曼再切回白屏根因）
-      if (cat === 'tarot') mountTarot();
-      return;
-    }
     // 改牌组/牌阵/抽法：关抽屉，重发一局
     const dk = e.target.closest('[data-tr-deck]');
     if (dk) {

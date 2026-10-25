@@ -45498,7 +45498,7 @@ var RWS_DECK = {
 
 // src/cards/spreads.ts
 var TAROT = ["tarot"];
-var ANY_DIVINATION = ["tarot", "lenormand", "oracle"];
+var ANY_DIVINATION = ["tarot", "oracle"]; // v120：小雷诺曼整体撤下
 var BUILTIN_SPREADS = [
   {
     id: "single",

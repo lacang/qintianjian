@@ -6,6 +6,26 @@
 
 ---
 
+## v120 · 2026-10-26 · 删除小雷诺曼、塔罗页回归纯塔罗（去分类分流死代码）
+
+- **背景**：主人定「雷诺曼删了，重构逻辑」。v115 把小雷诺曼并入塔罗页做「塔罗 / 雷诺曼」分类栏，属过渡形态；现整体撤下，代码回归纯塔罗，不留分类分流与悬挂引用。历史牌图与代码 git 可恢复。
+- **删除（4 代码 + 2 资产目录，704K+16K）**：`js/lenormandview.js`、`js/lendata.js`、`js/lenicons.js`、`css/lenormand.css`；`assets/lenormand-gibson/`（Gibson 19 世纪版 36 图）、`assets/lenormand-historic/`（Hechtel 约1799 历史版）。均 `git rm`，历史可溯。
+- **重构（去分类分流）**：
+  1. `js/tarotview.js`：删 `import renderLenormand`、state.cat、`CAT_KEY/curCat()/catBarHTML()`、设置抽屉 `.trm-cat` 塔罗/雷诺曼切换块；`renderTarot()` 去掉 `curCat()==='lenormand'` 分流与 `catBarHTML()` 拼接，直接返回纯塔罗壳；`mountTarot()` 去掉 lenormand 提前 return；document 委托整块删除 data-tr-cat 分支（含 v119 落座补丁——分类既已不存在，补丁随之退场）。
+  2. `js/main.js`：删雷诺曼 import/视图渲染分支/`copy-lenormand` 绑定/`safe('lenormand')` 初始化；`copy-tarot` 由 `curCat()?lenormand:tarot` 三元简化为直接 `tarotCopyText`。
+  3. `index.html`：删 `lenormand.css` link；更新 view-tarot 注释。
+  4. `css/tarot.css`：删 `.tr-catbar` 整块与 `.trm-cat` 三条；清理 2 处「雷诺曼」字样注释。**v119 的 `.trt-stagepos` pointer-events:none 与两按钮 auto 修复原样保留。**
+  5. `js/homecards.js` 塔罗卡文案去「雷诺曼」（改为「韦特/索拉·布斯卡/马赛等历代牌组」）；`js/cardsview.js` 自由排阵 deckKinds 去 'lenormand'；`css/style.css` 牌背注释清理。
+  6. `vendor/liuyao-core.js`：`ANY_DIVINATION` 由 `["tarot","lenormand","oracle"]` → `["tarot","oracle"]`（single/three-time/three-guidance 三万能牌阵经展开引用，一处改全覆盖；编辑后 node --check + 云浏览器实测兜底）。
+  7. `sw.js`：手动删 ASSETS 4 条悬挂条目（lenormandview/lendata/lenicons/lenormand.css）；牌图本就懒加载不入 ASSETS。
+- **怎么验**：
+  1. 新增桩测 `v91_src/check_tarot_v120.mjs`（17 断言）：纯塔罗壳/无分类条/无雷诺曼字样、mountTarot 落座、不写 `qintian.cards.cat`、tarotview 与 main 零残留、v119 委托链与 pointer-events 修复不回归、CSS 已删 catbar/trm-cat、SW 无悬挂条目、vendor 去 lenormand —— **17/17 全绿**。
+  2. 全量 `node --check`（js 55 个 + vendor + sw）全过；js/ 卫生闸无非 .js 文件；删后全仓 `grep -i lenormand`（限定 js/css/html）零命中。
+  3. 云浏览器真机实测纯塔罗全流程（见下条实测记录）。
+- **影响面**：小雷诺曼整套功能下线；塔罗牌桌与其他术数页行为不变。若日后要恢复，从 v119 tag 检出 4 文件 + 2 资产目录并还原分类分流即可。
+
+---
+
 ## v119 · 2026-10-26 · 修塔罗三连点击硬 bug（切不回塔罗 / 全部翻开 / 开牌解局）
 
 - **背景**：主人真机三连报：①塔罗牌桌 ☰ 切雷诺曼后，分类栏点「塔罗」回不去，只能回主页重进；②选完牌「全部翻开」按钮点了没反应；③「开牌解局」按钮同样哑火。实测后确认**三个症状是两个独立 bug**。
