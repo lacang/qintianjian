@@ -88,7 +88,16 @@
 计算层放 `liuyao-core/src/`（纯函数 + 类型 + 导出）→ 视图放 `app/js/xxxview.js` → 样式放 `app/css/xxx.css` → `app/index.html` 加 view 容器 → `app/js/main.js` 注册 → 桩测加断言 → 记忆归档 → bump → 部署 → 线上核验。
 
 ### 5.2 发版固定动作顺序（不可跳步）
-`tools/bump-version.sh NN+1 NN` → 全链 `?v=NN` + `sw.js CACHE=qintian-vNN` → 桩测 → `coze-dev deploy` → 轮询到 `Succeeded` → **线上核验**（SW 版本号 + 关键资源内容 + 老代码已消失）→ 发部署卡片 → 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+`tools/bump-version.sh NN+1 NN`（内含三闸门：写回读回断言/旧版本号残留/import闭包⊆SW ASSETS，+卫生闸+node --check，任一失败 exit 1 不得发版）→ 全链 `?v=NN` + `sw.js CACHE=qintian-vNN` → 桩测 → `coze-dev deploy` → 轮询到 `Succeeded` → **线上核验**（SW 版本号 + 关键资源内容 + 老代码已消失）→ 发部署卡片 → **双远端 git 同步**（见 5.4）→ 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+
+### 5.4 Git 双远端同步（2026-10-25 起）
+项目已纳管平台云 Git，并有 GitHub 镜像，**两个远端都要推、保持同一 commit**：
+- `origin` = 平台云 Git（`code.coze.cn/.../240117402398084017.git`，权威主远端，`main` 的 upstream 指它）
+- `github` = `https://github.com/lacang/qintianjian.git`（**私有**仓库，用 gh CLI 凭据推送）
+- 每次发版提交后执行：`git push origin main && git push github main`，推完用两边 `rev-parse`/`ls-remote` 哈希对齐核验。
+- 只 `git add` 本次实际改动的路径，禁止 `git add .` / `git add -A` / `force push`。
+- `本人出生配置.json` 含主人真实生辰，**仅因 GitHub 仓库私有才保留入库**；若将来要把仓库改公开，必须先从全部历史中移除该文件再谈。
+- Git 提交信息和发版闸门只记录路径/数据，不得写入任何 token 或密钥。
 
 ### 5.3 桩测
 `_lnsrc/ln_stub_test/`：塔罗 `node tarot_smoke.mjs`；雷诺曼 `node run.mjs ./ln_bundle.mjs`；**v111 起新增 `node v111_smoke.mjs`**（地址中心/真太阳时/择时/小六壬/三维兜底）。**先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建三个 bundle**（拷 /tmp 剥 `?v=` 再 esbuild），构建用 `./liuyao-core/node_modules/.bin/esbuild`（`app/` 下无 esbuild），无 jsdom（用 localStorage/document 桩 + `globalThis.window`）。
