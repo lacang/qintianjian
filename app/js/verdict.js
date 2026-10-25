@@ -7,8 +7,8 @@
 //
 // 问事域按"现代人的问题"设计（求财/事业学业/感情/健康/抉择/人生大势/找人/失物），
 // 不按术数分类——先有人的问题，再让古法用神为问题服务。
-import { $, current } from './state.js?v=117';
-import { analyzeNajia, getReadingDomain } from '../vendor/liuyao-core.js?v=117';
+import { $, current } from './state.js?v=118';
+import { analyzeNajia, getReadingDomain } from '../vendor/liuyao-core.js?v=118';
 
 const POS = ['初', '二', '三', '四', '五', '上'];
 

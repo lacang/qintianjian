@@ -1,7 +1,7 @@
 // 黄道十二星座 · 会动星图（当下黄道星空）
 // 星点：J2000 赤经(小时)/赤纬(度)，公开天文事实；连线为传统星图连法（简化示意，非 IAU 边界）
 // 绘制坐标：黄道坐标（横轴黄经，纵轴黄纬），故黄道在图中是一条水平线
-import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=117';
+import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=118';
 
 const D2R = Math.PI / 180, EPS = 23.4393 * D2R;
 

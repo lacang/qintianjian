@@ -3,7 +3,7 @@
 // 幕一：进页只见起盘门（此刻时刻 + 起盘按钮），不动手不出盘；
 // 幕二：点「起盘」后盘面逐块浮现（CSS stagger，爻落宫亮）；
 // 幕三：盘面落定后，「观盘 · 看断语」折叠展开直断卡（复现码/历史路径可直入）。
-import { $, nowDate, pad } from './state.js?v=117';
+import { $, nowDate, pad } from './state.js?v=118';
 
 // 参与三幕式的页面（牌桌类有自己的起盘按钮，六爻摇钱本身就是仪式）
 export const RITUAL_PAGES = ['meihua', 'qimen', 'daliuren', 'xiaoliuren', 'bazi', 'ziwei', 'astro', 'vedic'];

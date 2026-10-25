@@ -1,10 +1,10 @@
 // 当下天象 · 钦天监首页条 + 天象子视图（纯展示，只报事实）
 // 现代星空风：精确 SVG 月相、行星主题色光点、玻璃卡片。全程中文，不依赖任何符号字体。
 // 观测时刻可由「时间条」或复现码覆盖
-import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=117';
-import { $, nowDate, pad, toSec } from './state.js?v=117';
-import { zodiacMapSVG } from './zodiac.js?v=117';
-import { planetaryHour, planetaryHoursOfDay, PLANET_HR } from './solartime.js?v=117';
+import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=118';
+import { $, nowDate, pad, toSec } from './state.js?v=118';
+import { zodiacMapSVG } from './zodiac.js?v=118';
+import { planetaryHour, planetaryHoursOfDay, PLANET_HR } from './solartime.js?v=118';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -39,7 +39,7 @@ export function moonSVG(phase01, size=44){
     const termArc = e < 1.5 ? `A 0 ${R} 0 0 ${sTerm} ${C} ${C+R}` : `A ${e.toFixed(2)} ${R} 0 0 ${sTerm} ${C} ${C+R}`;
     lit = `M ${C} ${C-R} ${termArc} A ${R} ${R} 0 0 ${sOuter} ${C} ${C-R} Z`;
   }
-  const TEX = './assets/moon-tex.jpg?v=117';
+  const TEX = './assets/moon-tex.jpg?v=118';
   // 真实近月面纹理（等距圆柱月图，方形裁切居中即近地面）
   const tex = `<image href="${TEX}" x="${C-R}" y="${C-R}" width="${2*R}" height="${2*R}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${uid}c)"/>`;
   return `<svg class="moon-svg" width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true">

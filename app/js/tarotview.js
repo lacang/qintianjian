@@ -3,12 +3,12 @@
 //      78 张原版牌面本地内置（复用 vendor/liuyao-core 的 rws 牌组数据，不自行绘制），
 //      画面描述 scene 与牌图严格对应；正/逆位中性牌义 + Waite 1910《Pictorial Key》原判词。
 //      综合倾向由 tarotval_rws 的传统倾向惯例表机械合参，非命定；流派/史实分层，不接 AI。
-import { $, escapeHtml as esc, toast } from './state.js?v=117';
-import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=117';
-import { renderLenormand } from './lenormandview.js?v=117';
-import { rwsVal } from './tarotval_rws.js?v=117';
-import { ensureSolaBusca } from './tarotdeck-sb.js?v=117';
-import { ensureHistDecks } from './tarotdeck-hist.js?v=117';
+import { $, escapeHtml as esc, toast } from './state.js?v=118';
+import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=118';
+import { renderLenormand } from './lenormandview.js?v=118';
+import { rwsVal } from './tarotval_rws.js?v=118';
+import { ensureSolaBusca } from './tarotdeck-sb.js?v=118';
+import { ensureHistDecks } from './tarotdeck-hist.js?v=118';
 ensureSolaBusca();
 ensureHistDecks();
 

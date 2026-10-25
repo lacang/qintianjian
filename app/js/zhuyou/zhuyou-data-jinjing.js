@@ -2,7 +2,7 @@
 // 底本：人民卫生出版社影印元大德刊本系统（汉典古籍 gj.zdic.net 卷29/30）。
 // 共 155 条，按唐孙思邈《千金翼方》卷二十九—三十「禁经上/下」22 篇自然分条（每个以"急急如律令"收束的禁咒/方法为一条）。
 // 全部 originalText 为公版原文过录，不编写新咒、不重绘符图；evidence=HIGH；疗病/伤科/产难/虫兽类强制 modernMedicine 并排。
-import { NATURE, LINEAGE } from './zhuyou-meta.js?v=117';
+import { NATURE, LINEAGE } from './zhuyou-meta.js?v=118';
 
 export const JINJING_ITEMS = [
   {

@@ -107,10 +107,11 @@ export function yuanOfPeriod(period) {
 
 /* ============ 二十四山 ============ */
 
-/** 角度（北 0° 顺时针）→ 山序号 0-23（子=0，山界 352.5°~7.5°；与 bazhai 同款 floor((deg+7.5)/15) 取整） */
+/** 角度（北 0° 顺时针）→ 山序号 0-23（子=0；山 M[k] 覆盖 (15k-7.5,15k+7.5]，
+ *  分界点 7.5+15k 归角度较小的山；与 bazhai 同款 ceil((deg-7.5)/15) 取整后环回） */
 export function mountainIndexAt(deg) {
   if (!Number.isFinite(deg)) throw new Error('无效角度: ' + deg);
-  return Math.floor((norm360(deg) + 7.5) / 15) % 24;
+  return ((Math.ceil((norm360(deg) - 7.5) / 15) % 24) + 24) % 24;
 }
 
 /** 山名 → 山信息（palaceKey/yuan/yinYang/centerDeg） */

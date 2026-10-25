@@ -75,10 +75,12 @@ export function houseGuaByMountain(mountain) {
   return guaOf(key);
 }
 
-/** 角度(0北顺时针) → 朝向所在24山索引 */
+/** 角度(0北顺时针) → 朝向所在24山索引
+ *  统一边界约定：山 M[k] 覆盖 (15k-7.5, 15k+7.5]，分界点 b=7.5+15k 归角度较小的山 M[k]
+ *  （金标准 edge.mjs：172.5°=坐壬向丙）。用 ceil((d-7.5)/15) 取整后环回归一。 */
 export function mountainIndexAt(deg) {
   const d = ((deg % 360) + 360) % 360;
-  return Math.floor((d + 7.5) / 15) % 24;
+  return ((Math.ceil((d - 7.5) / 15) % 24) + 24) % 24;
 }
 /** 角度 → {chaoMountain 朝山, zuoMountain 坐山(对宫)} */
 export function mountainsAt(deg) {

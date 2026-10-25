@@ -1,8 +1,8 @@
 // 小雷诺曼 Petit Lenormand 主视图 · 钦天监·世界占卜典籍库 第三种
 // 纯本地随机洗牌 + 编码好的古法读牌规则机械合参；不接任何 AI，不替人下最终判断。
-import { $, escapeHtml as esc, toast } from './state.js?v=117';
-import { LEN_CARDS, LEN_BY_N, significator, LEN_SOURCE } from './lendata.js?v=117';
-import { lenIcon } from './lenicons.js?v=117';
+import { $, escapeHtml as esc, toast } from './state.js?v=118';
+import { LEN_CARDS, LEN_BY_N, significator, LEN_SOURCE } from './lendata.js?v=118';
+import { lenIcon } from './lenicons.js?v=118';
 
 export let lenormandCode = null;
 

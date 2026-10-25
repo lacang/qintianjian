@@ -1,10 +1,10 @@
 // 大六壬 · 完整起课：月将加时 → 天地盘 → 四课 → 九宗门取三传 → 十二天将 → 旬空遁干神煞 → 课体与方向。
 // 底本：《大六壬指南》（明·陈公献）课体与发用取法、《六壬大全》（明）天地盘·天将·神煞布法。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧处并列标注，不合成。
-import { nowDate, BIRTH } from './state.js?v=117';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=117';
-import { shouyeTianxiang, getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=117';
-import { T } from './tipview.js?v=117';
+import { nowDate, BIRTH } from './state.js?v=118';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=118';
+import { shouyeTianxiang, getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=118';
+import { T } from './tipview.js?v=118';
 
 const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 const GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
