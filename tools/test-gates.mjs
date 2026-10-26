@@ -196,6 +196,32 @@ const cases = [
       ? { ok: true, note: '门禁全绿 → 正常到达部署步骤（标记文件已创建）' }
       : { ok: false, note: '❌ 无故障却没走到部署步骤 → 说明 H 的失败不是门禁造成的' }),
   },
+  {
+    id: 'K',
+    name: '单页渲染成空壳（语法正确、只坏一页）',
+    inject: () => {
+      const src = fs.readFileSync(abs(F.tarot), 'utf8');
+      const marker = 'export function renderTarot() {';
+      if (!src.includes(marker)) throw new Error('renderTarot 定义变了，请更新用例 K 的注入点');
+      fs.writeFileSync(abs(F.tarot), src.replace(marker,
+        marker + "\n  if (typeof window !== 'undefined') return '<div class=\"tr-wrap\"></div>'; // 故障注入：只渲染空壳"));
+    },
+    restore: [F.tarot],
+    expect: 'fail',
+    expectCode: 'page-not-rendered',
+    // 故障注入下每页都会等满 --page-timeout 才判失败（正常路径不受影响，仍 1s 内满足），
+    // 这里压到 3s 只为让负向测试本身别拖太久。
+    cmd: ['node', ['tools/verify-browser.mjs', '--page-timeout', '3']],
+    gate: '真实浏览器逐页巡检',
+    post: (r) => {
+      const line = r.out.split('\n').find((l) => l.includes('[FAIL:page-not-rendered]')) || '';
+      if (!/塔罗/.test(line)) return { ok: false, note: '❌ 报错没点名到塔罗页：' + (line || '(没有 page-not-rendered 行)').slice(0, 120) };
+      const others = ['首页', '阳宅', '符箓', '地占', '藏占', '大六壬', '小六壬', '吠陀', '六爻排盘'];
+      const missing = others.filter((n) => !new RegExp('✅ (首巡|复入) ' + n).test(r.out));
+      if (missing.length) return { ok: false, note: '❌ 以下页面被连带误报：' + missing.join('、') };
+      return { ok: true, note: '只红塔罗一页，其余 9 页照常通过 → 逐页巡检能定位到具体页，不是整体红' };
+    },
+  },
 ];
 
 // ---------- 执行 ----------

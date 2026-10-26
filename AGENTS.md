@@ -55,7 +55,7 @@
 | `tools/bump-version.sh` | 一键改版本号（index.html 8 处、js import 164 处、sw CACHE） |
 | `tools/gates.sh` | **统一门禁（12 步）**：静态 ESM 模块图 → vendor 同步 → 真实浏览器启动 → SW 离线 → 桩测 bundle 重建 → 塔罗冒烟 → v111 桩测 → 复现码 e2e → 塔罗数据/视图/v119/v120 回归。任一步失败立即中止。`QT_GATE_REPORT=path` 输出 JSON 报告 |
 | `tools/check-modules.mjs` | 静态 ESM 模块图：`.mjs` 副本语法检查（躲开 `node --check` 的 CommonJS 假绿灯）+ import 目标存在 + 具名导入确有导出 |
-| `tools/verify-browser.mjs` | **真实无头 Chrome 启动门禁**：起本地静态服务 → 浏览器加载首页 → 断言 JS 真的把四柱/卦名写进 DOM、无未捕获异常、无模块加载失败、无真实 404、版本号自洽 |
+| `tools/verify-browser.mjs` | **真实无头 Chrome 逐页巡检门禁**：起本地静态服务 → 单实例加载首页（断言四柱/卦名进 DOM、无异常、无模块加载失败、无真实 404、版本号自洽）→ 逐页进入 10 个主视图 + 2 页二次进入，每页断言视图已激活/关键容器有内容/无未捕获异常/无 console error/无资源加载失败。`--page-timeout 秒` 调单页等待上限（默认 10s） |
 | `tools/verify-offline.mjs` | **SW 离线门禁（CDP 驱动）**：在线预热断言 SW active/controller + ASSETS 全集进缓存；断网阶段断言服务端送出 0 文件且页面仍由 SW 接管、关键区块有内容。两阶段都加 `--disk-cache-size=1` 压掉 HTTP 磁盘缓存，使离线成功只能归因于 SW |
 | `tools/lib/static-server.mjs` | 门禁专用零依赖静态服务（离线模式用 `socket.destroy()` 真断网，不是返 503） |
 | `tools/lib/browser.mjs` | 无头 Chrome 启动/日志扫描/版本读取共享库（**必须异步 spawn**，见 §6） |
@@ -97,7 +97,7 @@
 
 ## 4. 交接检查清单（新模型/新 Agent 接手时按序做）
 
-1. 读 `AGENTS.md`（本文）→ 2. 读 `00_产品方向与路线图.md` → 3. 读 `CHANGELOG.md` 最近 5 版 → 4. 读记忆：`MEMORY.md` 核心状态锚点 + `recent_memory/index.json` 命中的条目 → 5. **跑 `bash tools/gates.sh` 确认基线绿**（不是"看一眼能不能打开"）→ 6. 跑一次 `node tools/test-gates.mjs` 确认门禁本身没坏（10/10）→ 7. 只改一个点，单独成版。
+1. 读 `AGENTS.md`（本文）→ 2. 读 `00_产品方向与路线图.md` → 3. 读 `CHANGELOG.md` 最近 5 版 → 4. 读记忆：`MEMORY.md` 核心状态锚点 + `recent_memory/index.json` 命中的条目 → 5. **跑 `bash tools/gates.sh` 确认基线绿**（不是"看一眼能不能打开"）→ 6. 跑一次 `node tools/test-gates.mjs` 确认门禁本身没坏（11/11）→ 7. 只改一个点，单独成版。
 8. 动手前先复述一句需求与影响面，确认后再改（改错比改慢贵）。
 
 ## 5. 标准流程
@@ -119,17 +119,34 @@
 |---|---|---|
 | 1 | 静态 ESM 模块图 `check-modules.mjs` | 重复顶层声明、import 断链、具名导入不存在（v121 事故类型） |
 | 2 | vendor 产物同步 `build-vendor.mjs --check` | 改了 `liuyao-core/src` 忘了重建 `app/vendor/liuyao-core.js` |
-| 3 | 真实浏览器启动 `verify-browser.mjs` | 静态全绿但真机整站不启动、资源 404、版本号不自洽 |
+| 3 | 真实浏览器**逐页**巡检 `verify-browser.mjs` | 静态全绿但真机整站不启动、**某一页**初始化失败/运行时异常/资源缺失、二次进入空白、资源 404、版本号不自洽 |
 | 4 | SW 离线可用 `verify-offline.mjs` | 预缓存清单缺项、断网后打不开、离线页面其实靠 HTTP 缓存 |
 | 5–7 | 桩测 bundle 重建 + 塔罗冒烟 + v111 桩测 | 测旧产物、bundle 构建失败 |
 | 8 | 复现码 e2e（含 v1 兼容） | 复现码生成/导入/还原断裂、老码不兼容 |
 | 9–12 | 塔罗数据 / 视图 / v119 / v120 回归 | 数据契约、视图架构、历史修复回归 |
 
-`bash tools/gates.sh --quick` 只跑 1–3（发版 bump 前后用）；`--no-tests` 跑 1–4；`--expect-version NN` 额外断言版本号一致。
+`bash tools/gates.sh --quick` 只跑 1–3（发版 bump 前后用，约 30s——第 3 步逐页巡检要真开一次浏览器巡 10 页）；`--no-tests` 跑 1–4；`--expect-version NN` 额外断言版本号一致。
 
 `bash tools/deploy.sh --verify-only` 只做线上核验（不跑门禁、不部署、不要求工作区干净），用来单独确认两个站点的线上内容与本地是否一致——排查"线上到底是哪一版"时先用它，不要为了核验而重新部署。
 
-**门禁本身也要被测**：`node tools/test-gates.mjs` 会对每道门禁**故意注入故障**并断言它必须红，同时跑一条"无故障必须绿"的对照组。任何一次"门禁全绿"的结论，都要以这个自测为前提——**没红过的门禁等于没有门禁**。
+**门禁本身也要被测**：`node tools/test-gates.mjs` 会对每道门禁**故意注入故障**并断言它必须红（11 个注入用例 A–K，含一条"无故障必须绿"的对照组）。任何一次"门禁全绿"的结论，都要以这个自测为前提——**没红过的门禁等于没有门禁**。
+
+**测试分层与执行时机**（每层只负责它能负责的风险，不要指望一层兜住所有问题）：
+
+| 层 | 命令 | 覆盖的风险 | 什么时候跑 |
+|---|---|---|---|
+| 静态 | `check-modules.mjs` + `build-vendor --check` | 模块图断裂、具名导出不存在、vendor 与 src 漂移 | 每次改代码 |
+| 首页启动 | `verify-browser.mjs`（首页段） | JS 整站没跑、模块加载失败、真实 404、版本号不自洽 | 每次改代码 |
+| **逐页巡检** | `verify-browser.mjs`（10 页 + 2 页复入） | **单页**初始化失败、单页未捕获异常、单页资源缺失、二次进入空白 | 每次改代码（已并入门禁第 3 步，无需单独跑） |
+| 离线 | `verify-offline.mjs` | SW 预缓存清单缺项、断网打不开 | 每次改代码 |
+| 纯逻辑桩测 | `build.sh` + tarot/v111 冒烟 + `v91_src` 四套 | 纯函数/渲染逻辑回归（无浏览器，快） | 每次改代码 |
+| 门禁自测 | `test-gates.mjs` | **门禁本身失效**（假绿灯） | 改门禁时 + 发版前 |
+| 线上核验 | `deploy.sh --verify-only` | 线上跑的不是这次代码 | 排查"线上到底是哪一版"时 |
+| 真机验收 | 手工（iOS Safari / 微信内置浏览器） | 无头 Chrome 覆盖不到的引擎与容器差异 | 涉及 SW / 分享 / 缓存 / 页面生命周期的改动后 |
+
+**逐页巡检覆盖的是**：10 个主视图（首页/阳宅/符箓/塔罗/地占/藏占/大六壬/小六壬/吠陀/六爻排盘）各自的 `page-not-active`（视图没切过去）、`page-not-rendered`（关键容器字数低于下限）、`page-exception`（未捕获异常）、`page-console-error`、`page-resource-failed`，外加阳宅/塔罗的**二次进入**回归（v121 阳宅空白、v109 牌桌重构）。**它不覆盖**：交互流程（拖牌、选盘、表单提交）、视觉正确性、iOS Safari 与微信内置浏览器——这些仍靠真机人工验收，不要用"门禁全绿"宣称它们已被覆盖。
+
+**逐页巡检的两条实现约束**（改这个脚本前必读）：① 必须**复用同一个浏览器实例 + 同一套构建产物**逐页 `switchView`，禁止每页重启浏览器（10 页重启会让门禁从 7s 变成 60s+）；② `goto` 之后必须**先等 `navigator.serviceWorker.controller` 非空**再取 DOM——首次访问会走 SW `claim` → `controllerchange` → `location.reload()`，撞上这次 reload 会读到空壳 DOM，产生"随机某页没渲染"的假红（2026-10-26 实际踩过）。
 
 **为什么部署入口必须唯一**：如果还能手工 `coze-dev deploy`，门禁就形同虚设。所以 `tools/deploy.sh` 是唯一部署入口，且部署前**再跑一遍门禁**；工作区脏（有未提交改动）直接拒绝部署，因为"部署的产物必须能追溯到某个提交"。
 
@@ -169,7 +186,7 @@ bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → coze-dev d
 
 ### 5.3 桩测
 `_lnsrc/ln_stub_test/`：塔罗 `node tarot_smoke.mjs`；**v111 起新增 `node v111_smoke.mjs`**（地址中心/真太阳时/择时/小六壬/三维兜底）。另有 `v91_src/check_sharecode_v2.mjs`（复现码 99 断言）、`v91_src/check_tarot_data.mjs`、`v91_src/check_tarot_view.mjs`、`v91_src/check_tarot_v119.mjs`、`v91_src/check_tarot_v120.mjs`。**先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建两个 bundle（tarot / v111）**（拷 /tmp 剥 `?v=` 再 esbuild），脚本内自愈 esbuild 可执行位并直接用 `liuyao-core/node_modules/@esbuild/linux-x64/bin/esbuild`（`app/` 下无 esbuild；`node_modules/.bin/esbuild` 那个 shim 是裸相对路径，从仓库根调用会 `No such file or directory`），无 jsdom（用 localStorage/document 桩 + `globalThis.window`）。
-**注意**：`_lnsrc/ln_stub_test/*.mjs` 被 `.gitignore` 忽略——bundle 是产物没问题，但 `tarot_smoke.mjs` / `v111_smoke.mjs` 是手写测试，改动不会进版本库，换设备要重建。v120 删小雷诺曼后 `ln_bundle.mjs` / `run.mjs` 已废弃（保留未删）。
+**`.gitignore` 与桩测资产的关系（2026-10-26 核实）**：`_lnsrc/ln_stub_test/*.mjs` 默认被忽略，但 `.gitignore` 用 `!` 白名单**已经放行了手写测试**——`tarot_smoke.mjs`、`v111_smoke.mjs`、`v111_entry.js`、`build.sh` 都在版本库里（`git ls-files _lnsrc/ln_stub_test/` 可验证）。真正被忽略的是 esbuild **产物** `tarot_bundle.mjs` / `v111_bundle.mjs`（1.9MB + 2.8MB）——它们由 `app/js/**` 打包生成，每次改 app 都会变，进版本库只会制造无意义 diff。**换设备后 bundle 不存在是正常的，先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建**，不需要为它改 `.gitignore`。v120 删小雷诺曼后 `ln_bundle.mjs` / `run.mjs` 已废弃（保留未删，同样被忽略）。
 **假绿警告**：不重建 bundle 就跑冒烟，测的是旧产物——v121 就踩过（build.sh 因引用已删文件而静默失败，冒烟仍报"77 通过"）。**改完 `app/js/**` 先 `bash build.sh` 看有没有报错，再跑冒烟。**
 **桩测依赖必须由模块自己的 import 清单推导，禁止硬编码文件名**：v92 版 `check_tarot_view.mjs` 只拷了 `tarotval_rws.js`，v99 引入 `tarotdeck-sb.js` / `tarotdeck-hist.js` 后这套断言就再也测不到真实视图（先报 `ERR_MODULE_NOT_FOUND`，更早的时候是断言过时静默失效）。v122 已改为按 `tarotview.js` 的 import 清单自动拷依赖，并按 v109+ 牌桌架构重写断言（`tarotSetTableForTest` / `tarotLandForTest` 驱动落牌 → 开牌解局 → 结果页）。
 
