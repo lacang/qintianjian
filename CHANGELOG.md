@@ -6,6 +6,22 @@
 
 ---
 
+## 工程基线 · 2026-10-26 · 门禁体系落地（app 版本不变，仍 v121；v122 不加功能）
+
+- **背景**：主人把 v121 定为工程质量基线，要求下一步不做功能，先补三个工程闭环，并明确「最看重的是第二项」——**测试本身可以是绿的，但测试对象可能根本不是最新代码**，所以"构建失败阻止发布"必须做成**自动化的失败注入测试**，而不是靠人记得检查。
+- **唯一入口**（绕过就等于没有门禁）：`bash tools/gates.sh`（改代码后）→ `bash tools/release.sh <旧> <新>`（发版）→ `git push` → `bash tools/deploy.sh`（部署；门禁不过绝不部署、工作区脏拒绝部署）。
+- **12 步门禁**：静态 ESM 模块图 → vendor 产物同步 → 真实浏览器启动 → SW 离线可用 → 桩测 bundle 重建 → 塔罗冒烟 → v111 桩测 → 复现码 e2e（含 v1 兼容）→ 塔罗数据 → 塔罗视图 → v119 → v120。`--quick`（1–3）/`--no-tests`（1–4）/`--expect-version NN`；`QT_GATE_REPORT` 输出 JSON 报告。健康基线 12/12 绿，17s。
+- **门禁本身被测**：`node tools/test-gates.mjs` 对每道门禁**故意注入故障**并断言必须红，同时跑"无故障必须绿"对照组 → 10/10。用例 A 现场打印 `node --check x.js`（假绿灯，rc=0）与 `node --check x.mjs`（rc=1）的对照证据。
+- **真实浏览器启动门禁**（`tools/verify-browser.mjs`）：无头 Chrome 加载首页，断言 `#home-sizhu` / `#now-gua-title` 由 JS 写入、DOM 非空、无未捕获异常 / 模块加载失败 / 资源 404、`?v=` 唯一且 = SW CACHE。故障注入实测能精确报出 `js-not-executed` + `home-not-rendered` + `console-SyntaxError`。
+- **SW 离线门禁**（`tools/verify-offline.mjs`，零依赖 CDP 驱动）：在线预热 → 断言 SW `active` + `controller` + **缓存条目 ⊇ sw.js ASSETS 全集**（239 项）→ 断网（`socket.destroy`，不是 503）→ 断言服务端送出 0 文件、页面仍由 SW 接管、关键区块有真实内容。两阶段都带 `--disk-cache-size=1`，**压掉浏览器 HTTP 磁盘缓存，让"离线可用"只能归因于 SW**。
+- **根因记录（踩过的坑，别踩第二次）**：①`spawnSync` 阻塞事件循环 → 同进程静态服务无法响应 Chrome → 假"超时"；②`--timeout=N` 本机 Chrome 不识别；③503 不能模拟断网（`networkFirst` 只在 fetch reject 时回退）；④停服务器后页面能打开，可能是 HTTP 磁盘缓存而非 SW（**假证据**）；⑤`controllerchange` 触发 `location.reload()`，中途读 DOM 会拿到"脚本没跑"的半成品。
+- **门禁当场抓出两处历史欠账（正是主人担心的"测试假绿"）**：①`v91_src/check_tarot_view.mjs` 的桩测依赖清单硬编码，v99 引入 `tarotdeck-sb.js`/`tarotdeck-hist.js` 后它就已经测不到真实视图（v120 删小雷诺曼后更是直接 `ERR_MODULE_NOT_FOUND`）；②它的断言还停留在 v92 菜单页架构，v109 全屏牌桌重构后全部过时。**已按模块自身 import 清单自动推导依赖 + 按牌桌架构重写断言（47 条），并补上"桩的 `innerHTML` 要模拟真实 DOM 替换"这条坑**（否则 `bindTable` 委托累积，同一按钮被处理两次而崩）。
+- **发布记录**：`releases/vNNN.json`（`tools/release-record.mjs`）——提交哈希 / 门禁逐步结果 / 部署单号 / 线上地址 / 备注。已补记 `releases/v121.json`（含"该记录由 v122 工程闭环补记，记录的是用当前全套门禁对 5552f09 代码的复验结果"这条诚实标注）。
+- **纪律归属**：`AGENTS.md` 是开发纪律的唯一正式来源（§5.0 门禁与唯一入口 / §4 交接清单 / §6 已知坑）；记忆里的 `MEMORY.md` 只保存当前状态、重要决策和必要索引，历史细节下沉 `recent_memory/`。
+
+
+---
+
 ## v121 · 2026-10-26 · 复现码 v2（带计算配置与规则版本）+ 7 类术数补码 + 工程债三清
 
 - **背景**：主人「把这几个都收了吧」——把积压的 3 项工程债与评审阶段遗留的 4 项功能债一次清掉。核心是让「复现码」真正等于「可复现」：v1 只带类型+时刻，同一时刻开不同开关（晚子时流派、真太阳时、观测地、牌组）会算出不同的盘，复现出来不是同一盘；且 15 类术数里 7 类根本没有码。

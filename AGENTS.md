@@ -1,9 +1,13 @@
 # 钦天监 · 协作契约（AGENTS.md）
 
-> 本文件是本仓库的**交接说明书 + 协作契约**。
+> 本文件是本仓库的**交接说明书 + 协作契约**，也是**开发纪律的唯一正式来源**。
 > 任何模型、任何 Agent、任何人类开发者接手本项目：**先读本文件**，再读 `00_产品方向与路线图.md`，再读 `CHANGELOG.md` 最近几版，最后读记忆。
 > 目的：换模型、换 Agent、换人，**不重读全部历史**也能安全接手，并保证多轮、多人、多模型并行开发不互相破坏。
 > 维护方式：每次发版顺手补一行 `CHANGELOG.md`；若引入新的协作约定，追加进本文「§3 协作基因」并注明日期。
+>
+> **纪律与状态分离（2026-10-26 定）**：纪律（该怎么做、红线、门禁、发版顺序）一律写在本文件；
+> `MEMORY.md` 只保存**当前状态锚点、已定决策、必要索引**，不再堆积历史过程与临时细节。
+> 历史细节下沉到 `recent_memory/`（详情文件 + `index.json` 索引）。两者冲突时，**以本文件为准**。
 
 ---
 
@@ -49,11 +53,24 @@
 | `liuyao-core/src/**` | 核心计算层（TypeScript）：排盘、天文、纳甲、紫微、吠陀、玄空、牌阵数据 |
 | `app/sw.js` | Service Worker：`CACHE=qintian-vNN`，networkFirst + `cache:no-cache` |
 | `tools/bump-version.sh` | 一键改版本号（index.html 8 处、js import 164 处、sw CACHE） |
+| `tools/gates.sh` | **统一门禁（12 步）**：静态 ESM 模块图 → vendor 同步 → 真实浏览器启动 → SW 离线 → 桩测 bundle 重建 → 塔罗冒烟 → v111 桩测 → 复现码 e2e → 塔罗数据/视图/v119/v120 回归。任一步失败立即中止。`QT_GATE_REPORT=path` 输出 JSON 报告 |
+| `tools/check-modules.mjs` | 静态 ESM 模块图：`.mjs` 副本语法检查（躲开 `node --check` 的 CommonJS 假绿灯）+ import 目标存在 + 具名导入确有导出 |
+| `tools/verify-browser.mjs` | **真实无头 Chrome 启动门禁**：起本地静态服务 → 浏览器加载首页 → 断言 JS 真的把四柱/卦名写进 DOM、无未捕获异常、无模块加载失败、无真实 404、版本号自洽 |
+| `tools/verify-offline.mjs` | **SW 离线门禁（CDP 驱动）**：在线预热断言 SW active/controller + ASSETS 全集进缓存；断网阶段断言服务端送出 0 文件且页面仍由 SW 接管、关键区块有内容。两阶段都加 `--disk-cache-size=1` 压掉 HTTP 磁盘缓存，使离线成功只能归因于 SW |
+| `tools/lib/static-server.mjs` | 门禁专用零依赖静态服务（离线模式用 `socket.destroy()` 真断网，不是返 503） |
+| `tools/lib/browser.mjs` | 无头 Chrome 启动/日志扫描/版本读取共享库（**必须异步 spawn**，见 §6） |
+| `tools/lib/cdp.mjs` | 零依赖 CDP 客户端（Node 22 自带全局 WebSocket）：起 Chrome → `/json/list` 直连 page target → 取 DOM/缓存条目/异常 |
+| `tools/test-gates.mjs` | **门禁故障注入自测**：对每道门禁故意注入故障并断言它必须红，同时配"无故障必须绿"的对照组；跑完自动 `git checkout --` 还原 |
+| `tools/release.sh` | **发版唯一入口**：起点门禁 → bump → 终点门禁 → 写发布记录 → 打印提交/部署指引 |
+| `tools/deploy.sh` | **部署唯一入口**：脏工作区检查 → 门禁（失败即中止，绝不部署）→ `coze-dev deploy` → 轮询部署单 → 线上 sw.js 版本收敛核验 → 写部署报告 |
+| `tools/release-record.mjs` | 写 `releases/vNNN.json`：提交哈希/分支/远端、门禁逐步结果、部署单号与线上核验、版本号、备注 |
+| `releases/vNNN.json` | 每次发布留档的证据文件（"当时到底发了什么"） |
 | `tools/build-vendor.mjs` | 重建 `app/vendor/liuyao-core.js`（tsup 打 ESM 单 bundle + 裁 iztro 非中文 locale、保留 zh-CN）；`--check` 校验是否与 `liuyao-core/src/**` 漂移 |
 | `_lnsrc/ln_stub_test/**` | 桩测：塔罗/雷诺曼 冒烟测试（无浏览器） |
 | `data/`、`本人出生配置.json` | 静态数据与出生配置（出生地沈阳） |
 
 **改动影响面速查**
+- **改任何 `app/**` → 提交前先 `bash tools/gates.sh`（全绿才算改完）**；发版走 `bash tools/release.sh <旧> <新>`，部署走 `bash tools/deploy.sh`（见 §5.0）。
 - 改排盘算法 → `liuyao-core/src/*` → `node tools/build-vendor.mjs` 重建 `app/vendor/liuyao-core.js`（不要直接 cp `liuyao-core/dist/index.js`：脚本会裁掉 iztro 非中文 locale 且保留 zh-CN；`--check` 可先看是否漂移）→ bump → 部署。
 - 改盘面 UI → 对应 `app/js/*view.js` + `app/css/*.css`。
 - 改真太阳时/行星时 → `app/js/solartime.js`（注意：所有经纬度默认值**不得写死**）。
@@ -73,22 +90,65 @@
 7. **注释写"为什么"**：不写"做了什么"（代码自明），写清典据、权衡、取舍与坑。
 8. **改动最小面**：只动与需求相关的文件，**不顺手重构无关代码**——便于回滚、评审与并行合并。
 9. **同构接口**：同类功能用同一套命名与数据形状（例：所有盘面统一用 `state.xxx` + `renderXxx()` 返回 HTML 字符串）。这样换模型/换 Agent 时能照抄同构模块，不必重新理解。
-10. **每次改动三件套**：①桩测/可执行断言 ②`CHANGELOG.md` 一行（为什么 + 怎么验）③记忆归档（`recent_memory/` 详情 + `MEMORY.md` 锚点）。
+10. **每次改动四件套**：①跑 `bash tools/gates.sh` 全绿（含桩测/可执行断言）②`CHANGELOG.md` 一行（为什么 + 怎么验）③记忆归档（`recent_memory/` 详情 + `MEMORY.md` 锚点）④涉及新门禁/新纪律时补 `AGENTS.md`。
+10.1 **不许只有"看起来在跑"的测试**：任何测试都必须**先确认它测的是当前产物**（重建 bundle 再跑、按模块自身 import 清单取依赖，别硬编码文件列表）。加门禁时用 `node tools/test-gates.mjs` 注入故障确认它真的会红。
 11. **可回滚**：发版靠 SW 版本号（`CACHE=qintian-vNN`）；改动前先备份或用 git。
 12. **对外可交接**：写代码时假设"下一个人是另一个模型、只有本文档和仓库、没有你的对话记忆"。凡是口头解释过的设计，都要落成代码注释或本文档一行。
 
 ## 4. 交接检查清单（新模型/新 Agent 接手时按序做）
 
-1. 读 `AGENTS.md`（本文）→ 2. 读 `00_产品方向与路线图.md` → 3. 读 `CHANGELOG.md` 最近 5 版 → 4. 读记忆：`MEMORY.md` 核心状态锚点 + `recent_memory/index.json` 命中的条目 → 5. 跑一遍桩测确认基线绿 → 6. 只改一个点，单独成版。
-7. 动手前先复述一句需求与影响面，确认后再改（改错比改慢贵）。
+1. 读 `AGENTS.md`（本文）→ 2. 读 `00_产品方向与路线图.md` → 3. 读 `CHANGELOG.md` 最近 5 版 → 4. 读记忆：`MEMORY.md` 核心状态锚点 + `recent_memory/index.json` 命中的条目 → 5. **跑 `bash tools/gates.sh` 确认基线绿**（不是"看一眼能不能打开"）→ 6. 跑一次 `node tools/test-gates.mjs` 确认门禁本身没坏（10/10）→ 7. 只改一个点，单独成版。
+8. 动手前先复述一句需求与影响面，确认后再改（改错比改慢贵）。
 
 ## 5. 标准流程
+
+### 5.0 工程门禁与唯一入口（2026-10-26 v122 工程基线 ⭐ 必读）
+
+**唯一路径**（禁止绕过，绕过就等于没有门禁）：
+
+```
+改代码 → bash tools/gates.sh            # 12 步门禁，全绿才算改完
+发版   → bash tools/release.sh 121 122  # 起点门禁 → bump → 终点门禁 → 写 releases/v122.json
+提交   → git push origin main && git push github main
+部署   → bash tools/deploy.sh           # 门禁不过就绝不部署
+```
+
+**门禁清单（`tools/gates.sh`，退出码 0=全绿 / 1=有红 / 2=参数错 / 3=环境不具备）**
+
+| # | 门禁 | 拦住什么 |
+|---|---|---|
+| 1 | 静态 ESM 模块图 `check-modules.mjs` | 重复顶层声明、import 断链、具名导入不存在（v121 事故类型） |
+| 2 | vendor 产物同步 `build-vendor.mjs --check` | 改了 `liuyao-core/src` 忘了重建 `app/vendor/liuyao-core.js` |
+| 3 | 真实浏览器启动 `verify-browser.mjs` | 静态全绿但真机整站不启动、资源 404、版本号不自洽 |
+| 4 | SW 离线可用 `verify-offline.mjs` | 预缓存清单缺项、断网后打不开、离线页面其实靠 HTTP 缓存 |
+| 5–7 | 桩测 bundle 重建 + 塔罗冒烟 + v111 桩测 | 测旧产物、bundle 构建失败 |
+| 8 | 复现码 e2e（含 v1 兼容） | 复现码生成/导入/还原断裂、老码不兼容 |
+| 9–12 | 塔罗数据 / 视图 / v119 / v120 回归 | 数据契约、视图架构、历史修复回归 |
+
+`bash tools/gates.sh --quick` 只跑 1–3（发版 bump 前后用）；`--no-tests` 跑 1–4；`--expect-version NN` 额外断言版本号一致。
+
+**门禁本身也要被测**：`node tools/test-gates.mjs` 会对每道门禁**故意注入故障**并断言它必须红，同时跑一条"无故障必须绿"的对照组。任何一次"门禁全绿"的结论，都要以这个自测为前提——**没红过的门禁等于没有门禁**。
+
+**为什么部署入口必须唯一**：如果还能手工 `coze-dev deploy`，门禁就形同虚设。所以 `tools/deploy.sh` 是唯一部署入口，且部署前**再跑一遍门禁**；工作区脏（有未提交改动）直接拒绝部署，因为"部署的产物必须能追溯到某个提交"。
 
 ### 5.1 新增一个术数 / 新页面（照抄同构模块）
 计算层放 `liuyao-core/src/`（纯函数 + 类型 + 导出）→ 视图放 `app/js/xxxview.js` → 样式放 `app/css/xxx.css` → `app/index.html` 加 view 容器 → `app/js/main.js` 注册 → 桩测加断言 → 记忆归档 → bump → 部署 → 线上核验。
 
 ### 5.2 发版固定动作顺序（不可跳步）
-`tools/bump-version.sh NN+1 NN`（内含三闸门：写回读回断言/旧版本号残留/import闭包⊆SW ASSETS，+卫生闸+ESM 语法自检，任一失败 exit 1 不得发版。**语法自检必须走 `.mjs` 副本**：`node --check x.js` 会按 CommonJS 解析、放过 ESM 的重复顶层声明——v121 就因两处 `xxxCode` 重复声明静默过闸，真机整个模块图崩、应用完全不启动。另建议补一项「import 名字在目标模块确有导出」的静态校验）→ 全链 `?v=NN` + `sw.js CACHE=qintian-vNN` → 桩测 → 双路部署：①`coze-dev deploy`（coze.site，作备用 CDN）轮询 `Succeeded`；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）→ **两路线上核验**（SW 版本号 + 关键资源内容 + 老代码已消失）→ **双远端 git 同步哈希对齐**（见 5.4）→ 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+
+**现在只需两条命令**（细节都在脚本里，脚本自己会中止）：
+
+```
+bash tools/release.sh 121 122     # ① 起点门禁 ② bump ③ 终点门禁 ④ 写 releases/v122.json ⑤ 打印后续
+git add <本次改动路径> && git commit && git push origin main && git push github main
+bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → coze-dev deploy → 部署单轮询 → 线上 sw.js 收敛核验 → 写部署报告
+```
+
+`tools/release.sh` 里的 `tools/bump-version.sh` 内含三闸门：写回读回断言 / 旧版本号残留 / import 闭包 ⊆ SW ASSETS，+卫生闸+ESM 语法自检，任一失败 `exit 1` 不得发版。**语法自检必须走 `.mjs` 副本**：`node --check x.js` 会按 CommonJS 解析、放过 ESM 的重复顶层声明——v121 就因两处 `xxxCode` 重复声明静默过闸，真机整个模块图崩、应用完全不启动。
+
+**双路部署与线上核验**：①`coze-dev deploy`（coze.site，备用 CDN）；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）。两路都要核验 SW 版本号 + 关键资源内容 + 老代码已消失（`tools/deploy.sh` 自动做 sw.js 收敛轮询）。最后**双远端 git 同步哈希对齐** → 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+
+**每次发版必须留下 `releases/vNNN.json`**：提交哈希、门禁逐步结果、部署单号、线上核验、版本号。出问题先看这个文件，不要靠"某个 AI 还记得"。
 
 ### 5.4 Git 双远端同步（2026-10-25 起）
 项目纳管平台云 Git，并有 GitHub 远端，**两个远端都要推、保持同一 commit**：
@@ -106,9 +166,10 @@
 - 免费账户 GitHub Pages 仅支持 public 仓库（账号 lacang，free）。
 
 ### 5.3 桩测
-`_lnsrc/ln_stub_test/`：塔罗 `node tarot_smoke.mjs`；**v111 起新增 `node v111_smoke.mjs`**（地址中心/真太阳时/择时/小六壬/三维兜底）。另有 `v91_src/check_sharecode_v2.mjs`（复现码 99 断言）、`v91_src/check_tarot_v119.mjs`、`v91_src/check_tarot_v120.mjs`。**先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建两个 bundle（tarot / v111）**（拷 /tmp 剥 `?v=` 再 esbuild），脚本内自愈 esbuild 可执行位并直接用 `liuyao-core/node_modules/@esbuild/linux-x64/bin/esbuild`（`app/` 下无 esbuild；`node_modules/.bin/esbuild` 那个 shim 是裸相对路径，从仓库根调用会 `No such file or directory`），无 jsdom（用 localStorage/document 桩 + `globalThis.window`）。
+`_lnsrc/ln_stub_test/`：塔罗 `node tarot_smoke.mjs`；**v111 起新增 `node v111_smoke.mjs`**（地址中心/真太阳时/择时/小六壬/三维兜底）。另有 `v91_src/check_sharecode_v2.mjs`（复现码 99 断言）、`v91_src/check_tarot_data.mjs`、`v91_src/check_tarot_view.mjs`、`v91_src/check_tarot_v119.mjs`、`v91_src/check_tarot_v120.mjs`。**先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建两个 bundle（tarot / v111）**（拷 /tmp 剥 `?v=` 再 esbuild），脚本内自愈 esbuild 可执行位并直接用 `liuyao-core/node_modules/@esbuild/linux-x64/bin/esbuild`（`app/` 下无 esbuild；`node_modules/.bin/esbuild` 那个 shim 是裸相对路径，从仓库根调用会 `No such file or directory`），无 jsdom（用 localStorage/document 桩 + `globalThis.window`）。
 **注意**：`_lnsrc/ln_stub_test/*.mjs` 被 `.gitignore` 忽略——bundle 是产物没问题，但 `tarot_smoke.mjs` / `v111_smoke.mjs` 是手写测试，改动不会进版本库，换设备要重建。v120 删小雷诺曼后 `ln_bundle.mjs` / `run.mjs` 已废弃（保留未删）。
 **假绿警告**：不重建 bundle 就跑冒烟，测的是旧产物——v121 就踩过（build.sh 因引用已删文件而静默失败，冒烟仍报"77 通过"）。**改完 `app/js/**` 先 `bash build.sh` 看有没有报错，再跑冒烟。**
+**桩测依赖必须由模块自己的 import 清单推导，禁止硬编码文件名**：v92 版 `check_tarot_view.mjs` 只拷了 `tarotval_rws.js`，v99 引入 `tarotdeck-sb.js` / `tarotdeck-hist.js` 后这套断言就再也测不到真实视图（先报 `ERR_MODULE_NOT_FOUND`，更早的时候是断言过时静默失效）。v122 已改为按 `tarotview.js` 的 import 清单自动拷依赖，并按 v109+ 牌桌架构重写断言（`tarotSetTableForTest` / `tarotLandForTest` 驱动落牌 → 开牌解局 → 结果页）。
 
 ## 6. 已知坑（踩过就别再踩）
 
@@ -119,8 +180,15 @@
 - **微信内置浏览器缓存**：SW 走 networkFirst + `cache:no-cache`；改完要让用户强刷或等 SW 更新，否则看到旧版。
 - **经纬度不得写死**：真太阳时/行星时/日出日落/二十八宿都依赖所在地。v111 起统一走 `app/js/geo.js` 的当前地点（`getPlace()`），需要新地点能力时**扩展 geo.js，不要再各自写一份**。
 - **同一文件并行 `edit_file` 会互相覆盖**：改同一文件必须串行，或一次性写完；改完立刻复核（整文件重写易打错天文常数）。
-- **`node --check` 对 `.js` 是假绿灯**：Node 对无 `package.json` type=module 的 `.js` 按 CommonJS 解析，**会放过 ESM 的重复顶层声明**（v121 事故：两处 `xxxCode` 重复声明，node --check 全绿、真机整个模块图崩、应用不启动）。校验 app 侧 ESM 一律先 `cp x.js /tmp/x.mjs && node --check /tmp/x.mjs`；另可静态校验 `import { … }` 的名字在目标模块确有导出。
-- **记忆服务**：`memory_edit` 的 replace 若原文不完全一致会把文件清空；改记忆前先 `memory_read`，必要时用 `write_file` 写全量。
+- **`node --check` 对 `.js` 是假绿灯**：Node 对无 `package.json` type=module 的 `.js` 按 CommonJS 解析，**会放过 ESM 的重复顶层声明**（v121 事故：两处 `xxxCode` 重复声明，node --check 全绿、真机整个模块图崩、应用不启动）。校验 app 侧 ESM 一律先 `cp x.js /tmp/x.mjs && node --check /tmp/x.mjs`；`tools/check-modules.mjs` 已含此项 + import 目标存在 + 具名导出存在。`tools/test-gates.mjs` 用例 A 会现场打印这条"假绿灯"对照证据。
+- **`spawnSync` 会阻塞 Node 事件循环**：门禁脚本里用 `spawnSync` 跑 Chrome，同进程的静态服务无法响应浏览器请求 → Chrome 一直等 → 表现为"卡 120s 超时、DOM 为空"（排查了很久的真根因）。跑浏览器一律用异步 `spawn`（`tools/lib/browser.mjs` 的 `runChrome`）。
+- **`--timeout=N` 本机 Chrome 不识别**（elapsed 仍 1s）；`--virtual-time-budget=N` 才有效。CDP 方案下都不需要。
+- **503 不能模拟断网**：`sw.js` 的 `networkFirst` 只在 `fetch` **reject** 时才回退缓存，返回 503 会被当正常响应透传。离线模拟必须 `req.socket.destroy()`（`tools/lib/static-server.mjs` 已如此实现）。
+- **离线测试最容易出假证据**：停掉服务器后页面照样能打开，很可能只是**浏览器 HTTP 磁盘缓存**的功劳，不是 SW。必须加 `--disk-cache-size=1` 压掉 HTTP 缓存 + 用 CDP 断言 `navigator.serviceWorker.controller` 非空、缓存条目覆盖 ASSETS 全集。早期用 `--dump-dom` 两次跑出来的"离线通过"就是这类假证据。
+- **SW 预缓存是 all-or-nothing**：`caches.addAll(ASSETS)` 有一个 404 就整批失败（SW 直接不激活）。所以"缓存条目 ⊇ ASSETS 全集"这条断言同时验证了清单里每个文件都真实存在。
+- **CDP 断言要等渲染稳定**：`main.js` 监听 SW `controllerchange` 后会 `location.reload()`，一次导航实际加载两次，中途读 DOM 会读到"HTML 已解析、脚本没跑"的半成品（关键区块全空）。要等到关键区块有内容再取 DOM。
+- **桩测里 `innerHTML =` 要模拟真实 DOM 替换**：真实 DOM 换子树时旧节点上的委托会一起消失，桩里如果让 `#tr-table` 长驻，`bindTable` 的点击委托会不断累积、同一个按钮被处理多次（第二次就 `state.tableSlots` 为 null 崩）。桩的 `innerHTML` setter 里要把 `#tr-table` 重建。
+- **`memory_edit` 的 replace 若原文不完全一致会把文件清空**；改记忆前先 `memory_read`，必要时用 `write_file` 写全量。单文件上限 2048 字节（`MEMORY.md` 5120）。
 - **`grep`/`find` 找不到记忆文件**：记忆由 memory 服务托管，不在 bash 可见路径，只能用 `memory_read`/`memory_list`/`memory_edit`。
 
 ## 7. 边界
