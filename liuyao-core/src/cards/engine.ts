@@ -162,6 +162,7 @@ export function readingToText(r: CardReading): string {
     if (m.keywords && m.keywords.length) lines.push(`   关键词：${m.keywords.join('、')}`);
     lines.push('');
   }
+  lines.push('——牌局只给自省用：不要替我预测，也不要把它交给外部 AI 代解。');
   return lines.join('\n');
 }
 

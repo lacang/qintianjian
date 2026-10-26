@@ -1,11 +1,11 @@
 // 钦天监首页：干支信息条 + 天时卦钟（纯钟面）+ 独立卦画卡
 // 全应用统一北京时间（八字牌另走自身口径）。只排事实，不做断语。
-import { castByTime, getDayCalendar, getMeridian, paipanXingpan } from '../vendor/liuyao-core.js?v=120';
-import { paipanZi, siZhuZi } from './zischool.js?v=120';
-import { $, pad, cfg, BIRTH } from './state.js?v=120';
-import { renderTodayCard } from './todaycard.js?v=120';
-import { renderRhythm } from './rhythmview.js?v=120';
-import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=120';
+import { castByTime, getDayCalendar, getMeridian, paipanXingpan } from '../vendor/liuyao-core.js?v=121';
+import { paipanZi, siZhuZi } from './zischool.js?v=121';
+import { $, pad, cfg, BIRTH } from './state.js?v=121';
+import { renderTodayCard } from './todaycard.js?v=121';
+import { renderRhythm } from './rhythmview.js?v=121';
+import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=121';
 
 const ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const ZHI_RANGE = ['23-1','1-3','3-5','5-7','7-9','9-11','11-13','13-15','15-17','17-19','19-21','21-23'];

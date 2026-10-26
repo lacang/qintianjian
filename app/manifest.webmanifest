@@ -1,7 +1,7 @@
 {
   "name": "钦天监 · 自用命理工作台",
   "short_name": "钦天监",
-  "description": "个人自用：六爻排盘与天时卦钟。只排盘，不解卦。纯本地运行。",
+  "description": "个人自用命理工作台：六爻、八字、奇门、紫微、塔罗、阳宅、符箓等术数的排盘与古法读法，按古籍规则给出倾向。纯本地运行，无后端、无 AI。",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

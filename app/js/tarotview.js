@@ -3,11 +3,11 @@
 //      78 张原版牌面本地内置（复用 vendor/liuyao-core 的 rws 牌组数据，不自行绘制），
 //      画面描述 scene 与牌图严格对应；正/逆位中性牌义 + Waite 1910《Pictorial Key》原判词。
 //      综合倾向由 tarotval_rws 的传统倾向惯例表机械合参，非命定；流派/史实分层，不接 AI。
-import { $, escapeHtml as esc, toast } from './state.js?v=120';
-import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=120';
-import { rwsVal } from './tarotval_rws.js?v=120';
-import { ensureSolaBusca } from './tarotdeck-sb.js?v=120';
-import { ensureHistDecks } from './tarotdeck-hist.js?v=120';
+import { $, escapeHtml as esc, toast } from './state.js?v=121';
+import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=121';
+import { rwsVal } from './tarotval_rws.js?v=121';
+import { ensureSolaBusca } from './tarotdeck-sb.js?v=121';
+import { ensureHistDecks } from './tarotdeck-hist.js?v=121';
 ensureSolaBusca();
 ensureHistDecks();
 
@@ -23,6 +23,13 @@ const HIST_SRC = {
   visconti: '牌面：维斯康提-斯福尔扎塔罗约 1450–1470（AGMuller 复刻扫描，Public Domain；文件级溯源见 assets/cards-hist-manifest.json）。',
   wirth: '牌面：奥斯瓦尔德·维尔塔罗 1889（Public Domain；文件级溯源见 assets/cards-hist-manifest.json）。',
 };
+// v121：复制文本按实际牌组给出牌面出处（原先 6 副牌组里 4 副被误标「韦特」、且硬编码 RWS 1909）
+const DECK_SRC = {
+  rws: '牌面：韦特塔罗 RWS 1909 原版（美国公有领域）；牌义判词：Waite 1910《Pictorial Key to the Tarot》。',
+  sb: '牌面：索拉·布斯卡塔罗 1491（米兰 Brera 美术馆藏原版真图，Public Domain）；牌义判词为现代通行对照。',
+};
+const HIST_NOTE = '牌义判词为 Waite 1910 现代对照。';
+function deckSrc(id) { return DECK_SRC[id] || (HIST_SRC[id] ? HIST_SRC[id] + HIST_NOTE : ''); }
 const DECK_SUB = {
   marseille: '所有现代塔罗的直系祖先（17–18 世纪木刻+stencil 上色）。小牌只画花色符号排列、不画场景——韦特之前全世界都这么画。大牌为历史序（VIII 正义、XI 力量），本页按牌面语义映射到韦特义位。牌义判词为 Waite 1910 现代对照。',
   vieville: '现存最早完整巴黎系塔罗（约 1650）。图式比马赛更古拙：愚人被狗追、月亮下两工匠。大牌为巴黎老序（VII 正义、IX 力量、XI 隐士），按牌面语义映射。牌义判词为 Waite 1910 现代对照。',
@@ -599,17 +606,70 @@ function resultWrap(inner) {
 
 // ---------- 复制 ----------
 function tarotCodeText(draw) {
+  const id = curDeckId();
   const q = state.question ? `所问：${state.question}\n` : '';
   const spreadName = spreadObj().name;
   const poss = possArr();
-  const dkName = curDeckId() === 'sb' ? '索拉·布斯卡塔罗' : '韦特塔罗';
+  const dkName = DECK_SHORT[id] || deck().name;
+  const src = deckSrc(id);
   return `【钦天监·${dkName} ${spreadName}】\n${q}` +
     draw.map((d, i) => { const c = byId()[d.id]; return `${i + 1}. ${c.name}（${c.nameAlt}）${state.useRev && d.rev ? ' · 逆位' : ''} — ${poss[i]}`; }).join('\n') +
-    `\n（RWS 1909 原版牌面；倾向为读牌惯例机械合参，非命定，取舍由人。）`;
+    `\n（${src}倾向为读牌惯例机械合参，非命定，取舍由人。）`;
 }
 export function tarotCopyText() {
-  if (!state.drawn) { toast('先洗牌开牌'); return '钦天监 · 韦特塔罗（尚未成阵）'; }
+  if (!state.drawn) { toast('先洗牌开牌'); return `钦天监 · ${DECK_SHORT[curDeckId()] || '塔罗'}（尚未成阵）`; }
   return tarotCodeText(state.drawn);
+}
+
+// ---------- v121 复现码：牌局 ↔ 码（B-P2-03 新塔罗接码） ----------
+// 新塔罗的牌局用 kind='cards' 的码承载，靠 deckId 与旧卡牌视图（无 deckId）区分双轨。
+export function isTarotDeck(id) {
+  ensureSolaBusca(); ensureHistDecks();
+  return listDecks().some((x) => x.id === id && x.kind === 'tarot');
+}
+
+/** 当前牌局 → 复现码数据 */
+export function tarotCodeInfo() {
+  if (!state.drawn || !state.drawn.length) return null;
+  const id = curDeckId();
+  const dk = deck();
+  const idxOf = (cardId) => dk.cards.findIndex((c) => c.id === cardId);
+  const cardsArr = state.drawn.map((d) => ({ index: Math.max(0, idxOf(d.id)), reversed: !!d.rev }));
+  const sp = spreadObj();
+  const si = Math.max(0, TAROT_SPREADS.indexOf(sp));
+  const dkName = DECK_SHORT[id] || dk.name;
+  return {
+    kind: 'cards',
+    data: { at: Date.now(), spreadIndex: si, cards: cardsArr, deckId: id },
+    title: `${dkName} · ${sp.name}`,
+    sub: `${sp.name} · ${state.drawn.length} 张${state.question ? ' · ' + state.question : ''}`,
+  };
+}
+
+/** 复现码 → 牌局（牌组、牌阵、牌序、逆位全还原） */
+export function restoreTarot(spreadIndex, cardsArr, deckId) {
+  const dkId = isTarotDeck(deckId) ? deckId : curDeckId();
+  try { localStorage.setItem(DECK_KEY, dkId); } catch {}
+  ensureSolaBusca(); ensureHistDecks();
+  const dk = getDeck(dkId);
+  const sp = TAROT_SPREADS[spreadIndex] || TAROT_SPREADS[0];
+  if (!dk || !sp || !Array.isArray(cardsArr) || cardsArr.length !== sp.count) return false;
+  const drawn = [];
+  for (const c of cardsArr) {
+    const card = dk.cards[c.index];
+    if (!card) return false;
+    drawn.push({ id: card.id, rev: !!c.reversed });
+  }
+  state.spread = sp.id;
+  state.drawn = drawn;
+  state.revealing = null;
+  state.picked = [];
+  state.pickDeck = null;
+  state.phase = null;
+  state.tableSlots = null;
+  state.tableFlip = null;
+  tarotCode = tarotCodeText(drawn);
+  return true;
 }
 
 // v109：菜单内改设置后，牌桌仍在 fixed 覆盖层，只重绘画布即可，不整体重挂。

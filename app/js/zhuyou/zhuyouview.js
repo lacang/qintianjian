@@ -5,14 +5,14 @@
 //   ③ 白话"怎么用"导读一句话（依原典文字机械归纳，不创作新内容）
 //   ④ 学术内容（考据/辨伪/传承）折叠进条目内层，不打断使用
 //   ⑤ 吞服与急病安全提示：页顶红带 + 条目级红标
-import { ZHUYOU_ITEMS } from './zhuyou-data.js?v=120';
-import { JINJING_ITEMS } from './zhuyou-data-jinjing.js?v=120';
-import { SHISANKE_ITEMS } from './zhuyou-data-shisanke.js?v=120';
+import { ZHUYOU_ITEMS } from './zhuyou-data.js?v=121';
+import { JINJING_ITEMS } from './zhuyou-data-jinjing.js?v=121';
+import { SHISANKE_ITEMS } from './zhuyou-data-shisanke.js?v=121';
 import {
   EVIDENCE, STATE, LINEAGE, SITUATIONS, FU_PARTS, SOURCES,
   PSEUDO_LAYERS, OFFICE_ANCHORS,
-} from './zhuyou-meta.js?v=120';
-import { $, esc } from './zhuyou-util.js?v=120';
+} from './zhuyou-meta.js?v=121';
+import { $, esc } from './zhuyou-util.js?v=121';
 
 const EV_KLASS = { HIGH: 'zy-ev-h', MEDIUM: 'zy-ev-m', LOW: 'zy-ev-l' };
 const ST_KLASS = { THEORY: 'zy-st-t', RITUAL: 'zy-st-r', REPRO: 'zy-st-p' };
@@ -349,15 +349,12 @@ export function zhuyouCopyText() {
   return lines.join('\n');
 }
 
+// v121：符箓是纯文献查阅页（无排盘、无个人输入），码只承载「回到这一页」
 export function zhuyouCode() {
   return {
     kind: 'zhuyou',
-    items: ALL_ITEMS.length,
-    incants: ALL_ITEMS.filter(it => it._incant).length,
-    mouth: ALL_ITEMS.filter(it => it._how.k === 'mouth').length,
-    object: ALL_ITEMS.filter(it => it._how.k === 'object').length,
-    ingest: ALL_ITEMS.filter(it => it._how.k === 'ingest').length,
-    sources: Object.keys(SOURCES).length,
-    note: '符箓祝由原典实用化查阅（文献层，无排盘/无个人输入）',
+    data: { at: Date.now() },
+    title: '符箓 · 祝由',
+    sub: `原典条目 ${ALL_ITEMS.length} 条 · 文献层查阅`,
   };
 }

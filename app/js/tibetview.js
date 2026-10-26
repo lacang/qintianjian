@@ -5,9 +5,9 @@
 // 纯本地、随机起卦，不接任何 AI。只做「机器按古法机械演卦 + 文献给原典 + 人判断」。
 // 繇辞据 OTDO 公开古藏文转写自译，参考英译理解、陈践/格桑央京中译校读，不照抄单一译本；
 // 原卷残缺处如实标「手稿不载/残」，绝不臆补。
-import { $, escapeHtml, toast } from './state.js?v=120';
-import { DICE_ORACLES, DICE_MISSING, DICE_SOURCE, diceGod } from './tibetdata_dice.js?v=120';
-import { COIN_MARKS, COIN_RULE, COIN_SOURCE, coinTonePair } from './tibetdata_coin.js?v=120';
+import { $, escapeHtml, toast } from './state.js?v=121';
+import { DICE_ORACLES, DICE_MISSING, DICE_SOURCE, diceGod } from './tibetdata_dice.js?v=121';
+import { COIN_MARKS, COIN_RULE, COIN_SOURCE, coinTonePair } from './tibetdata_coin.js?v=121';
 
 let inited = false;
 let mode = 'dice';        // 'dice' | 'coin'
@@ -209,6 +209,41 @@ export function renderTibetan() {
   </div>`;
 }
 
+/* ============================ v121 复现码 ============================ */
+// 骰式与钱式都是随机结果，直接记录即可完整复现（判词由结果查表得出，无二次随机）
+export function tibetanCode() {
+  if (mode === 'coin') {
+    if (!lastCoin) return null;
+    return {
+      kind: 'tibetan',
+      data: { at: Date.now(), mode: 'coin', coin: lastCoin.slice(), question },
+      title: '敦煌藏占 · 金钱神课',
+      sub: `铜钱 ${lastCoin.map((i) => (COIN_MARKS[i - 1] || {}).mark || '?').join(' ＋ ')}`,
+    };
+  }
+  if (!lastDice) return null;
+  return {
+    kind: 'tibetan',
+    data: { at: Date.now(), mode: 'dice', dice: lastDice.slice(), question },
+    title: '敦煌藏占 · 四面骰占',
+    sub: `骰式 ${lastDice.join('-')}`,
+  };
+}
+
+export function restoreTibetan(m, dice, coin, q) {
+  mode = m === 'coin' ? 'coin' : 'dice';
+  if (mode === 'coin') {
+    if (!Array.isArray(coin) || coin.length !== 2) return false;
+    lastCoin = coin.slice();
+  } else {
+    if (!Array.isArray(dice) || dice.length !== 3) return false;
+    lastDice = dice.slice();
+  }
+  question = q || '';
+  paint();
+  return true;
+}
+
 /* ============================ 弹层 ============================ */
 function ensureSheet() {
   if (document.getElementById('tb-sheet')) return;
@@ -314,5 +349,3 @@ export function tibetanCopyText() {
   L.push('—— 底本 OTDO 古藏文转写自译；敦煌藏经洞，约9–10世纪。机器机械演卦，只给方向、不是命定。');
   return L.join('\n');
 }
-
-export const tibetanCode = () => null;

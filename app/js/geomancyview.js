@@ -10,7 +10,7 @@
 //    Martin of Spain《De geomantia》底本的系统性异文并列存档、绝不合成（见页底「流派」）。
 //  - 象征义属地占公有领域传统（Agrippa 1533 / Cattan 1591 Turner 英译本 / Ibn Khaldun 1377），
 //    现代整理本仅作编排参考。不拿现代流行网站规则冒充古原典。
-import { $, escapeHtml, toast } from './state.js?v=120';
+import { $, escapeHtml, toast } from './state.js?v=121';
 
 /* ============================ 16 符数据 ============================
  * rows = [火, 风, 水, 土]，自上而下；1=单点(奇/阳)，2=双点(偶/阴)。
@@ -148,25 +148,31 @@ function addFigs(a, b) {
   return figByRows(a.rows.map((x, i) => ((x + b.rows[i]) % 2 === 0 ? 2 : 1)));
 }
 
+/** 由 4 母符（各 4 行）推出整盘：女=转置、侄=同位相加、证人/法官逐级相加。法官非偶点返回 null。 */
+function chartFromMothers(mothers) {
+  // 4 女：母符各行横向转置。女 d 第 r 行 = 第 r 母的第 d 行（d,r 皆 0..3）
+  const daughters = [0, 1, 2, 3].map((d) => [0, 1, 2, 3].map((r) => mothers[r][d]));
+  const f = [...mothers, ...daughters].map(figByRows); // f[0..3] 母, f[4..7] 女
+  // 4 侄
+  f[8] = addFigs(f[0], f[1]);
+  f[9] = addFigs(f[2], f[3]);
+  f[10] = addFigs(f[4], f[5]);
+  f[11] = addFigs(f[6], f[7]);
+  // 证人、法官
+  f[12] = addFigs(f[8], f[9]);   // 右证人 Witness 1
+  f[13] = addFigs(f[10], f[11]); // 左证人 Witness 2
+  f[14] = addFigs(f[12], f[13]); // 法官 Judge
+  f[15] = addFigs(f[0], f[14]);  // 超级法官 Super Judge（古法或用）
+  if (!f[14].impartial) return null; // 法官必偶，否则重算
+  return buildChart(f);
+}
+
 export function castGeomancy() {
   for (let attempt = 0; attempt < 64; attempt++) {
     // 4 母：每母由 4 随机行（火风水土）组成
     const mothers = [0, 1, 2, 3].map(() => [randRows(), randRows(), randRows(), randRows()]);
-    // 4 女：母符各行横向转置。女 d 第 r 行 = 第 r 母的第 d 行（d,r 皆 0..3）
-    const daughters = [0, 1, 2, 3].map((d) => [0, 1, 2, 3].map((r) => mothers[r][d]));
-    const f = [...mothers, ...daughters].map(figByRows); // f[0..3] 母, f[4..7] 女
-    // 4 侄
-    f[8] = addFigs(f[0], f[1]);
-    f[9] = addFigs(f[2], f[3]);
-    f[10] = addFigs(f[4], f[5]);
-    f[11] = addFigs(f[6], f[7]);
-    // 证人、法官
-    f[12] = addFigs(f[8], f[9]);   // 右证人 Witness 1
-    f[13] = addFigs(f[10], f[11]); // 左证人 Witness 2
-    f[14] = addFigs(f[12], f[13]); // 法官 Judge
-    f[15] = addFigs(f[0], f[14]);  // 超级法官 Super Judge（古法或用）
-    if (!f[14].impartial) continue; // 法官必偶，否则重算
-    return buildChart(f);
+    const chart = chartFromMothers(mothers);
+    if (chart) return chart;
   }
   throw new Error('地占：无法生成合法法官（偶数点），已重试 64 次');
 }
@@ -452,5 +458,27 @@ export function geomancyCopyText() {
   return L.join('\n');
 }
 
-// 供时间条/复现码体系占位：地占随机起卦，第一版不留档（同天球/二十八宿）
-export const geomancyCode = () => null;
+// v121 复现码：地占虽为随机撒点起卦，但母符 4×4 行的奇偶一旦记下，女/侄/证人/法官皆可重推
+function mothersBits(chart) {
+  let bits = 0;
+  chart.mothers.forEach((f, i) => f.rows.forEach((rv, r) => { if (rv === 1) bits |= 1 << (i * 4 + r); }));
+  return bits;
+}
+export function geomancyCode() {
+  if (!cur) return null;
+  return {
+    kind: 'geomancy',
+    data: { at: Date.now(), mothers: mothersBits(cur), qHouse, question },
+    title: '地占 · 盾形盘',
+    sub: `所问第${qHouse}宫·${HOUSES[qHouse - 1].zh} · 法官 ${cur.judge.zh}`,
+  };
+}
+export function restoreGeomancy(bits, house, q) {
+  const mothers = [0, 1, 2, 3].map((i) => [0, 1, 2, 3].map((r) => (((bits >> (i * 4 + r)) & 1) ? 1 : 2)));
+  const chart = chartFromMothers(mothers);
+  if (!chart) return false;
+  cur = chart;
+  qHouse = Number.isInteger(house) && house >= 1 && house <= 12 ? house : 1;
+  question = q || '';
+  return true;
+}

@@ -3,9 +3,9 @@
 // + 七政四余实时位置与入宿度。three.js r160（MIT，本地内置）。
 // 只报天文事实（躔次/入宿度），不作吉凶断语。
 import * as THREE from '../vendor/three/three.module.js';
-import { shouyeTianxiang, MANSIONS } from '../vendor/liuyao-core.js?v=120';
-import { siyuLongitudes, solarParams } from './solartime.js?v=120';
-import { STARS3 } from './stars.js?v=120';
+import { shouyeTianxiang, MANSIONS } from '../vendor/liuyao-core.js?v=121';
+import { siyuLongitudes, solarParams } from './solartime.js?v=121';
+import { STARS3 } from './stars.js?v=121';
 
 const R = 10;
 const D2R = Math.PI / 180;

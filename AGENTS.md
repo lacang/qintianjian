@@ -41,20 +41,20 @@
 | `app/js/verdicts.js` | 五盘古法直断（梅花体用/奇门格局/八字日主/命主星/紫微命宫） |
 | `app/js/askview.js` | "问问"入口：选问题 → 推荐术数 → 跳盘 |
 | `app/js/tarotview.js` | 塔罗牌桌：三式展牌（扇/桥/堆）、点选跳出→拖放、78 图鉴；扇面舞台为全屏透明层，牌悬空其上、overflow:visible 不裁切 |
-| `app/js/lenormandview.js` | 小雷诺曼 36 牌 + 大桌布 + 亲手抽牌 |
 | `app/js/xiaoliurenview.js` | 小六壬掐指课 |
 | `app/js/{meihua,qimen,daliuren,bazi,ziwei,vedic,astro,geomancy,yangzhai,mansion,jingzhuan,tibet,zhuyou}view.js` | 各术数盘面视图 |
 | `app/js/{stars,globe,mansion3d,zodiac,astromodes}.js` | 星表/天球仪/星官 3D/星座/星盘模式 |
-| `app/css/{style,tarot,lenormand,vedic,yangzhai,tibet,zhuyou}.css` | 样式；盘面专属样式分文件 |
-| `app/vendor/liuyao-core.js` | 打好的核心引擎 bundle（`liuyao-core/src/**` 的产物） |
+| `app/css/{style,tarot,vedic,yangzhai,tibet,zhuyou}.css` | 样式；盘面专属样式分文件 |
+| `app/vendor/liuyao-core.js` | 打好的核心引擎 bundle（`liuyao-core/src/**` 的产物，由 `tools/build-vendor.mjs` 重建；含 iztro 非中文 locale 裁剪） |
 | `liuyao-core/src/**` | 核心计算层（TypeScript）：排盘、天文、纳甲、紫微、吠陀、玄空、牌阵数据 |
 | `app/sw.js` | Service Worker：`CACHE=qintian-vNN`，networkFirst + `cache:no-cache` |
 | `tools/bump-version.sh` | 一键改版本号（index.html 8 处、js import 164 处、sw CACHE） |
+| `tools/build-vendor.mjs` | 重建 `app/vendor/liuyao-core.js`（tsup 打 ESM 单 bundle + 裁 iztro 非中文 locale、保留 zh-CN）；`--check` 校验是否与 `liuyao-core/src/**` 漂移 |
 | `_lnsrc/ln_stub_test/**` | 桩测：塔罗/雷诺曼 冒烟测试（无浏览器） |
 | `data/`、`本人出生配置.json` | 静态数据与出生配置（出生地沈阳） |
 
 **改动影响面速查**
-- 改排盘算法 → `liuyao-core/src/*` → 重新打包 `app/vendor/liuyao-core.js` → bump → 部署。
+- 改排盘算法 → `liuyao-core/src/*` → `node tools/build-vendor.mjs` 重建 `app/vendor/liuyao-core.js`（不要直接 cp `liuyao-core/dist/index.js`：脚本会裁掉 iztro 非中文 locale 且保留 zh-CN；`--check` 可先看是否漂移）→ bump → 部署。
 - 改盘面 UI → 对应 `app/js/*view.js` + `app/css/*.css`。
 - 改真太阳时/行星时 → `app/js/solartime.js`（注意：所有经纬度默认值**不得写死**）。
 - 改起盘流程 → `app/js/ritual.js` + `app/js/cast.js`。
@@ -88,7 +88,7 @@
 计算层放 `liuyao-core/src/`（纯函数 + 类型 + 导出）→ 视图放 `app/js/xxxview.js` → 样式放 `app/css/xxx.css` → `app/index.html` 加 view 容器 → `app/js/main.js` 注册 → 桩测加断言 → 记忆归档 → bump → 部署 → 线上核验。
 
 ### 5.2 发版固定动作顺序（不可跳步）
-`tools/bump-version.sh NN+1 NN`（内含三闸门：写回读回断言/旧版本号残留/import闭包⊆SW ASSETS，+卫生闸+node --check，任一失败 exit 1 不得发版）→ 全链 `?v=NN` + `sw.js CACHE=qintian-vNN` → 桩测 → 双路部署：①`coze-dev deploy`（coze.site，作备用 CDN）轮询 `Succeeded`；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）→ **两路线上核验**（SW 版本号 + 关键资源内容 + 老代码已消失）→ **双远端 git 同步哈希对齐**（见 5.4）→ 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+`tools/bump-version.sh NN+1 NN`（内含三闸门：写回读回断言/旧版本号残留/import闭包⊆SW ASSETS，+卫生闸+ESM 语法自检，任一失败 exit 1 不得发版。**语法自检必须走 `.mjs` 副本**：`node --check x.js` 会按 CommonJS 解析、放过 ESM 的重复顶层声明——v121 就因两处 `xxxCode` 重复声明静默过闸，真机整个模块图崩、应用完全不启动。另建议补一项「import 名字在目标模块确有导出」的静态校验）→ 全链 `?v=NN` + `sw.js CACHE=qintian-vNN` → 桩测 → 双路部署：①`coze-dev deploy`（coze.site，作备用 CDN）轮询 `Succeeded`；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）→ **两路线上核验**（SW 版本号 + 关键资源内容 + 老代码已消失）→ **双远端 git 同步哈希对齐**（见 5.4）→ 记忆归档 → 汇报（结论先行 + 真机待验收项）。
 
 ### 5.4 Git 双远端同步（2026-10-25 起）
 项目纳管平台云 Git，并有 GitHub 远端，**两个远端都要推、保持同一 commit**：
@@ -106,7 +106,9 @@
 - 免费账户 GitHub Pages 仅支持 public 仓库（账号 lacang，free）。
 
 ### 5.3 桩测
-`_lnsrc/ln_stub_test/`：塔罗 `node tarot_smoke.mjs`；雷诺曼 `node run.mjs ./ln_bundle.mjs`；**v111 起新增 `node v111_smoke.mjs`**（地址中心/真太阳时/择时/小六壬/三维兜底）。**先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建三个 bundle**（拷 /tmp 剥 `?v=` 再 esbuild），构建用 `./liuyao-core/node_modules/.bin/esbuild`（`app/` 下无 esbuild），无 jsdom（用 localStorage/document 桩 + `globalThis.window`）。
+`_lnsrc/ln_stub_test/`：塔罗 `node tarot_smoke.mjs`；**v111 起新增 `node v111_smoke.mjs`**（地址中心/真太阳时/择时/小六壬/三维兜底）。另有 `v91_src/check_sharecode_v2.mjs`（复现码 99 断言）、`v91_src/check_tarot_v119.mjs`、`v91_src/check_tarot_v120.mjs`。**先跑 `bash _lnsrc/ln_stub_test/build.sh` 重建两个 bundle（tarot / v111）**（拷 /tmp 剥 `?v=` 再 esbuild），脚本内自愈 esbuild 可执行位并直接用 `liuyao-core/node_modules/@esbuild/linux-x64/bin/esbuild`（`app/` 下无 esbuild；`node_modules/.bin/esbuild` 那个 shim 是裸相对路径，从仓库根调用会 `No such file or directory`），无 jsdom（用 localStorage/document 桩 + `globalThis.window`）。
+**注意**：`_lnsrc/ln_stub_test/*.mjs` 被 `.gitignore` 忽略——bundle 是产物没问题，但 `tarot_smoke.mjs` / `v111_smoke.mjs` 是手写测试，改动不会进版本库，换设备要重建。v120 删小雷诺曼后 `ln_bundle.mjs` / `run.mjs` 已废弃（保留未删）。
+**假绿警告**：不重建 bundle 就跑冒烟，测的是旧产物——v121 就踩过（build.sh 因引用已删文件而静默失败，冒烟仍报"77 通过"）。**改完 `app/js/**` 先 `bash build.sh` 看有没有报错，再跑冒烟。**
 
 ## 6. 已知坑（踩过就别再踩）
 
@@ -116,7 +118,8 @@
 - **渲染函数必须 return 字符串**：`renderXxx()` 忘了 `return` → `innerHTML = undefined` → 页面出现字面量 "undefined"。
 - **微信内置浏览器缓存**：SW 走 networkFirst + `cache:no-cache`；改完要让用户强刷或等 SW 更新，否则看到旧版。
 - **经纬度不得写死**：真太阳时/行星时/日出日落/二十八宿都依赖所在地。v111 起统一走 `app/js/geo.js` 的当前地点（`getPlace()`），需要新地点能力时**扩展 geo.js，不要再各自写一份**。
-- **同一文件并行 `edit_file` 会互相覆盖**：改同一文件必须串行，或一次性写完；改完立刻 `node --check` 复核（整文件重写易打错天文常数）。
+- **同一文件并行 `edit_file` 会互相覆盖**：改同一文件必须串行，或一次性写完；改完立刻复核（整文件重写易打错天文常数）。
+- **`node --check` 对 `.js` 是假绿灯**：Node 对无 `package.json` type=module 的 `.js` 按 CommonJS 解析，**会放过 ESM 的重复顶层声明**（v121 事故：两处 `xxxCode` 重复声明，node --check 全绿、真机整个模块图崩、应用不启动）。校验 app 侧 ESM 一律先 `cp x.js /tmp/x.mjs && node --check /tmp/x.mjs`；另可静态校验 `import { … }` 的名字在目标模块确有导出。
 - **记忆服务**：`memory_edit` 的 replace 若原文不完全一致会把文件清空；改记忆前先 `memory_read`，必要时用 `write_file` 写全量。
 - **`grep`/`find` 找不到记忆文件**：记忆由 memory 服务托管，不在 bash 可见路径，只能用 `memory_read`/`memory_list`/`memory_edit`。
 

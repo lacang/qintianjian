@@ -1,10 +1,10 @@
 // 小六壬 · 掐指课：以农历月、日、时辰三数顺数六宫，取落宫断吉凶。
 // 底本：民间通行本《小六壬》（旧题诸葛武侯《马前课》系统，属掌诀，无宋以前官定底本）。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧并列，不合成。
-import { $, nowDate } from './state.js?v=120';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=120';
-import { getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=120';
-import { T } from './tipview.js?v=120';
+import { $, nowDate, fmtMoment } from './state.js?v=121';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=121';
+import { getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=121';
+import { T } from './tipview.js?v=121';
 
 const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 
@@ -340,4 +340,8 @@ export function xiaoLiuRenCopyText(at = nowDate()) {
   ].join('\n');
 }
 
-export const xiaoLiuRenCode = () => '';
+// v121 复现码：小六壬「掌诀只按三数落宫，不含随机」，月日时由时刻定，故时刻即全部输入
+export function xiaoLiuRenCode() {
+  const at = nowDate();
+  return { kind: 'xiaoliuren', data: { at: at.getTime() }, title: '小六壬课', sub: fmtMoment(at) };
+}

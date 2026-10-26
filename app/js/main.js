@@ -2,41 +2,41 @@ import {
   $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt,
   birthDate, nowDate, resolveCastDate, copyText, toast, pad,
   parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
-} from './state.js?v=120';
-import { paipanZi } from './zischool.js?v=120';
-import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=120';
-import { renderPan, copyCurrent } from './panview.js?v=120';
-import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=120';
-import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=120';
-import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=120';
-import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=120';
-import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=120';
-import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=120';
-import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=120';
-import { renderYangzhai, initYangzhai, yangzhaiCopyText } from './yangzhai/yangzhaiview.js?v=120';
-import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=120';
-import { initInteract } from './interact.js?v=120';
-import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=120';
-import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=120';
-import { renderGlobe, globeCopyText } from './globe.js?v=120';
-import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=120';
-import { initCast, resetCast } from './cast.js?v=120';
-import { encodeCode, decodeCode } from './sharecode.js?v=120';
-import { initTips, initGuides } from './tipview.js?v=120';
+} from './state.js?v=121';
+import { paipanZi } from './zischool.js?v=121';
+import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=121';
+import { renderPan, copyCurrent } from './panview.js?v=121';
+import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=121';
+import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=121';
+import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=121';
+import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=121';
+import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=121';
+import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=121';
+import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=121';
+import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=121';
+import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=121';
+import { initInteract } from './interact.js?v=121';
+import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=121';
+import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=121';
+import { renderGlobe, globeCopyText } from './globe.js?v=121';
+import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=121';
+import { initCast, resetCast } from './cast.js?v=121';
+import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=121';
+import { initTips, initGuides } from './tipview.js?v=121';
 import {
   loadCases, loadCase, saveCase, updateCase, togglePin, removeCase,
   clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP,
-} from './cases.js?v=120';
-import { renderAsk, bindAsk } from './askview.js?v=120';
-import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=120';
-import { onPlaceChange } from './geo.js?v=120';
-import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=120';
-import { renderMoreCards } from './homecards.js?v=120';
-import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=120';
-import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=120';
-import { renderGeomancy, geomancyCopyText, initGeomancy } from './geomancyview.js?v=120';
-import { renderTibetan, tibetanCopyText, initTibetan } from './tibetview.js?v=120';
-import { renderTarot, tarotCopyText, initTarot, mountTarot } from './tarotview.js?v=120';
+} from './cases.js?v=121';
+import { renderAsk, bindAsk } from './askview.js?v=121';
+import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=121';
+import { onPlaceChange } from './geo.js?v=121';
+import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=121';
+import { renderMoreCards } from './homecards.js?v=121';
+import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=121';
+import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=121';
+import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=121';
+import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=121';
+import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=121';
 
 const SRC_LABEL = { coins: '摇铜钱', tianji: '天机', manual: '手录', time: '天时' };
 const NO_Q = '未填写所占之事';
@@ -55,7 +55,7 @@ const PANES = {
   astro:  { code: astroCode,  render: () => renderAstro() },
   vedic:  { code: vedicCode,  render: () => renderVedic() },
   zhuyou: { code: zhuyouCode, render: () => renderZhuyou() },
-  yangzhai: { code: null, render: () => { const b = $('#yangzhai-body'); if (b) b.innerHTML = renderYangzhai(); initYangzhai(); } },
+  yangzhai: { code: yangzhaiCode, render: () => { const b = $('#yangzhai-body'); if (b) b.innerHTML = renderYangzhai(); initYangzhai(); } },
   ziwei:  { code: ziweiCode,  render: () => renderZiwei() },
   cards:  { code: cardsCode,  render: () => renderCards() },
   sky:    { code: null,      render: () => renderSky() },
@@ -63,9 +63,9 @@ const PANES = {
   mansion:{ code: mansionCode,render: () => renderMansion() },
   daliuren:  { code: daLiuRenCode,  render: () => { const b = $('#daliuren-body');   if (b) b.innerHTML = renderDaLiuRen(nowDate()); } },
   xiaoliuren:{ code: xiaoLiuRenCode,render: () => { const b = $('#xiaoliuren-body'); if (b) b.innerHTML = renderXiaoLiuRen(nowDate()); } },
-  geomancy: { code: null,      render: () => { const b = $('#geomancy-body'); if (b) b.innerHTML = renderGeomancy(); } },
-  tibetan: { code: null,       render: () => { const b = $('#tibetan-body'); if (b) b.innerHTML = renderTibetan(); } },
-  tarot: { code: null,         render: () => { const b = $('#tarot-body'); if (b) { b.innerHTML = renderTarot(); mountTarot(); } } },
+  geomancy: { code: geomancyCode, render: () => { const b = $('#geomancy-body'); if (b) b.innerHTML = renderGeomancy(); } },
+  tibetan: { code: tibetanCode, render: () => { const b = $('#tibetan-body'); if (b) b.innerHTML = renderTibetan(); } },
+  tarot: { code: tarotCodeInfo, render: () => { const b = $('#tarot-body'); if (b) { b.innerHTML = renderTarot(); mountTarot(); } } },
 };
 
 /* ============================ 视图切换 ============================ */
@@ -177,11 +177,30 @@ function liuyaoCode() {
   };
 }
 
+// v121 复现码 v2：把码里携带的计算配置写回本地设置，让「复现」复现的是同一盘
+function applyCodeCfg(d) {
+  if (!d || d.version < 2) return;
+  if (d.lateZi && cfg.lateZi !== d.lateZi) { cfg.lateZi = d.lateZi; saveCfg(); }
+  if (cfg.apparentSolarTime !== !!d.apparentSolarTime) { cfg.apparentSolarTime = !!d.apparentSolarTime; saveCfg(); }
+  if (d.geo) panAt.geo = { longitude: d.geo.lon, latitude: d.geo.lat, place: `${d.geo.lon.toFixed(2)}°E ${d.geo.lat.toFixed(2)}°N` };
+}
+
 function codeInfo(kind) {
   const src = kind === 'liuyao' ? liuyaoCode : (PANES[kind] && PANES[kind].code);
   if (!src) return null;
-  try { return src(); }
-  catch (e) { console.warn('[qintian] 生成码失败', kind, e); return null; }
+  try {
+    const info = src();
+    // v121 复现码 v2：统一注入计算配置（晚子时流派 / 真太阳时 / 观测地）
+    if (info && info.data) {
+      if (info.data.lateZi == null) info.data.lateZi = cfg.lateZi;
+      if (info.data.apparentSolarTime == null) info.data.apparentSolarTime = !!cfg.apparentSolarTime;
+      if (kind !== 'astro' && info.data.lon == null && panAt.geo && Number.isFinite(panAt.geo.longitude)) {
+        info.data.lon = panAt.geo.longitude;
+        info.data.lat = panAt.geo.latitude;
+      }
+    }
+    return info;
+  } catch (e) { console.warn('[qintian] 生成码失败', kind, e); return null; }
 }
 
 /** 每排一盘自动留档；星标的不会被顶掉 */
@@ -298,6 +317,8 @@ function openByCode(raw) {
   try { d = decodeCode(raw); }
   catch (e) { setHint(e.message || '码无法识别', true); return; }
   const at = new Date(d.at);
+  applyCodeCfg(d); // v121：码里的计算配置（晚子时/真太阳时/观测地）先落地再排盘
+  const staleNote = d.ruleStale ? `（此码规则 v${d.ruleVersion}，当前 v${RULE_VERSION}，结果或有差异）` : '';
 
   if (d.kind === 'liuyao') {
     if (!d.yaoValues) { setHint('码里没有六爻数据', true); return; }
@@ -315,18 +336,18 @@ function openByCode(raw) {
     $('#question-input').value = d.question || '';
     autoSave('liuyao');
     closeSheet();
-    toast('已按码复现此卦');
+    toast('已按码复现此卦' + staleNote);
     return;
   }
 
-  if (d.kind === 'bazi' || d.kind === 'ziwei' || d.kind === 'astro') {
+  if (d.kind === 'bazi' || d.kind === 'ziwei' || d.kind === 'astro' || d.kind === 'vedic') {
     setPanAt('birth', at);
     panAt.geo = null;
     if (d.gender) { cfg.gender = d.gender; saveCfg(); }
-    if (d.kind === 'astro' && d.lon != null) {
+    if (d.lon != null && d.lat != null) {
       panAt.geo = { longitude: d.lon, latitude: d.lat, place: `${d.lon.toFixed(2)}°E ${d.lat.toFixed(2)}°N` };
     }
-  } else if (d.kind === 'meihua' || d.kind === 'qimen') {
+  } else if (d.kind === 'meihua' || d.kind === 'qimen' || d.kind === 'daliuren' || d.kind === 'xiaoliuren') {
     setPanAt('now', at);
   } else if (d.kind === 'sky') {
     // sky 码只含时刻；还原到二十八宿实时躔次（天象旧页的时间语义一致）
@@ -335,16 +356,45 @@ function openByCode(raw) {
 
   closeSheet();
   if (d.kind === 'cards') {
+    // v121 双轨：带 deckId 的是新塔罗牌局 → 塔罗视图；否则按旧卡牌视图还原
+    if (d.deckId && isTarotDeck(d.deckId)) {
+      if (!restoreTarot(d.spreadIndex, d.cards || [], d.deckId)) { toast('牌局还原失败'); return; }
+      openSubview('tarot');
+      autoSave('cards');
+      toast('已还原牌局' + staleNote);
+      return;
+    }
     openSubview('cards');
     const ok = restoreCards(d.spreadIndex, d.cards || []);
     if (!ok) { toast('牌局还原失败'); return; }
     autoSave('cards');
-    toast('已还原牌局');
+    toast('已还原牌局' + staleNote);
+    return;
+  }
+  if (d.kind === 'geomancy') {
+    if (!restoreGeomancy(d.mothers, d.qHouse, d.question)) { toast('地占还原失败'); return; }
+    openSubview('geomancy');
+    autoSave('geomancy');
+    toast('已还原地占盘' + staleNote);
+    return;
+  }
+  if (d.kind === 'tibetan') {
+    if (!restoreTibetan(d.mode, d.dice, d.coin, d.question)) { toast('藏占还原失败'); return; }
+    openSubview('tibetan');
+    autoSave('tibetan');
+    toast('已还原藏占' + staleNote);
+    return;
+  }
+  if (d.kind === 'yangzhai') {
+    if (!restoreYangzhai(d)) { toast('宅盘还原失败'); return; }
+    openSubview('yangzhai');
+    autoSave('yangzhai');
+    toast('已还原宅盘' + staleNote);
     return;
   }
   if (RITUAL_PAGES.includes(d.kind)) castDone(d.kind); // 复现码直入，不走起盘门
   openSubview(d.kind === 'sky' ? 'mansion' : d.kind);
-  toast('已按码复现');
+  toast('已按码复现' + staleNote);
 }
 
 /* ============================ 案例库 ============================ */

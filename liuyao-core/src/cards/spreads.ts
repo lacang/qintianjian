@@ -3,7 +3,9 @@
 import type { Spread } from './types.js';
 
 const TAROT = ['tarot'] as const;
-const ANY_DIVINATION = ['tarot', 'lenormand', 'oracle'] as const;
+// v120：小雷诺曼整体撤下（牌组数据与视图已删除）。此处必须同步去掉 lenormand，
+// 否则按 AGENTS.md 重建 bundle 时会把已删牌组从牌阵 deckKinds 里带回来。
+const ANY_DIVINATION = ['tarot', 'oracle'] as const;
 
 export const BUILTIN_SPREADS: Spread[] = [
   {

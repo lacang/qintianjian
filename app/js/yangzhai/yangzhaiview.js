@@ -3,15 +3,15 @@
  * 五步：定坐向 → 九宫标房(门主灶) → 元运与居住者 → 门外形势 → 八宅直断
  * 纯本地：vendor/bazhai-core.js 翻卦 + yangzhai-judge.js 直断，不接 AI、不联网。
  */
-import { $, $$, cfg, birthDate, escapeHtml } from '../state.js?v=120';
+import { $, $$, cfg, birthDate, escapeHtml } from '../state.js?v=121';
 import {
   DIR8_LIST, MOUNTAINS_24, dir8At, mountainsAt, lifeGua, GROUP_NAME, chartFor,
-} from '../../vendor/bazhai-core.js?v=120';
+} from '../../vendor/bazhai-core.js?v=121';
 import {
   judgeYangzhai, fourJiDirs, ROOM_LABEL, SOURCES, SOURCE_NOTE,
-} from './yangzhai-judge.js?v=120';
-import { judgeXuankong, SOURCES as XK_SOURCES, SOURCE_NOTE as XK_NOTE } from './yangzhai-xuankong.js?v=120';
-import { judgeJinsuo, judgeSanheWater, JINSUO_NOTE, SANHE_NOTE } from './yangzhai-jinsuo.js?v=120';
+} from './yangzhai-judge.js?v=121';
+import { judgeXuankong, SOURCES as XK_SOURCES, SOURCE_NOTE as XK_NOTE } from './yangzhai-xuankong.js?v=121';
+import { judgeJinsuo, judgeSanheWater, JINSUO_NOTE, SANHE_NOTE } from './yangzhai-jinsuo.js?v=121';
 
 const DIRS9 = ['西北', '北', '东北', '西', '中', '东', '西南', '南', '东南'];
 const ROOM_KINDS = ['door', 'master', 'second', 'living', 'kitchen', 'bath'];
@@ -60,13 +60,17 @@ export function renderYangzhai() {
 export function initYangzhai() {
   closeSheet();
   const root = $('#yangzhai-body');
-  if (!root || root.dataset.yzBound === '1') return;
-  root.dataset.yzBound = '1';
-
-  root.addEventListener('click', onClick);
-  root.addEventListener('input', onInput);
-  root.addEventListener('change', onChange);
-  refresh();
+  if (!root) return;
+  // 事件只绑一次（#yangzhai-body 是常驻节点，重复 addEventListener 会让处理函数叠加）。
+  // 但每次进入都必须走 goStep()：openSubview 每次都用 renderYangzhai() 把面板重置成空壳，
+  // 若这里提前 return，二次进入就会停在空白面板（v121 真机验收发现，v120 同样存在）。
+  if (root.dataset.yzBound !== '1') {
+    root.dataset.yzBound = '1';
+    root.addEventListener('click', onClick);
+    root.addEventListener('input', onInput);
+    root.addEventListener('change', onChange);
+  }
+  goStep(S.step);
 }
 
 /* ============================ 步骤切换 ============================ */
@@ -587,4 +591,38 @@ export function yangzhaiCopyText() {
   (r.shapeVerdicts || []).forEach((s) => L.push(`· 形势·${s.name}：${s.body}`));
   return L.join('\n');
 }
-export function yangzhaiCode() { return null; }
+
+/* ============================ v121 复现码 ============================ */
+// 阳宅的全部输入都能紧凑记录：坐向、六类房间的九宫掩码、建房年、居住人、门外形势勾选
+export function yangzhaiCode() {
+  const names = SHAPES.map(([n]) => n);
+  return {
+    kind: 'yangzhai',
+    data: {
+      at: Date.now(),
+      facingDeg: S.mount.deg ?? 0,
+      rooms: S.rooms,
+      built: S.year.built ?? 1800,
+      personY: S.person.y,
+      personG: S.person.g,
+      shapes: S.shapes.map((n) => names.indexOf(n)).filter((i) => i >= 0),
+    },
+    title: '阳宅 · 宅盘',
+    sub: S.mount.deg == null
+      ? '坐向未定'
+      : `坐向 ${Math.round(S.mount.deg)}° · ${S.year.built ? S.year.built + ' 年建' : '建年未填'}`,
+  };
+}
+
+export function restoreYangzhai(d) {
+  S = freshState();
+  if (d.facingDeg > 0) S.mount = { deg: d.facingDeg, locked: true, via: 'code' };
+  if (d.rooms) for (const k of ROOM_KINDS) S.rooms[k] = Array.isArray(d.rooms[k]) ? d.rooms[k].slice() : [];
+  S.year.built = d.built && d.built !== 1800 ? d.built : null;
+  if (d.personY) S.person.y = d.personY;
+  if (d.personG) S.person.g = d.personG;
+  const names = SHAPES.map(([n]) => n);
+  S.shapes = (d.shapes || []).map((i) => names[i]).filter(Boolean);
+  S.step = 5;
+  return true;
+}

@@ -1,9 +1,9 @@
 // 印度占星 · 吠陀 Jyotisha 本命盘子视图（v93）
 // 恒星黄道 Lahiri · 整宫 Rashi(D1) · 九曜 · 二十七宿 · D9 Navamsha · Vimshottari 大运 · Graha Drishti · Yoga
 // 只依赖本地 caelus（已打进 vendor），不接任何在线服务。
-import { paipanVedic } from '../vendor/liuyao-core.js?v=120';
-import { birthArgs, $ } from './state.js?v=120';
-import { gateHTML, stage, isCasted } from './ritual.js?v=120';
+import { paipanVedic } from '../vendor/liuyao-core.js?v=121';
+import { birthArgs, $ } from './state.js?v=121';
+import { gateHTML, stage, isCasted } from './ritual.js?v=121';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -255,8 +255,16 @@ export function vedicCopyText(){
   return L.join('\n');
 }
 
+// v121：改为与其它盘同构的复现码契约（kind + data），并带上计算配置
 export function vedicCode(){
-  const a=birthArgs();
-  return { kind:'vedic', year:a.year, month:a.month, day:a.day, hour:a.hour, minute:a.minute,
-    lat:a.latitude ?? a.lat, lonEast:a.longitude ?? a.lonEast, place:a.place||'' };
+  const a = birthArgs();
+  const at = new Date(a.year, a.month - 1, a.day, a.hour, a.minute, 0, 0).getTime();
+  let chart = null;
+  try { chart = paipanVedic(a); } catch { /* 排盘失败时只给时刻与地点 */ }
+  return {
+    kind: 'vedic',
+    data: { at, gender: a.gender, lon: a.longitude ?? a.lonEast, lat: a.latitude ?? a.lat },
+    title: chart && chart.ascSignName ? `上升${chart.ascSignName} · 吠陀 D1` : '吠陀本命盘',
+    sub: `${a.year}-${String(a.month).padStart(2, '0')}-${String(a.day).padStart(2, '0')} ${String(a.hour).padStart(2, '0')}:${String(a.minute).padStart(2, '0')}${a.place ? ' · ' + a.place : ''}`,
+  };
 }

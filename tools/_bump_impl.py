@@ -90,11 +90,17 @@ if junk and not SKIP_JUNK:
     fail.append('js/ 下存在非 .js 文件（疑似临时残留，请人工确认）:\n    ' + '\n    '.join(junk))
 
 # ---- 语法自检 ----
+# 坑（v121 事故）：node --check 对 .js 按 CommonJS 解析，会放过 ESM 的重复顶层声明——
+# yangzhaiCode / tibetanCode 各重复声明一次时 node --check 全绿，真机却整个模块图解析失败、
+# 应用完全不启动（连 SW 都注册不上）。所以复制成 .mjs 再 check，强制走 ESM 解析。
+import shutil, tempfile
+_syntax_tmp = os.path.join(tempfile.gettempdir(), '_qintian_syntax_check.mjs')
 for f in targets:
     if f.endswith('.js'):
-        r = subprocess.run(['node', '--check', f], capture_output=True, text=True)
+        shutil.copyfile(f, _syntax_tmp)
+        r = subprocess.run(['node', '--check', _syntax_tmp], capture_output=True, text=True)
         if r.returncode != 0:
-            fail.append('node --check 失败: %s\n%s' % (f, r.stderr[:400]))
+            fail.append('node --check(ESM) 失败: %s\n%s' % (f, r.stderr[:400]))
 
 if fail:
     print('\n========== 发版闸门未通过 ==========')

@@ -6,6 +6,52 @@
 
 ---
 
+## v121 · 2026-10-26 · 复现码 v2（带计算配置与规则版本）+ 7 类术数补码 + 工程债三清
+
+- **背景**：主人「把这几个都收了吧」——把积压的 3 项工程债与评审阶段遗留的 4 项功能债一次清掉。核心是让「复现码」真正等于「可复现」：v1 只带类型+时刻，同一时刻开不同开关（晚子时流派、真太阳时、观测地、牌组）会算出不同的盘，复现出来不是同一盘；且 15 类术数里 7 类根本没有码。
+- **复现码 v2（`js/sharecode.js` 重写）**：
+  1. 结构：`QT1-` 前缀不变（格式族），版本写进头字节高 4 位；v2 依次写 `规则版本 · 时间秒 · 配置标志 · [观测地] · [牌组] · 类型数据 · 校验`。
+  2. 计算配置块：`F_LATE_ZI`（晚子时 23 点换日 / 子正 0 点换日）、`F_TST`（真太阳时）、`F_GEO`（观测地经纬度，astro/vedic 除外——它们的经纬度是本体数据）、`F_DECK`（牌组 id）。
+  3. 规则版本 `RULE_VERSION=1`：解出的码若版本低于当前，toast 追加「此码规则 vN，当前 vM，结果或有差异」；v1 码 `ruleStale=false`（无此信息，不误报）。
+  4. 向后兼容：v1 码仍可解，按默认配置复现。
+  5. 主流程：`codeInfo(kind)` 统一注入配置；`openByCode` 新增 `applyCodeCfg()`，把码里的配置写回本地设置再排盘——复现的是同一盘。
+- **7 类术数补码（B-P2-04）**：按数据来源分两类补齐，`KIND_ID` 用满 1–15。
+  - 时刻确定型（起课不含随机，时刻即全部）：大六壬 `daLiuRenCode`、小六壬 `xiaoLiuRenCode`（原为 `() => ''` 占位）。
+  - 随机型（记录随机结果本身）：地占 `geomancyCode`——母符 4×4 行的奇偶打包 16 位，女/侄/证人/法官全可重推（`castGeomancy` 拆出 `chartFromMothers`，随机与推演分离）；藏占 `tibetanCode`——骰式 3×2bit / 钱式 2×3bit + 所问。
+  - 输入型：阳宅 `yangzhaiCode`——坐向 0.1° + 六类房间九宫掩码 + 建房年 + 居住人 + 门外形势勾选；吠陀 `vedicCode`——原实现返回裸对象（无 `data` 包装、kind 不在表内，实际会抛错被吞），改为与 astro 同构契约。
+  - 无输入型：符箓 `zhuyouCode`——原返回统计对象（同上会抛错），改为只承载「回到这一页」。
+- **B-P2-03 塔罗牌局接码（新旧双轨）**：新塔罗 `state.drawn` 是牌 id 字符串数组，旧卡牌码用数字 `cardIndex`。新增 `tarotCodeInfo()` / `restoreTarot()` 做互转，导出 `isTarotDeck()`；`openByCode` 的 cards 分支按 `deckId` 分双轨——带 deckId 走塔罗视图，否则走旧 `restoreCards`（老码不失效）。
+- **B-P2-02 塔罗复制文案出处**：原先 6 副牌组里 4 副被误标「韦特」、且硬编码 RWS 1909。新增 `DECK_SRC` + `deckSrc(id)`，按实际牌组给牌面出处（RWS 公有领域 / 索拉·布斯卡 1491 米兰 Brera 藏 / 四副历史牌组指向文件级溯源清单）。
+- **工程债三清**：
+  1. `manifest.webmanifest` 描述去「只排盘，不解卦」——早已是多术数工作台。
+  2. vitest 原生环境补跑：`cards.test.ts` 两处 `toBeGreaterEqual` 笔误 → `toBeGreaterThanOrEqual`；`engine.ts` 的 `readingToText` 末尾补回边界提示语（保留断言意图）；`reading.test.ts` 按现行八域结构全量重写（用神取值放宽、典籍篇名按 `zengshan_buyi.json` 的 `chapters[].title` 查表硬校验、引文前 10/16 字须在章内命中）。**16 套件 209 测试全绿**。
+  3. 玄空 golden 包重建（`@soul-atelier/xuankong@0.3.0` + `core@0.6.1`），**18/18 全绿**。
+  4. 桩测链路修好（此前已断，跑出来的"全绿"是假象）：`_lnsrc/ln_stub_test/build.sh` 自 v120 删小雷诺曼后必然失败（仍在 bundle 已删除的 `js/lenormandview.js`，`set -e` 直接退出）；且 `node_modules/.bin/esbuild` 的 shim 内容就是裸相对路径 `../esbuild/bin/esbuild`，只在 `CWD=node_modules/.bin` 时解析得到，从仓库根调用必然 `No such file or directory`——**结果 bundle 一直没重建，冒烟测试跑的是旧产物**（"77 通过"实为假绿）。现改为：esbuild 可执行位自愈 `chmod` + 直接用平台原生二进制 `@esbuild/linux-x64/bin/esbuild`。另 `tarot_smoke.mjs` 里 v115 时代的「菜单含塔罗/雷诺曼切换」断言在 v120 后已失效，改为「菜单无分类条」。**重建 bundle 后真跑：塔罗冒烟 77/0、v111 桩测 40/0、sharecode v2 99/0。**
+- **引文溯源修正（顺带清出的 4 条伪标）**：`《增删卜易·岁考章》` → 真实章名 `岁科考章`；`《增删卜易·全书通论》`（数据中不存在此章）→ 换为身命章真实原文；疾病章 / 延医章 / 出行章 3 条编者改写 → 逐条换回 `zengshan_buyi.json` 原文照录。**这 4 条改的是 `liuyao-core/src/annotations/reading.ts`，必须重建 vendor 才会在 app 里生效**（见下条）。
+- **src/vendor 漂移修复 + 重建脚本（`tools/build-vendor.mjs`）**：
+  1. 发现 `app/vendor/liuyao-core.js` 与 `liuyao-core/src/**` 早已漂移：vendor 里 `ANY_DIVINATION` 已是 v120 的 `["tarot","oracle"]`，而 `src/cards/spreads.ts` 仍含 `lenormand`——v120 只落了 bundle 没落源码，任何人按 AGENTS.md 重建都会把已删牌组带回来。已同步源码并留注释说明。
+  2. 新增 `tools/build-vendor.mjs`：`node tools/build-vendor.mjs` 构建并写入，`--check` 只比对（退出码 1 = 需重建）。流程 = tsup 打 ESM 单 bundle → 裁剪 iztro **非中文** locale → 写入 `app/vendor/liuyao-core.js`。
+  3. 裁剪规则：`zh-TW / en-US / ja-JP / ko-KR / vi-VN` 共 45 个 json 模块体清空为 `{}`（省约 33KB 离线体积）；**zh-CN 必须保留**——iztro 靠它把星曜/宫位/五行局 key 翻成中文，裁掉会让紫微页整页显示 key。脚本对 zh-CN 整块跳过，并断言裁剪块数 ≥40，防止构建产物结构变化后静默失效。
+  4. 本次已用该脚本重建 vendor（2492785 字节），`--check` 与 `liuyao-core/src/**` 一致。
+- **真机验收拦下的致命 bug（发版前堵住）**：首次真机加载时应用**完全不启动**——`js/yangzhai/yangzhaiview.js` 的 `yangzhaiCode`、`js/tibetview.js` 的 `tibetanCode` 各被声明了两次（补码时只在文件末尾追加了实现，没删旧的 `() => null` 占位）。ESM 的重复顶层声明是语法错误 → `main.js` 的静态 import 链整体解析失败 → main.js 一行都不执行 → 首页只剩空骨架、**Service Worker 也注册不上**。修复 = 删掉两行残留占位。
+- **同时修掉一个验证工具假绿灯（教训）**：`tools/_bump_impl.py` 的语法自检原本对 `.js` 直接跑 `node --check`；而 Node 对 `.js`（无 `package.json` type=module）按 **CommonJS** 解析，**会放过 ESM 的重复顶层声明**——上面两处 bug 就是在"全量 node --check 通过"下静默进到磁盘的。现改为复制成临时 `.mjs` 再 check，强制 ESM 解析。**以后凡是用 node 校验 app 侧 ESM，一律走 `.mjs` 副本**。
+- **怎么验**：
+  1. `v91_src/check_sharecode_v2.mjs` 扩到 **99 断言全绿**：v2 往返、配置块、牌组 id、v1 向后兼容、篡改/截断/未知类型/v3 拒绝、15 类全类型冒烟、新增 7 类逐字段往返。
+  2. `liuyao-core` vitest **16 套件 209 测试全绿**；`xuankong_tests` **18/18**。
+  3. 全量 `node --check`（app/js + vendor + sw）通过。
+  4. `node tools/build-vendor.mjs --check` → 一致 ✅（vendor 与 `liuyao-core/src/**` 无漂移）；用 node 直读 vendor 的 `listReadingDomains()`：38 条引文 0 条含 `岁考章`/`全书通论`，`life` 域含 `《增删卜易·身命章》`。
+  5. ESM 语法 + 导入绑定静态校验：把每个 js 复制为 `.mjs` 后 `node --check`（**js 65 + vendor 4 + sw.js 共 70 个文件 0 失败**）；并静态校验所有 `import { … }` 的名字在目标模块确有导出（**171 条 import 语句 0 处不匹配**）——这两项专门拦「重复声明」「导入了不存在的名字」这类 `node --check` 假绿灯漏掉的错。
+  6. 云浏览器真机实测（修掉致命 bug 后复跑，A–E 全通过）：干净加载（注销 SW + 清缓存 + 硬刷）后 `body.innerText.length=752`、console error=0、SW controller 非空、`caches=['qintian-v121']` 246 条含 `index.html`；逐页巡检 10 页（首页/阳宅/符箓/塔罗/地占/藏占/大六壬/小六壬/吠陀/六爻）均有内容、**0 error**；复现码真机往返 **8/8**（六爻 `QT1-IQFq3qYQAAIFegAAoQ` → 天山遁之天地否；塔罗 `QT1-JwFq3qvlCAADcndzAQMEABYBKAGv` → rws/three-time 且正逆位一致；大六壬/小六壬/地占/藏占/阳宅/符箓 逐字段一致）；真离线（CDP `Network.emulateNetworkConditions` offline，`onLine=false` 贯穿导航）硬刷后页面完整加载、**失败请求 0**；塔罗复制出处正确（韦特→RWS 1909 公有领域、索拉·布斯卡→1491 米兰 Brera 藏，未误标韦特）。截图 `/Coze/Drive/编程专家/browser/screenshots/qt-v121b/`。
+  7. 真机复验（修完上面 3 处后重跑，A–F 全通过）：干净加载 `bodyLen=749`、SW controller 非空、`caches=['qintian-v121']`、console error=0；**阳宅首次进入 `#yz-panel` 长度 2858、坐向按钮 `[data-deg]` 32 个；二次、三次进入同样是 2858/32（修复前为 0/0）**；符箓码面板标题 `#cs-title` = `符箓 · 复现码`；阳宅还原后 `#yz-prev`/`#yz-next` 的 `display` 均为 `none`（修复前可见）；回归：六爻摇 6 轮成卦「离宫：风水涣」、首页 736、塔罗 9338、地占 30375，全程 0 error。截图 `/Coze/Drive/编程专家/browser/screenshots/qt-v121d/`。
+- **导航备忘（真机验收踩到）**：阳宅/符箓等入口**不在首页**，在**起卦页** `#view-cast` 底部的 `.more-pan > #more-cards` 里（`[data-open="yangzhai"]` / `[data-open="zhuyou"]`）；进子视图后 tabbar 隐藏，用右下角 `#global-back` 返回，而它回的是**上一个主 tab**（`switchView(lastTab || 'home')`）而非首页——这是既有设计，非缺陷。
+- **真机验收顺手清出的 3 处缺陷（已修）**：
+  1. **阳宅「二次进入」面板空白**（既有缺陷，v120 同样存在，与 v121 改动无关）：`initYangzhai()` 以 `root.dataset.yzBound === '1'` 提前 return，而 `openSubview` 每次进入都 `b.innerHTML = renderYangzhai()`（只重置成空壳）+ `initYangzhai()` → 二次进入时 init 被跳过、面板再也不 refresh（实测 `#yz-panel` 长度 0、坐向按钮 0）。修法 = **监听仍只绑一次**（`#yangzhai-body` 是常驻节点，重复 `addEventListener` 会让处理函数叠加），但**每次进入都走 `goStep(S.step)`**。
+  2. **阳宅还原后多出「上一步/下一步」**：`restoreYangzhai` 设 `S.step = 5` 但没走 `goStep(5)`，故结果页比正常流程多两个按钮。上面第 1 条的修法（进入时统一 `goStep(S.step)`）同时把它解决。
+  3. **符箓复现码标题显示「盘 · 复现码」**：`js/cases.js` 的 `KINDS` 只列了 8 类，v121 补码的 7 类（大六壬/小六壬/地占/藏占/吠陀/阳宅/符箓）没有 label，`KIND_LABEL[kind] || '盘'` 回退成「盘」。已补齐到 15 类（案例库筛选 chip 也随之正确显示这 7 类）。
+- **影响面**：复现码格式升级但向后兼容；7 类术数首次具备可复现能力；塔罗与旧卡牌双轨并存；`app/vendor/liuyao-core.js` 因引文修正 + 漂移修复而重建（体积 −35 字节，zh-CN locale 与全部排盘算法不变）；阳宅页二次进入恢复可用（此前必须整页刷新）；案例库种类标签补齐到 15 类；其余排盘逻辑零改动。
+
+---
+
 ## v120 · 2026-10-26 · 删除小雷诺曼、塔罗页回归纯塔罗（去分类分流死代码）
 
 - **背景**：主人定「雷诺曼删了，重构逻辑」。v115 把小雷诺曼并入塔罗页做「塔罗 / 雷诺曼」分类栏，属过渡形态；现整体撤下，代码回归纯塔罗，不留分类分流与悬挂引用。历史牌图与代码 git 可恢复。

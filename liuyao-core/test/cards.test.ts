@@ -41,8 +41,8 @@ describe('RWS deck', () => {
     for (const c of d.cards) {
       expect(c.reversible).toBe(true);
       expect(c.meaning.scene.length).toBeGreaterThan(0);
-      expect(c.meaning.upright.length).toBeGreaterEqual(3);
-      expect(c.meaning.reversed.length).toBeGreaterEqual(2);
+      expect(c.meaning.upright.length).toBeGreaterThanOrEqual(3);
+      expect(c.meaning.reversed.length).toBeGreaterThanOrEqual(2);
     }
   });
   it('牌义不含绝对断语', () => {

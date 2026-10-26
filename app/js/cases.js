@@ -16,6 +16,14 @@ export const KINDS = [
   { id: 'ziwei', label: '紫微', mark: '紫' },
   { id: 'cards', label: '卡牌', mark: '占' },
   { id: 'sky', label: '天象', mark: '天' },
+  // v121：这 7 类补齐复现码后也会自动留档，缺 label 会让码标题回退成「盘」（KIND_LABEL[kind] || '盘'）
+  { id: 'daliuren', label: '大六壬', mark: '壬' },
+  { id: 'xiaoliuren', label: '小六壬', mark: '小' },
+  { id: 'geomancy', label: '地占', mark: '地' },
+  { id: 'tibetan', label: '藏占', mark: '藏' },
+  { id: 'vedic', label: '吠陀', mark: '吠' },
+  { id: 'yangzhai', label: '阳宅', mark: '宅' },
+  { id: 'zhuyou', label: '符箓', mark: '符' },
 ];
 export const KIND_LABEL = Object.fromEntries(KINDS.map((k) => [k.id, k.label]));
 export const KIND_MARK = Object.fromEntries(KINDS.map((k) => [k.id, k.mark]));

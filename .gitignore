@@ -8,6 +8,9 @@ liuyao-core/dist/
 
 # ===== 桩测/打包产物（bundle 与打平的同名源由 build.sh 生成）=====
 _lnsrc/ln_stub_test/*.mjs
+# 例外：手写的冒烟测试要进版本库（换设备/换 Agent 后仍能复跑），只忽略生成出来的 bundle
+!_lnsrc/ln_stub_test/tarot_smoke.mjs
+!_lnsrc/ln_stub_test/v111_smoke.mjs
 _lnsrc/ln_stub_test/tarotview.js
 _lnsrc/ln_stub_test/lenormandview.js
 /tmp/
@@ -19,7 +22,10 @@ data/
 # ===== 历史版本快照 / 素材备份 / 构建中间层 =====
 v88_src/
 v89_src/
-v91_src/
+# v91_src 现在只放手写的校验脚本（check_sharecode_v2 / check_tarot_*），要进版本库；
+# 若将来往里放 bundle 或大快照，会被下面这条忽略。
+v91_src/*
+!v91_src/*.mjs
 .kb_build/
 _lnsrc/backup_lenormand1_dondorf/
 _lnsrc/gibson_cards/
