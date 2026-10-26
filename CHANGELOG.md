@@ -17,6 +17,7 @@
 - **根因记录（踩过的坑，别踩第二次）**：①`spawnSync` 阻塞事件循环 → 同进程静态服务无法响应 Chrome → 假"超时"；②`--timeout=N` 本机 Chrome 不识别；③503 不能模拟断网（`networkFirst` 只在 fetch reject 时回退）；④停服务器后页面能打开，可能是 HTTP 磁盘缓存而非 SW（**假证据**）；⑤`controllerchange` 触发 `location.reload()`，中途读 DOM 会拿到"脚本没跑"的半成品。
 - **门禁当场抓出两处历史欠账（正是主人担心的"测试假绿"）**：①`v91_src/check_tarot_view.mjs` 的桩测依赖清单硬编码，v99 引入 `tarotdeck-sb.js`/`tarotdeck-hist.js` 后它就已经测不到真实视图（v120 删小雷诺曼后更是直接 `ERR_MODULE_NOT_FOUND`）；②它的断言还停留在 v92 菜单页架构，v109 全屏牌桌重构后全部过时。**已按模块自身 import 清单自动推导依赖 + 按牌桌架构重写断言（47 条），并补上"桩的 `innerHTML` 要模拟真实 DOM 替换"这条坑**（否则 `bindTable` 委托累积，同一按钮被处理两次而崩）。
 - **发布记录**：`releases/vNNN.json`（`tools/release-record.mjs`）——提交哈希 / 门禁逐步结果 / 部署单号 / 线上地址 / 备注。已补记 `releases/v121.json`（含"该记录由 v122 工程闭环补记，记录的是用当前全套门禁对 5552f09 代码的复验结果"这条诚实标注）。
+- **线上核验加固（`tools/deploy.sh` 第 5 节重写）**：原先用 `curl "$base/sw.js?qt=$RANDOM"` 只比版本号，实测在 coze.site 上**带 cache-buster / `no-cache` 头约一半概率挂 22.6s**（`http=000`），会得到假失败。改为**普通 GET + 最多 6 次重试 + `sha256` 内容比对**：远端 `sw.js` 字节必须等于本地 `app/sw.js`（版本号对但内容旧也算失败），再核 `index.html` 的 `?v=`；任一站点 mismatch 硬失败、两站都读不到也硬失败（"本次没有任何线上证据"）、只有单站读不到才降级为 ⚠️。新增 `--verify-only` 模式（不跑门禁、不部署、不要求工作区干净），可单独回答"线上到底是哪一版"。**实测两站线上 `sw.js` 与本地字节一致、`?v=121` 一致**（报告见 `releases/v121.json` 的 `deploy.remote_check`）。
 - **纪律归属**：`AGENTS.md` 是开发纪律的唯一正式来源（§5.0 门禁与唯一入口 / §4 交接清单 / §6 已知坑）；记忆里的 `MEMORY.md` 只保存当前状态、重要决策和必要索引，历史细节下沉 `recent_memory/`。
 
 

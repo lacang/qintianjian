@@ -3,6 +3,7 @@
 #
 # 用法：
 #   bash tools/deploy.sh [--no-gates] [--no-remote-check] [--note "说明"]
+#   bash tools/deploy.sh --verify-only   # 只做线上核验，不跑门禁也不部署（排障用）
 #
 # 环境变量：
 #   QT_DRY_RUN=1             只打印将要执行的部署命令，不真的部署（用于故障注入自测）
@@ -25,11 +26,13 @@ COZE_URL="https://8xjmbcxsf9.page.coze.site"
 GH_URL="https://lacang.github.io/qintianjian/"
 NO_GATES=0
 NO_REMOTE=0
+VERIFY_ONLY=0
 NOTE=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --no-gates) NO_GATES=1 ;;
     --no-remote-check) NO_REMOTE=1 ;;
+    --verify-only) VERIFY_ONLY=1; NO_GATES=1 ;;
     --note) NOTE="${2:-}"; shift ;;
     *) echo "[deploy] 未知参数：$1" >&2; exit 2 ;;
   esac
@@ -44,6 +47,12 @@ if [ "$VER" != "$SWVER" ]; then
   exit 1
 fi
 
+# set -u 下这些变量必须在被引用前定义；正常路径下由第 4/5 节覆盖
+if [ "$VERIFY_ONLY" -eq 1 ]; then STATUS="verify-only"; else STATUS=""; fi
+DEPLOY_ID=""
+APP_ID=""
+REMOTE_COZE=""; REMOTE_GH=""
+if [ "$VERIFY_ONLY" -eq 0 ]; then
 # ---------- 1. 工作区必须干净（部署产物要能追溯到某个提交） ----------
 DIRTY=$(git status --porcelain | wc -l | tr -d ' ')
 if [ "$DIRTY" != "0" ] && [ "${QT_ALLOW_DIRTY:-0}" != "1" ]; then
@@ -111,28 +120,73 @@ if [ "$STATUS" != "Succeeded" ]; then
   echo "[deploy] ❌ 部署单最终状态为 $STATUS，不是 Succeeded。" >&2
   exit 1
 fi
+fi   # ← 结束 VERIFY_ONLY 跳过段（--verify-only 时直接进入线上核验）
 
-# ---------- 5. 线上核验：两个站点的 sw.js 版本必须等于本次版本 ----------
+# ---------- 5. 线上核验：两站 sw.js 必须与本地字节一致 + index.html 版本一致 ----------
+# 为什么不只比版本号：版本号对不代表内容对（CDN 可能返回旧的同名文件）。
+# 为什么不加 ?cache-buster 或 Cache-Control: no-cache：实测 coze.site 这个共享域 CDN
+#   在这两种情况下约一半概率挂起 22s（http=000），会让核验假失败。用普通 GET + 重试，
+#   并直接比对 sw.js 内容的 sha256 —— 这比只读版本号更强，也能容忍 CDN 收敛延迟。
 REMOTE_COZE="skipped"
 REMOTE_GH="skipped"
 if [ "$NO_REMOTE" -eq 0 ] && [ "${QT_SKIP_REMOTE:-0}" != "1" ]; then
   echo ""
-  echo "════════ 线上核验（等 CDN 收敛到 v$VER）════════"
-  check_remote() {
-    local name="$1" base="$2"
-    local i swv
-    for i in $(seq 1 12); do
-      swv=$(curl -s -m 12 "$base/sw.js?qt=$RANDOM" | grep -o 'qintian-v[0-9]\+' | head -1 | sed 's/qintian-v//')
-      if [ "$swv" = "$VER" ]; then echo "$name v$swv ✅"; return 0; fi
-      echo "[deploy]   $name 第 $i 次读到 sw=$swv，等待收敛…"
+  echo "════════ 线上核验（sw.js 与本地字节一致 + index.html 版本一致）════════"
+  LOCAL_SW_SHA=$(sha256sum app/sw.js | awk '{print $1}')
+  EMPTY_SHA=$(printf '' | sha256sum | awk '{print $1}')
+
+  # 返回 0=一致 / 1=读到内容但不一致 / 2=一直读不到（网络或 CDN 抖动）
+  check_site() {
+    local name="$1" base="$2" i swsha htmlver
+    for i in $(seq 1 6); do
+      swsha=$(curl -s -m 30 "$base/sw.js" | sha256sum | awk '{print $1}')
+      if [ "$swsha" = "$EMPTY_SHA" ]; then
+        echo "[deploy]   $name 第 $i 次：读不到 sw.js（网络/CDN 抖动），重试…"
+        sleep 10; continue
+      fi
+      if [ "$swsha" != "$LOCAL_SW_SHA" ]; then
+        echo "[deploy]   $name 第 $i 次：sw.js 与本地不一致（远端 ${swsha:0:12} / 本地 ${LOCAL_SW_SHA:0:12}），等收敛…"
+        sleep 10; continue
+      fi
+      htmlver=$(curl -s -m 30 "$base/" | grep -o '?v=[0-9]\+' | head -1 | tr -d '?v=')
+      if [ "$htmlver" = "$VER" ]; then
+        echo "$name sw.js 字节一致 / index.html ?v=$htmlver ✅"
+        return 0
+      fi
+      echo "[deploy]   $name 第 $i 次：sw.js 一致但 index.html ?v=$htmlver（期望 $VER），等收敛…"
       sleep 10
     done
-    echo "$name sw=$swv ❌"
+    if [ "$swsha" = "$EMPTY_SHA" ]; then
+      echo "$name 始终读不到（本地/网络受限）⚠️"
+      return 2
+    fi
+    echo "$name sw.js=${swsha:0:12} htmlver=$htmlver（期望 $VER）❌"
     return 1
   }
-  REMOTE_COZE=$(check_remote "coze.site" "$COZE_URL") || { echo "[deploy] ❌ coze.site 未收敛到 v$VER。" >&2; exit 1; }
-  REMOTE_GH=$(check_remote "github.io" "$GH_URL") || { echo "[deploy] ❌ GitHub Pages 未收敛到 v$VER。" >&2; exit 1; }
-  echo "[deploy] 线上核验通过：$REMOTE_COZE / $REMOTE_GH"
+
+  echo ""
+  echo "[deploy] 核验 coze.site："
+  check_site "coze.site" "$COZE_URL"; RC_COZE=$?
+  echo "[deploy] 核验 github.io："
+  check_site "github.io" "$GH_URL"; RC_GH=$?
+
+  if [ "$RC_COZE" = "0" ]; then REMOTE_COZE="ok"; elif [ "$RC_COZE" = "2" ]; then REMOTE_COZE="unreachable"; else REMOTE_COZE="mismatch"; fi
+  if [ "$RC_GH" = "0" ]; then REMOTE_GH="ok"; elif [ "$RC_GH" = "2" ]; then REMOTE_GH="unreachable"; else REMOTE_GH="mismatch"; fi
+
+  if [ "$RC_COZE" = "1" ] || [ "$RC_GH" = "1" ]; then
+    echo "[deploy] ❌ 有站点线上内容与本地不一致（sw.js 字节不同或 index.html 版本不对）。" >&2
+    exit 1
+  fi
+  if [ "$RC_COZE" = "2" ] && [ "$RC_GH" = "2" ]; then
+    echo "[deploy] ❌ 两个站点都读不到，本次没有任何线上证据，不算部署成功。" >&2
+    exit 1
+  fi
+  if [ "$RC_COZE" = "2" ] || [ "$RC_GH" = "2" ]; then
+    echo "[deploy] ⚠️ 有站点从本机读不到（可能是本机网络受限，不一定是部署问题）："
+    echo "[deploy]    coze.site=$REMOTE_COZE / github.io=$REMOTE_GH"
+    echo "[deploy]    已至少核验一个站点；请人工在浏览器里确认另一个站点。"
+  fi
+  echo "[deploy] 线上核验：coze.site=$REMOTE_COZE / github.io=$REMOTE_GH"
 fi
 
 # ---------- 6. 写部署结果（供发布记录引用） ----------
@@ -157,6 +211,6 @@ PY
 fi
 
 echo ""
-echo "[deploy] ✅ v$VER 部署完成：status=$STATUS"
+echo "[deploy] ✅ v$VER 完成：status=${STATUS}"
 echo "[deploy]    coze.site   $COZE_URL"
 echo "[deploy]    github.io   $GH_URL"

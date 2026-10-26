@@ -127,6 +127,8 @@
 
 `bash tools/gates.sh --quick` 只跑 1–3（发版 bump 前后用）；`--no-tests` 跑 1–4；`--expect-version NN` 额外断言版本号一致。
 
+`bash tools/deploy.sh --verify-only` 只做线上核验（不跑门禁、不部署、不要求工作区干净），用来单独确认两个站点的线上内容与本地是否一致——排查"线上到底是哪一版"时先用它，不要为了核验而重新部署。
+
 **门禁本身也要被测**：`node tools/test-gates.mjs` 会对每道门禁**故意注入故障**并断言它必须红，同时跑一条"无故障必须绿"的对照组。任何一次"门禁全绿"的结论，都要以这个自测为前提——**没红过的门禁等于没有门禁**。
 
 **为什么部署入口必须唯一**：如果还能手工 `coze-dev deploy`，门禁就形同虚设。所以 `tools/deploy.sh` 是唯一部署入口，且部署前**再跑一遍门禁**；工作区脏（有未提交改动）直接拒绝部署，因为"部署的产物必须能追溯到某个提交"。
@@ -146,7 +148,7 @@ bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → coze-dev d
 
 `tools/release.sh` 里的 `tools/bump-version.sh` 内含三闸门：写回读回断言 / 旧版本号残留 / import 闭包 ⊆ SW ASSETS，+卫生闸+ESM 语法自检，任一失败 `exit 1` 不得发版。**语法自检必须走 `.mjs` 副本**：`node --check x.js` 会按 CommonJS 解析、放过 ESM 的重复顶层声明——v121 就因两处 `xxxCode` 重复声明静默过闸，真机整个模块图崩、应用完全不启动。
 
-**双路部署与线上核验**：①`coze-dev deploy`（coze.site，备用 CDN）；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）。两路都要核验 SW 版本号 + 关键资源内容 + 老代码已消失（`tools/deploy.sh` 自动做 sw.js 收敛轮询）。最后**双远端 git 同步哈希对齐** → 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+**双路部署与线上核验**：①`coze-dev deploy`（coze.site，备用 CDN）；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）。两路都要核验 SW 版本号 + 关键资源内容 + 老代码已消失。`tools/deploy.sh` 的核验方式是**普通 GET（不带 cache-buster、不带 no-cache 头）+ 最多 6 次重试 + sha256 内容比对**：比对远端 `sw.js` 与本地 `app/sw.js` 的**字节**（版本号对但内容旧也算失败），再核 `index.html` 的 `?v=`；任一站点 mismatch 直接硬失败，两站都读不到也硬失败（"本次没有任何线上证据"），只有单站读不到才降级为 ⚠️ + 人工确认。最后**双远端 git 同步哈希对齐** → 记忆归档 → 汇报（结论先行 + 真机待验收项）。
 
 **每次发版必须留下 `releases/vNNN.json`**：提交哈希、门禁逐步结果、部署单号、线上核验、版本号。出问题先看这个文件，不要靠"某个 AI 还记得"。
 
@@ -188,6 +190,8 @@ bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → coze-dev d
 - **SW 预缓存是 all-or-nothing**：`caches.addAll(ASSETS)` 有一个 404 就整批失败（SW 直接不激活）。所以"缓存条目 ⊇ ASSETS 全集"这条断言同时验证了清单里每个文件都真实存在。
 - **CDP 断言要等渲染稳定**：`main.js` 监听 SW `controllerchange` 后会 `location.reload()`，一次导航实际加载两次，中途读 DOM 会读到"HTML 已解析、脚本没跑"的半成品（关键区块全空）。要等到关键区块有内容再取 DOM。
 - **桩测里 `innerHTML =` 要模拟真实 DOM 替换**：真实 DOM 换子树时旧节点上的委托会一起消失，桩里如果让 `#tr-table` 长驻，`bindTable` 的点击委托会不断累积、同一个按钮被处理多次（第二次就 `state.tableSlots` 为 null 崩）。桩的 `innerHTML` setter 里要把 `#tr-table` 重建。
+- **coze.site CDN 对带 cache-buster / `no-cache` 的请求会挂起**：实测请求 `sw.js` 时带 `?qt=<随机数>` 或带 `Cache-Control: no-cache` / `Pragma: no-cache` 头，约一半概率挂 **22.6s**（curl `http=000`）；普通 GET（无 query、无 no-cache 头）3/3 都是 0.1–0.2s 且内容正确。所以线上核验**不要**加 cache-buster、不要加 no-cache 头，否则会得到假失败（HTTP 缓存这一层由 sha256 内容比对兜住）。
+- **线上核验要比内容、不比版本号**：只有 `sha256(远端 sw.js) == sha256(本地 app/sw.js)` 才能证明"线上跑的是这次的代码"；只比 `qintian-vNNN` 会漏掉"版本号 bump 了、内容还是旧的"。
 - **`memory_edit` 的 replace 若原文不完全一致会把文件清空**；改记忆前先 `memory_read`，必要时用 `write_file` 写全量。单文件上限 2048 字节（`MEMORY.md` 5120）。
 - **`grep`/`find` 找不到记忆文件**：记忆由 memory 服务托管，不在 bash 可见路径，只能用 `memory_read`/`memory_list`/`memory_edit`。
 
