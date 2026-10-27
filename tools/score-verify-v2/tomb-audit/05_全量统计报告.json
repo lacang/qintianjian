@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-10-27T02:19:37.749Z",
+  "baseline": {
+    "branch": "main",
+    "head": "7656500",
+    "verdictSha": "b484f10a8e3e9f209ab4ac896030bdbb4b63bbea7ab902673e10f8a6c0313d8d"
+  },
+  "method": "生产 judgeNajia（①②③）与原版 judgeOrig 双引擎对同一场景实算；入墓事实按十二长生墓库表独立复算并与生产信号交叉校验；候选方案只在内存中做反事实扣减，不落盘改码。",
+  "scenarioSpace": {
+    "masks": 4096,
+    "months": 12,
+    "domains": 8,
+    "legalPans": 49152,
+    "scanned": 393216,
+    "fixedDayGanZhi": "癸酉",
+    "coverageBoundary": [
+      "日辰固定为起盘日（癸酉），且酉不属于任何五行的墓库（辰戌丑未），故本测试空间中「日墓」永不成立，入墓 100% 来自月建。",
+      "因此「同一爻不同来源入墓」（月墓+日墓并存）在现有测试空间内不可构造，情况C/F 只能标记为覆盖不足。",
+      "月支 12 值、六爻动静 4096 组合、8 个问事域全枚举；未覆盖真实随机日辰、旬空旬首随日变化、以及人工指定变卦。"
+    ]
+  },
+  "counts": {
+    "scanned": 393216,
+    "legalPans": 49152,
+    "t195": 13004,
+    "t242": 32768,
+    "both": 4660,
+    "sameOccBoth": 4352,
+    "diffOccBoth": 308,
+    "otherMuRule": 36064,
+    "lostTriple": 0,
+    "sameObjBoth": 4352
+  },
+  "categories": {
+    "A_195only": 8344,
+    "B_242only": 28108,
+    "C_both_sameOcc": 4352,
+    "D_both_diffOcc": 308,
+    "E_diffYao": 308,
+    "F_sameYao_diffSrc": 0,
+    "G_withOtherMuRule": 6112,
+    "H_blockedByDomain": 16272
+  },
+  "catC_detail": {
+    "byMonth": {
+      "辰": 448,
+      "戌": 3008,
+      "未": 704,
+      "丑": 192
+    },
+    "byLingTai": {
+      "死": 448,
+      "休": 640,
+      "囚": 704,
+      "旺": 2368,
+      "相": 192
+    },
+    "sameObjectIdentity": 4352
+  },
+  "gBreakdown": {
+    "lost": 2656,
+    "health": 16704,
+    "people": 16704
+  },
+  "candA_flipByDomain": {
+    "wealth": 271,
+    "love": 288,
+    "career": 565,
+    "lost": 187
+  },
+  "candE_suppressSide": {
+    "y195": 5660,
+    "s242": 17408
+  },
+  "levelTransitions": {
+    "X:0平→1吉": 3624,
+    "X:-2大凶→-1凶": 5095,
+    "X:-2大凶→-2大凶": 10660,
+    "E:-2大凶→-2大凶": 3250,
+    "E:1吉→1吉": 3155,
+    "X:1吉→1吉": 3874,
+    "E:-2大凶→-1凶": 2050,
+    "E:1吉→2大吉": 813,
+    "X:1吉→2大吉": 985,
+    "E:-1凶→0平": 2760,
+    "X:-1凶→0平": 4971,
+    "A:-1凶→0平": 401,
+    "A2:-1凶→0平": 401,
+    "X:-1凶→1吉": 423,
+    "A:-2大凶→-2大凶": 1872,
+    "A2:-2大凶→-2大凶": 1872,
+    "X:-1凶→-1凶": 10265,
+    "E:0平→1吉": 2424,
+    "E:-1凶→-1凶": 4627,
+    "A:-1凶→-1凶": 802,
+    "A2:-1凶→-1凶": 802,
+    "A:-2大凶→-1凶": 496,
+    "A2:-2大凶→-1凶": 496,
+    "A:1吉→2大吉": 88,
+    "A2:1吉→2大吉": 88,
+    "E:2大吉→2大吉": 1058,
+    "X:2大吉→2大吉": 1215,
+    "A:1吉→1吉": 349,
+    "A2:1吉→1吉": 349,
+    "A:0平→1吉": 326,
+    "A2:0平→1吉": 326,
+    "E:-1凶→1吉": 371,
+    "A:2大吉→2大吉": 18,
+    "A2:2大吉→2大吉": 18
+  },
+  "muByMonth": {},
+  "rowsIn04": 41112,
+  "known6": [
+    {
+      "case_id": "戌|64|love",
+      "origScore": 1,
+      "prodScore": -1,
+      "prodLevel": -1,
+      "drop242": 0,
+      "drop195": 0,
+      "muWang": 1,
+      "dropBoth": 1
+    },
+    {
+      "case_id": "戌|194|love",
+      "origScore": 1,
+      "prodScore": -1,
+      "prodLevel": -1,
+      "drop242": 0,
+      "drop195": 0,
+      "muWang": 1,
+      "dropBoth": 1
+    },
+    {
+      "case_id": "戌|714|love",
+      "origScore": 1,
+      "prodScore": -1,
+      "prodLevel": -1,
+      "drop242": 0,
+      "drop195": 0,
+      "muWang": 1,
+      "dropBoth": 1
+    },
+    {
+      "case_id": "戌|2274|love",
+      "origScore": 1,
+      "prodScore": -1,
+      "prodLevel": -1,
+      "drop242": 0,
+      "drop195": 0,
+      "muWang": 1,
+      "dropBoth": 1
+    },
+    {
+      "case_id": "戌|2664|love",
+      "origScore": 1,
+      "prodScore": -1,
+      "prodLevel": -1,
+      "drop242": 0,
+      "drop195": 0,
+      "muWang": 1,
+      "dropBoth": 1
+    },
+    {
+      "case_id": "戌|2794|love",
+      "origScore": 1,
+      "prodScore": -1,
+      "prodLevel": -1,
+      "drop242": 0,
+      "drop195": 0,
+      "muWang": 1,
+      "dropBoth": 1
+    }
+  ]
+}
