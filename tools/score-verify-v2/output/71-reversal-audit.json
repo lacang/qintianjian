@@ -1,0 +1,839 @@
+{
+ "generatedAt": "2026-10-27T01:57:01.712Z",
+ "method": "基线引擎与提交A引擎对 393,216 条场景各自实算，按档位差独立重扫；逐例做信号多重集差分与公式核验。",
+ "engines": {
+  "baseline": "legacy/verdict.orig.mjs (=0ed9e89)",
+  "stageA": "legacy/verdict.stageA.mjs (=b634b8f)",
+  "sha": {
+   "baseline": "3c38bb9bddace87f5e61373bbb7e869fa0b7bd80c075864c8fe44a179862e8ad",
+   "stageA": "6e743fe9f10509048f0a5a468e80d507b2c08dfc9008e25ed1b6cf641c31933b",
+   "prod": "b484f10a8e3e9f209ab4ac896030bdbb4b63bbea7ab902673e10f8a6c0313d8d"
+  }
+ },
+ "scanned": 393216,
+ "reversals": {
+  "吉→凶": 71,
+  "凶→吉": 0
+ },
+ "crossCheck": {
+  "existingList": 71,
+  "onlyInExisting": 0,
+  "onlyInRescan": 0
+ },
+ "summary": {
+  "pass": 71,
+  "fail": 0,
+  "insufficient": 0,
+  "domains": {
+   "love": 71
+  },
+  "months": {
+   "丑": 1,
+   "辰": 7,
+   "巳": 7,
+   "午": 1,
+   "未": 7,
+   "酉": 21,
+   "戌": 6,
+   "亥": 21
+  },
+  "scoreTransitions": {
+   "1→-1": 71
+  },
+  "dedupCombos": {
+   "①②": 71
+  },
+  "suppressedRules": {
+   "wangxiang": 71,
+   "liuhunhun": 71
+  },
+  "afterDedup3": {
+   "A凶(凶) → +③凶": 7,
+   "A凶(凶) → +③吉": 64
+  }
+ },
+ "cases": [
+  {
+   "case_id": "丑|2144|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|72|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|200|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|712|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|2120|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|2248|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|2632|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "辰|2760|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|72|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|200|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|712|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|2120|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|2248|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|2632|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "巳|2760|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "午|584|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|72|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|200|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|712|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|2120|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|2248|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|2632|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "未|2760|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|3|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|11|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|43|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|139|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|171|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|515|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|523|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|555|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|643|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|683|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2051|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2059|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2091|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2179|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2187|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2219|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2563|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2571|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2603|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2691|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "酉|2699|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻相于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "戌|64|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "戌|194|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "戌|714|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "戌|2274|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "戌|2664|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "戌|2794|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|3|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|11|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|43|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|139|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|171|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|515|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|523|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|555|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|643|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|683|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2051|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2059|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2091|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2179|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2187|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2219|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2563|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2571|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2603|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2691|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  },
+  {
+   "case_id": "亥|2699|love",
+   "verdict": "通过",
+   "origScore": 1,
+   "newScore": -1,
+   "cut1": "1|世爻旺于月，你自己有底气、扛得住事。",
+   "cut2": "1|本卦是六合卦，占婚最宜，主易合、关系黏得住。",
+   "formula": -1,
+   "prog": -1,
+   "sameOrder": true
+  }
+ ],
+ "issues": []
+}

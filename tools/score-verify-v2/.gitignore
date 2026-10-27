@@ -1,0 +1,5 @@
+# 全量矩阵与差分中间产物体积过大（单文件 30MB 级），不入库；
+# 需要复现时用 scripts/run-v2b.mjs 重新生成（约 3 分钟）。
+output/*full-matrix*.csv
+output/*-diff.csv
+output/fixed-month-*.csv

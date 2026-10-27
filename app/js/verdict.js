@@ -169,6 +169,14 @@ export function judgeNajia(pan, domainId) {
   }
   const y = yongOccs[0];
 
+  // ---------- 重复计分闸门（V2）----------
+  // bodyCounts：用神本体块（一、）确实参与计分；health/decision/life/people 的用神是世爻或反用神，
+  //   旺衰/动变全部由专项块统算，故这些域不触发下列去重，避免误删唯一的世爻分。
+  // yongIsShi：选中的用神就是世爻同一爻（此时"用神"与"世爻"是同一基础因素，不是两条独立证据）。
+  //   应爻为用（useYing）不适用：应爻与世爻必然不同爻。
+  const bodyCounts = yongOccs.length > 0 && !skipYongBody.has(domainId);
+  const yongIsShi = !!(bodyCounts && y && !ys.useYing && an.shi && y.pos === an.shi.occ.pos);
+
   // ---------- 一、用神本体（通用）----------
   if (!yongOccs.length && !skipYongBody.has(domainId)) {
     const hidden = ys.occurrences.filter((o)=>o.hidden);
@@ -232,10 +240,15 @@ export function judgeNajia(pan, domainId) {
       if (an.shi.occ.moving) add(-1, `世爻旬空但发动，动不为空，出空便落实。`, '《增删卜易·旬空章》');
       else add(-2, `世爻逢旬空——你自己心里没底、劲使不上，事情容易落空。`, '《增删卜易·旬空章》');
     }
-    if (WANG.has(st.lingTai)) add(1, `世爻${st.lingTai}于月，你自己有底气、扛得住事。`, '《增删卜易·四时旺相章》');
-    else if (SHUAI.has(st.lingTai)) add(-1, `世爻${st.lingTai}于月，你当下气弱，不宜强出头。`, '《增删卜易·四时旺相章》');
-    if (st.huaTouKe) add(-2, `世爻动化回头克——自己的动作反伤自己，最近别做大决策。`, '《增删卜易·动变章》');
-    if (st.huaTouSheng) add(1, `世爻动化回头生，行动有人帮、越动越顺。`, '《增删卜易·动变章》');
+    // ① 用神持世时，"用神得月令之气"与"世爻相于月"是同一爻的同一个基础因素（月建旺衰），
+    //    只保留用神侧（一、190/191/192），世爻侧不再重复计分。用神不持世时两者分属不同爻，照常各计。
+    if (!yongIsShi && WANG.has(st.lingTai)) add(1, `世爻${st.lingTai}于月，你自己有底气、扛得住事。`, '《增删卜易·四时旺相章》');
+    else if (!yongIsShi && SHUAI.has(st.lingTai)) add(-1, `世爻${st.lingTai}于月，你当下气弱，不宜强出头。`, '《增删卜易·四时旺相章》');
+    // ③ 同一根发动爻既是用神又是世爻时，变爻回头克/生只成立一次：保留用神侧（一、201/202），
+    //    世爻侧不再重复。用神不持世（不同爻）时两条独立，照常各计；health 走专项块，此处不干预。
+    const htDup = yongIsShi && y.moving;
+    if (!htDup && st.huaTouKe) add(-2, `世爻动化回头克——自己的动作反伤自己，最近别做大决策。`, '《增删卜易·动变章》');
+    if (!htDup && st.huaTouSheng) add(1, `世爻动化回头生，行动有人帮、越动越顺。`, '《增删卜易·动变章》');
     if (st.huaJin) add(1, `世动化进神，你正处在往上走的势头。`, '《增删卜易·进退章》');
     if (st.huaTui) add(-1, `世动化退神，你自己正在打退堂鼓。`, '《增删卜易·进退章》');
     if (st.fanYin) add(-1, `世动化反吟，你这边反复摇摆。`, '《增删卜易·反伏章》');
@@ -258,11 +271,14 @@ export function judgeNajia(pan, domainId) {
   // ---------- 五、世应关系（合作/对方/地头/伴侣）----------
   // life 占的是自己一生，应爻不代表具体对象，加减无意义；
   // people 以应爻为用神，空破墓绝与生克全由行人专项块按"归信"口径断，避免重复。
+  // ② 记录世应是否真共现相合/相冲，供爱情域与"本卦六合/六冲卦"去重（只有真共现才归并）。
+  let shiYingHe = false, shiYingChong = false;
   if (an.shi && an.ying && domainId !== 'life' && domainId !== 'people') {
     const yz=an.shi.occ.yao.zhi, yz2=an.ying.occ.yao.zhi;
     const sw=an.shi.occ.state.wuXing, yw=an.ying.occ.state.wuXing;
-    if (LIUHE[yz]===yz2) add(1, `世应相合——你和对方合得来、彼此接受。`, '《增删卜易·六合章》');
+    if (LIUHE[yz]===yz2) { shiYingHe = true; add(1, `世应相合——你和对方合得来、彼此接受。`, '《增删卜易·六合章》'); }
     else if (CHONG[yz]===yz2) {
+      shiYingChong = true;
       const w = domainId==='love' ? -2 : -1;
       add(w, `世应相冲——你和对方/地头${domainId==='love'?'顶着来，占婚最忌相冲，主易散、易吵翻':'相冲，多冲突、变动'}。`, '《增删卜易·六冲章》', domainId==='love'?'liuhunhun':undefined);
     } else {
@@ -307,8 +323,11 @@ export function judgeNajia(pan, domainId) {
     if (pan.gender!=='女' && wangDong(xiongdiDong).length) add(-1, `兄弟旺动——男占感情为劫财之象，主竞争者、情敌，或朋友、同辈作梗。`, '《增删卜易·婚姻章》');
     if (pan.gender==='女' && wangDong(zisunDong).length) add(-1, `子孙旺动——女占克官，对男方/婚姻不利，或主自由、子女、个人发展之事绊住感情。`, '《增删卜易·婚姻章》');
     const ben=guaName(pan.benGua), bian=guaName(pan.bianGua);
-    if (LIU_CHONG_GUA.includes(ben)) add(-1, `本卦是六冲卦，占婚最忌，主易散、易吵翻。`, '《增删卜易·婚姻章》','liuhunhun');
-    if (LIU_HE_GUA.includes(ben)) add(1, `本卦是六合卦，占婚最宜，主易合、关系黏得住。`, '《增删卜易·婚姻章》','liuhunhun');
+    // ② 六冲卦与世应相冲是同一"离散"事实的两种表述，真共现时只计世应相冲（-2），卦象不再重复扣。
+    //    六合卦同理：只有世应真相合时才归并（六合卦里火地晋/山雷颐/地泽临 世应既不合也不冲，其 +1 独立保留）。
+    //    313/314 描述的是"变卦走向"，与世应、本卦卦象都不是同一因素，一律照常计分。
+    if (LIU_CHONG_GUA.includes(ben) && !shiYingChong) add(-1, `本卦是六冲卦，占婚最忌，主易散、易吵翻。`, '《增删卜易·婚姻章》','liuhunhun');
+    if (LIU_HE_GUA.includes(ben) && !shiYingHe) add(1, `本卦是六合卦，占婚最宜，主易合、关系黏得住。`, '《增删卜易·婚姻章》','liuhunhun');
     if (pan.bianGua) {
       if (LIU_CHONG_GUA.includes(ben)&&LIU_HE_GUA.includes(bian)) add(2, `六冲变六合——眼下不成、先吵先难，日后反而成，别太早放弃。`, '《增删卜易·婚姻章》','liuhunhun');
       if (LIU_HE_GUA.includes(ben)&&LIU_CHONG_GUA.includes(bian)) add(-2, `六合变六冲——现在再好，往后也会生变，古法叫"始亲终疏"。`, '《增删卜易·婚姻章》','liuhunhun');

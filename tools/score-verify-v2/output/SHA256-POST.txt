@@ -1,0 +1,7 @@
+SHA256 后校验（实验完成后，与实验前逐一比对）
+ed8129ef564029ce4eabcbf3c84a1d417411228be58cd8b8a4a185702bcffe45  app/js/verdict.js        （与 SHA256-PRE.txt 一致，未改动）
+463fc635bb7023cef84d7b8b6393d5b34fc923a55dafc20ec680b117ef944ae0  app/vendor/liuyao-core.js（与 SHA256-PRE.txt 一致，未改动）
+
+git HEAD = 0ed9e89（实验前后一致，未提交、未部署、未上线）
+git status：app/ 下无任何已修改文件；仅新增未跟踪的实验目录 tools/score-verify-v2/（及此前已存在的 aipack 在制品，与本轮无关）。
+全矩阵：393,216 条，非法盘 0；v2-full-matrix.csv 共 393,217 行（含表头）。
