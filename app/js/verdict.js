@@ -244,8 +244,11 @@ export function judgeNajia(pan, domainId) {
     //    只保留用神侧（一、190/191/192），世爻侧不再重复计分。用神不持世时两者分属不同爻，照常各计。
     if (!yongIsShi && WANG.has(st.lingTai)) add(1, `世爻${st.lingTai}于月，你自己有底气、扛得住事。`, '《增删卜易·四时旺相章》');
     else if (!yongIsShi && SHUAI.has(st.lingTai)) add(-1, `世爻${st.lingTai}于月，你当下气弱，不宜强出头。`, '《增删卜易·四时旺相章》');
-    if (st.huaTouKe) add(-2, `世爻动化回头克——自己的动作反伤自己，最近别做大决策。`, '《增删卜易·动变章》');
-    if (st.huaTouSheng) add(1, `世爻动化回头生，行动有人帮、越动越顺。`, '《增删卜易·动变章》');
+    // ③ 同一根发动爻既是用神又是世爻时，变爻回头克/生只成立一次：保留用神侧（一、201/202），
+    //    世爻侧不再重复。用神不持世（不同爻）时两条独立，照常各计；health 走专项块，此处不干预。
+    const htDup = yongIsShi && y.moving;
+    if (!htDup && st.huaTouKe) add(-2, `世爻动化回头克——自己的动作反伤自己，最近别做大决策。`, '《增删卜易·动变章》');
+    if (!htDup && st.huaTouSheng) add(1, `世爻动化回头生，行动有人帮、越动越顺。`, '《增删卜易·动变章》');
     if (st.huaJin) add(1, `世动化进神，你正处在往上走的势头。`, '《增删卜易·进退章》');
     if (st.huaTui) add(-1, `世动化退神，你自己正在打退堂鼓。`, '《增删卜易·进退章》');
     if (st.fanYin) add(-1, `世动化反吟，你这边反复摇摆。`, '《增删卜易·反伏章》');

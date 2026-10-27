@@ -1,0 +1,2 @@
+ed8129ef564029ce4eabcbf3c84a1d417411228be58cd8b8a4a185702bcffe45  app/js/verdict.js
+463fc635bb7023cef84d7b8b6393d5b34fc923a55dafc20ec680b117ef944ae0  app/vendor/liuyao-core.js

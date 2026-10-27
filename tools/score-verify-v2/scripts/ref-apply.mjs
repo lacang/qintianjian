@@ -25,7 +25,7 @@ export const VARIANTS = {
 export function aggregate(signals, ctx, variant) {
   const cfg = VARIANTS[variant];
   const tagged = signals.map((s) => ({ ...s, _cls: classifySignal(s) }));
-  if (variant === 'orig') return { score: tagged.reduce((a, s) => a + s.w, 0), cut: [], cutGroups: [] };
+  if (variant === 'orig') { const sc = tagged.reduce((a, s) => a + s.w, 0); return { score: sc, level: LEVEL_OF(sc), cut: [], cutIdx: [], cutGroups: [] }; }
   const byGroup = new Map();
   for (const s of tagged) {
     for (const g of (s._cls.groups || [])) {
@@ -34,15 +34,15 @@ export function aggregate(signals, ctx, variant) {
       byGroup.get(g).push(s);
     }
   }
-  const cut = new Set(); const cutGroups = [];
+  const cut = new Set(); const cutGroups = []; const cutIdx = [];
   for (const [g, members] of byGroup) {
     if (!groupActive(g, members, ctx)) continue;
     const primary = pickPrimary(g, members);
     let didCut = false;
-    for (const m of members) if (m !== primary) { cut.add(m); didCut = true; }
+    for (const m of members) if (m !== primary) { cut.add(m); cutIdx.push(tagged.indexOf(m)); didCut = true; }
     if (didCut) cutGroups.push(g);
   }
   let score = 0;
   for (const s of tagged) score += cut.has(s) ? (cfg.k === 0.5 ? s.w * 0.5 : 0) : s.w;
-  return { score, level: LEVEL_OF(score), cut: [...cut].map((s) => s._cls.sid), cutGroups: [...new Set(cutGroups)] };
+  return { score, level: LEVEL_OF(score), cut: [...cut].map((s) => s._cls.sid), cutIdx: cutIdx.sort((a, b) => a - b), cutGroups: [...new Set(cutGroups)] };
 }

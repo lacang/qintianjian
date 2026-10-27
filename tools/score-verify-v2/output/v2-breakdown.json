@@ -1,0 +1,137 @@
+{
+  "byDomain": {
+    "career": {
+      "n": 49152,
+      "score": 14288,
+      "level": 4021,
+      "reverse": 12
+    },
+    "wealth": {
+      "n": 49152,
+      "score": 9312,
+      "level": 2785,
+      "reverse": 40
+    },
+    "love": {
+      "n": 49152,
+      "score": 14880,
+      "level": 4856,
+      "reverse": 51
+    },
+    "health": {
+      "n": 49152,
+      "score": 10848,
+      "level": 4639,
+      "reverse": 335
+    },
+    "decision": {
+      "n": 49152,
+      "score": 0,
+      "level": 0,
+      "reverse": 0
+    },
+    "life": {
+      "n": 49152,
+      "score": 0,
+      "level": 0,
+      "reverse": 0
+    },
+    "people": {
+      "n": 49152,
+      "score": 0,
+      "level": 0,
+      "reverse": 0
+    },
+    "lost": {
+      "n": 49152,
+      "score": 9312,
+      "level": 2385,
+      "reverse": 72
+    }
+  },
+  "byMonth": {
+    "寅": {
+      "level": 1885,
+      "score": 5168
+    },
+    "卯": {
+      "level": 1519,
+      "score": 5168
+    },
+    "辰": {
+      "level": 1369,
+      "score": 5064
+    },
+    "巳": {
+      "level": 1512,
+      "score": 5136
+    },
+    "午": {
+      "level": 1541,
+      "score": 5136
+    },
+    "未": {
+      "level": 1722,
+      "score": 5064
+    },
+    "申": {
+      "level": 1138,
+      "score": 3680
+    },
+    "酉": {
+      "level": 1122,
+      "score": 3680
+    },
+    "戌": {
+      "level": 1673,
+      "score": 5064
+    },
+    "亥": {
+      "level": 1568,
+      "score": 5208
+    },
+    "子": {
+      "level": 1768,
+      "score": 5208
+    },
+    "丑": {
+      "level": 1869,
+      "score": 5064
+    }
+  },
+  "variantDomain": {
+    "v1": {
+      "love": 2736,
+      "career": 3775,
+      "lost": 2253,
+      "wealth": 2453
+    },
+    "v2": {
+      "love": 2519
+    },
+    "v3": {
+      "wealth": 853,
+      "love": 833,
+      "career": 1236,
+      "lost": 659
+    },
+    "v4": {
+      "health": 4639
+    },
+    "vall": {
+      "health": 4639,
+      "wealth": 2785,
+      "love": 4856,
+      "career": 4021,
+      "lost": 2385
+    },
+    "vfold": {
+      "love": 2901,
+      "career": 3080,
+      "health": 2514,
+      "wealth": 1766,
+      "lost": 1556
+    }
+  },
+  "xuChanged": 5280
+}
