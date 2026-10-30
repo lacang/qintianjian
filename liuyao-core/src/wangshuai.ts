@@ -23,7 +23,7 @@ export type RiRole = '日建比和' | '日建生爻' | '日建克爻' | '爻生�
 /** 一爻相对月日与（可选）变爻的全部事实标记 */
 export interface YaoState {
   wuXing: WuXing;
-  /** 月令状态 */
+  /** 月令状态（本判旺衰，依月令五行关系；月破不改写。五行关系明细见 monthRole） */
   lingTai: LingTai;
   /** 月建对爻五行关系明细 */
   monthRole: string;
@@ -35,9 +35,9 @@ export interface YaoState {
   xunKong: boolean;
   /** 日破/暗动候选：静爻被日辰冲（是否暗动取决于旺衰，事实层只标记） */
   riChong: boolean;
-  /** 暗动：静爻被日辰冲且月令旺或相 */
+  /** 暗动：静爻被日辰冲且本判旺或相 */
   anDong: boolean;
-  /** 日破：静爻被日辰冲且月令死或囚 */
+  /** 日破：静爻被日辰冲且非旺相（死/囚/休；休态 2026-10-28 起归入日破） */
   riPo: boolean;
   /** 日建/月建合爻支 */
   riHe: boolean;
@@ -110,9 +110,17 @@ export function evalYao(input: YaoStateInput): YaoState {
   const yuePo = LIU_CHONG[monthZhi] === zhi;
   const xk = xunKong.includes(zhi);
   const riChong = !moving && LIU_CHONG[dayZhi] === zhi;
-  // 暗动：静爻被日冲且旺/相；日破：静爻被日冲且死/囚；休态保守不标记
+  // 暗动：静爻被日冲且本判旺/相。日破：静爻被日冲而非本判旺/相
+  //   （死/囚为衰破，休态经 2026-10-28 董事长裁决归入日破）。
+  // 月破不改写本判旺衰（2026-10-30 董事长裁决·方案 A）：
+  //   月建之「破」是功能性失效——《增删卜易·月建章》「爻逢月破而无功」「月破乃无用之爻」，
+  //   由 verdict 的 yuepo 规则单独计分表达；旺衰仍依月令五行关系判定
+  //   （《占病章》「值月破须看用神之衰旺，旺则愈于实破之日及出月而愈」）。
+  //   日冲的暗动/日破一律按本判旺衰执行，不因月破人工降态。
+  //   相冲两支五行必为比和（辰戌、丑未→旺）或相克（子午、巳亥、寅申、卯酉→死/囚），
+  //   故月破爻本判只可能为 旺/囚/死，「相」「休」在月破条件下不可达。
   const anDong = riChong && (lingTai === '旺' || lingTai === '相');
-  const riPo = riChong && (lingTai === '死' || lingTai === '囚');
+  const riPo = riChong && !(lingTai === '旺' || lingTai === '相');
   const riHe = HE[dayZhi] === zhi;
   const yueHe = HE[monthZhi] === zhi;
 
@@ -146,7 +154,6 @@ export function evalYao(input: YaoStateInput): YaoState {
   if (riChong) {
     if (anDong) tags.push('暗动');
     else if (riPo) tags.push('日破');
-    else tags.push('日冲（休态，暗动/日破待定）');
   }
   if (changSheng) tags.push('长生');
   if (diWang) tags.push('帝旺');
@@ -160,6 +167,7 @@ export function evalYao(input: YaoStateInput): YaoState {
   if (fanYin) tags.push('化反吟');
 
   return {
+    // lingTai 输出本判旺衰（月破不改写）；月令五行关系原值保留在 monthRole。
     wuXing, lingTai, monthRole: monthRoleMap[relMonth],
     riRole: riRoleMap[relRi],
     yuePo, xunKong: xk, riChong, anDong, riPo, riHe, yueHe,

@@ -32291,7 +32291,6 @@ var LIU_CHONG_GUA = /* @__PURE__ */ new Set([
   "\u5929\u96F7\u65E0\u5984",
   "\u4E7E\u4E3A\u5929"
 ]);
-var GUI_HUN_OVERRIDE = /* @__PURE__ */ new Set(["\u96F7\u706B\u4E30"]);
 var ZHI_ORDER2 = [
   "\u5B50",
   "\u4E11",
@@ -32405,8 +32404,13 @@ function getGuaMeta(upper, lower) {
     // mingpan guaXu：京房八宫序号（1本宫/八纯，2一世…6五世，7游魂，8归魂）
     guaXu: info.guaXu,
     isYouHun: info.guaXu === 7,
-    // 雷火丰：金标准 App 标归魂（见 constants.ts GUI_HUN_OVERRIDE 说明）
-    isGuiHun: info.guaXu === 8 || GUI_HUN_OVERRIDE.has(toSimplified(info.name)),
+    // 归魂 = 八宫第八卦（《增删卜易·归魂游魂章》：「归魂卦为各宫之第八卦」）。
+    // 雷火丰是坎宫第六卦（五世卦），不标归魂。
+    // 坎宫八卦序（2026-10-28 用 mingpan guaXu 实测复核）：坎为水1 / 水泽节2 / 水雷屯3 /
+    //   水火既济4 / 泽火革5 / 雷火丰6 / 地火明夷7（游魂）/ 地水师8（归魂）。
+    //   故坎宫归魂是「地水师」，地火明夷是游魂——勿混。
+    // 原 GUI_HUN_OVERRIDE 人工覆盖已在 L0 修复轮撤销（标签与世五应二自相矛盾）。
+    isGuiHun: info.guaXu === 8,
     isBaChun: info.guaXu === 1,
     specialType: LIU_HE_GUA.has(name) ? "\u516D\u5408" : LIU_CHONG_GUA.has(name) ? "\u516D\u51B2" : void 0
   };
@@ -32827,7 +32831,7 @@ function getShouGuaPan(gong) {
     const position = i + 1;
     return {
       position,
-      yinYang: bits[i % 3] ? "\u9633" : "\u9634",
+      yinYang: bits[2 - i % 3] ? "\u9633" : "\u9634",
       gan: nj.gan,
       zhi: nj.zhi,
       wuXing: nj.wuXing,
@@ -32996,7 +33000,7 @@ function evalYao(input) {
   const xk = xunKong.includes(zhi);
   const riChong = !moving && LIU_CHONG[dayZhi] === zhi;
   const anDong = riChong && (lingTai === "\u65FA" || lingTai === "\u76F8");
-  const riPo = riChong && (lingTai === "\u6B7B" || lingTai === "\u56DA");
+  const riPo = riChong && !(lingTai === "\u65FA" || lingTai === "\u76F8");
   const riHe = HE[dayZhi] === zhi;
   const yueHe = HE[monthZhi] === zhi;
   const cs = CHANG_SHENG[wuXing];
@@ -33027,7 +33031,6 @@ function evalYao(input) {
   if (riChong) {
     if (anDong) tags.push("\u6697\u52A8");
     else if (riPo) tags.push("\u65E5\u7834");
-    else tags.push("\u65E5\u51B2\uFF08\u4F11\u6001\uFF0C\u6697\u52A8/\u65E5\u7834\u5F85\u5B9A\uFF09");
   }
   if (changSheng) tags.push("\u957F\u751F");
   if (diWang) tags.push("\u5E1D\u65FA");
@@ -33040,6 +33043,7 @@ function evalYao(input) {
   if (fuYin) tags.push("\u5316\u4F0F\u541F");
   if (fanYin) tags.push("\u5316\u53CD\u541F");
   return {
+    // lingTai 输出本判旺衰（月破不改写）；月令五行关系原值保留在 monthRole。
     wuXing,
     lingTai,
     monthRole: monthRoleMap[relMonth],
