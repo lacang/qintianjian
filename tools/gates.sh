@@ -66,7 +66,11 @@ run_all() {
   # ---- 2. vendor 产物是否与 liuyao-core/src 同步（防"src 改了 vendor 没重建"漂移） ----
   step "vendor 产物同步" node tools/build-vendor.mjs --check || return 1
 
-  # ---- 3. 真实浏览器启动：模块图真的能在浏览器里跑起来 ----
+  # ---- 3. 六爻核心正式测试（Vitest，209 例）：golden/najia/跨64卦等单元测试 ----
+  # 不走 npm test：云盘同步会把 node_modules/.bin 的符号链接压成文本文件，npx 必然 127。
+  step "六爻核心正式测试" bash tools/test-core.sh || return 1
+
+  # ---- 4. 真实浏览器启动：模块图真的能在浏览器里跑起来 ----
   # 静态检查全绿也可能整站不启动（运行时依赖 / MIME / 路径大小写）。
   if [ -n "$EXPECT" ]; then
     step "真实浏览器启动" node tools/verify-browser.mjs --expect-version "$EXPECT" || return 1
@@ -76,7 +80,7 @@ run_all() {
 
   [ "$MODE" = "quick" ] && return 0
 
-  # ---- 4. Service Worker 离线可用（PWA 的核心承诺） ----
+  # ---- 5. Service Worker 离线可用（PWA 的核心承诺） ----
   if [ -n "$EXPECT" ]; then
     step "SW 离线可用" node tools/verify-offline.mjs --expect-version "$EXPECT" || return 1
   else
@@ -85,19 +89,23 @@ run_all() {
 
   [ "$MODE" = "gates" ] && return 0
 
-  # ---- 5. 桩测链路：先重建 bundle，再跑测试（顺序不能反，否则测的是旧产物） ----
+  # ---- 6. 桩测链路：先重建 bundle，再跑测试（顺序不能反，否则测的是旧产物） ----
   step "桩测 bundle 重建" bash _lnsrc/ln_stub_test/build.sh || return 1
   step "塔罗冒烟" node _lnsrc/ln_stub_test/tarot_smoke.mjs || return 1
   step "v111 桩测" node _lnsrc/ln_stub_test/v111_smoke.mjs || return 1
 
-  # ---- 6. 复现码端到端 + v1 向后兼容 ----
+  # ---- 7. 复现码端到端 + v1 向后兼容 ----
   step "复现码 e2e（含 v1 兼容）" node v91_src/check_sharecode_v2.mjs || return 1
 
-  # ---- 7. 术数数据/视图回归 ----
+  # ---- 8. 术数数据/视图回归 ----
   step "塔罗数据" node v91_src/check_tarot_data.mjs || return 1
   step "塔罗视图" node v91_src/check_tarot_view.mjs || return 1
   step "塔罗 v119 回归" node v91_src/check_tarot_v119.mjs || return 1
   step "塔罗 v120 回归" node v91_src/check_tarot_v120.mjs || return 1
+
+  # ---- 9. AI 资料包快照一致性（四层：文件集/逐字节/魂卦断言/格式交叉） ----
+  step "AI 资料包快照一致性" node tools/aipack-snapshot-check.mjs || return 1
+
   return 0
 }
 
