@@ -1,0 +1,125 @@
+════════════════════════════════════════════════════════════════
+v122 候选 · 本轮审计证据固化清单（P1-4）
+生成时间：2026-10-29 03:29:10 CST
+════════════════════════════════════════════════════════════════
+
+【一】代码状态
+  HEAD            : 7a5bae4331bd3575acec18d7f6fc2f89d1e9a8fe
+  分支            : main
+  已暂存          : 0 项
+  未暂存/未跟踪   : 22 项
+  远端            : https://github.com/lacang/qintianjian.git
+  线上版本        : v121（未部署本候选）
+
+【二】本批变更文件（9 改 + 13 新增目录/文件）
+   M .gitignore
+   M app/js/verdict.js
+   M app/vendor/liuyao-core.js
+   M liuyao-core/src/constants.ts
+   M liuyao-core/src/guaTable.ts
+   M liuyao-core/src/paipan.ts
+   M liuyao-core/src/wangshuai.ts
+   M liuyao-core/test/golden.test.ts
+   M tools/gates.sh
+  ?? aipack-samples/
+  ?? app/js/aipack.js
+  ?? tools/ai-pack-sample.mjs
+  ?? tools/aipack-snapshot-check.mjs
+  ?? tools/score-verify-v2/key-fact-audit/
+  ?? tools/score-verify-v2/l0-fact-audit/
+  ?? tools/score-verify-v2/l0-fix-audit/
+  ?? tools/score-verify-v2/l1-fix/
+  ?? tools/score-verify-v2/l1-prep/
+  ?? tools/score-verify-v2/l1-review/
+  ?? tools/score-verify-v2/output/analyzed-vall-510.csv
+  ?? tools/score-verify/
+  ?? tools/test-core.sh
+
+【三】核心代码事实（审计依据）
+  wangshuai.ts:112  const riChong = !moving && LIU_CHONG[dayZhi] === zhi;
+  wangshuai.ts:118  const lingTaiEff = yuePo && lingTai === '旺' ? '休' : lingTai;
+  wangshuai.ts:119  const anDong = riChong && (旺 || 相);
+  wangshuai.ts:120  const riPo = riChong && !(旺 || 相);
+  → 日破只对静爻成立，动爻被日冲不进入日破分支
+
+【四】证据文件（sha256 前 16 位 / 字节数）
+  40c656f6cd97bf5e      111065  counterfactual-141.json
+  074809a4b4eaf94c        9903  counterfactual-141.txt
+  9b38e03269d28c8d        1291  enum-level-matrix.json
+  4ca8e21a07528fc7        1587  enum-level-matrix.txt
+  86432655fcc597ad     5493673  flips-positive-to-negative.json
+  8998b54f06ef7234        8124  flips-positive-to-negative.txt
+  2a22facbaf5e3049       15263  COUNTERFACTUAL-AUDIT-REPORT.txt
+  682b1763387d2a5f       17320  RIBO-IMPACT-REPORT.txt
+  349ee8d68905f4ec       12949  PEOPLE-IMPACT-REPORT.txt
+
+【五】复算脚本（sha256 前 16 位）
+  21a17f3410833db7  counterfactual-141.mjs
+  093069fa1ecdd187  enum-level-matrix.mjs
+  b5d1ee7523c0ae76  export-flips.mjs
+  667fe4dadd4093c8  report-ribo.mjs
+  9b2ec3807e8ed700  report-people.mjs
+
+【六】门禁结果（本轮重跑）
+  命令：bash tools/gates.sh
+  结果：14/14 全绿，209/209 测试通过，用时 33s
+  说明：门禁通过是必要条件，不代替规则归因审查
+
+【七】核验结论摘要
+  141 条 ΣΔw=Δscore 校验 564/564 通过，异常 0
+  日破权重贡献恒为 -1（141/141）
+  必要因素分组：月破失气 106 / 六合+日破 30 / 六合 2 / 六冲+六合+日破 2 / 日破 1
+  日破落点 141/141 = 妻财（三域用神），PRE 旺衰全为休
+  全量 4,718,592：档位变化 97,492（吉→凶 7,590 / 凶→吉 368 / 其他 89,534）
+  7,590 与明细文件逐条 key 比对 0 差异
+
+【八】未执行动作
+  git add ✗   git commit ✗   git push ✗   deploy ✗
+  线上仍为 v121
+════════════════════════════════════════════════════════════════
+
+
+==============================================================================
+补充（2026-10-30）：三问题核验轮次
+==============================================================================
+本附录对应董事长第三次批示的三个待裁决问题。全程只读，未 git add / commit / push / deploy。
+
+一、新增交付文件
+  THREE-QUESTIONS-REPORT.txt        三问题完整证据与裁决建议（含原典逐字、纳甲验证、影响面）
+  呈董事长-三问题裁决.txt           呈批正文，499 字符（去空白），符合 ≤500 要求
+
+二、新增证据文件
+  evidence/inspect-mask.txt         2565 / 3601 完整排盘 + 六变体分数信号（新增 oldBoth 联合变体）
+  evidence/verify-gua-lists.txt     64 卦纳甲实测六合/六冲卦，与新老名单逐条比对
+
+三、新增脚本
+  scripts/inspect-mask.mjs          逐项反事实，支持 oldBoth（旧六合+旧六冲）真实 v121 基线
+  scripts/verify-gua-lists.mjs      名单独立验证，不依赖任何名单常量，按纳甲定义重算 64 卦
+
+四、sha256
+  0e973f2e56a91df786fd18134ec3e136b7646997f93b62196edbf867b23efe4f  THREE-QUESTIONS-REPORT.txt
+  c0b6a27e84fc69f3c24f4ae76af20f4cbe9be8f07e05e8f53961dd58b2cf2bfd  呈董事长-三问题裁决.txt
+  601fa8a91c4718e2f395e61f19809851b52303029035eec7c3ecab97dab08fce  evidence/inspect-mask.txt
+  b99cb1b49c523dfe0ca7917d05212f3eedd00d8f7f738c603da77e829ccf942d  evidence/verify-gua-lists.txt
+  a1d9a1d49c00760cf941ed5f122a4f2799d24199ef03084a12d1a5dbeb2b9d53  scripts/inspect-mask.mjs
+  8862bd65b464628bbc2c18937fdd10d07de5094296244bbdc6657e305a2a7289  scripts/verify-gua-lists.mjs
+
+五、本轮关键结论（供交叉核对）
+  1. 月破压旺为休构成重复计分：mask1174 未月未日山风蛊，1 爻妻财辛丑，
+     V0 判「旺+月破+日冲→暗动」计 0；V2 判「休+月破+日冲→日破」计 −5，差 5 分。
+     原典依据：四时旺相章 /chapters[2]/paras[197]（月建六种作用并列）、
+     占病章 /chapters[99]/paras[2]（值月破须看用神之衰旺）、
+     六冲章 /chapters[19]/paras[2]（日破前提为本判休囚）。
+  2. 六合/六冲名单修正正确：六冲章 /chapters[2]/paras[181] 逐字列十卦含雷天大壮；
+     64 卦纳甲实测新名单 8/10 全吻合，旧名单错列 3、遗漏 3、遗漏 2。
+  3. mask2565 的「反向影响」为反事实构造伪影：单撤六合名单时六冲仍新版，
+     构造出 v121 从未存在的「旧六合×新六冲」组合。补 oldBoth 变体后得 0 分、
+     Δw={liuhunhun:−1}，与 PRE 的 +1 严格对齐。
+  4. mask3601 三因素中，六合名单与六冲名单是「六合变六冲」同一条规则的两个合取前提，
+     不是两条独立证据；日破另计 −1，本判休+日冲，符合原典；本案无月破。
+
+六、未执行动作（重申）
+  · 未 git add、未 git commit、未 git push、未 deploy；
+  · 未修改任何计分代码、名单常量、测试断言；
+  · 线上版本保持 v121；
+  · 三方案均为建议，待董事长裁决后另呈实施计划。

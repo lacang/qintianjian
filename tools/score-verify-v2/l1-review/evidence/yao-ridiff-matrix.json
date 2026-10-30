@@ -1,0 +1,111 @@
+{
+  "space": {
+    "masks": 4096,
+    "months": 12,
+    "days": 12,
+    "analyses": 589824,
+    "yaoRecords": 3538944
+  },
+  "elapsedSec": 39,
+  "T": {
+    "riPoAdded": 32768,
+    "riPoAddedFromAnDong": 4096,
+    "riPoAddedFromIdle": 28672,
+    "anDongRemoved": 4096,
+    "anDongRemovedToRiPo": 4096,
+    "anDongRemovedToNeither": 0,
+    "riPoRemoved": 0,
+    "bothFlagged": 0,
+    "preRiChongIdle": 28672
+  },
+  "riPoAddedByPreLingTai": {
+    "休": 28672,
+    "旺": 4096
+  },
+  "riPoAddedByPostLingTai": {
+    "休": 32768
+  },
+  "anDongRemovedByPreLingTai": {
+    "旺": 4096
+  },
+  "riPoAddedByPair": {
+    "巳/亥": 4096,
+    "午/子": 4096,
+    "戌/辰": 3072,
+    "丑/未": 3072,
+    "辰/戌": 3072,
+    "未/丑": 3072,
+    "亥/巳": 2048,
+    "子/午": 2048,
+    "寅/申": 2048,
+    "卯/酉": 2048,
+    "申/寅": 2048,
+    "酉/卯": 2048
+  },
+  "transitionsTop40": [
+    {
+      "key": "相|false|false|false|false→相|false|false|false|false",
+      "count": 659456
+    },
+    {
+      "key": "旺|false|false|false|false→旺|false|false|false|false",
+      "count": 659456
+    },
+    {
+      "key": "休|false|false|false|false→休|false|false|false|false",
+      "count": 659456
+    },
+    {
+      "key": "死|false|false|false|false→死|false|false|false|false",
+      "count": 565248
+    },
+    {
+      "key": "囚|false|false|false|false→囚|false|false|false|false",
+      "count": 565248
+    },
+    {
+      "key": "囚|true|false|false|false→囚|true|false|false|false",
+      "count": 94208
+    },
+    {
+      "key": "旺|true|false|false|false→休|true|false|false|false",
+      "count": 94208
+    },
+    {
+      "key": "死|true|false|false|false→死|true|false|false|false",
+      "count": 94208
+    },
+    {
+      "key": "休|false|true|false|false→休|false|true|false|true",
+      "count": 28672
+    },
+    {
+      "key": "旺|false|true|true|false→旺|false|true|true|false",
+      "count": 28672
+    },
+    {
+      "key": "相|false|true|true|false→相|false|true|true|false",
+      "count": 28672
+    },
+    {
+      "key": "囚|false|true|false|true→囚|false|true|false|true",
+      "count": 24576
+    },
+    {
+      "key": "死|false|true|false|true→死|false|true|false|true",
+      "count": 24576
+    },
+    {
+      "key": "囚|true|true|false|true→囚|true|true|false|true",
+      "count": 4096
+    },
+    {
+      "key": "旺|true|true|true|false→休|true|true|false|true",
+      "count": 4096
+    },
+    {
+      "key": "死|true|true|false|true→死|true|true|false|true",
+      "count": 4096
+    }
+  ]
+}

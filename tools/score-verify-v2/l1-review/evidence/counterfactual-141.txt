@@ -1,0 +1,177 @@
+141 条吉→凶 反事实归因核验
+============================================================================
+目标 141 条（完整候选版本下 levelPre>0 且 levelPost<0，且日破通道参与）
+
+撤销单个因素后的结果分类：
+  necessary  必要因素 —— 撤销后不再吉→凶
+  joint      共同贡献 —— 撤销后仍吉→凶，但分数变化
+  background 背景因素 —— 撤销后分数档位都不变
+
+撤销日破新增         必要   33 | 共同  108 | 背景    0
+撤销月破失气         必要  106 | 共同    0 | 背景   35
+撤销六合名单         必要   34 | 共同    1 | 背景  106
+撤销六冲名单         必要    2 | 共同    0 | 背景  139
+
+── 分数贡献分布（撤销单因素后 full.score - 变体.score）──
+  日破新增     -1分×141
+  月破失气     -7分×29  -5分×77  0分×35
+  六合名单     -2分×10  -1分×24  0分×106  +1分×1
+  六冲名单     -2分×2  0分×139
+
+── 规则级权重贡献（Δw 拆解，证明总分差 ≠ 单规则扣分）──
+  撤销日破
+     141 条  Δw={ribo:-1}
+  撤销月破失气
+      77 条  Δw={wangxiang:-3,ribo:-1,andong:-1}
+      35 条  Δw={(无规则权重变化)}
+      29 条  Δw={wangxiang:-3,ribo:-1,shituo:-2,andong:-1}
+  撤销六合名单
+     106 条  Δw={(无规则权重变化)}
+      24 条  Δw={liuhunhun:-1}
+      10 条  Δw={liuhunhun:-2}
+       1 条  Δw={liuhunhun:+1}
+  撤销六冲名单
+     139 条  Δw={(无规则权重变化)}
+       2 条  Δw={liuhunhun:-2}
+
+── 必要因素组合分布 ──
+   106 条  必要因素={yuePo}
+    30 条  必要因素={liuhe+ribo}
+     2 条  必要因素={liuhe}
+     2 条  必要因素={chong+liuhe+ribo}
+     1 条  必要因素={ribo}
+
+── 与旧组合归因交叉 ──
+  月破失气为必要因素 106 条（旧分组 106）
+  六合名单为必要因素 34 条（旧分组 35）
+
+── 撤销日破后仍为凶的 108 条（共同贡献）示例 ──
+  [1594] 寅/午 love 艮为山  full -2(L-1) → noRibo -1(L-1)  Δw={{"ribo":-1}}
+  [1720] 寅/午 love 艮为山  full -2(L-1) → noRibo -1(L-1)  Δw={{"ribo":-1}}
+  [1174] 未/未 wealth 山风蛊  full -3(L-1) → noRibo -2(L-1)  Δw={{"ribo":-1}}
+  [1174] 未/未 love 山风蛊  full -2(L-1) → noRibo -1(L-1)  Δw={{"ribo":-1}}
+  [1174] 未/未 lost 山风蛊  full -2(L-1) → noRibo -1(L-1)  Δw={{"ribo":-1}}
+  [1182] 未/未 wealth 山风蛊  full -3(L-1) → noRibo -2(L-1)  Δw={{"ribo":-1}}
+
+逐条明细（前 40 条）：
+----------------------------------------------------------------------------
+[517] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[519] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[527] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[549] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[551] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[559] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[645] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[647] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[653] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[677] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[679] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[687] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2565] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe -2(L-1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=joint chong=background
+[2567] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2573] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2575] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2597] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2599] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2607] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2693] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2695] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2701] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2703] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2725] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[2727] 寅/巳 love 地泽临
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 0(L0)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[1561] 寅/午 love 山火贲
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[1594] 寅/午 love 艮为山
+  full -2(L-1)  noRibo -1(L-1)  noYuePo -2(L-1)  noLiuhe 0(L0)  noChong -2(L-1)
+  归因: ribo=joint yuePo=background liuhe=necessary chong=background
+[1691] 寅/午 love 山火贲
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[1720] 寅/午 love 艮为山
+  full -2(L-1)  noRibo -1(L-1)  noYuePo -2(L-1)  noLiuhe 0(L0)  noChong -2(L-1)
+  归因: ribo=joint yuePo=background liuhe=necessary chong=background
+[3601] 寅/午 love 山火贲
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong 1(L1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=necessary
+[1561] 卯/午 love 山火贲
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[1594] 卯/午 love 艮为山
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[1691] 卯/午 love 山火贲
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[1720] 卯/午 love 艮为山
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong -1(L-1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=background
+[3601] 卯/午 love 山火贲
+  full -1(L-1)  noRibo 0(L0)  noYuePo -1(L-1)  noLiuhe 1(L1)  noChong 1(L1)
+  归因: ribo=necessary yuePo=background liuhe=necessary chong=necessary
+[1174] 未/未 wealth 山风蛊
+  full -3(L-1)  noRibo -2(L-1)  noYuePo 2(L1)  noLiuhe -3(L-1)  noChong -3(L-1)
+  归因: ribo=joint yuePo=necessary liuhe=background chong=background
+[1174] 未/未 love 山风蛊
+  full -2(L-1)  noRibo -1(L-1)  noYuePo 3(L1)  noLiuhe -2(L-1)  noChong -2(L-1)
+  归因: ribo=joint yuePo=necessary liuhe=background chong=background
+[1174] 未/未 lost 山风蛊
+  full -2(L-1)  noRibo -1(L-1)  noYuePo 5(L2)  noLiuhe -2(L-1)  noChong -2(L-1)
+  归因: ribo=joint yuePo=necessary liuhe=background chong=background
+[1182] 未/未 wealth 山风蛊
+  full -3(L-1)  noRibo -2(L-1)  noYuePo 2(L1)  noLiuhe -3(L-1)  noChong -3(L-1)
+  归因: ribo=joint yuePo=necessary liuhe=background chong=background
+[1182] 未/未 love 山风蛊
+  full -2(L-1)  noRibo -1(L-1)  noYuePo 3(L1)  noLiuhe -2(L-1)  noChong -2(L-1)
+  归因: ribo=joint yuePo=necessary liuhe=background chong=background

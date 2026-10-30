@@ -1,0 +1,87 @@
+{
+ "total": 4718592,
+ "jx0": 687,
+ "stat": {
+  "career": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 672,
+   "total": 589824
+  },
+  "wealth": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 781,
+   "total": 589824
+  },
+  "love": {
+   "jixiong0": 687,
+   "jixiong2": 0,
+   "up": 3630,
+   "down": 369,
+   "changed": 18211,
+   "total": 589824
+  },
+  "health": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 0,
+   "total": 589824
+  },
+  "lost": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 674,
+   "total": 589824
+  },
+  "decision": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 0,
+   "total": 589824
+  },
+  "life": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 0,
+   "total": 589824
+  },
+  "people": {
+   "jixiong0": 0,
+   "jixiong2": 0,
+   "up": 0,
+   "down": 0,
+   "changed": 9472,
+   "total": 589824
+  }
+ },
+ "mat0": {
+  "0>0": 570956,
+  "-1>-1": 1770212,
+  "-2>-2": 1225440,
+  "1>1": 901603,
+  "2>2": 220571,
+  "0>-1": 6250,
+  "1>2": 177,
+  "-2>-1": 1693,
+  "-1>0": 902,
+  "0>1": 489,
+  "2>1": 1852,
+  "1>0": 9725,
+  "-1>-2": 7666,
+  "1>-1": 687,
+  "-1>1": 369
+ }
+}

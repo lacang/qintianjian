@@ -1,0 +1,33 @@
+[
+  {
+    "name": "雷火丰",
+    "guaXu": 6,
+    "shi": 5,
+    "ying": 2,
+    "isGuiHun": false,
+    "tags": [],
+    "header": "坎宫：雷火丰"
+  },
+  {
+    "name": "地火明夷",
+    "guaXu": 7,
+    "shi": 4,
+    "ying": 1,
+    "isGuiHun": false,
+    "tags": [
+      "游魂"
+    ],
+    "header": "坎宫：地火明夷（游魂）"
+  },
+  {
+    "name": "地水师",
+    "guaXu": 8,
+    "shi": 3,
+    "ying": 6,
+    "isGuiHun": true,
+    "tags": [
+      "归魂"
+    ],
+    "header": "坎宫：地水师（归魂）"
+  }
+]

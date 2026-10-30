@@ -1,0 +1,225 @@
+================================================================================
+钦天监 v122 · Commit 候选清单（暂存区核验版）
+生成时间：2026-10-30
+状态：已 git add 形成候选暂存区；未 commit、未 push、未部署
+================================================================================
+
+零、边界声明
+--------------------------------------------------------------------------------
+本清单只描述"候选暂存区"，不代表已提交。
+  git commit   —— 未执行（P2，董事长尚未授权）
+  git push     —— 未执行（P3，明确禁止）
+  部署          —— 未执行（P3，明确禁止）
+  线上版本      —— 仍 v121（app/sw.js = qintian-v121）
+  HEAD         —— 7a5bae4（审计提交，未变）
+  分支          —— main
+
+
+一、暂存区总览
+--------------------------------------------------------------------------------
+  文件总数    175
+  内容体积    12.45 MB（工作区实际字节，非 diff 行数）
+  增删行数    +442,942 / -34（绝大部分为 JSON/CSV 证据的整文件新增）
+  未跟踪残留  1 个目录（tools/score-verify/baseline/，含废弃副本，已主动排除）
+
+说明：442,942 行中 99% 是审计证据文件（逐条判读记录、矩阵导出），
+不是代码逻辑行。实际代码改动集中在 A/B/C 三组共 19 个文件。
+
+
+二、分组清单（按批准批次）
+--------------------------------------------------------------------------------
+
+【A 组】本轮方案 A —— 月破旺衰统一（董事长 2026-10-30 批准）
+  13 文件 / 2.52 MB
+
+  代码（3）
+    liuyao-core/src/wangshuai.ts            方案 A 主体：删除压旺改写
+    app/vendor/liuyao-core.js               由 src 逐字节重建
+    liuyao-core/test/wangshuai-yuepo.test.ts  新增 16 项测试
+
+  审计文档与证据（10）
+    tools/score-verify-v2/l1-review/P0-WANGXIANG-REPORT.txt        九节核验报告
+    tools/score-verify-v2/l1-review/THREE-QUESTIONS-REPORT.txt     三次批示报告（已修正 mask 3601 表述）
+    tools/score-verify-v2/l1-review/evidence/p0-wangxiang-106.{txt,json}   106 条三路径复核
+    tools/score-verify-v2/l1-review/evidence/p0-full-matrix.{txt,json}     全量矩阵 A0→A2
+    tools/score-verify-v2/l1-review/evidence/liuhunhun-regression.txt      名单三项回归
+    tools/score-verify-v2/l1-review/scripts/p0-wangxiang-rerun.mjs         106 条复核脚本
+    tools/score-verify-v2/l1-review/scripts/p0-full-matrix.mjs             全量矩阵脚本
+    tools/score-verify-v2/l1-review/scripts/liuhunhun-regression.mjs       名单回归脚本
+
+【B 组】前序 L0 修复轮（2026-10-27，已审核）
+  4 文件 / 0.03 MB
+    liuyao-core/src/constants.ts    撤销 GUI_HUN_OVERRIDE = new Set(['雷火丰'])
+    liuyao-core/src/guaTable.ts     isGuiHun 回归 guaXu === 8
+    liuyao-core/src/paipan.ts       位序陷阱修复 bits[i%3] → bits[2-(i%3)]（L0-002）
+    liuyao-core/test/golden.test.ts 雷火丰 isGuiHun 断言 true → false
+
+【C 组】前序 L1 批复（2026-10-28，已审核）
+  2 文件 / 0.06 MB
+    app/js/verdict.js   ① 六冲名单补 天雷无妄 / 雷天大壮
+                        ② 六合名单改正（3 出 3 入）：去除 火地晋/山雷颐/地泽临，
+                           补入 天地否/山火贲/火山旅
+                        ③ xingren 域六冲文案补充说明
+                        注：本轮未修改 verdict.js 任何计分规则
+    tools/gates.sh      新增「六爻核心正式测试」步骤、AI 资料包快照一致性步骤
+
+【D 组】工程化与 AI 资料包（前序，已审核）
+  25 文件 / 0.86 MB
+    .gitignore                       审计证据反向放行 + 大文件排除（含 8 行说明注释）
+    tools/test-core.sh               测试入口（绕开云盘 bin 符号链接损坏）
+    app/js/aipack.js                 AI 资料包前端
+    tools/ai-pack-sample.mjs         资料包样本生成
+    tools/aipack-snapshot-check.mjs  快照一致性校验（gates 第 14 步）
+    aipack-samples/（20 文件）        6 类资料包 × html/json/txt 快照基线
+
+【E 组】审计证据归档（多轮累积）
+  131 文件 / 8.99 MB
+    tools/score-verify-v2/l1-review/     64  （含 A 组已列出的 11 个，此处为其余）
+    tools/score-verify-v2/l0-fact-audit/ 32
+    tools/score-verify-v2/l1-prep/       10
+    tools/score-verify-v2/l1-fix/         8
+    tools/score-verify-v2/l0-fix-audit/   5
+    tools/score-verify-v2/key-fact-audit/ 2
+    tools/score-verify-v2/output/         1
+    tools/score-verify/                  10  （V2 去重前审计：REPORT/SEMANTICS/脚本/证据）
+
+  本组为过程留痕，不参与运行时。若需压缩提交体积，可单独拆分提交。
+
+
+三、vendor 一致性证明（董事长特别要求项）
+--------------------------------------------------------------------------------
+校验命令：node tools/build-vendor.mjs --check
+校验方式：读取暂存态 liuyao-core/src/index.ts 及其 import 图，
+          经 tsup 完整重建，与 app/vendor/liuyao-core.js 做**逐字节字符串比对**
+          （非哈希抽样，是全等比较）
+
+结果：
+  [build-vendor] check: 裁剪 45 块 / 2493169 字节；当前 vendor 2493169 字节
+  [build-vendor] 一致 ✅   exit=0
+
+关键文件 sha256：
+  c987fae72d6183e3691277b07c70bb8597bb15deb0792b6293e9f3439fadfce2  liuyao-core/src/wangshuai.ts
+  406a073d271a8a94e9615ae4516f2547590a014c47752eaed5ee75d0e5a878a0  app/vendor/liuyao-core.js
+  7fc21183d52fa3ce09071af8a57da670b83ce737cc30b1913583164bc4e682ec  app/js/verdict.js
+  d8906163fecfac602122967e0d7c5930d8ccfe7408505e8f8777351e6dc76f33  liuyao-core/test/wangshuai-yuepo.test.ts
+
+传递性论证（三段闭合）：
+  (1) git diff 为空           → 暂存区 == 工作区（逐字节）
+  (2) --check 通过            → 工作区 vendor == f(工作区 src)
+  (3) 由 (1)(2)               → 暂存区 vendor == f(暂存区 src)
+不存在"源码改了 vendor 没重建"或"vendor 是手工改的"的可能。
+
+暂存区 vendor 独立反查（不依赖构建脚本）：
+  grep "月破（失气）"        → 0 处（压旺标记已消失）
+  grep "yuePo && lingTai"    → 0 处（压旺改写已消失）
+  anDong 实现                → riChong && (lingTai === "旺" || lingTai === "相")
+                               直接引用本判 lingTai，无中间变量
+
+注：liuyao-core/dist/ 是 2026-10-27 旧产物，已被 .gitignore 第 6 行忽略，
+    不是交付物，不参与一致性判定。
+
+
+四、本轮核心改动（wangshuai.ts，5 处）
+--------------------------------------------------------------------------------
+1. 删除 const lingTaiEff = yuePo && lingTai === '旺' ? '休' : lingTai;
+2. anDong = riChong && (lingTai === '旺' || lingTai === '相')
+3. riPo   = riChong && !(lingTai === '旺' || lingTai === '相')
+4. tags：`${lingTaiEff}于月` → `${lingTai}于月`
+5. tags：`lingTai === '旺' ? '月破（失气）' : '月破'` → 统一 `月破`
+6. 输出：lingTai: lingTaiEff → lingTai
+另修正 interface 两处注释（第 26、32 行）与实现保持一致。
+
+未改动：
+  verdict.js 的 yuepo 三处权重（用神 −3 / 世爻 −2 / 应爻 −1）
+  verdict.js 的 wangxiang 三处权重
+  verdict.js 的 liuhunhun 四条组合规则
+  任何其他计分规则
+
+
+五、未纳入暂存区的文件（主动排除，需董事长知悉）
+--------------------------------------------------------------------------------
+tools/score-verify/baseline/verdict.orig.js
+  原因：早期审计的 verdict 副本，当前无任何脚本引用
+        （现有脚本引用的是 tools/score-verify-v2/legacy/verdict.orig.mjs）。
+        属废弃中间物，非交付物，故不 add。
+  状态：仍为未跟踪，保留在工作区未删除。
+
+以下大文件已被 .gitignore 排除，未进入暂存区：
+  tools/score-verify-v2/l1-fix/evidence/snap-PRE.json        41 MB
+  tools/score-verify-v2/l1-fix/evidence/snap-POST.json       41 MB
+  tools/score-verify-v2/output/v2-full-matrix.csv            30 MB
+  tools/score-verify-v2/output/v2b-full-matrix.csv           32 MB
+  tools/score-verify/output/full-matrix.csv                  22 MB
+  合计约 166 MB。均可由脚本确定性重跑，重跑命令写在 .gitignore 注释里。
+
+保留进库的唯一大文件：
+  tools/score-verify-v2/l1-review/evidence/flips-positive-to-negative.json  5.3 MB
+  理由：这是 7,590 条吉→凶的完整清单，是本轮 687 归因的上游源数据。
+        去掉它，141 条归因无法复算。5.3 MB 在可接受范围。
+
+
+六、技术门禁（暂存态实测）
+--------------------------------------------------------------------------------
+  bash tools/test-core.sh        17 文件 / 225 项 全过（原 209 + 本轮新增 16）
+  bash tools/gates.sh（full）    14 步全绿（本轮改码前实测，41 秒）
+  node tools/build-vendor.mjs --check   一致 ✅
+
+
+七、commit message 建议
+--------------------------------------------------------------------------------
+
+【方案 1：单 commit（当前暂存区状态）】
+------------------------------------------------------------------
+fix(liuyao): 月破不再改写本判旺衰（方案 A）—— 旺、相一律不压
+
+董事长 2026-10-30 最终裁决批准。月破为功能性失效，由 verdict 的 yuepo
+规则单独计分表达；旺衰层不再因月破压旺，暗动/日破一律依本判 lingTai 判定。
+
+- wangshuai.ts：删除 lingTaiEff 改写，anDong/riPo/tags/输出统一用 lingTai
+- vendor 由 src 逐字节重建（2493169 字节，sha256 406a073d…）
+- 新增 wangshuai-yuepo.test.ts（16 项）；全量 225/225 通过
+- A0→A2 全量：吉→凶 687（= 654 名单修正及其他已批准修复 + 33 休态日破）
+
+注：687 是指定版本基线下的吉→凶档位变化数量，不是实际用户数，
+也不是独立卦例数。
+
+本 commit 同时带入前序已批准未提交批次：L0 修复轮（雷火丰归宫、位序陷阱）、
+L1 批复（六合六冲名单、休态日破、门禁加测试）、AI 资料包与审计证据归档。
+
+未 push、未部署，线上仍 v121。
+
+【方案 2：按批次拆 4 个 commit（推荐，便于回溯）】
+------------------------------------------------------------------
+commit 1  fix(core): 雷火丰归宫与纳甲位序修复（L0 修复轮）
+          B 组 4 文件
+
+commit 2  fix(verdict): 六合六冲名单按纳甲重算修正（L1 批复①②③）
+          C 组 2 文件（verdict.js + gates.sh）
+
+commit 3  fix(liuyao): 月破不再改写本判旺衰（方案 A）
+          A 组 3 个代码文件
+          + 补一句：新增 16 项测试，225/225 通过
+
+commit 4  chore(audit): AI 资料包快照基线 + 审计证据归档
+          D 组 + E 组 + A 组 10 个文档/证据文件
+
+拆分优点：每个 commit 可独立 revert；L0/L1 与方案 A 的责任边界清楚。
+拆分代价：commit 3 单独存在时 vendor 未含 A 组重建，
+          需保证 commit 3 同时包含 vendor，否则中间态 vendor 与 src 不一致。
+          → 若拆分，commit 3 必须含 vendor（已含），且 commit 1/2 之后
+            需重建一次 vendor 才能与 src 对齐。建议按 1→2→重建vendor→3→4 顺序。
+
+
+八、待董事长决定
+--------------------------------------------------------------------------------
+  [ ] commit message 用方案 1 还是方案 2（拆 4 个）
+  [ ] E 组审计证据（8.99 MB / 131 文件）是否随本次一起提交，或另行归档
+  [ ] tools/score-verify/baseline/verdict.orig.js 是否删除（当前保留，未删）
+  [ ] 是否授权 P2 正式 commit
+
+以上四项均不影响暂存区当前状态，暂存区可随时按指示调整。
+
+================================================================================
+本清单由第三方审计方生成，只陈述已实测的事实。
+未执行的操作不会出现在"已完成"里。
+================================================================================

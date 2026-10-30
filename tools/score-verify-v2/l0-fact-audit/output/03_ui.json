@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-10-27T04:16:52.747Z",
+  "summary": {
+    "U1 藏爻阴阳": {
+      "total": 8,
+      "fail": 0
+    },
+    "U2 藏爻干支": {
+      "total": 48,
+      "fail": 0
+    },
+    "U4 行序": {
+      "total": 1,
+      "fail": 0
+    },
+    "U4 行序(静态)": {
+      "total": 1,
+      "fail": 0
+    },
+    "U5 变卦非动爻": {
+      "total": 1,
+      "fail": 0
+    },
+    "U6 魂卦三态": {
+      "total": 3,
+      "fail": 0
+    },
+    "U7 旬空展示": {
+      "total": 1,
+      "fail": 0
+    },
+    "U8 飞伏关系": {
+      "total": 56,
+      "fail": 0
+    }
+  },
+  "totalCases": 119,
+  "totalFail": 0,
+  "failures": []
+}

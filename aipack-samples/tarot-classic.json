@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "domain": "tarot",
+  "mode": "classic",
+  "mode_name": "古法推演",
+  "question": "这段合作还要不要继续",
+  "chart_metadata": {
+    "domain": "tarot",
+    "domain_name": "塔罗",
+    "cast_at": "2026-10-26 17:35",
+    "question": "这段合作还要不要继续",
+    "question_note": null,
+    "deck_id": "rws",
+    "deck_name": "韦特塔罗（RWS）",
+    "deck_license": "Public Domain（1909 Rider–Waite–Smith，美国公有领域）",
+    "spread_id": "three-time",
+    "spread_name": "三牌·时间流",
+    "reversal_used": true,
+    "app_version": "v123",
+    "repro_code": null,
+    "schema_version": 1,
+    "mode": "classic"
+  },
+  "chart_data": {
+    "deck": {
+      "id": "rws",
+      "name": "韦特塔罗（RWS）",
+      "license": "Public Domain（1909 Rider–Waite–Smith，美国公有领域）",
+      "source": "牌面与基础牌名据 1909 年 Rider–Waite–Smith 牌；结构化牌义（画面/关键词/正逆位）为自建中性整理，未使用任何在版权保护期内的现代中译本。典籍逐卡原文层拟据 A.E. Waite《Pictorial Key to the Tarot》(1910, PD)，将从核验过的公有领域文本摄入，首版留空、不以整理层冒充原文。"
+    },
+    "spread": {
+      "id": "three-time",
+      "name": "三牌·时间流",
+      "intro": "按过去、现在、未来排列，看一件事的来处、当下与走向。",
+      "positions": [
+        {
+          "label": "过去",
+          "meaning": "导致现状的来处、仍在起作用的背景。"
+        },
+        {
+          "label": "现在",
+          "meaning": "当下的核心处境与正在发生的事。"
+        },
+        {
+          "label": "未来",
+          "meaning": "若顺势发展可能走向的趋势（非注定）。"
+        }
+      ]
+    },
+    "cards": [
+      {
+        "index": 1,
+        "position_label": "过去",
+        "position_meaning": "导致现状的来处、仍在起作用的背景。",
+        "card_id": "major-10-wheel",
+        "name": "命运之轮",
+        "name_alt": "Wheel of Fortune",
+        "group": "大阿尔卡那",
+        "label": "X",
+        "reversed": false,
+        "image": "./assets/cards/major-10-wheel.jpg"
+      },
+      {
+        "index": 2,
+        "position_label": "现在",
+        "position_meaning": "当下的核心处境与正在发生的事。",
+        "card_id": "swords-08",
+        "name": "宝剑八",
+        "name_alt": "Eight of Swords",
+        "group": "宝剑",
+        "label": "8",
+        "reversed": true,
+        "image": "./assets/cards/swords-08.jpg"
+      },
+      {
+        "index": 3,
+        "position_label": "未来",
+        "position_meaning": "若顺势发展可能走向的趋势（非注定）。",
+        "card_id": "major-19-sun",
+        "name": "太阳",
+        "name_alt": "The Sun",
+        "group": "大阿尔卡那",
+        "label": "XIX",
+        "reversed": false,
+        "image": "./assets/cards/major-19-sun.jpg"
+      }
+    ]
+  },
+  "computed_analysis": {
+    "facts": {
+      "card_count": 3,
+      "reversal_used": true,
+      "cards": [
+        {
+          "index": 1,
+          "position_label": "过去",
+          "card": "命运之轮",
+          "card_alt": "Wheel of Fortune",
+          "reversed": false,
+          "scene": "巨轮飘浮于云间，轮缘字母与符号，四角活物持经，蛇与兽随轮升降。",
+          "keywords": [
+            "流转",
+            "机遇",
+            "周期",
+            "转折",
+            "因缘"
+          ],
+          "meaning_nature": "rule_digest",
+          "meaning_note": "画面 / 关键词 / 正逆位牌义是钦天监自建的中性整理层，不是古籍原文。",
+          "classic_source": "A.E. Waite《Pictorial Key to the Tarot》(1910, PD)",
+          "classic_text": "Destiny, fortune, success, elevation, luck, felicity. Reversed: Increase, abundance, superfluity.",
+          "upright_meanings": [
+            "境遇的自然起伏与转机",
+            "把握周期性的时机",
+            "承认有非己力所控的部分",
+            "顺势而变"
+          ],
+          "reversed_meanings": [
+            "逆势、反复或延迟",
+            "抗拒变化、困在循环里",
+            "把运气误当能力",
+            "需要看清自己能影响什么"
+          ]
+        },
+        {
+          "index": 2,
+          "position_label": "现在",
+          "card": "宝剑八",
+          "card_alt": "Eight of Swords",
+          "reversed": true,
+          "scene": "蒙眼缚身的女子立于泥沼，周围八剑如栏，处境多由心造。",
+          "keywords": [
+            "自限",
+            "受困感",
+            "束缚",
+            "盲点"
+          ],
+          "meaning_nature": "rule_digest",
+          "meaning_note": "画面 / 关键词 / 正逆位牌义是钦天监自建的中性整理层，不是古籍原文。",
+          "classic_source": "A.E. Waite《Pictorial Key to the Tarot》(1910, PD)",
+          "classic_text": "Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness. Reversed: Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality.",
+          "upright_meanings": [
+            "感到被处境或他人话语困住",
+            "束缚感部分来自自我设限",
+            "需要先看见眼罩可以摘下"
+          ],
+          "reversed_meanings": [
+            "松绑、找回主动",
+            "限制性想法被打破",
+            "敢于迈出第一步"
+          ]
+        },
+        {
+          "index": 3,
+          "position_label": "未来",
+          "card": "太阳",
+          "card_alt": "The Sun",
+          "reversed": false,
+          "scene": "灿烂太阳下，孩童骑马、展旗，向日葵与石墙，明亮喜悦。",
+          "keywords": [
+            "明朗",
+            "喜悦",
+            "成功",
+            "活力",
+            "坦诚"
+          ],
+          "meaning_nature": "rule_digest",
+          "meaning_note": "画面 / 关键词 / 正逆位牌义是钦天监自建的中性整理层，不是古籍原文。",
+          "classic_source": "A.E. Waite《Pictorial Key to the Tarot》(1910, PD)",
+          "classic_text": "Material happiness, fortunate marriage, contentment. Reversed: The same in a lesser sense.",
+          "upright_meanings": [
+            "清晰、顺遂与可见的成果",
+            "坦诚、富有活力",
+            "事情摊在阳光下",
+            "积极而有信心"
+          ],
+          "reversed_meanings": [
+            "短暂受阻的明朗",
+            "过度乐观或热情被浇",
+            "推迟的成功感",
+            "需要拨开自我设限的云"
+          ]
+        }
+      ]
+    },
+    "rule_based_judgments": {
+      "score": 0.95,
+      "level": "v-good",
+      "text": "吉 · 势头明朗",
+      "desc": "牌象相互扶持，倾向积极，宜顺势主动。塔罗所示为当下之势与功课，非定命。",
+      "basis": "convention",
+      "basis_note": "本倾向由钦天监按每张牌的惯例值（RWS_VAL）与逆位处理公式机械合参得出，是为\"这一阵\"给参考而编码的中性惯例值，不是某本古籍对每张牌的固定判决，也不是预测准确率。"
+    },
+    "reversal_comparison": null,
+    "spread_full": null
+  },
+  "source_materials": [
+    {
+      "kind": "classic_quote",
+      "card": "命运之轮",
+      "position": "过去",
+      "reversed": false,
+      "text": "Destiny, fortune, success, elevation, luck, felicity. Reversed: Increase, abundance, superfluity.",
+      "source": "A.E. Waite《Pictorial Key to the Tarot》(1910, PD)"
+    },
+    {
+      "kind": "classic_quote",
+      "card": "宝剑八",
+      "position": "现在",
+      "reversed": true,
+      "text": "Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness. Reversed: Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality.",
+      "source": "A.E. Waite《Pictorial Key to the Tarot》(1910, PD)"
+    },
+    {
+      "kind": "classic_quote",
+      "card": "太阳",
+      "position": "未来",
+      "reversed": false,
+      "text": "Material happiness, fortunate marriage, contentment. Reversed: The same in a lesser sense.",
+      "source": "A.E. Waite《Pictorial Key to the Tarot》(1910, PD)"
+    },
+    {
+      "kind": "convention",
+      "id": "rws_val",
+      "text": "每张牌的基础倾向值 +2/+1/0/-1（逆位按能量受阻处理）",
+      "source": "钦天监 tarotval_rws.js 自建惯例表",
+      "note": "不是古籍判决，仅用于机械合参给倾向。"
+    }
+  ],
+  "reading_domain": null,
+  "layer_status": {
+    "chart_data": "available",
+    "computed_analysis.facts": "available",
+    "computed_analysis.rule_based_judgments": "available",
+    "source_materials": "available",
+    "computed_analysis.reversal_comparison": "not_included",
+    "computed_analysis.spread_full": "not_included"
+  },
+  "data_gaps": [
+    {
+      "layer": "computed_analysis.rule_based_judgments.classic_rules",
+      "status": "not_applicable",
+      "detail": "塔罗没有\"按古法规则逐条推导\"的判断层（术数本身如此，不是资料缺失）；本层实际提供的是自建惯例合参倾向，性质见 basis=convention。"
+    },
+    {
+      "layer": "computed_analysis.reversal_comparison",
+      "status": "not_included",
+      "detail": "正逆位读法对照与牌阵全位仅在「深度研究」模式提供"
+    }
+  ],
+  "interpretation_constraints": [
+    "以下牌阵与正逆位已由钦天监抽定，请直接采用，不要重新抽牌或改动牌位。",
+    "facts.cards 里的 scene / keywords / upright_meanings / reversed_meanings 是钦天监自建的中性整理层（kind=rule_digest），不是古籍原文；只有 classic_text 是 A.E. Waite《Pictorial Key to the Tarot》(1910) 原文。引用时必须区分。",
+    "本牌组的牌义不得套用到其他牌组（牌组身份见 chart_metadata.deck_id）。",
+    "classic_text 是 Waite 原书条目，同一段里并列了正位与「Reversed:」之后两套说法；请按本张牌的实际正逆位取用对应那一套，不要把两套混讲。",
+    "倾向值来自钦天监自建的惯例表（kind=convention），不是古籍判决，也不是命定；塔罗所示为当下之势与功课，取舍由人。",
+    "layer_status 标为 not_applicable 的层是该术数本身没有这一类数据（如塔罗无古法逐条推导层），标为 not_included 是当前模式未包含，二者都不等于资料缺失。"
+  ],
+  "user_task": "请依据提供的牌阵、牌义与 Waite 原文分析这一阵。先说明每个位置上的牌依据哪一条牌义或原文，再综合推演。不得把整理层当作原文，不得把倾向值当作命定；如果资料不足，请明确指出。"
+}

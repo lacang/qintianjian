@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-10-27T04:16:52.428Z",
+  "summary": {
+    "T1 日柱": {
+      "total": 90,
+      "fail": 0
+    },
+    "T2 日柱抽样": {
+      "total": 120,
+      "fail": 0
+    },
+    "T3a 节气明确态-月柱": {
+      "total": 96,
+      "fail": 0
+    },
+    "T3a 节气明确态-年柱": {
+      "total": 96,
+      "fail": 0
+    },
+    "T4 时柱": {
+      "total": 120,
+      "fail": 0
+    },
+    "T5 子时换日-日柱": {
+      "total": 6,
+      "fail": 0
+    },
+    "T5 子时换日-时柱": {
+      "total": 6,
+      "fail": 0
+    },
+    "T6 旬空": {
+      "total": 60,
+      "fail": 0
+    },
+    "T7 跨日跨年": {
+      "total": 4,
+      "fail": 0
+    }
+  },
+  "totalCases": 598,
+  "totalFail": 0,
+  "failures": []
+}

@@ -1,0 +1,7143 @@
+{
+ "checks": {
+  "najiaTableAllMatch": true,
+  "indepCount": {
+   "chong": 10,
+   "he": 8
+  },
+  "indepEqualsCurList": {
+   "chong": true,
+   "he": true
+  },
+  "indepEqualsMeta": {
+   "chong": true,
+   "he": true
+  },
+  "overlapChongHe": 0,
+  "bothInCurList": [],
+  "chongGuaShiYingAllChong": true,
+  "heGuaShiYingAllHe": true,
+  "triggerConsistent": true,
+  "bianRuleMismatch": 0,
+  "bianRuleCases": 160
+ },
+ "lists": {
+  "legacy": {
+   "chong": [
+    "乾为天",
+    "坤为地",
+    "坎为水",
+    "离为火",
+    "震为雷",
+    "艮为山",
+    "巽为风",
+    "兑为泽"
+   ],
+   "he": [
+    "地天泰",
+    "雷地豫",
+    "火地晋",
+    "水泽节",
+    "山雷颐",
+    "地雷复",
+    "泽水困",
+    "地泽临"
+   ]
+  },
+  "v2": {
+   "chong": [
+    "乾为天",
+    "坤为地",
+    "坎为水",
+    "离为火",
+    "震为雷",
+    "艮为山",
+    "巽为风",
+    "兑为泽"
+   ],
+   "he": [
+    "地天泰",
+    "雷地豫",
+    "火地晋",
+    "水泽节",
+    "山雷颐",
+    "地雷复",
+    "泽水困",
+    "地泽临"
+   ]
+  },
+  "cur": {
+   "chong": [
+    "乾为天",
+    "坤为地",
+    "坎为水",
+    "离为火",
+    "震为雷",
+    "艮为山",
+    "巽为风",
+    "兑为泽",
+    "天雷无妄",
+    "雷天大壮"
+   ],
+   "he": [
+    "地雷复",
+    "地天泰",
+    "雷地豫",
+    "水泽节",
+    "泽水困",
+    "山火贲",
+    "火山旅",
+    "天地否"
+   ]
+  }
+ },
+ "rows": [
+  {
+   "mask": 0,
+   "name": "坤为地",
+   "upper": "坤",
+   "lower": "坤",
+   "palace": "坤",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "丑"
+    ],
+    [
+     "巳",
+     "亥"
+    ],
+    [
+     "卯",
+     "酉"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "酉",
+   "yingZhi": "卯",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -7
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": -1
+    },
+    "v2": {
+     "chong": true,
+     "score": -1
+    },
+    "cur": {
+     "chong": true,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 1,
+   "name": "地雷复",
+   "upper": "坤",
+   "lower": "震",
+   "palace": "坤",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "丑"
+    ],
+    [
+     "寅",
+     "亥"
+    ],
+    [
+     "辰",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "子",
+   "yingZhi": "丑",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 2,
+   "name": "地水师",
+   "upper": "坤",
+   "lower": "坎",
+   "palace": "坎",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "丑"
+    ],
+    [
+     "辰",
+     "亥"
+    ],
+    [
+     "午",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "酉",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 3,
+   "name": "地泽临",
+   "upper": "坤",
+   "lower": "兑",
+   "palace": "坤",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "丑"
+    ],
+    [
+     "卯",
+     "亥"
+    ],
+    [
+     "丑",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "卯",
+   "yingZhi": "亥",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": true,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 4,
+   "name": "地山谦",
+   "upper": "坤",
+   "lower": "艮",
+   "palace": "兑",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "丑"
+    ],
+    [
+     "午",
+     "亥"
+    ],
+    [
+     "申",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "亥",
+   "yingZhi": "午",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "score": -5
+    }
+   }
+  },
+  {
+   "mask": 5,
+   "name": "地火明夷",
+   "upper": "坤",
+   "lower": "离",
+   "palace": "坎",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "丑"
+    ],
+    [
+     "丑",
+     "亥"
+    ],
+    [
+     "亥",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "丑",
+   "yingZhi": "卯",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 2
+    },
+    "v2": {
+     "chong": false,
+     "score": 2
+    },
+    "cur": {
+     "chong": false,
+     "score": 2
+    }
+   }
+  },
+  {
+   "mask": 6,
+   "name": "地风升",
+   "upper": "坤",
+   "lower": "巽",
+   "palace": "震",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "丑"
+    ],
+    [
+     "亥",
+     "亥"
+    ],
+    [
+     "酉",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "丑",
+   "yingZhi": "丑",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 7,
+   "name": "地天泰",
+   "upper": "坤",
+   "lower": "乾",
+   "palace": "坤",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "丑",
+    "亥",
+    "酉"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "丑"
+    ],
+    [
+     "寅",
+     "亥"
+    ],
+    [
+     "辰",
+     "酉"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "辰",
+   "yingZhi": "酉",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "score": -5
+    }
+   }
+  },
+  {
+   "mask": 8,
+   "name": "雷地豫",
+   "upper": "震",
+   "lower": "坤",
+   "palace": "震",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "午"
+    ],
+    [
+     "巳",
+     "申"
+    ],
+    [
+     "卯",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "未",
+   "yingZhi": "午",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": 3
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 9,
+   "name": "震为雷",
+   "upper": "震",
+   "lower": "震",
+   "palace": "震",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "午"
+    ],
+    [
+     "寅",
+     "申"
+    ],
+    [
+     "辰",
+     "戌"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "戌",
+   "yingZhi": "辰",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -7
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": -4
+    },
+    "v2": {
+     "chong": true,
+     "score": -4
+    },
+    "cur": {
+     "chong": true,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 10,
+   "name": "雷水解",
+   "upper": "震",
+   "lower": "坎",
+   "palace": "震",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "午"
+    ],
+    [
+     "辰",
+     "申"
+    ],
+    [
+     "午",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "辰",
+   "yingZhi": "申",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 11,
+   "name": "雷泽归妹",
+   "upper": "震",
+   "lower": "兑",
+   "palace": "兑",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "午"
+    ],
+    [
+     "卯",
+     "申"
+    ],
+    [
+     "丑",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "丑",
+   "yingZhi": "戌",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 12,
+   "name": "雷山小过",
+   "upper": "震",
+   "lower": "艮",
+   "palace": "兑",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "午"
+    ],
+    [
+     "午",
+     "申"
+    ],
+    [
+     "申",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "辰",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 13,
+   "name": "雷火丰",
+   "upper": "震",
+   "lower": "离",
+   "palace": "坎",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "午"
+    ],
+    [
+     "丑",
+     "申"
+    ],
+    [
+     "亥",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "申",
+   "yingZhi": "丑",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 14,
+   "name": "雷风恒",
+   "upper": "震",
+   "lower": "巽",
+   "palace": "震",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "午"
+    ],
+    [
+     "亥",
+     "申"
+    ],
+    [
+     "酉",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "酉",
+   "yingZhi": "戌",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 15,
+   "name": "雷天大壮",
+   "upper": "震",
+   "lower": "乾",
+   "palace": "坤",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "午"
+    ],
+    [
+     "寅",
+     "申"
+    ],
+    [
+     "辰",
+     "戌"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "子",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": true,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 16,
+   "name": "水地比",
+   "upper": "坎",
+   "lower": "坤",
+   "palace": "坤",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "申"
+    ],
+    [
+     "巳",
+     "戌"
+    ],
+    [
+     "卯",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "卯",
+   "yingZhi": "子",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 17,
+   "name": "水雷屯",
+   "upper": "坎",
+   "lower": "震",
+   "palace": "坎",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "申"
+    ],
+    [
+     "寅",
+     "戌"
+    ],
+    [
+     "辰",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "寅",
+   "yingZhi": "戌",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 18,
+   "name": "坎为水",
+   "upper": "坎",
+   "lower": "坎",
+   "palace": "坎",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "申"
+    ],
+    [
+     "辰",
+     "戌"
+    ],
+    [
+     "午",
+     "子"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "子",
+   "yingZhi": "午",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -7
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": -5
+    },
+    "v2": {
+     "chong": true,
+     "score": -5
+    },
+    "cur": {
+     "chong": true,
+     "score": -5
+    }
+   }
+  },
+  {
+   "mask": 19,
+   "name": "水泽节",
+   "upper": "坎",
+   "lower": "兑",
+   "palace": "坎",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "申"
+    ],
+    [
+     "卯",
+     "戌"
+    ],
+    [
+     "丑",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "巳",
+   "yingZhi": "申",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 20,
+   "name": "水山蹇",
+   "upper": "坎",
+   "lower": "艮",
+   "palace": "兑",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "申"
+    ],
+    [
+     "午",
+     "戌"
+    ],
+    [
+     "申",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "申",
+   "yingZhi": "辰",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 21,
+   "name": "水火既济",
+   "upper": "坎",
+   "lower": "离",
+   "palace": "坎",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "申"
+    ],
+    [
+     "丑",
+     "戌"
+    ],
+    [
+     "亥",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "亥",
+   "yingZhi": "子",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 22,
+   "name": "水风井",
+   "upper": "坎",
+   "lower": "巽",
+   "palace": "震",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "申"
+    ],
+    [
+     "亥",
+     "戌"
+    ],
+    [
+     "酉",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "戌",
+   "yingZhi": "亥",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 23,
+   "name": "水天需",
+   "upper": "坎",
+   "lower": "乾",
+   "palace": "坤",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "申",
+    "戌",
+    "子"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "申",
+    "戌",
+    "子"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "申"
+    ],
+    [
+     "寅",
+     "戌"
+    ],
+    [
+     "辰",
+     "子"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "申",
+   "yingZhi": "子",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 1
+    },
+    "v2": {
+     "chong": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "score": 1
+    }
+   }
+  },
+  {
+   "mask": 24,
+   "name": "泽地萃",
+   "upper": "兑",
+   "lower": "坤",
+   "palace": "兑",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "亥"
+    ],
+    [
+     "巳",
+     "酉"
+    ],
+    [
+     "卯",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "巳",
+   "yingZhi": "酉",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 25,
+   "name": "泽雷随",
+   "upper": "兑",
+   "lower": "震",
+   "palace": "震",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "亥"
+    ],
+    [
+     "寅",
+     "酉"
+    ],
+    [
+     "辰",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "辰",
+   "yingZhi": "未",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -8
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -7
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -6
+    },
+    "v2": {
+     "chong": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "score": -6
+    }
+   }
+  },
+  {
+   "mask": 26,
+   "name": "泽水困",
+   "upper": "兑",
+   "lower": "坎",
+   "palace": "兑",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "亥"
+    ],
+    [
+     "辰",
+     "酉"
+    ],
+    [
+     "午",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "寅",
+   "yingZhi": "亥",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 27,
+   "name": "兑为泽",
+   "upper": "兑",
+   "lower": "兑",
+   "palace": "兑",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "亥"
+    ],
+    [
+     "卯",
+     "酉"
+    ],
+    [
+     "丑",
+     "未"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "未",
+   "yingZhi": "丑",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -6
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -5
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": -3
+    },
+    "v2": {
+     "chong": true,
+     "score": -3
+    },
+    "cur": {
+     "chong": true,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 28,
+   "name": "泽山咸",
+   "upper": "兑",
+   "lower": "艮",
+   "palace": "兑",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "亥"
+    ],
+    [
+     "午",
+     "酉"
+    ],
+    [
+     "申",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "申",
+   "yingZhi": "未",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 29,
+   "name": "泽火革",
+   "upper": "兑",
+   "lower": "离",
+   "palace": "坎",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "亥"
+    ],
+    [
+     "丑",
+     "酉"
+    ],
+    [
+     "亥",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "亥",
+   "yingZhi": "卯",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 30,
+   "name": "泽风大过",
+   "upper": "兑",
+   "lower": "巽",
+   "palace": "震",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "亥"
+    ],
+    [
+     "亥",
+     "酉"
+    ],
+    [
+     "酉",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "亥",
+   "yingZhi": "丑",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 31,
+   "name": "泽天夬",
+   "upper": "兑",
+   "lower": "乾",
+   "palace": "坤",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "亥",
+    "酉",
+    "未"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "亥"
+    ],
+    [
+     "寅",
+     "酉"
+    ],
+    [
+     "辰",
+     "未"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "酉",
+   "yingZhi": "寅",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "score": 0
+    }
+   }
+  },
+  {
+   "mask": 32,
+   "name": "山地剥",
+   "upper": "艮",
+   "lower": "坤",
+   "palace": "乾",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "戌"
+    ],
+    [
+     "巳",
+     "子"
+    ],
+    [
+     "卯",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "子",
+   "yingZhi": "巳",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 33,
+   "name": "山雷颐",
+   "upper": "艮",
+   "lower": "震",
+   "palace": "巽",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "戌"
+    ],
+    [
+     "寅",
+     "子"
+    ],
+    [
+     "辰",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "戌",
+   "yingZhi": "子",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": true,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 34,
+   "name": "山水蒙",
+   "upper": "艮",
+   "lower": "坎",
+   "palace": "离",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "戌"
+    ],
+    [
+     "辰",
+     "子"
+    ],
+    [
+     "午",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "戌",
+   "yingZhi": "寅",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 1
+    },
+    "v2": {
+     "chong": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "score": 1
+    }
+   }
+  },
+  {
+   "mask": 35,
+   "name": "山泽损",
+   "upper": "艮",
+   "lower": "兑",
+   "palace": "艮",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "戌"
+    ],
+    [
+     "卯",
+     "子"
+    ],
+    [
+     "丑",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "丑",
+   "yingZhi": "寅",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 2
+    },
+    "v2": {
+     "chong": false,
+     "score": 2
+    },
+    "cur": {
+     "chong": false,
+     "score": 2
+    }
+   }
+  },
+  {
+   "mask": 36,
+   "name": "艮为山",
+   "upper": "艮",
+   "lower": "艮",
+   "palace": "艮",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "戌"
+    ],
+    [
+     "午",
+     "子"
+    ],
+    [
+     "申",
+     "寅"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "寅",
+   "yingZhi": "申",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": 0
+    },
+    "v2": {
+     "chong": true,
+     "score": 0
+    },
+    "cur": {
+     "chong": true,
+     "score": 0
+    }
+   }
+  },
+  {
+   "mask": 37,
+   "name": "山火贲",
+   "upper": "艮",
+   "lower": "离",
+   "palace": "艮",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "戌"
+    ],
+    [
+     "丑",
+     "子"
+    ],
+    [
+     "亥",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "卯",
+   "yingZhi": "戌",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "score": -5
+    }
+   }
+  },
+  {
+   "mask": 38,
+   "name": "山风蛊",
+   "upper": "艮",
+   "lower": "巽",
+   "palace": "巽",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "戌"
+    ],
+    [
+     "亥",
+     "子"
+    ],
+    [
+     "酉",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "酉",
+   "yingZhi": "寅",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "score": 0
+    }
+   }
+  },
+  {
+   "mask": 39,
+   "name": "山天大畜",
+   "upper": "艮",
+   "lower": "乾",
+   "palace": "艮",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "戌",
+    "子",
+    "寅"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "戌"
+    ],
+    [
+     "寅",
+     "子"
+    ],
+    [
+     "辰",
+     "寅"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "寅",
+   "yingZhi": "子",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 40,
+   "name": "火地晋",
+   "upper": "离",
+   "lower": "坤",
+   "palace": "乾",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "酉"
+    ],
+    [
+     "巳",
+     "未"
+    ],
+    [
+     "卯",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": true
+   },
+   "listV2": {
+    "chong": false,
+    "he": true
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "酉",
+   "yingZhi": "未",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": true,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": true,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 41,
+   "name": "火雷噬嗑",
+   "upper": "离",
+   "lower": "震",
+   "palace": "巽",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "酉"
+    ],
+    [
+     "寅",
+     "未"
+    ],
+    [
+     "辰",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "未",
+   "yingZhi": "寅",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 2
+    },
+    "v2": {
+     "chong": false,
+     "score": 2
+    },
+    "cur": {
+     "chong": false,
+     "score": 2
+    }
+   }
+  },
+  {
+   "mask": 42,
+   "name": "火水未济",
+   "upper": "离",
+   "lower": "坎",
+   "palace": "离",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "酉"
+    ],
+    [
+     "辰",
+     "未"
+    ],
+    [
+     "午",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "巳",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 43,
+   "name": "火泽睽",
+   "upper": "离",
+   "lower": "兑",
+   "palace": "艮",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "酉"
+    ],
+    [
+     "卯",
+     "未"
+    ],
+    [
+     "丑",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "酉",
+   "yingZhi": "巳",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 1
+    },
+    "v2": {
+     "chong": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "score": 1
+    }
+   }
+  },
+  {
+   "mask": 44,
+   "name": "火山旅",
+   "upper": "离",
+   "lower": "艮",
+   "palace": "离",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "酉"
+    ],
+    [
+     "午",
+     "未"
+    ],
+    [
+     "申",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "辰",
+   "yingZhi": "酉",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "score": -5
+    }
+   }
+  },
+  {
+   "mask": 45,
+   "name": "离为火",
+   "upper": "离",
+   "lower": "离",
+   "palace": "离",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "酉"
+    ],
+    [
+     "丑",
+     "未"
+    ],
+    [
+     "亥",
+     "巳"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "巳",
+   "yingZhi": "亥",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": -3
+    },
+    "v2": {
+     "chong": true,
+     "score": -3
+    },
+    "cur": {
+     "chong": true,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 46,
+   "name": "火风鼎",
+   "upper": "离",
+   "lower": "巽",
+   "palace": "离",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "酉"
+    ],
+    [
+     "亥",
+     "未"
+    ],
+    [
+     "酉",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "亥",
+   "yingZhi": "未",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 47,
+   "name": "火天大有",
+   "upper": "离",
+   "lower": "乾",
+   "palace": "乾",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "酉",
+    "未",
+    "巳"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "酉"
+    ],
+    [
+     "寅",
+     "未"
+    ],
+    [
+     "辰",
+     "巳"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "辰",
+   "yingZhi": "巳",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -6
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -6
+    },
+    "v2": {
+     "chong": false,
+     "score": -6
+    },
+    "cur": {
+     "chong": false,
+     "score": -6
+    }
+   }
+  },
+  {
+   "mask": 48,
+   "name": "风地观",
+   "upper": "巽",
+   "lower": "坤",
+   "palace": "乾",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "未"
+    ],
+    [
+     "巳",
+     "巳"
+    ],
+    [
+     "卯",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "未",
+   "yingZhi": "未",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 49,
+   "name": "风雷益",
+   "upper": "巽",
+   "lower": "震",
+   "palace": "巽",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "未"
+    ],
+    [
+     "寅",
+     "巳"
+    ],
+    [
+     "辰",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "辰",
+   "yingZhi": "卯",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -9
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -8
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -8
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 50,
+   "name": "风水涣",
+   "upper": "巽",
+   "lower": "坎",
+   "palace": "离",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "未"
+    ],
+    [
+     "辰",
+     "巳"
+    ],
+    [
+     "午",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "巳",
+   "yingZhi": "辰",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "score": -4
+    }
+   }
+  },
+  {
+   "mask": 51,
+   "name": "风泽中孚",
+   "upper": "巽",
+   "lower": "兑",
+   "palace": "艮",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "未"
+    ],
+    [
+     "卯",
+     "巳"
+    ],
+    [
+     "丑",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "未",
+   "yingZhi": "巳",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 52,
+   "name": "风山渐",
+   "upper": "巽",
+   "lower": "艮",
+   "palace": "艮",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "未"
+    ],
+    [
+     "午",
+     "巳"
+    ],
+    [
+     "申",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "申",
+   "yingZhi": "卯",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "score": 0
+    }
+   }
+  },
+  {
+   "mask": 53,
+   "name": "风火家人",
+   "upper": "巽",
+   "lower": "离",
+   "palace": "巽",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "未"
+    ],
+    [
+     "丑",
+     "巳"
+    ],
+    [
+     "亥",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "丑",
+   "yingZhi": "巳",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 54,
+   "name": "巽为风",
+   "upper": "巽",
+   "lower": "巽",
+   "palace": "巽",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "未"
+    ],
+    [
+     "亥",
+     "巳"
+    ],
+    [
+     "酉",
+     "卯"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "卯",
+   "yingZhi": "酉",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": 0
+    },
+    "v2": {
+     "chong": true,
+     "score": 0
+    },
+    "cur": {
+     "chong": true,
+     "score": 0
+    }
+   }
+  },
+  {
+   "mask": 55,
+   "name": "风天小畜",
+   "upper": "巽",
+   "lower": "乾",
+   "palace": "巽",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "未",
+    "巳",
+    "卯"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "未"
+    ],
+    [
+     "寅",
+     "巳"
+    ],
+    [
+     "辰",
+     "卯"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "子",
+   "yingZhi": "未",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 56,
+   "name": "天地否",
+   "upper": "乾",
+   "lower": "坤",
+   "palace": "乾",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 4,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "未",
+    "巳",
+    "卯",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "未",
+    "巳",
+    "卯",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "未",
+     "午"
+    ],
+    [
+     "巳",
+     "申"
+    ],
+    [
+     "卯",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": true,
+   "indepType": "六合",
+   "metaType": "六合",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": true
+   },
+   "shiZhi": "卯",
+   "yingZhi": "戌",
+   "shiYingChong": false,
+   "shiYingHe": true,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -2
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -5
+    },
+    "v2": {
+     "chong": false,
+     "score": -5
+    },
+    "cur": {
+     "chong": false,
+     "score": -5
+    }
+   }
+  },
+  {
+   "mask": 57,
+   "name": "天雷无妄",
+   "upper": "乾",
+   "lower": "震",
+   "palace": "巽",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 5,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "午"
+    ],
+    [
+     "寅",
+     "申"
+    ],
+    [
+     "辰",
+     "戌"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "子",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -9
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -9
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -9
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": true,
+     "score": -1
+    }
+   }
+  },
+  {
+   "mask": 58,
+   "name": "天水讼",
+   "upper": "乾",
+   "lower": "坎",
+   "palace": "离",
+   "shiPos": 4,
+   "yingPos": 1,
+   "guaXu": 7,
+   "isGuiHun": false,
+   "isYouHun": true,
+   "isBaChun": false,
+   "engineZhi": [
+    "寅",
+    "辰",
+    "午",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "寅",
+    "辰",
+    "午",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "寅",
+     "午"
+    ],
+    [
+     "辰",
+     "申"
+    ],
+    [
+     "午",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "寅",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 59,
+   "name": "天泽履",
+   "upper": "乾",
+   "lower": "兑",
+   "palace": "艮",
+   "shiPos": 5,
+   "yingPos": 2,
+   "guaXu": 6,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "巳",
+    "卯",
+    "丑",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "巳",
+     "午"
+    ],
+    [
+     "卯",
+     "申"
+    ],
+    [
+     "丑",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "申",
+   "yingZhi": "卯",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "score": 0
+    }
+   }
+  },
+  {
+   "mask": 60,
+   "name": "天山遁",
+   "upper": "乾",
+   "lower": "艮",
+   "palace": "乾",
+   "shiPos": 2,
+   "yingPos": 5,
+   "guaXu": 3,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "辰",
+    "午",
+    "申",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "辰",
+    "午",
+    "申",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "辰",
+     "午"
+    ],
+    [
+     "午",
+     "申"
+    ],
+    [
+     "申",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "午",
+   "yingZhi": "申",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -4
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -3
+    },
+    "v2": {
+     "chong": false,
+     "score": -3
+    },
+    "cur": {
+     "chong": false,
+     "score": -3
+    }
+   }
+  },
+  {
+   "mask": 61,
+   "name": "天火同人",
+   "upper": "乾",
+   "lower": "离",
+   "palace": "离",
+   "shiPos": 3,
+   "yingPos": 6,
+   "guaXu": 8,
+   "isGuiHun": true,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "卯",
+    "丑",
+    "亥",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "卯",
+     "午"
+    ],
+    [
+     "丑",
+     "申"
+    ],
+    [
+     "亥",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "亥",
+   "yingZhi": "戌",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": 0
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 62,
+   "name": "天风姤",
+   "upper": "乾",
+   "lower": "巽",
+   "palace": "乾",
+   "shiPos": 1,
+   "yingPos": 4,
+   "guaXu": 2,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": false,
+   "engineZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "丑",
+    "亥",
+    "酉",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "丑",
+     "午"
+    ],
+    [
+     "亥",
+     "申"
+    ],
+    [
+     "酉",
+     "戌"
+    ]
+   ],
+   "allChong": false,
+   "allHe": false,
+   "indepType": "",
+   "metaType": "",
+   "listLegacy": {
+    "chong": false,
+    "he": false
+   },
+   "listV2": {
+    "chong": false,
+    "he": false
+   },
+   "listCur": {
+    "chong": false,
+    "he": false
+   },
+   "shiZhi": "丑",
+   "yingZhi": "午",
+   "shiYingChong": false,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -1
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": false,
+     "score": -2
+    },
+    "v2": {
+     "chong": false,
+     "score": -2
+    },
+    "cur": {
+     "chong": false,
+     "score": -2
+    }
+   }
+  },
+  {
+   "mask": 63,
+   "name": "乾为天",
+   "upper": "乾",
+   "lower": "乾",
+   "palace": "乾",
+   "shiPos": 6,
+   "yingPos": 3,
+   "guaXu": 1,
+   "isGuiHun": false,
+   "isYouHun": false,
+   "isBaChun": true,
+   "engineZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "indepZhi": [
+    "子",
+    "寅",
+    "辰",
+    "午",
+    "申",
+    "戌"
+   ],
+   "najiaMatch": true,
+   "pairs": [
+    [
+     "子",
+     "午"
+    ],
+    [
+     "寅",
+     "申"
+    ],
+    [
+     "辰",
+     "戌"
+    ]
+   ],
+   "allChong": true,
+   "allHe": false,
+   "indepType": "六冲",
+   "metaType": "六冲",
+   "listLegacy": {
+    "chong": true,
+    "he": false
+   },
+   "listV2": {
+    "chong": true,
+    "he": false
+   },
+   "listCur": {
+    "chong": true,
+    "he": false
+   },
+   "shiZhi": "戌",
+   "yingZhi": "辰",
+   "shiYingChong": true,
+   "shiYingHe": false,
+   "love": {
+    "legacy": {
+     "chong": true,
+     "he": false,
+     "score": -9
+    },
+    "v2": {
+     "chong": false,
+     "he": false,
+     "score": -8
+    },
+    "cur": {
+     "chong": false,
+     "he": false,
+     "score": -8
+    }
+   },
+   "people": {
+    "legacy": {
+     "chong": true,
+     "score": -4
+    },
+    "v2": {
+     "chong": true,
+     "score": -4
+    },
+    "cur": {
+     "chong": true,
+     "score": -4
+    }
+   }
+  }
+ ],
+ "bian": {
+  "total": 160,
+  "mismatch": 0,
+  "detail": [],
+  "cases": [
+   {
+    "ben": "坤为地",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坤为地",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "地雷复",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地雷复",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "地天泰",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "雷地豫",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "震为雷",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "震为雷",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "雷天大壮",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "坎为水",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "水泽节",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "水泽节",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "泽水困",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "兑为泽",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "艮为山",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "山火贲",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "山火贲",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "火山旅",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "离为火",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "离为火",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "巽为风",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天地否",
+    "bian": "天雷无妄",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "乾为天",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "巽为风",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "离为火",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "艮为山",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "兑为泽",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "坎为水",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "震为雷",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "雷天大壮",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天地否",
+    "bian": "坤为地",
+    "plus": false,
+    "minus": true
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "天雷无妄",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "天地否",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "火山旅",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "山火贲",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "泽水困",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "水泽节",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "雷地豫",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "地天泰",
+    "plus": true,
+    "minus": false
+   },
+   {
+    "ben": "乾为天",
+    "bian": "地雷复",
+    "plus": true,
+    "minus": false
+   }
+  ]
+ }
+}

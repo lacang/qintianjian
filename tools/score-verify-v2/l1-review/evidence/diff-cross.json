@@ -1,0 +1,1403 @@
+{
+  "mode": "diff",
+  "a": {
+    "tag": "PRE",
+    "generatedAt": "2026-10-27T16:31:22.218Z",
+    "rows": {
+      "legal": 49152,
+      "pans": 393216
+    }
+  },
+  "b": {
+    "tag": "POST",
+    "generatedAt": "2026-10-27T16:44:04.681Z",
+    "rows": {
+      "legal": 49152,
+      "pans": 393216
+    }
+  },
+  "totalKeys": 393216,
+  "changed": 18758,
+  "onlyA": 0,
+  "onlyB": 0,
+  "bucket": {
+    "chong_gua": 2270,
+    "he_gua": 2632,
+    "yuepo_wang": 12266,
+    "xiutai_ribo": 1404,
+    "gua_mixed": 0,
+    "state_mixed": 0,
+    "all_mixed": 186,
+    "other": 0,
+    "only": 0
+  },
+  "unexpectedOther": 0,
+  "otherIdStats": {},
+  "attributionComplete": true,
+  "scoreDelta": {
+    "0": 46,
+    "1": 272,
+    "2": 460,
+    "-1": 4858,
+    "-3": 3230,
+    "-2": 9506,
+    "-5": 312,
+    "-4": 74
+  },
+  "byDomain": {
+    "love": 5446,
+    "career": 1984,
+    "wealth": 2080,
+    "health": 1408,
+    "lost": 2080,
+    "decision": 1408,
+    "life": 1408,
+    "people": 2944
+  },
+  "levelFlip": {
+    "up": 290,
+    "down": 8060
+  },
+  "crossTab": {
+    "he_gua": {
+      "total": 2632,
+      "scoreChanged": 2632,
+      "levelChanged": 1018,
+      "scoreOrLevel": 2632,
+      "sigOnly": 0
+    },
+    "xiutai_ribo": {
+      "total": 1404,
+      "scoreChanged": 1404,
+      "levelChanged": 370,
+      "scoreOrLevel": 1404,
+      "sigOnly": 0
+    },
+    "yuepo_wang": {
+      "total": 12266,
+      "scoreChanged": 12234,
+      "levelChanged": 5711,
+      "scoreOrLevel": 12234,
+      "sigOnly": 32
+    },
+    "chong_gua": {
+      "total": 2270,
+      "scoreChanged": 2270,
+      "levelChanged": 1182,
+      "scoreOrLevel": 2270,
+      "sigOnly": 0
+    },
+    "all_mixed": {
+      "total": 186,
+      "scoreChanged": 172,
+      "levelChanged": 69,
+      "scoreOrLevel": 172,
+      "sigOnly": 14
+    }
+  },
+  "totalScoreOrLevelChanged": 18712,
+  "examples": {
+    "chong_gua": [
+      {
+        "k": "42|寅|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          0,
+          0
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|卯|love",
+        "pre": [
+          -5,
+          -2
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|辰|love",
+        "pre": [
+          -4,
+          -2
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|巳|love",
+        "pre": [
+          -9,
+          -2
+        ],
+        "post": [
+          -7,
+          -2
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|午|love",
+        "pre": [
+          -5,
+          -2
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|未|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          0,
+          0
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|申|love",
+        "pre": [
+          3,
+          1
+        ],
+        "post": [
+          5,
+          2
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "42|酉|love",
+        "pre": [
+          1,
+          1
+        ],
+        "post": [
+          3,
+          1
+        ],
+        "delta": 2,
+        "added": [
+          "2:liuhunhun"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      }
+    ],
+    "he_gua": [
+      {
+        "k": "5|寅|love",
+        "pre": [
+          3,
+          1
+        ],
+        "post": [
+          4,
+          2
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|卯|love",
+        "pre": [
+          2,
+          1
+        ],
+        "post": [
+          3,
+          1
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|辰|love",
+        "pre": [
+          -3,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|巳|love",
+        "pre": [
+          -7,
+          -2
+        ],
+        "post": [
+          -6,
+          -2
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|午|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -1,
+          -1
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|未|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -1,
+          -1
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|申|love",
+        "pre": [
+          4,
+          2
+        ],
+        "post": [
+          5,
+          2
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|酉|love",
+        "pre": [
+          1,
+          1
+        ],
+        "post": [
+          2,
+          1
+        ],
+        "delta": 1,
+        "added": [],
+        "removed": [
+          "-2:liuhunhun",
+          "1:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      }
+    ],
+    "yuepo_wang": [
+      {
+        "k": "17|未|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "delta": -3,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "17|未|wealth",
+        "pre": [
+          -5,
+          -2
+        ],
+        "post": [
+          -7,
+          -2
+        ],
+        "delta": -2,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "17|未|love",
+        "pre": [
+          -3,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "delta": -2,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "17|未|health",
+        "pre": [
+          -3,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "delta": -2,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "17|未|lost",
+        "pre": [
+          -5,
+          -2
+        ],
+        "post": [
+          -7,
+          -2
+        ],
+        "delta": -2,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "17|未|decision",
+        "pre": [
+          -1,
+          -1
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": -2,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": true
+        }
+      },
+      {
+        "k": "17|未|life",
+        "pre": [
+          0,
+          0
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": -3,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang",
+          "1:chishi"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": true
+        }
+      },
+      {
+        "k": "17|未|people",
+        "pre": [
+          0,
+          0
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": -2,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": true
+        }
+      }
+    ],
+    "xiutai_ribo": [
+      {
+        "k": "5|巳|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "5|午|career",
+        "pre": [
+          -1,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": true,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "7|巳|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "7|午|career",
+        "pre": [
+          -1,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "37|巳|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "37|午|career",
+        "pre": [
+          -1,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "39|巳|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -3,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      },
+      {
+        "k": "39|午|career",
+        "pre": [
+          -1,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "delta": -1,
+        "added": [
+          "-1:ribo"
+        ],
+        "removed": [],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": false,
+          "benHeOld": true,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": true,
+          "anyWangPoLine": false,
+          "anyXiuChongLine": true,
+          "useYing": false
+        }
+      }
+    ],
+    "gua_mixed": [],
+    "state_mixed": [],
+    "all_mixed": [
+      {
+        "k": "61|戌|love",
+        "pre": [
+          -4,
+          -2
+        ],
+        "post": [
+          -8,
+          -2
+        ],
+        "delta": -4,
+        "added": [
+          "-2:liuhunhun",
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": true,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "104|丑|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -7,
+          -2
+        ],
+        "delta": -5,
+        "added": [
+          "-2:liuhunhun",
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": false,
+          "benChongOld": false,
+          "benHeNew": true,
+          "benHeOld": true,
+          "bianChongNew": true,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": false,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "107|辰|love",
+        "pre": [
+          -8,
+          -2
+        ],
+        "post": [
+          -9,
+          -2
+        ],
+        "delta": -1,
+        "added": [
+          "2:liuhunhun",
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "367|丑|love",
+        "pre": [
+          -5,
+          -2
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "delta": 0,
+        "added": [
+          "2:liuhunhun",
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "1:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": false,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "587|辰|love",
+        "pre": [
+          -5,
+          -2
+        ],
+        "post": [
+          -6,
+          -2
+        ],
+        "delta": -1,
+        "added": [
+          "2:liuhunhun",
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "619|辰|love",
+        "pre": [
+          -3,
+          -1
+        ],
+        "post": [
+          -8,
+          -2
+        ],
+        "delta": -5,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang",
+          "2:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": true,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "713|辰|love",
+        "pre": [
+          -9,
+          -2
+        ],
+        "post": [
+          -10,
+          -2
+        ],
+        "delta": -1,
+        "added": [
+          "2:liuhunhun",
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": true,
+          "bianHeOld": false,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      },
+      {
+        "k": "745|辰|love",
+        "pre": [
+          -7,
+          -2
+        ],
+        "post": [
+          -12,
+          -2
+        ],
+        "delta": -5,
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang",
+          "2:liuhunhun"
+        ],
+        "facts": {
+          "benChongNew": true,
+          "benChongOld": true,
+          "benHeNew": false,
+          "benHeOld": false,
+          "bianChongNew": false,
+          "bianChongOld": false,
+          "bianHeNew": false,
+          "bianHeOld": true,
+          "yongWangPo": true,
+          "yongXiuChong": false,
+          "anyWangPoLine": true,
+          "anyXiuChongLine": false,
+          "useYing": false
+        }
+      }
+    ],
+    "other": []
+  }
+}

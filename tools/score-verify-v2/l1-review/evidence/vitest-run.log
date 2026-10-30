@@ -1,0 +1,15 @@
+=== Vitest 正式测试（P1-1）===
+时间: 2026-10-28T09:47:12+08:00
+根因: node_modules/.bin/* 被云盘同步压成纯文本（无 shebang），npx/npm test 走 shim 必 127
+liuyao-core/node_modules/.bin/vitest: ASCII text, with no line terminators
+
+--- 修复后入口 tools/test-core.sh ---
+ ✓ test/calendar.test.ts (6 tests) 18ms
+ ✓ test/meridian.test.ts (6 tests) 3ms
+
+ Test Files  16 passed (16)
+      Tests  209 passed (209)
+   Start at  09:47:13
+   Duration  6.55s (transform 498ms, setup 0ms, collect 2.17s, tests 496ms, environment 2ms, prepare 782ms)
+
+EXIT=0

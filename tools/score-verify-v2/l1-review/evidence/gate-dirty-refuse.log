@@ -1,0 +1,13 @@
+[deploy] 待部署版本：index.html ?v=121 / sw.js qintian-v121
+[deploy] ❌ 工作区有 22 项未提交改动，拒绝部署。
+[deploy]    先提交推送，再部署；确实要临时部署可设 QT_ALLOW_DIRTY=1。
+ M .gitignore
+ M app/js/verdict.js
+ M app/vendor/liuyao-core.js
+ M liuyao-core/src/constants.ts
+ M liuyao-core/src/guaTable.ts
+ M liuyao-core/src/paipan.ts
+ M liuyao-core/src/wangshuai.ts
+ M liuyao-core/test/golden.test.ts
+ M tools/gates.sh
+?? aipack-samples/

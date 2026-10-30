@@ -1,0 +1,592 @@
+{
+  "generatedAt": "2026-10-27T16:48:50.141Z",
+  "vendor": "/Coze/Drive/编程专家/每日六爻/app/vendor/liuyao-core.js",
+  "tests": {
+    "T1_bagua_bits": {
+      "expect": {
+        "乾": "阳阳阳",
+        "兑": "阳阳阴",
+        "离": "阳阴阳",
+        "震": "阳阴阴",
+        "巽": "阴阳阳",
+        "坎": "阴阳阴",
+        "艮": "阴阴阳",
+        "坤": "阴阴阴"
+      },
+      "actualShouGuaPan": {
+        "乾": {
+          "name": "乾为天",
+          "yinYang": "阳阳阳阳阳阳"
+        },
+        "兑": {
+          "name": "兑为泽",
+          "yinYang": "阳阳阴阳阳阴"
+        },
+        "离": {
+          "name": "离为火",
+          "yinYang": "阳阴阳阳阴阳"
+        },
+        "震": {
+          "name": "震为雷",
+          "yinYang": "阳阴阴阳阴阴"
+        },
+        "巽": {
+          "name": "巽为风",
+          "yinYang": "阴阳阳阴阳阳"
+        },
+        "坎": {
+          "name": "坎为水",
+          "yinYang": "阴阳阴阴阳阴"
+        },
+        "艮": {
+          "name": "艮为山",
+          "yinYang": "阴阴阳阴阴阳"
+        },
+        "坤": {
+          "name": "坤为地",
+          "yinYang": "阴阴阴阴阴阴"
+        }
+      },
+      "mismatch": [],
+      "crossCheck": {
+        "乾": "乾上乾下",
+        "兑": "兑上兑下",
+        "离": "离上离下",
+        "震": "震上震下",
+        "巽": "巽上巽下",
+        "坎": "坎上坎下",
+        "艮": "艮上艮下",
+        "坤": "坤上坤下"
+      }
+    },
+    "T1b_timecast_selfconsistency": {
+      "total": 400,
+      "samples": [
+        {
+          "upperNumber": 7,
+          "lowerNumber": 4,
+          "got": "艮/震",
+          "ok": true
+        },
+        {
+          "upperNumber": 8,
+          "lowerNumber": 4,
+          "got": "坤/震",
+          "ok": true
+        },
+        {
+          "upperNumber": 2,
+          "lowerNumber": 8,
+          "got": "兑/坤",
+          "ok": true
+        },
+        {
+          "upperNumber": 4,
+          "lowerNumber": 5,
+          "got": "震/巽",
+          "ok": true
+        },
+        {
+          "upperNumber": 5,
+          "lowerNumber": 4,
+          "got": "巽/震",
+          "ok": true
+        },
+        {
+          "upperNumber": 7,
+          "lowerNumber": 1,
+          "got": "艮/乾",
+          "ok": true
+        },
+        {
+          "upperNumber": 8,
+          "lowerNumber": 8,
+          "got": "坤/坤",
+          "ok": true
+        },
+        {
+          "upperNumber": 2,
+          "lowerNumber": 5,
+          "got": "兑/巽",
+          "ok": true
+        },
+        {
+          "upperNumber": 3,
+          "lowerNumber": 4,
+          "got": "离/震",
+          "ok": true
+        },
+        {
+          "upperNumber": 5,
+          "lowerNumber": 1,
+          "got": "巽/乾",
+          "ok": true
+        },
+        {
+          "upperNumber": 6,
+          "lowerNumber": 8,
+          "got": "坎/坤",
+          "ok": true
+        },
+        {
+          "upperNumber": 8,
+          "lowerNumber": 5,
+          "got": "坤/巽",
+          "ok": true
+        }
+      ],
+      "mismatchCount": 0,
+      "mismatch": []
+    },
+    "T2_liuchong_gua": {
+      "indep": [
+        "乾为天",
+        "兑为泽",
+        "坎为水",
+        "坤为地",
+        "天雷无妄",
+        "巽为风",
+        "离为火",
+        "艮为山",
+        "雷天大壮",
+        "震为雷"
+      ],
+      "constants": [
+        "乾为天",
+        "兑为泽",
+        "坎为水",
+        "坤为地",
+        "天雷无妄",
+        "巽为风",
+        "离为火",
+        "艮为山",
+        "雷天大壮",
+        "震为雷"
+      ],
+      "verdictJs": [
+        "乾为天",
+        "兑为泽",
+        "坎为水",
+        "坤为地",
+        "天雷无妄",
+        "巽为风",
+        "离为火",
+        "艮为山",
+        "雷天大壮",
+        "震为雷"
+      ],
+      "indepVsConstants": {
+        "onlyInA": [],
+        "onlyInB": []
+      },
+      "indepVsVerdict": {
+        "onlyInA": [],
+        "onlyInB": []
+      },
+      "countIndep": 10,
+      "countConstants": 10,
+      "countVerdict": 10
+    },
+    "T3_liuhe_gua": {
+      "indep": [
+        "地天泰",
+        "地雷复",
+        "天地否",
+        "山火贲",
+        "水泽节",
+        "泽水困",
+        "火山旅",
+        "雷地豫"
+      ],
+      "constants": [
+        "地天泰",
+        "地雷复",
+        "天地否",
+        "山火贲",
+        "水泽节",
+        "泽水困",
+        "火山旅",
+        "雷地豫"
+      ],
+      "verdictJs": [
+        "地天泰",
+        "地雷复",
+        "天地否",
+        "山火贲",
+        "水泽节",
+        "泽水困",
+        "火山旅",
+        "雷地豫"
+      ],
+      "indepVsConstants": {
+        "onlyInA": [],
+        "onlyInB": []
+      },
+      "indepVsVerdict": {
+        "onlyInA": [],
+        "onlyInB": []
+      },
+      "countIndep": 8,
+      "countConstants": 8,
+      "countVerdict": 8
+    },
+    "T3b_he_chong_overlap": [],
+    "T16_shiying": {
+      "checked": 64,
+      "mismatch": [],
+      "byGuaXu": {
+        "1": 8,
+        "2": 8,
+        "3": 8,
+        "4": 8,
+        "5": 8,
+        "6": 8,
+        "7": 8,
+        "8": 8
+      }
+    },
+    "T4_tumu": {
+      "engine": {
+        "金": {
+          "zhangsheng": "巳",
+          "diwang": "酉",
+          "mu": "丑",
+          "jue": "寅"
+        },
+        "木": {
+          "zhangsheng": "亥",
+          "diwang": "卯",
+          "mu": "未",
+          "jue": "申"
+        },
+        "水": {
+          "zhangsheng": "申",
+          "diwang": "子",
+          "mu": "辰",
+          "jue": "巳"
+        },
+        "火": {
+          "zhangsheng": "寅",
+          "diwang": "午",
+          "mu": "戌",
+          "jue": "亥"
+        },
+        "土": {
+          "zhangsheng": "寅",
+          "diwang": "午",
+          "mu": "戌",
+          "jue": "亥"
+        }
+      },
+      "note": "wuxing-rel.ts 头注释(行5)称\"土爻…墓在辰\"，同文件行68 又称\"土…墓在戌\"，CHANG_SHENG 实现为戌；《增删卜易》正文行933 为\"土水同墓于辰\"。三处口径不一致。"
+    },
+    "T5_rumu_source": {
+      "days": [
+        {
+          "date": "2026-10-26",
+          "monthZhi": "戌",
+          "dayZhi": "酉"
+        },
+        {
+          "date": "2026-10-27",
+          "monthZhi": "戌",
+          "dayZhi": "戌"
+        },
+        {
+          "date": "2026-10-28",
+          "monthZhi": "戌",
+          "dayZhi": "亥"
+        },
+        {
+          "date": "2026-10-29",
+          "monthZhi": "戌",
+          "dayZhi": "子"
+        },
+        {
+          "date": "2026-10-30",
+          "monthZhi": "戌",
+          "dayZhi": "丑"
+        },
+        {
+          "date": "2026-10-31",
+          "monthZhi": "戌",
+          "dayZhi": "寅"
+        },
+        {
+          "date": "2026-11-1",
+          "monthZhi": "戌",
+          "dayZhi": "卯"
+        },
+        {
+          "date": "2026-11-2",
+          "monthZhi": "戌",
+          "dayZhi": "辰"
+        },
+        {
+          "date": "2026-11-3",
+          "monthZhi": "戌",
+          "dayZhi": "巳"
+        },
+        {
+          "date": "2026-11-4",
+          "monthZhi": "戌",
+          "dayZhi": "午"
+        },
+        {
+          "date": "2026-11-5",
+          "monthZhi": "戌",
+          "dayZhi": "未"
+        },
+        {
+          "date": "2026-11-6",
+          "monthZhi": "戌",
+          "dayZhi": "申"
+        }
+      ],
+      "total": 294912,
+      "muTrueCount": 159744,
+      "byMonthOnly": 135168,
+      "byDayOnly": 12288,
+      "both": 12288
+    },
+    "T8_dong_chong_by_day": {
+      "movingChongByDay": 12288,
+      "samples": [
+        {
+          "date": "10-26",
+          "dayZhi": "酉",
+          "pos": 1,
+          "zhi": "卯"
+        },
+        {
+          "date": "10-26",
+          "dayZhi": "酉",
+          "pos": 1,
+          "zhi": "卯"
+        },
+        {
+          "date": "10-26",
+          "dayZhi": "酉",
+          "pos": 1,
+          "zhi": "卯"
+        }
+      ]
+    },
+    "T9_hua_mu": {
+      "huaMu": 12288,
+      "dongMuYi": 79872,
+      "samples": [
+        {
+          "date": "10-26",
+          "pos": 1,
+          "zhi": "子",
+          "bianZhi": "辰",
+          "wuXing": "水"
+        },
+        {
+          "date": "10-26",
+          "pos": 1,
+          "zhi": "子",
+          "bianZhi": "辰",
+          "wuXing": "水"
+        },
+        {
+          "date": "10-26",
+          "pos": 1,
+          "zhi": "子",
+          "bianZhi": "辰",
+          "wuXing": "水"
+        }
+      ]
+    },
+    "T11_state_conflict": {
+      "total": 147456,
+      "rawWangPo": 12288,
+      "rawXiuRiChong": 2048,
+      "rawDeadQiuRiChong": 4096,
+      "rawWangPoRipressed": 1024,
+      "rawWangRiChong": 5120,
+      "engWangAndPo": 0,
+      "engRiPo": 7168,
+      "engAnDong": 5120,
+      "engRiChongNoTag": 0,
+      "xiuAllMarkedRipo": true,
+      "wangpoAllPressed": true,
+      "anDongMismatch": 0
+    },
+    "T17_bian_state": {
+      "bianXunKong": 24576,
+      "bianYuePo": 12288,
+      "samples": [
+        {
+          "kind": "bianXunKong",
+          "date": "10-26",
+          "pos": 2,
+          "bianZhi": "亥",
+          "xunKong": "戌亥"
+        },
+        {
+          "kind": "bianXunKong",
+          "date": "10-26",
+          "pos": 2,
+          "bianZhi": "亥",
+          "xunKong": "戌亥"
+        },
+        {
+          "kind": "bianXunKong",
+          "date": "10-26",
+          "pos": 2,
+          "bianZhi": "亥",
+          "xunKong": "戌亥"
+        }
+      ]
+    },
+    "T6_yongshen_tie": {
+      "ties": 1952,
+      "sameQinTies": 1120,
+      "sameQinChoseLowest": 1120,
+      "crossQinTies": 832,
+      "crossQinChoseLowest": 404,
+      "samples": [
+        {
+          "dId": "health",
+          "tiePositions": [
+            "官鬼2",
+            "子孙6"
+          ],
+          "chosen": 2,
+          "lowest": 2,
+          "highest": 6,
+          "gua": "地雷复"
+        },
+        {
+          "dId": "career",
+          "tiePositions": [
+            "官鬼4",
+            "父母6"
+          ],
+          "chosen": 4,
+          "lowest": 4,
+          "highest": 6,
+          "gua": "地水师"
+        },
+        {
+          "dId": "health",
+          "tiePositions": [
+            "官鬼4",
+            "子孙1"
+          ],
+          "chosen": 4,
+          "lowest": 1,
+          "highest": 4,
+          "gua": "地水师"
+        },
+        {
+          "dId": "career",
+          "tiePositions": [
+            "官鬼2",
+            "父母4"
+          ],
+          "chosen": 2,
+          "lowest": 2,
+          "highest": 4,
+          "gua": "地山谦"
+        },
+        {
+          "dId": "career",
+          "tiePositions": [
+            "官鬼3",
+            "官鬼6"
+          ],
+          "chosen": 3,
+          "lowest": 3,
+          "highest": 6,
+          "gua": "地风升"
+        }
+      ]
+    },
+    "T14_liushen": {
+      "checkedDays": 12,
+      "mismatch": []
+    },
+    "T15_xunkong": {
+      "checked": 60,
+      "mismatch": []
+    },
+    "T7_leihuofeng": {
+      "name": "雷火丰",
+      "gong": "坎",
+      "guaXu": 6,
+      "isYouHun": false,
+      "isGuiHun": false,
+      "shiPosition": 5,
+      "yingPosition": 2,
+      "note": "京房八宫：坎宫第七卦（游魂）为地火明夷、第八卦（归魂）为地水师；雷火丰为第六卦（五世）。当前 guaXu=6 且 isGuiHun=true、shi=5，构成\"归魂标签 + 五世爻位\"并存。"
+    },
+    "T10_lingtai": {
+      "checked": 25,
+      "mismatch": []
+    },
+    "T18_mu_reachability": {
+      "byDayZhi": {
+        "戌月酉日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月戌日": {
+          "dayIsMuOf": [
+            "火",
+            "土"
+          ],
+          "dayIsMu": true
+        },
+        "戌月亥日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月子日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月丑日": {
+          "dayIsMuOf": [
+            "金"
+          ],
+          "dayIsMu": true
+        },
+        "戌月寅日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月卯日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月辰日": {
+          "dayIsMuOf": [
+            "水"
+          ],
+          "dayIsMu": true
+        },
+        "戌月巳日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月午日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        },
+        "戌月未日": {
+          "dayIsMuOf": [
+            "木"
+          ],
+          "dayIsMu": true
+        },
+        "戌月申日": {
+          "dayIsMuOf": [],
+          "dayIsMu": false
+        }
+      }
+    }
+  }
+}

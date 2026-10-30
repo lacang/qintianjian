@@ -1,0 +1,33 @@
+{
+ "checks": {
+  "A_yuePoMarkStable": true,
+  "B_nonYuePoLingTaiUnchanged": true,
+  "C_nonYuePoNonChongOthersUnchanged": true,
+  "D_anDongUnchanged": true,
+  "D_riPoOnlyForShuai": true,
+  "E_yuePoLingTaiOnlyWangToXiu": true,
+  "F_yuepoDeductionStillThere": true,
+  "F_noWangBonusOnYuePo": true
+ },
+ "stat": {
+  "total": 34560,
+  "yuePoTrue": 2880,
+  "yuePoFalse": 31680,
+  "yuePoChanged": 0,
+  "nonYuePoLingTaiChanged": 0,
+  "nonYuePoNonChongOtherChanged": 0,
+  "nonYuePoChongAnDongChanged": 0,
+  "nonYuePoChongRiPoBad": 0,
+  "xiuToRiPo": 264,
+  "yuePoLingTaiChanged": 576,
+  "yuePoLingTaiBadChange": 0,
+  "wangToXiu": 576,
+  "changes": []
+ },
+ "verdictCheck": {
+  "yuepoSignal": 67712,
+  "wangSignalOnYuePo": 0,
+  "checked": 393216,
+  "samples": []
+ }
+}

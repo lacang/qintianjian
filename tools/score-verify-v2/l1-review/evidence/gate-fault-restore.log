@@ -1,0 +1,342 @@
+[deploy] 待部署版本：index.html ?v=121 / sw.js qintian-v121
+
+════════ 部署前门禁（失败即中止，不会部署任何产物）════════
+
+──────── [1] 静态 ESM 模块图 ────────
+[check-modules] 70 个文件 ESM 语法通过；173 条相对 import 全部命中（0 断链 / 0 缺导出）
+[check-modules] PASS
+✅ 静态 ESM 模块图（1s）
+
+──────── [2] vendor 产物同步 ────────
+CLI Building entry: src/index.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.5.1
+CLI Using tsup config: /Coze/Drive/编程专家/每日六爻/liuyao-core/tsup.config.ts
+CLI Target: es2020
+CLI Cleaning output folder
+ESM Build start
+DTS Build start
+ESM ../../../../../tmp/qintian-vendor-build/index.js     2.41 MB
+ESM ../../../../../tmp/qintian-vendor-build/index.js.map 3.74 MB
+ESM ⚡️ Build success in 1080ms
+DTS ⚡️ Build success in 10265ms
+DTS ../../../../../tmp/qintian-vendor-build/index.d.ts 48.86 KB
+[build-vendor] check: 裁剪 45 块 / 2493348 字节；当前 vendor 2493348 字节
+[build-vendor] 一致 ✅
+✅ vendor 产物同步（12s）
+
+──────── [3] 六爻核心正式测试 ────────
+
+ RUN  v2.1.9 /Coze/Drive/编程专家/每日六爻/liuyao-core
+
+ ✓ test/najia-analysis.test.ts (20 tests) 7ms
+ ✓ test/golden.test.ts (13 tests) 7ms
+ ✓ test/ziwei.test.ts (12 tests) 6ms
+ ✓ test/astro.test.ts (12 tests) 150ms
+ ✓ test/annotations.test.ts (11 tests) 46ms
+ ✓ test/reading.test.ts (6 tests) 18ms
+ ✓ test/cards.test.ts (14 tests) 100ms
+ ✓ test/timecast.test.ts (7 tests) 38ms
+ ✓ test/input.test.ts (11 tests) 69ms
+ ✓ test/qimen.test.ts (7 tests) 13ms
+ ✓ test/cross64.test.ts (65 tests) 7ms
+ ✓ test/bazi.test.ts (9 tests) 6ms
+ ✓ test/format.test.ts (5 tests) 6ms
+ ✓ test/meihua.test.ts (5 tests) 13ms
+ ✓ test/calendar.test.ts (6 tests) 11ms
+ ✓ test/meridian.test.ts (6 tests) 3ms
+
+ Test Files  16 passed (16)
+      Tests  209 passed (209)
+   Start at  10:11:54
+   Duration  6.50s (transform 479ms, setup 0ms, collect 2.14s, tests 500ms, environment 2ms, prepare 778ms)
+
+✅ 六爻核心正式测试（7s）
+
+──────── [4] 真实浏览器启动 ────────
+[verify-browser]   首页… ✅ 15 字 36ms
+[verify-browser]   阳宅… ✅ 508 字 263ms
+[verify-browser]   符箓… ✅ 100653 字 357ms
+[verify-browser]   塔罗… ✅ 94 字 273ms
+[verify-browser]   地占… ✅ 2240 字 305ms
+[verify-browser]   藏占… ✅ 1137 字 259ms
+[verify-browser]   大六壬… ✅ 86 字 266ms
+[verify-browser]   小六壬… ✅ 93 字 256ms
+[verify-browser]   吠陀… ✅ 101 字 265ms
+[verify-browser]   六爻排盘… ✅ 671 字 757ms
+[verify-browser]   阳宅二次进入… ✅ 508 字 258ms
+[verify-browser]   塔罗二次进入… ✅ 94 字 278ms
+[verify-browser] 通过：首页 1096ms + 逐页巡检 10/10 页 + 复入 2 页（v121）
+  · SW 已接管（533ms），页面不会再被 controllerchange 重载
+  · 首页 DOM 49388B / body 文本 752 字；#home-sizhu="丙午年 戊戌月 乙亥日 辛巳时"；#now-gua-title="本时辰天时卦 · 离上乾下 · 第5爻动"；剩余骨架占位 0 个；耗时 1096ms
+  · favicon.ico 404（浏览器自动请求，站点未提供，忽略）
+[verify-browser] PASS
+✅ 真实浏览器启动（7s）
+
+──────── [5] SW 离线可用 ────────
+[verify-offline] Service Worker 离线可用性通过（v121，预缓存 239 项）
+  · 在线预热：SW active=true / controller=true / 缓存 240 项，ASSETS 239 项全命中=true，等待 417ms
+  · 在线首屏：DOM 42256B，服务端送出 407 个文件
+  · 断网阶段：请求 83 次全部被掐断、服务端送出 0 个文件（应为 0）；controller=true
+  · 离线首屏：DOM 49388B，#home-sizhu="丙午年 戊戌月 乙亥日 辛巳时"
+[verify-offline] PASS
+✅ SW 离线可用（4s）
+
+──────── [6] 桩测 bundle 重建 ────────
+[build.sh] esbuild = /Coze/Drive/编程专家/每日六爻/liuyao-core/node_modules/@esbuild/linux-x64/bin/esbuild
+=== bundle 构建完成：tarot / v111 ===
+✅ 桩测 bundle 重建（1s）
+
+──────── [7] 塔罗冒烟 ────────
++ 主屏根注入 --card-r:860/1433 (rws)
++ 主屏只剩 #tr-result 容器
++ 切牌组后 --card-r:463/880
++ Visconti --card-r:440/880
++ SB --card-r:474/877
++ 主屏无 undefined/NaN 泄漏
++ 菜单含牌组按钮
++ 菜单含抽法自动/亲手
++ 菜单含逆位开关+提问框
++ 菜单含图鉴/说明入口
++ 菜单无塔罗/雷诺曼分类条（v120 已撤小雷诺曼）
++ 维埃维尔菜单有逆位开关
++ 菜单牌阵含 9 经典阵
++ v108 single 全屏桌面+切换钮
++ v108 single 槽位数=1
++ v108 single 扇面有牌项
++ v108 single 米边牌背 trpc
++ v108 three-time 全屏桌面+切换钮
++ v108 three-time 槽位数=3
++ v108 three-time 扇面有牌项
++ v108 three-time 米边牌背 trpc
++ v108 star-six 全屏桌面+切换钮
++ v108 star-six 槽位数=6
++ v108 star-six 扇面有牌项
++ v108 star-six 米边牌背 trpc
++ v108 relationship 全屏桌面+切换钮
++ v108 relationship 槽位数=5
++ v108 relationship 扇面有牌项
++ v108 relationship 米边牌背 trpc
++ v108 choice 全屏桌面+切换钮
++ v108 choice 槽位数=5
++ v108 choice 扇面有牌项
++ v108 choice 米边牌背 trpc
++ v108 week-seven 全屏桌面+切换钮
++ v108 week-seven 槽位数=7
++ v108 week-seven 扇面有牌项
++ v108 week-seven 米边牌背 trpc
++ v108 houses-twelve 全屏桌面+切换钮
++ v108 houses-twelve 槽位数=12
++ v108 houses-twelve 扇面有牌项
++ v108 houses-twelve 米边牌背 trpc
++ v108 celtic-cross 全屏桌面+切换钮
++ v108 celtic-cross 槽位数=10
++ v108 celtic-cross 扇面有牌项
++ v108 celtic-cross 米边牌背 trpc
++ 牌堆式含切牌提示+牌堆
++ v110 扇面基角居中（中牌≈0°，非旧 -90°）
++ v110 点选牌只探出 is-pick（不飞出）
++ v115 拱桥撤下（无 trg-rail / trt-stage-bridge）
++ v115 牌堆切牌提示（一张牌从上面切到底下）
++ v115 扇面选中轻抬（pick-lift≤46px）
++ hint 顶部胶囊
++ v109 顶栏菜单+重发按钮
++ v109 独立舞台容器
++ 凯尔特第二槽横置
++ v108 落位后槽1 filled+牌背
++ v108 落位后进度 1/3
++ v108 空槽仍是虚线水印
++ v108 全翻出现开牌解局
++ readResult single 无空值异常
++ readResult single 含逐位牌义
++ readResult three-time 无空值异常
++ readResult three-time 含逐位牌义
++ readResult three-guidance 无空值异常
++ readResult three-guidance 含逐位牌义
++ readResult celtic-cross 无空值异常
++ readResult celtic-cross 含逐位牌义
++ readResult star-six 无空值异常
++ readResult star-six 含逐位牌义
++ readResult relationship 无空值异常
++ readResult relationship 含逐位牌义
++ readResult choice 无空值异常
++ readResult choice 含逐位牌义
++ readResult week-seven 无空值异常
++ readResult week-seven 含逐位牌义
++ readResult houses-twelve 无空值异常
++ readResult houses-twelve 含逐位牌义
+===== 塔罗冒烟: 77 通过 / 0 失败 =====
+✅ 塔罗冒烟（0s）
+
+──────── [8] v111 桩测 ────────
++ 城市库非空且 > 300 条
++ 中文检索命中沈阳
++ 全拼检索命中沈阳
++ 首字母 sy 命中沈阳（首字母同码城市并列，沈阳在列）
++ 首字母 bj 命中北京
++ 全拼 hangzhou 命中杭州
++ 拼音检索 kashi 命中喀什
++ 定位反查：北京坐标→北京
++ 定位反查：沈阳坐标→沈阳
++ 默认未设置观测地（src=default）
++ 手选城市后 isPlaceSet=true
++ 手选城市后 getPlace 正确
++ 地点变更会广播
++ 手选城市可被拼音再次搜到
++ 恢复默认回到沈阳
++ 真太阳时校正随经度变化（非写死沈阳）
++ 沈阳校正量在合理区间（±20 分内含均时差）
++ 日出时刻随经度差 ≈ 4 分/°（东边更早）
++ 行星时出 24 时
++ 行星时含昼夜分段
++ 行星时主星按迦勒底次序（≤7 星循环）
++ 行星时昼 12 时 + 夜 12 时
++ 行星时司日星 = 当日日出日之星期主
++ 天象页渲染无 undefined/NaN
++ 天象页含择时面板 ph-pick
++ 择时面板含 24 时表
++ 择时面板含司日星
++ 小六壬不再输出 undefined
++ 小六壬不再输出 NaN
++ 小六壬含三步推算结构
++ 占星城市表 > 300 条
++ 占星城市表保留北京/沈阳等关键城市
++ 占星城市项仍有 lat/lonEast 契约
++ 塔罗 pull 分支每帧写 left/top（跟手）
++ 3D 宿主持久化（搬家保留 WebGL 上下文）
++ 3D 有 WebGL 失败兜底文案
++ 天球仪有 WebGL 失败兜底
++ 天球仪有上下文丢失恢复
++ 天球仪显示当前观测地
++ 二十八宿宿名加描边（可读性）
+===== v111 桩测: 40 通过 / 0 失败 =====
+✅ v111 桩测（0s）
+
+──────── [9] 复现码 e2e（含 v1 兼容） ────────
+
+99 passed, 0 failed
+✅ 复现码 e2e（含 v1 兼容）（1s）
+
+──────── [10] 塔罗数据 ────────
+牌 78 / 真图 78 / 倾向覆盖 78
+
+✅ RWS 数据+倾向+真图 全部通过
+✅ 塔罗数据（0s）
+
+──────── [11] 塔罗视图 ────────
+✓ 牌阵表可用（9 个）
+✓ 单张/三牌/凯尔特十字三个核心牌阵都在
+✓ rws 被识别为塔罗牌组
+✓ renderTarot 产出 tr-wrap + tr-result 壳
+✓ RWS 比例 --card-r:860/1433 注入（防小牌被拉胖）
+✓ 首次进入塔罗：落座全屏牌桌（.tr-table 在 DOM）
+✓ 牌桌含 canvas 桌面
+✓ 牌桌含展牌形式切换（v115 只留牌堆/扇面）
+✓ 拱桥展牌已撤下（v115）
+✓ 牌桌上落了 3 张（trt-filled×3）
+✓ 放满后出现「全部翻开」按钮
+✓ 全部翻开后出现「开牌解局」按钮
+✓ 三牌结果 3 张真图
+✓ 三牌时间流线索（tr-chain）
+✓ 三牌方向卡（tr-verdict）
+✓ 结果页带「再抽一局」操作条
+✓ 结果页图片走真实牌图路径
+✓ 三牌结果无脏字符
+✓ 日抽 1 张真图
+✓ 日抽带方向卡
+✓ 日抽单张行（tr-row1）
+✓ 十字 10 张真图
+✓ 第二张横置（tr-c2）
+✓ 四切要位置（tr-zones）
+✓ 十字结果无脏字符
+✓ auto 抽法下牌桌出现「自动抽牌」
+✓ auto 抽牌进入幕二（牌背落阵待亲手翻）
+✓ 全部翻开 → 三牌结果+方向卡
+✓ 逆位标记渲染不抛错（冒烟）
+✓ 图鉴 78 张
+✓ 图鉴 78 张全用真图路径
+✓ 图鉴按组分类（tr-galgrp）
+✓ 图鉴页可返回牌桌
+✓ 图鉴无脏字符
+✓ 弹层创建到 body（tr-sheet）
+✓ 点牌开弹层
+✓ 弹层用 tip-card
+✓ 弹层死神真图
+✓ 弹层关键词
+✓ 弹层含 Waite 1910 原著判词层
+✓ 弹层含「牌上所见」画面层
+✓ 关闭弹层
+✓ 小牌宝剑三弹层可开
+✓ 牌局产出复现码数据（kind=cards）
+✓ 复现码含 deckId=rws 与 3 张牌
+✓ 复现码标题含牌阵名
+✓ 复现码可还原牌局
+✓ 还原后牌序与抽牌时一致
+✓ 复制文本含牌序
+✓ 复制文本无脏字符
+✓ 每次三牌都合法（3 张、id 规范）
+✓ 300 次覆盖全部 78 张，实际 78
+
+✅ 塔罗视图桩测（v122 牌桌架构）全部通过
+✅ 塔罗视图（0s）
+
+──────── [12] 塔罗 v119 回归 ────────
+✓ 首次进入塔罗：落座牌桌（.tr-table 在 DOM）
+✓ 分类状态写入 lenormand
+✓ 切到雷诺曼：renderTarot 不再产出塔罗牌桌
+✓ 切到雷诺曼：塔罗 tr-result 壳已撤下
+✓ 切到雷诺曼：渲染出雷诺曼内容
+✓ 分类状态写回 tarot
+✓ ★Bug A：切回塔罗后立即落座牌桌（非空壳）
+✓ 舞台层本身仍 pointer-events:none（触摸透传不回归）
+✓ ★Bug B1：全部翻开按钮 pointer-events:auto
+✓ ★Bug B2：开牌解局按钮 pointer-events:auto
+✓ render 不抛错（冒烟）
+✓ 幕二全部翻开委托链完整
+✓ 开牌解局委托链完整
+✓ 分类切回落座调用已入库
+
+✅ 全部通过
+✅ 塔罗 v119 回归（0s）
+
+──────── [13] 塔罗 v120 回归 ────────
+✓ renderTarot 产出纯塔罗壳（#tr-result）
+✓ renderTarot 不再有分类条 / data-tr-cat
+✓ renderTarot 输出不含任何雷诺曼字样
+✓ mountTarot 直接落座牌桌（.tr-table 在 DOM）
+✓ 不再写分类状态键 qintian.cards.cat
+✓ tarotview.js 无 lenormand 字样
+✓ tarotview.js 无 curCat/catBar/CAT_KEY/分类委托
+✓ tarotview.js 不再 import/调用 renderLenormand
+✓ 幕二全部翻开委托链完整（v119 不回归）
+✓ 开牌解局委托链完整（v119 不回归）
+✓ main.js 无 lenormand 引用
+✓ 舞台层仍 pointer-events:none（透传不回归）
+✓ 全部翻开按钮 pointer-events:auto
+✓ 开牌解局按钮 pointer-events:auto
+✓ tarot.css 已删 .tr-catbar / .trm-cat 样式
+✓ sw.js ASSETS 无悬挂的雷诺曼条目
+✓ vendor ANY_DIVINATION 已去 lenormand
+
+✅ 全部通过
+✅ 塔罗 v120 回归（1s）
+
+──────── [14] AI 资料包快照一致性 ────────
+[1/4] 文件集一致
+  · 19 个文件，集合一致
+[2/4] 内容逐字节一致（sha256）
+  · 19 个文件全部逐字节一致
+[3/4] 魂卦关键事实独立断言（按卦名，非全文计数）
+  · K1 魂卦标签 / K2 事实串 / K3 JSON 字段，3 模式 × 各断言通过
+[4/4] 三模式 chart_data 深相等 + 四格式事实串交叉
+  · K4 chart_data 三模式深相等 / K5 txt·json·html·index 四格式交叉一致
+
+✅ aipack-snapshot-check: OK（19 文件逐字节一致，K1-K5 独立断言通过）
+✅ AI 资料包快照一致性（2s）
+
+════════ 门禁汇总（模式 full，共 36s）════════
+[gates] 全部通过 ✅
+
+[deploy] DRY-RUN：门禁全绿，将执行（未真正执行）：
+         cd app && coze-dev deploy --format json --source-root . --application-type pages --name 钦天监 --yes
+RESTORE_EXIT=0

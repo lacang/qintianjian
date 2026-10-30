@@ -1,0 +1,7373 @@
+{
+ "stat": {
+  "total": 141,
+  "byFactor": {
+   "ribo": {
+    "necessary": 33,
+    "joint": 108,
+    "background": 0
+   },
+   "yuePo": {
+    "necessary": 106,
+    "joint": 0,
+    "background": 35
+   },
+   "liuhe": {
+    "necessary": 34,
+    "joint": 1,
+    "background": 106
+   },
+   "chong": {
+    "necessary": 2,
+    "joint": 0,
+    "background": 139
+   }
+  },
+  "dScoreDist": {
+   "ribo": {
+    "-1": 141
+   },
+   "yuePo": {
+    "0": 35,
+    "-5": 77,
+    "-7": 29
+   },
+   "liuhe": {
+    "0": 106,
+    "1": 1,
+    "-1": 24,
+    "-2": 10
+   },
+   "chong": {
+    "0": 139,
+    "-2": 2
+   }
+  },
+  "ruleDist": {
+   "ribo": {
+    "ribo:-1": 141
+   },
+   "yuePo": {
+    "(无规则权重变化)": 35,
+    "wangxiang:-3,ribo:-1,andong:-1": 77,
+    "wangxiang:-3,ribo:-1,shituo:-2,andong:-1": 29
+   },
+   "liuhe": {
+    "liuhunhun:-1": 24,
+    "liuhunhun:+1": 1,
+    "liuhunhun:-2": 10,
+    "(无规则权重变化)": 106
+   },
+   "chong": {
+    "(无规则权重变化)": 139,
+    "liuhunhun:-2": 2
+   }
+  },
+  "combo": {
+   "liuhe+ribo": 30,
+   "ribo": 1,
+   "liuhe": 2,
+   "chong+liuhe+ribo": 2,
+   "yuePo": 106
+  },
+  "cross106": 106,
+  "cross35": 34
+ },
+ "records": [
+  {
+   "key": "517|寅|巳|love",
+   "mask": 517,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "519|寅|巳|love",
+   "mask": 519,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "527|寅|巳|love",
+   "mask": 527,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "549|寅|巳|love",
+   "mask": 549,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "551|寅|巳|love",
+   "mask": 551,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "559|寅|巳|love",
+   "mask": 559,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "645|寅|巳|love",
+   "mask": 645,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "647|寅|巳|love",
+   "mask": 647,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "653|寅|巳|love",
+   "mask": 653,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "677|寅|巳|love",
+   "mask": 677,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "679|寅|巳|love",
+   "mask": 679,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "687|寅|巳|love",
+   "mask": 687,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2565|寅|巳|love",
+   "mask": 2565,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": 1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": 1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "joint",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2567|寅|巳|love",
+   "mask": 2567,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2573|寅|巳|love",
+   "mask": 2573,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2575|寅|巳|love",
+   "mask": 2575,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2597|寅|巳|love",
+   "mask": 2597,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2599|寅|巳|love",
+   "mask": 2599,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2607|寅|巳|love",
+   "mask": 2607,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2693|寅|巳|love",
+   "mask": 2693,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2695|寅|巳|love",
+   "mask": 2695,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2701|寅|巳|love",
+   "mask": 2701,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2703|寅|巳|love",
+   "mask": 2703,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2725|寅|巳|love",
+   "mask": 2725,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2727|寅|巳|love",
+   "mask": 2727,
+   "monthZhi": "寅",
+   "dayZhi": "巳",
+   "domain": "love",
+   "benGua": "地泽临",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -1
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -1,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1561|寅|午|love",
+   "mask": 1561,
+   "monthZhi": "寅",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "山火贲",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1594|寅|午|love",
+   "mask": 1594,
+   "monthZhi": "寅",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "艮为山",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": -2,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1691|寅|午|love",
+   "mask": 1691,
+   "monthZhi": "寅",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "山火贲",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1720|寅|午|love",
+   "mask": 1720,
+   "monthZhi": "寅",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "艮为山",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": -2,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 0,
+    "level": 0
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3601|寅|午|love",
+   "mask": 3601,
+   "monthZhi": "寅",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "山火贲",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": 1,
+    "level": 1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {
+     "liuhunhun": -2
+    }
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": -2
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "necessary"
+   }
+  },
+  {
+   "key": "1561|卯|午|love",
+   "mask": 1561,
+   "monthZhi": "卯",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "山火贲",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1594|卯|午|love",
+   "mask": 1594,
+   "monthZhi": "卯",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "艮为山",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1691|卯|午|love",
+   "mask": 1691,
+   "monthZhi": "卯",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "山火贲",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1720|卯|午|love",
+   "mask": 1720,
+   "monthZhi": "卯",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "艮为山",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": -1,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3601|卯|午|love",
+   "mask": 3601,
+   "monthZhi": "卯",
+   "dayZhi": "午",
+   "domain": "love",
+   "benGua": "山火贲",
+   "full": {
+    "score": -1,
+    "level": -1
+   },
+   "noRibo": {
+    "score": 0,
+    "level": 0
+   },
+   "noYuePo": {
+    "score": -1,
+    "level": -1
+   },
+   "noLiuhe": {
+    "score": 1,
+    "level": 1
+   },
+   "noChong": {
+    "score": 1,
+    "level": 1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {},
+    "liuhe": {
+     "liuhunhun": -2
+    },
+    "chong": {
+     "liuhunhun": -2
+    }
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": 0,
+    "liuhe": -2,
+    "chong": -2
+   },
+   "cls": {
+    "ribo": "necessary",
+    "yuePo": "background",
+    "liuhe": "necessary",
+    "chong": "necessary"
+   }
+  },
+  {
+   "key": "1174|未|未|wealth",
+   "mask": 1174,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1174|未|未|love",
+   "mask": 1174,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1174|未|未|lost",
+   "mask": 1174,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1182|未|未|wealth",
+   "mask": 1182,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1182|未|未|love",
+   "mask": 1182,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1182|未|未|lost",
+   "mask": 1182,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1206|未|未|love",
+   "mask": 1206,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1206|未|未|lost",
+   "mask": 1206,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1214|未|未|wealth",
+   "mask": 1214,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1214|未|未|love",
+   "mask": 1214,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1214|未|未|lost",
+   "mask": 1214,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -5,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -4,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -5,
+    "level": -2
+   },
+   "noChong": {
+    "score": -5,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1305|未|未|lost",
+   "mask": 1305,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1337|未|未|lost",
+   "mask": 1337,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1433|未|未|lost",
+   "mask": 1433,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1465|未|未|lost",
+   "mask": 1465,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1686|未|未|wealth",
+   "mask": 1686,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1686|未|未|love",
+   "mask": 1686,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1686|未|未|lost",
+   "mask": 1686,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1694|未|未|wealth",
+   "mask": 1694,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1694|未|未|love",
+   "mask": 1694,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1694|未|未|lost",
+   "mask": 1694,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1718|未|未|wealth",
+   "mask": 1718,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1718|未|未|love",
+   "mask": 1718,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1718|未|未|lost",
+   "mask": 1718,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1726|未|未|wealth",
+   "mask": 1726,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1726|未|未|love",
+   "mask": 1726,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1726|未|未|lost",
+   "mask": 1726,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -5,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -4,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -5,
+    "level": -2
+   },
+   "noChong": {
+    "score": -5,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1817|未|未|lost",
+   "mask": 1817,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1849|未|未|lost",
+   "mask": 1849,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1945|未|未|lost",
+   "mask": 1945,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "1977|未|未|lost",
+   "mask": 1977,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "风火家人",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2134|未|未|wealth",
+   "mask": 2134,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2134|未|未|love",
+   "mask": 2134,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2134|未|未|lost",
+   "mask": 2134,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2142|未|未|wealth",
+   "mask": 2142,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2142|未|未|love",
+   "mask": 2142,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2142|未|未|lost",
+   "mask": 2142,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2166|未|未|wealth",
+   "mask": 2166,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2166|未|未|love",
+   "mask": 2166,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2166|未|未|lost",
+   "mask": 2166,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2174|未|未|wealth",
+   "mask": 2174,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2174|未|未|love",
+   "mask": 2174,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2174|未|未|lost",
+   "mask": 2174,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -5,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -4,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -5,
+    "level": -2
+   },
+   "noChong": {
+    "score": -5,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2262|未|未|wealth",
+   "mask": 2262,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2262|未|未|love",
+   "mask": 2262,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2262|未|未|lost",
+   "mask": 2262,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2270|未|未|wealth",
+   "mask": 2270,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2270|未|未|love",
+   "mask": 2270,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2270|未|未|lost",
+   "mask": 2270,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2294|未|未|wealth",
+   "mask": 2294,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2294|未|未|love",
+   "mask": 2294,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2294|未|未|lost",
+   "mask": 2294,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2302|未|未|wealth",
+   "mask": 2302,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2302|未|未|love",
+   "mask": 2302,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2302|未|未|lost",
+   "mask": 2302,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -5,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -4,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -5,
+    "level": -2
+   },
+   "noChong": {
+    "score": -5,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2646|未|未|wealth",
+   "mask": 2646,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2646|未|未|love",
+   "mask": 2646,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2646|未|未|lost",
+   "mask": 2646,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2654|未|未|wealth",
+   "mask": 2654,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2654|未|未|love",
+   "mask": 2654,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2654|未|未|lost",
+   "mask": 2654,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2678|未|未|wealth",
+   "mask": 2678,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2678|未|未|love",
+   "mask": 2678,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2678|未|未|lost",
+   "mask": 2678,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2686|未|未|wealth",
+   "mask": 2686,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2686|未|未|love",
+   "mask": 2686,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2686|未|未|lost",
+   "mask": 2686,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -5,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -4,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -5,
+    "level": -2
+   },
+   "noChong": {
+    "score": -5,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2774|未|未|wealth",
+   "mask": 2774,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2774|未|未|love",
+   "mask": 2774,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2774|未|未|lost",
+   "mask": 2774,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2782|未|未|wealth",
+   "mask": 2782,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2782|未|未|love",
+   "mask": 2782,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2782|未|未|lost",
+   "mask": 2782,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 5,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2806|未|未|wealth",
+   "mask": 2806,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2806|未|未|love",
+   "mask": 2806,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2806|未|未|lost",
+   "mask": 2806,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2814|未|未|wealth",
+   "mask": 2814,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2814|未|未|love",
+   "mask": 2814,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2814|未|未|lost",
+   "mask": 2814,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "雷风恒",
+   "full": {
+    "score": -5,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -4,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -5,
+    "level": -2
+   },
+   "noChong": {
+    "score": -5,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3222|未|未|love",
+   "mask": 3222,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3222|未|未|lost",
+   "mask": 3222,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3230|未|未|love",
+   "mask": 3230,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3230|未|未|lost",
+   "mask": 3230,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3254|未|未|love",
+   "mask": 3254,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3262|未|未|love",
+   "mask": 3262,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3734|未|未|wealth",
+   "mask": 3734,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3734|未|未|love",
+   "mask": 3734,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3734|未|未|lost",
+   "mask": 3734,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 4,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3742|未|未|wealth",
+   "mask": 3742,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "wealth",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3742|未|未|love",
+   "mask": 3742,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -2,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -1,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 3,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -2,
+    "level": -1
+   },
+   "noChong": {
+    "score": -2,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3742|未|未|lost",
+   "mask": 3742,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 4,
+    "level": 2
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3766|未|未|love",
+   "mask": 3766,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3774|未|未|love",
+   "mask": 3774,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "love",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "3774|未|未|lost",
+   "mask": 3774,
+   "monthZhi": "未",
+   "dayZhi": "未",
+   "domain": "lost",
+   "benGua": "山风蛊",
+   "full": {
+    "score": -6,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -5,
+    "level": -2
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -6,
+    "level": -2
+   },
+   "noChong": {
+    "score": -6,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "shituo": -2,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -7,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "586|丑|丑|lost",
+   "mask": 586,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "610|丑|丑|lost",
+   "mask": 610,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "618|丑|丑|lost",
+   "mask": 618,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "714|丑|丑|lost",
+   "mask": 714,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "738|丑|丑|lost",
+   "mask": 738,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "746|丑|丑|lost",
+   "mask": 746,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2634|丑|丑|lost",
+   "mask": 2634,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2658|丑|丑|lost",
+   "mask": 2658,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2666|丑|丑|lost",
+   "mask": 2666,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2762|丑|丑|lost",
+   "mask": 2762,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -4,
+    "level": -2
+   },
+   "noRibo": {
+    "score": -3,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 1,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -4,
+    "level": -2
+   },
+   "noChong": {
+    "score": -4,
+    "level": -2
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2786|丑|丑|lost",
+   "mask": 2786,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  },
+  {
+   "key": "2794|丑|丑|lost",
+   "mask": 2794,
+   "monthZhi": "丑",
+   "dayZhi": "丑",
+   "domain": "lost",
+   "benGua": "雷地豫",
+   "full": {
+    "score": -3,
+    "level": -1
+   },
+   "noRibo": {
+    "score": -2,
+    "level": -1
+   },
+   "noYuePo": {
+    "score": 2,
+    "level": 1
+   },
+   "noLiuhe": {
+    "score": -3,
+    "level": -1
+   },
+   "noChong": {
+    "score": -3,
+    "level": -1
+   },
+   "dW": {
+    "ribo": {
+     "ribo": -1
+    },
+    "yuePo": {
+     "wangxiang": -3,
+     "ribo": -1,
+     "andong": -1
+    },
+    "liuhe": {},
+    "chong": {}
+   },
+   "dScore": {
+    "ribo": -1,
+    "yuePo": -5,
+    "liuhe": 0,
+    "chong": 0
+   },
+   "cls": {
+    "ribo": "joint",
+    "yuePo": "necessary",
+    "liuhe": "background",
+    "chong": "background"
+   }
+  }
+ ]
+}

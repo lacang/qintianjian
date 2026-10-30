@@ -1,0 +1,3074 @@
+[
+  {
+    "tag": "坤为地 第1爻动",
+    "expBian": "地雷复",
+    "actBian": "地雷复",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "坤为地 第2爻动",
+    "expBian": "地水师",
+    "actBian": "地水师",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "坤为地 第3爻动",
+    "expBian": "地山谦",
+    "actBian": "地山谦",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "坤为地 第4爻动",
+    "expBian": "雷地豫",
+    "actBian": "雷地豫",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "坤为地 第5爻动",
+    "expBian": "水地比",
+    "actBian": "水地比",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "坤为地 第6爻动",
+    "expBian": "山地剥",
+    "actBian": "山地剥",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地雷复 第1爻动",
+    "expBian": "坤为地",
+    "actBian": "坤为地",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地雷复 第2爻动",
+    "expBian": "地泽临",
+    "actBian": "地泽临",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地雷复 第3爻动",
+    "expBian": "地火明夷",
+    "actBian": "地火明夷",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地雷复 第4爻动",
+    "expBian": "震为雷",
+    "actBian": "震为雷",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "地雷复 第5爻动",
+    "expBian": "水雷屯",
+    "actBian": "水雷屯",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地雷复 第6爻动",
+    "expBian": "山雷颐",
+    "actBian": "山雷颐",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地水师 第1爻动",
+    "expBian": "地泽临",
+    "actBian": "地泽临",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地水师 第2爻动",
+    "expBian": "坤为地",
+    "actBian": "坤为地",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地水师 第3爻动",
+    "expBian": "地风升",
+    "actBian": "地风升",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "地水师 第4爻动",
+    "expBian": "雷水解",
+    "actBian": "雷水解",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地水师 第5爻动",
+    "expBian": "坎为水",
+    "actBian": "坎为水",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地水师 第6爻动",
+    "expBian": "山水蒙",
+    "actBian": "山水蒙",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地泽临 第1爻动",
+    "expBian": "地水师",
+    "actBian": "地水师",
+    "actQin": "官鬼",
+    "qinSelf": "子孙",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地泽临 第2爻动",
+    "expBian": "地雷复",
+    "actBian": "地雷复",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地泽临 第3爻动",
+    "expBian": "地天泰",
+    "actBian": "地天泰",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地泽临 第4爻动",
+    "expBian": "雷泽归妹",
+    "actBian": "雷泽归妹",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "地泽临 第5爻动",
+    "expBian": "水泽节",
+    "actBian": "水泽节",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地泽临 第6爻动",
+    "expBian": "山泽损",
+    "actBian": "山泽损",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地山谦 第1爻动",
+    "expBian": "地火明夷",
+    "actBian": "地火明夷",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地山谦 第2爻动",
+    "expBian": "地风升",
+    "actBian": "地风升",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地山谦 第3爻动",
+    "expBian": "坤为地",
+    "actBian": "坤为地",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地山谦 第4爻动",
+    "expBian": "雷山小过",
+    "actBian": "雷山小过",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地山谦 第5爻动",
+    "expBian": "水山蹇",
+    "actBian": "水山蹇",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "地山谦 第6爻动",
+    "expBian": "艮为山",
+    "actBian": "艮为山",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地火明夷 第1爻动",
+    "expBian": "地山谦",
+    "actBian": "地山谦",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地火明夷 第2爻动",
+    "expBian": "地天泰",
+    "actBian": "地天泰",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地火明夷 第3爻动",
+    "expBian": "地雷复",
+    "actBian": "地雷复",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地火明夷 第4爻动",
+    "expBian": "雷火丰",
+    "actBian": "雷火丰",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地火明夷 第5爻动",
+    "expBian": "水火既济",
+    "actBian": "水火既济",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "地火明夷 第6爻动",
+    "expBian": "山火贲",
+    "actBian": "山火贲",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地风升 第1爻动",
+    "expBian": "地天泰",
+    "actBian": "地天泰",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "地风升 第2爻动",
+    "expBian": "地山谦",
+    "actBian": "地山谦",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地风升 第3爻动",
+    "expBian": "地水师",
+    "actBian": "地水师",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地风升 第4爻动",
+    "expBian": "雷风恒",
+    "actBian": "雷风恒",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "地风升 第5爻动",
+    "expBian": "水风井",
+    "actBian": "水风井",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "地风升 第6爻动",
+    "expBian": "山风蛊",
+    "actBian": "山风蛊",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地天泰 第1爻动",
+    "expBian": "地风升",
+    "actBian": "地风升",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地天泰 第2爻动",
+    "expBian": "地火明夷",
+    "actBian": "地火明夷",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地天泰 第3爻动",
+    "expBian": "地泽临",
+    "actBian": "地泽临",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地天泰 第4爻动",
+    "expBian": "雷天大壮",
+    "actBian": "雷天大壮",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "地天泰 第5爻动",
+    "expBian": "水天需",
+    "actBian": "水天需",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "地天泰 第6爻动",
+    "expBian": "山天大畜",
+    "actBian": "山天大畜",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷地豫 第1爻动",
+    "expBian": "震为雷",
+    "actBian": "震为雷",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "雷地豫 第2爻动",
+    "expBian": "雷水解",
+    "actBian": "雷水解",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷地豫 第3爻动",
+    "expBian": "雷山小过",
+    "actBian": "雷山小过",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷地豫 第4爻动",
+    "expBian": "坤为地",
+    "actBian": "坤为地",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷地豫 第5爻动",
+    "expBian": "泽地萃",
+    "actBian": "泽地萃",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷地豫 第6爻动",
+    "expBian": "火地晋",
+    "actBian": "火地晋",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "震为雷 第1爻动",
+    "expBian": "雷地豫",
+    "actBian": "雷地豫",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "震为雷 第2爻动",
+    "expBian": "雷泽归妹",
+    "actBian": "雷泽归妹",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "震为雷 第3爻动",
+    "expBian": "雷火丰",
+    "actBian": "雷火丰",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "震为雷 第4爻动",
+    "expBian": "地雷复",
+    "actBian": "地雷复",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "震为雷 第5爻动",
+    "expBian": "泽雷随",
+    "actBian": "泽雷随",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "震为雷 第6爻动",
+    "expBian": "火雷噬嗑",
+    "actBian": "火雷噬嗑",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷水解 第1爻动",
+    "expBian": "雷泽归妹",
+    "actBian": "雷泽归妹",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷水解 第2爻动",
+    "expBian": "雷地豫",
+    "actBian": "雷地豫",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷水解 第3爻动",
+    "expBian": "雷风恒",
+    "actBian": "雷风恒",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷水解 第4爻动",
+    "expBian": "地水师",
+    "actBian": "地水师",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷水解 第5爻动",
+    "expBian": "泽水困",
+    "actBian": "泽水困",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷水解 第6爻动",
+    "expBian": "火水未济",
+    "actBian": "火水未济",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷泽归妹 第1爻动",
+    "expBian": "雷水解",
+    "actBian": "雷水解",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷泽归妹 第2爻动",
+    "expBian": "震为雷",
+    "actBian": "震为雷",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷泽归妹 第3爻动",
+    "expBian": "雷天大壮",
+    "actBian": "雷天大壮",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "雷泽归妹 第4爻动",
+    "expBian": "地泽临",
+    "actBian": "地泽临",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "雷泽归妹 第5爻动",
+    "expBian": "兑为泽",
+    "actBian": "兑为泽",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "雷泽归妹 第6爻动",
+    "expBian": "火泽睽",
+    "actBian": "火泽睽",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷山小过 第1爻动",
+    "expBian": "雷火丰",
+    "actBian": "雷火丰",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷山小过 第2爻动",
+    "expBian": "雷风恒",
+    "actBian": "雷风恒",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷山小过 第3爻动",
+    "expBian": "雷地豫",
+    "actBian": "雷地豫",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷山小过 第4爻动",
+    "expBian": "地山谦",
+    "actBian": "地山谦",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "雷山小过 第5爻动",
+    "expBian": "泽山咸",
+    "actBian": "泽山咸",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "雷山小过 第6爻动",
+    "expBian": "火山旅",
+    "actBian": "火山旅",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷火丰 第1爻动",
+    "expBian": "雷山小过",
+    "actBian": "雷山小过",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷火丰 第2爻动",
+    "expBian": "雷天大壮",
+    "actBian": "雷天大壮",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷火丰 第3爻动",
+    "expBian": "震为雷",
+    "actBian": "震为雷",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷火丰 第4爻动",
+    "expBian": "地火明夷",
+    "actBian": "地火明夷",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷火丰 第5爻动",
+    "expBian": "泽火革",
+    "actBian": "泽火革",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "雷火丰 第6爻动",
+    "expBian": "离为火",
+    "actBian": "离为火",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷风恒 第1爻动",
+    "expBian": "雷天大壮",
+    "actBian": "雷天大壮",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "雷风恒 第2爻动",
+    "expBian": "雷山小过",
+    "actBian": "雷山小过",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷风恒 第3爻动",
+    "expBian": "雷水解",
+    "actBian": "雷水解",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷风恒 第4爻动",
+    "expBian": "地风升",
+    "actBian": "地风升",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "雷风恒 第5爻动",
+    "expBian": "泽风大过",
+    "actBian": "泽风大过",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "雷风恒 第6爻动",
+    "expBian": "火风鼎",
+    "actBian": "火风鼎",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷天大壮 第1爻动",
+    "expBian": "雷风恒",
+    "actBian": "雷风恒",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "雷天大壮 第2爻动",
+    "expBian": "雷火丰",
+    "actBian": "雷火丰",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "雷天大壮 第3爻动",
+    "expBian": "雷泽归妹",
+    "actBian": "雷泽归妹",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "雷天大壮 第4爻动",
+    "expBian": "地天泰",
+    "actBian": "地天泰",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "雷天大壮 第5爻动",
+    "expBian": "泽天夬",
+    "actBian": "泽天夬",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "雷天大壮 第6爻动",
+    "expBian": "火天大有",
+    "actBian": "火天大有",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "水地比 第1爻动",
+    "expBian": "水雷屯",
+    "actBian": "水雷屯",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水地比 第2爻动",
+    "expBian": "坎为水",
+    "actBian": "坎为水",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水地比 第3爻动",
+    "expBian": "水山蹇",
+    "actBian": "水山蹇",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水地比 第4爻动",
+    "expBian": "泽地萃",
+    "actBian": "泽地萃",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水地比 第5爻动",
+    "expBian": "坤为地",
+    "actBian": "坤为地",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水地比 第6爻动",
+    "expBian": "风地观",
+    "actBian": "风地观",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "水雷屯 第1爻动",
+    "expBian": "水地比",
+    "actBian": "水地比",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "水雷屯 第2爻动",
+    "expBian": "水泽节",
+    "actBian": "水泽节",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水雷屯 第3爻动",
+    "expBian": "水火既济",
+    "actBian": "水火既济",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水雷屯 第4爻动",
+    "expBian": "泽雷随",
+    "actBian": "泽雷随",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水雷屯 第5爻动",
+    "expBian": "地雷复",
+    "actBian": "地雷复",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水雷屯 第6爻动",
+    "expBian": "风雷益",
+    "actBian": "风雷益",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "坎为水 第1爻动",
+    "expBian": "水泽节",
+    "actBian": "水泽节",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "坎为水 第2爻动",
+    "expBian": "水地比",
+    "actBian": "水地比",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "坎为水 第3爻动",
+    "expBian": "水风井",
+    "actBian": "水风井",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "坎为水 第4爻动",
+    "expBian": "泽水困",
+    "actBian": "泽水困",
+    "actQin": "兄弟",
+    "qinSelf": "子孙",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "坎为水 第5爻动",
+    "expBian": "地水师",
+    "actBian": "地水师",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "坎为水 第6爻动",
+    "expBian": "风水涣",
+    "actBian": "风水涣",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水泽节 第1爻动",
+    "expBian": "坎为水",
+    "actBian": "坎为水",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水泽节 第2爻动",
+    "expBian": "水雷屯",
+    "actBian": "水雷屯",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水泽节 第3爻动",
+    "expBian": "水天需",
+    "actBian": "水天需",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "水泽节 第4爻动",
+    "expBian": "兑为泽",
+    "actBian": "兑为泽",
+    "actQin": "兄弟",
+    "qinSelf": "子孙",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水泽节 第5爻动",
+    "expBian": "地泽临",
+    "actBian": "地泽临",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水泽节 第6爻动",
+    "expBian": "风泽中孚",
+    "actBian": "风泽中孚",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水山蹇 第1爻动",
+    "expBian": "水火既济",
+    "actBian": "水火既济",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水山蹇 第2爻动",
+    "expBian": "水风井",
+    "actBian": "水风井",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水山蹇 第3爻动",
+    "expBian": "水地比",
+    "actBian": "水地比",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水山蹇 第4爻动",
+    "expBian": "泽山咸",
+    "actBian": "泽山咸",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水山蹇 第5爻动",
+    "expBian": "地山谦",
+    "actBian": "地山谦",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水山蹇 第6爻动",
+    "expBian": "风山渐",
+    "actBian": "风山渐",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水火既济 第1爻动",
+    "expBian": "水山蹇",
+    "actBian": "水山蹇",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "水火既济 第2爻动",
+    "expBian": "水天需",
+    "actBian": "水天需",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水火既济 第3爻动",
+    "expBian": "水雷屯",
+    "actBian": "水雷屯",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "水火既济 第4爻动",
+    "expBian": "泽火革",
+    "actBian": "泽火革",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水火既济 第5爻动",
+    "expBian": "地火明夷",
+    "actBian": "地火明夷",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水火既济 第6爻动",
+    "expBian": "风火家人",
+    "actBian": "风火家人",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水风井 第1爻动",
+    "expBian": "水天需",
+    "actBian": "水天需",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "水风井 第2爻动",
+    "expBian": "水山蹇",
+    "actBian": "水山蹇",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水风井 第3爻动",
+    "expBian": "坎为水",
+    "actBian": "坎为水",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "水风井 第4爻动",
+    "expBian": "泽风大过",
+    "actBian": "泽风大过",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "水风井 第5爻动",
+    "expBian": "地风升",
+    "actBian": "地风升",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "水风井 第6爻动",
+    "expBian": "巽为风",
+    "actBian": "巽为风",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水天需 第1爻动",
+    "expBian": "水风井",
+    "actBian": "水风井",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水天需 第2爻动",
+    "expBian": "水火既济",
+    "actBian": "水火既济",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水天需 第3爻动",
+    "expBian": "水泽节",
+    "actBian": "水泽节",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "水天需 第4爻动",
+    "expBian": "泽天夬",
+    "actBian": "泽天夬",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水天需 第5爻动",
+    "expBian": "地天泰",
+    "actBian": "地天泰",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "水天需 第6爻动",
+    "expBian": "风天小畜",
+    "actBian": "风天小畜",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽地萃 第1爻动",
+    "expBian": "泽雷随",
+    "actBian": "泽雷随",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽地萃 第2爻动",
+    "expBian": "泽水困",
+    "actBian": "泽水困",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽地萃 第3爻动",
+    "expBian": "泽山咸",
+    "actBian": "泽山咸",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽地萃 第4爻动",
+    "expBian": "水地比",
+    "actBian": "水地比",
+    "actQin": "兄弟",
+    "qinSelf": "子孙",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽地萃 第5爻动",
+    "expBian": "雷地豫",
+    "actBian": "雷地豫",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽地萃 第6爻动",
+    "expBian": "天地否",
+    "actBian": "天地否",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽雷随 第1爻动",
+    "expBian": "泽地萃",
+    "actBian": "泽地萃",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "泽雷随 第2爻动",
+    "expBian": "兑为泽",
+    "actBian": "兑为泽",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽雷随 第3爻动",
+    "expBian": "泽火革",
+    "actBian": "泽火革",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽雷随 第4爻动",
+    "expBian": "水雷屯",
+    "actBian": "水雷屯",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽雷随 第5爻动",
+    "expBian": "震为雷",
+    "actBian": "震为雷",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽雷随 第6爻动",
+    "expBian": "天雷无妄",
+    "actBian": "天雷无妄",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "泽水困 第1爻动",
+    "expBian": "兑为泽",
+    "actBian": "兑为泽",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽水困 第2爻动",
+    "expBian": "泽地萃",
+    "actBian": "泽地萃",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽水困 第3爻动",
+    "expBian": "泽风大过",
+    "actBian": "泽风大过",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽水困 第4爻动",
+    "expBian": "坎为水",
+    "actBian": "坎为水",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽水困 第5爻动",
+    "expBian": "雷水解",
+    "actBian": "雷水解",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽水困 第6爻动",
+    "expBian": "天水讼",
+    "actBian": "天水讼",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "兑为泽 第1爻动",
+    "expBian": "泽水困",
+    "actBian": "泽水困",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "兑为泽 第2爻动",
+    "expBian": "泽雷随",
+    "actBian": "泽雷随",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "兑为泽 第3爻动",
+    "expBian": "泽天夬",
+    "actBian": "泽天夬",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "兑为泽 第4爻动",
+    "expBian": "水泽节",
+    "actBian": "水泽节",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "兑为泽 第5爻动",
+    "expBian": "雷泽归妹",
+    "actBian": "雷泽归妹",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "兑为泽 第6爻动",
+    "expBian": "天泽履",
+    "actBian": "天泽履",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽山咸 第1爻动",
+    "expBian": "泽火革",
+    "actBian": "泽火革",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "泽山咸 第2爻动",
+    "expBian": "泽风大过",
+    "actBian": "泽风大过",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽山咸 第3爻动",
+    "expBian": "泽地萃",
+    "actBian": "泽地萃",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "泽山咸 第4爻动",
+    "expBian": "水山蹇",
+    "actBian": "水山蹇",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽山咸 第5爻动",
+    "expBian": "雷山小过",
+    "actBian": "雷山小过",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽山咸 第6爻动",
+    "expBian": "天山遁",
+    "actBian": "天山遁",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽火革 第1爻动",
+    "expBian": "泽山咸",
+    "actBian": "泽山咸",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽火革 第2爻动",
+    "expBian": "泽天夬",
+    "actBian": "泽天夬",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽火革 第3爻动",
+    "expBian": "泽雷随",
+    "actBian": "泽雷随",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽火革 第4爻动",
+    "expBian": "水火既济",
+    "actBian": "水火既济",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽火革 第5爻动",
+    "expBian": "雷火丰",
+    "actBian": "雷火丰",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽火革 第6爻动",
+    "expBian": "天火同人",
+    "actBian": "天火同人",
+    "actQin": "官鬼",
+    "qinSelf": "子孙",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽风大过 第1爻动",
+    "expBian": "泽天夬",
+    "actBian": "泽天夬",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "泽风大过 第2爻动",
+    "expBian": "泽山咸",
+    "actBian": "泽山咸",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽风大过 第3爻动",
+    "expBian": "泽水困",
+    "actBian": "泽水困",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽风大过 第4爻动",
+    "expBian": "水风井",
+    "actBian": "水风井",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽风大过 第5爻动",
+    "expBian": "雷风恒",
+    "actBian": "雷风恒",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "泽风大过 第6爻动",
+    "expBian": "天风姤",
+    "actBian": "天风姤",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "泽天夬 第1爻动",
+    "expBian": "泽风大过",
+    "actBian": "泽风大过",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽天夬 第2爻动",
+    "expBian": "泽火革",
+    "actBian": "泽火革",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽天夬 第3爻动",
+    "expBian": "兑为泽",
+    "actBian": "兑为泽",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "泽天夬 第4爻动",
+    "expBian": "水天需",
+    "actBian": "水天需",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽天夬 第5爻动",
+    "expBian": "雷天大壮",
+    "actBian": "雷天大壮",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "泽天夬 第6爻动",
+    "expBian": "乾为天",
+    "actBian": "乾为天",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山地剥 第1爻动",
+    "expBian": "山雷颐",
+    "actBian": "山雷颐",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山地剥 第2爻动",
+    "expBian": "山水蒙",
+    "actBian": "山水蒙",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "山地剥 第3爻动",
+    "expBian": "艮为山",
+    "actBian": "艮为山",
+    "actQin": "兄弟",
+    "qinSelf": "子孙",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山地剥 第4爻动",
+    "expBian": "火地晋",
+    "actBian": "火地晋",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山地剥 第5爻动",
+    "expBian": "风地观",
+    "actBian": "风地观",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山地剥 第6爻动",
+    "expBian": "坤为地",
+    "actBian": "坤为地",
+    "actQin": "兄弟",
+    "qinSelf": "子孙",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山雷颐 第1爻动",
+    "expBian": "山地剥",
+    "actBian": "山地剥",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "山雷颐 第2爻动",
+    "expBian": "山泽损",
+    "actBian": "山泽损",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山雷颐 第3爻动",
+    "expBian": "山火贲",
+    "actBian": "山火贲",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "山雷颐 第4爻动",
+    "expBian": "火雷噬嗑",
+    "actBian": "火雷噬嗑",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山雷颐 第5爻动",
+    "expBian": "风雷益",
+    "actBian": "风雷益",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山雷颐 第6爻动",
+    "expBian": "地雷复",
+    "actBian": "地雷复",
+    "actQin": "官鬼",
+    "qinSelf": "子孙",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山水蒙 第1爻动",
+    "expBian": "山泽损",
+    "actBian": "山泽损",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山水蒙 第2爻动",
+    "expBian": "山地剥",
+    "actBian": "山地剥",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山水蒙 第3爻动",
+    "expBian": "山风蛊",
+    "actBian": "山风蛊",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "山水蒙 第4爻动",
+    "expBian": "火水未济",
+    "actBian": "火水未济",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "山水蒙 第5爻动",
+    "expBian": "风水涣",
+    "actBian": "风水涣",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山水蒙 第6爻动",
+    "expBian": "地水师",
+    "actBian": "地水师",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "山泽损 第1爻动",
+    "expBian": "山水蒙",
+    "actBian": "山水蒙",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山泽损 第2爻动",
+    "expBian": "山雷颐",
+    "actBian": "山雷颐",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山泽损 第3爻动",
+    "expBian": "山天大畜",
+    "actBian": "山天大畜",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山泽损 第4爻动",
+    "expBian": "火泽睽",
+    "actBian": "火泽睽",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山泽损 第5爻动",
+    "expBian": "风泽中孚",
+    "actBian": "风泽中孚",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "山泽损 第6爻动",
+    "expBian": "地泽临",
+    "actBian": "地泽临",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "艮为山 第1爻动",
+    "expBian": "山火贲",
+    "actBian": "山火贲",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "艮为山 第2爻动",
+    "expBian": "山风蛊",
+    "actBian": "山风蛊",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "艮为山 第3爻动",
+    "expBian": "山地剥",
+    "actBian": "山地剥",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "艮为山 第4爻动",
+    "expBian": "火山旅",
+    "actBian": "火山旅",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "艮为山 第5爻动",
+    "expBian": "风山渐",
+    "actBian": "风山渐",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "艮为山 第6爻动",
+    "expBian": "地山谦",
+    "actBian": "地山谦",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山火贲 第1爻动",
+    "expBian": "艮为山",
+    "actBian": "艮为山",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山火贲 第2爻动",
+    "expBian": "山天大畜",
+    "actBian": "山天大畜",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山火贲 第3爻动",
+    "expBian": "山雷颐",
+    "actBian": "山雷颐",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山火贲 第4爻动",
+    "expBian": "离为火",
+    "actBian": "离为火",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山火贲 第5爻动",
+    "expBian": "风火家人",
+    "actBian": "风火家人",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "山火贲 第6爻动",
+    "expBian": "地火明夷",
+    "actBian": "地火明夷",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山风蛊 第1爻动",
+    "expBian": "山天大畜",
+    "actBian": "山天大畜",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "山风蛊 第2爻动",
+    "expBian": "艮为山",
+    "actBian": "艮为山",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山风蛊 第3爻动",
+    "expBian": "山水蒙",
+    "actBian": "山水蒙",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山风蛊 第4爻动",
+    "expBian": "火风鼎",
+    "actBian": "火风鼎",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山风蛊 第5爻动",
+    "expBian": "巽为风",
+    "actBian": "巽为风",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山风蛊 第6爻动",
+    "expBian": "地风升",
+    "actBian": "地风升",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "山天大畜 第1爻动",
+    "expBian": "山风蛊",
+    "actBian": "山风蛊",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山天大畜 第2爻动",
+    "expBian": "山火贲",
+    "actBian": "山火贲",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山天大畜 第3爻动",
+    "expBian": "山泽损",
+    "actBian": "山泽损",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "山天大畜 第4爻动",
+    "expBian": "火天大有",
+    "actBian": "火天大有",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "山天大畜 第5爻动",
+    "expBian": "风天小畜",
+    "actBian": "风天小畜",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "山天大畜 第6爻动",
+    "expBian": "地天泰",
+    "actBian": "地天泰",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火地晋 第1爻动",
+    "expBian": "火雷噬嗑",
+    "actBian": "火雷噬嗑",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火地晋 第2爻动",
+    "expBian": "火水未济",
+    "actBian": "火水未济",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火地晋 第3爻动",
+    "expBian": "火山旅",
+    "actBian": "火山旅",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火地晋 第4爻动",
+    "expBian": "山地剥",
+    "actBian": "山地剥",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火地晋 第5爻动",
+    "expBian": "天地否",
+    "actBian": "天地否",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火地晋 第6爻动",
+    "expBian": "雷地豫",
+    "actBian": "雷地豫",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火雷噬嗑 第1爻动",
+    "expBian": "火地晋",
+    "actBian": "火地晋",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火雷噬嗑 第2爻动",
+    "expBian": "火泽睽",
+    "actBian": "火泽睽",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火雷噬嗑 第3爻动",
+    "expBian": "离为火",
+    "actBian": "离为火",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火雷噬嗑 第4爻动",
+    "expBian": "山雷颐",
+    "actBian": "山雷颐",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火雷噬嗑 第5爻动",
+    "expBian": "天雷无妄",
+    "actBian": "天雷无妄",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "火雷噬嗑 第6爻动",
+    "expBian": "震为雷",
+    "actBian": "震为雷",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火水未济 第1爻动",
+    "expBian": "火泽睽",
+    "actBian": "火泽睽",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火水未济 第2爻动",
+    "expBian": "火地晋",
+    "actBian": "火地晋",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火水未济 第3爻动",
+    "expBian": "火风鼎",
+    "actBian": "火风鼎",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火水未济 第4爻动",
+    "expBian": "山水蒙",
+    "actBian": "山水蒙",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火水未济 第5爻动",
+    "expBian": "天水讼",
+    "actBian": "天水讼",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火水未济 第6爻动",
+    "expBian": "雷水解",
+    "actBian": "雷水解",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火泽睽 第1爻动",
+    "expBian": "火水未济",
+    "actBian": "火水未济",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "火泽睽 第2爻动",
+    "expBian": "火雷噬嗑",
+    "actBian": "火雷噬嗑",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "火泽睽 第3爻动",
+    "expBian": "火天大有",
+    "actBian": "火天大有",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火泽睽 第4爻动",
+    "expBian": "山泽损",
+    "actBian": "山泽损",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火泽睽 第5爻动",
+    "expBian": "天泽履",
+    "actBian": "天泽履",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火泽睽 第6爻动",
+    "expBian": "雷泽归妹",
+    "actBian": "雷泽归妹",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火山旅 第1爻动",
+    "expBian": "离为火",
+    "actBian": "离为火",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火山旅 第2爻动",
+    "expBian": "火风鼎",
+    "actBian": "火风鼎",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "火山旅 第3爻动",
+    "expBian": "火地晋",
+    "actBian": "火地晋",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火山旅 第4爻动",
+    "expBian": "艮为山",
+    "actBian": "艮为山",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火山旅 第5爻动",
+    "expBian": "天山遁",
+    "actBian": "天山遁",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火山旅 第6爻动",
+    "expBian": "雷山小过",
+    "actBian": "雷山小过",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "离为火 第1爻动",
+    "expBian": "火山旅",
+    "actBian": "火山旅",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "离为火 第2爻动",
+    "expBian": "火天大有",
+    "actBian": "火天大有",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "离为火 第3爻动",
+    "expBian": "火雷噬嗑",
+    "actBian": "火雷噬嗑",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "离为火 第4爻动",
+    "expBian": "山火贲",
+    "actBian": "山火贲",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "离为火 第5爻动",
+    "expBian": "天火同人",
+    "actBian": "天火同人",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "离为火 第6爻动",
+    "expBian": "雷火丰",
+    "actBian": "雷火丰",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火风鼎 第1爻动",
+    "expBian": "火天大有",
+    "actBian": "火天大有",
+    "actQin": "官鬼",
+    "qinSelf": "子孙",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "火风鼎 第2爻动",
+    "expBian": "火山旅",
+    "actBian": "火山旅",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火风鼎 第3爻动",
+    "expBian": "火水未济",
+    "actBian": "火水未济",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火风鼎 第4爻动",
+    "expBian": "山风蛊",
+    "actBian": "山风蛊",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火风鼎 第5爻动",
+    "expBian": "天风姤",
+    "actBian": "天风姤",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "火风鼎 第6爻动",
+    "expBian": "雷风恒",
+    "actBian": "雷风恒",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "火天大有 第1爻动",
+    "expBian": "火风鼎",
+    "actBian": "火风鼎",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火天大有 第2爻动",
+    "expBian": "离为火",
+    "actBian": "离为火",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火天大有 第3爻动",
+    "expBian": "火泽睽",
+    "actBian": "火泽睽",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火天大有 第4爻动",
+    "expBian": "山天大畜",
+    "actBian": "山天大畜",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "火天大有 第5爻动",
+    "expBian": "乾为天",
+    "actBian": "乾为天",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "火天大有 第6爻动",
+    "expBian": "雷天大壮",
+    "actBian": "雷天大壮",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风地观 第1爻动",
+    "expBian": "风雷益",
+    "actBian": "风雷益",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "风地观 第2爻动",
+    "expBian": "风水涣",
+    "actBian": "风水涣",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风地观 第3爻动",
+    "expBian": "风山渐",
+    "actBian": "风山渐",
+    "actQin": "兄弟",
+    "qinSelf": "子孙",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风地观 第4爻动",
+    "expBian": "天地否",
+    "actBian": "天地否",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风地观 第5爻动",
+    "expBian": "山地剥",
+    "actBian": "山地剥",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "风地观 第6爻动",
+    "expBian": "水地比",
+    "actBian": "水地比",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "风雷益 第1爻动",
+    "expBian": "风地观",
+    "actBian": "风地观",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风雷益 第2爻动",
+    "expBian": "风泽中孚",
+    "actBian": "风泽中孚",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风雷益 第3爻动",
+    "expBian": "风火家人",
+    "actBian": "风火家人",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风雷益 第4爻动",
+    "expBian": "天雷无妄",
+    "actBian": "天雷无妄",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "风雷益 第5爻动",
+    "expBian": "山雷颐",
+    "actBian": "山雷颐",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风雷益 第6爻动",
+    "expBian": "水雷屯",
+    "actBian": "水雷屯",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风水涣 第1爻动",
+    "expBian": "风泽中孚",
+    "actBian": "风泽中孚",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风水涣 第2爻动",
+    "expBian": "风地观",
+    "actBian": "风地观",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风水涣 第3爻动",
+    "expBian": "巽为风",
+    "actBian": "巽为风",
+    "actQin": "妻财",
+    "qinSelf": "官鬼",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风水涣 第4爻动",
+    "expBian": "天水讼",
+    "actBian": "天水讼",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风水涣 第5爻动",
+    "expBian": "山水蒙",
+    "actBian": "山水蒙",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风水涣 第6爻动",
+    "expBian": "坎为水",
+    "actBian": "坎为水",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风泽中孚 第1爻动",
+    "expBian": "风水涣",
+    "actBian": "风水涣",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风泽中孚 第2爻动",
+    "expBian": "风雷益",
+    "actBian": "风雷益",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风泽中孚 第3爻动",
+    "expBian": "风天小畜",
+    "actBian": "风天小畜",
+    "actQin": "兄弟",
+    "qinSelf": "妻财",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风泽中孚 第4爻动",
+    "expBian": "天泽履",
+    "actBian": "天泽履",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风泽中孚 第5爻动",
+    "expBian": "山泽损",
+    "actBian": "山泽损",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风泽中孚 第6爻动",
+    "expBian": "水泽节",
+    "actBian": "水泽节",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风山渐 第1爻动",
+    "expBian": "风火家人",
+    "actBian": "风火家人",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风山渐 第2爻动",
+    "expBian": "巽为风",
+    "actBian": "巽为风",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风山渐 第3爻动",
+    "expBian": "风地观",
+    "actBian": "风地观",
+    "actQin": "官鬼",
+    "qinSelf": "妻财",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "风山渐 第4爻动",
+    "expBian": "天山遁",
+    "actBian": "天山遁",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风山渐 第5爻动",
+    "expBian": "艮为山",
+    "actBian": "艮为山",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风山渐 第6爻动",
+    "expBian": "水山蹇",
+    "actBian": "水山蹇",
+    "actQin": "妻财",
+    "qinSelf": "子孙",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风火家人 第1爻动",
+    "expBian": "风山渐",
+    "actBian": "风山渐",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风火家人 第2爻动",
+    "expBian": "风天小畜",
+    "actBian": "风天小畜",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "风火家人 第3爻动",
+    "expBian": "风雷益",
+    "actBian": "风雷益",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风火家人 第4爻动",
+    "expBian": "天火同人",
+    "actBian": "天火同人",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "风火家人 第5爻动",
+    "expBian": "山火贲",
+    "actBian": "山火贲",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风火家人 第6爻动",
+    "expBian": "水火既济",
+    "actBian": "水火既济",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "巽为风 第1爻动",
+    "expBian": "风天小畜",
+    "actBian": "风天小畜",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "巽为风 第2爻动",
+    "expBian": "风山渐",
+    "actBian": "风山渐",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "巽为风 第3爻动",
+    "expBian": "风水涣",
+    "actBian": "风水涣",
+    "actQin": "子孙",
+    "qinSelf": "兄弟",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "巽为风 第4爻动",
+    "expBian": "天风姤",
+    "actBian": "天风姤",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "巽为风 第5爻动",
+    "expBian": "山风蛊",
+    "actBian": "山风蛊",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "巽为风 第6爻动",
+    "expBian": "水风井",
+    "actBian": "水风井",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风天小畜 第1爻动",
+    "expBian": "巽为风",
+    "actBian": "巽为风",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风天小畜 第2爻动",
+    "expBian": "风火家人",
+    "actBian": "风火家人",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风天小畜 第3爻动",
+    "expBian": "风泽中孚",
+    "actBian": "风泽中孚",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "风天小畜 第4爻动",
+    "expBian": "乾为天",
+    "actBian": "乾为天",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "风天小畜 第5爻动",
+    "expBian": "山天大畜",
+    "actBian": "山天大畜",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "风天小畜 第6爻动",
+    "expBian": "水天需",
+    "actBian": "水天需",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天地否 第1爻动",
+    "expBian": "天雷无妄",
+    "actBian": "天雷无妄",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天地否 第2爻动",
+    "expBian": "天水讼",
+    "actBian": "天水讼",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天地否 第3爻动",
+    "expBian": "天山遁",
+    "actBian": "天山遁",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天地否 第4爻动",
+    "expBian": "风地观",
+    "actBian": "风地观",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天地否 第5爻动",
+    "expBian": "火地晋",
+    "actBian": "火地晋",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天地否 第6爻动",
+    "expBian": "泽地萃",
+    "actBian": "泽地萃",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天雷无妄 第1爻动",
+    "expBian": "天地否",
+    "actBian": "天地否",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天雷无妄 第2爻动",
+    "expBian": "天泽履",
+    "actBian": "天泽履",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天雷无妄 第3爻动",
+    "expBian": "天火同人",
+    "actBian": "天火同人",
+    "actQin": "父母",
+    "qinSelf": "官鬼",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天雷无妄 第4爻动",
+    "expBian": "风雷益",
+    "actBian": "风雷益",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天雷无妄 第5爻动",
+    "expBian": "火雷噬嗑",
+    "actBian": "火雷噬嗑",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天雷无妄 第6爻动",
+    "expBian": "泽雷随",
+    "actBian": "泽雷随",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天水讼 第1爻动",
+    "expBian": "天泽履",
+    "actBian": "天泽履",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天水讼 第2爻动",
+    "expBian": "天地否",
+    "actBian": "天地否",
+    "actQin": "兄弟",
+    "qinSelf": "官鬼",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天水讼 第3爻动",
+    "expBian": "天风姤",
+    "actBian": "天风姤",
+    "actQin": "妻财",
+    "qinSelf": "兄弟",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天水讼 第4爻动",
+    "expBian": "风水涣",
+    "actBian": "风水涣",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天水讼 第5爻动",
+    "expBian": "火水未济",
+    "actBian": "火水未济",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天水讼 第6爻动",
+    "expBian": "泽水困",
+    "actBian": "泽水困",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天泽履 第1爻动",
+    "expBian": "天水讼",
+    "actBian": "天水讼",
+    "actQin": "官鬼",
+    "qinSelf": "父母",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "天泽履 第2爻动",
+    "expBian": "天雷无妄",
+    "actBian": "天雷无妄",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "天泽履 第3爻动",
+    "expBian": "乾为天",
+    "actBian": "乾为天",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天泽履 第4爻动",
+    "expBian": "风泽中孚",
+    "actBian": "风泽中孚",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天泽履 第5爻动",
+    "expBian": "火泽睽",
+    "actBian": "火泽睽",
+    "actQin": "兄弟",
+    "qinSelf": "兄弟",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天泽履 第6爻动",
+    "expBian": "兑为泽",
+    "actBian": "兑为泽",
+    "actQin": "兄弟",
+    "qinSelf": "父母",
+    "qinBen": "兄弟"
+  },
+  {
+    "tag": "天山遁 第1爻动",
+    "expBian": "天火同人",
+    "actBian": "天火同人",
+    "actQin": "妻财",
+    "qinSelf": "父母",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天山遁 第2爻动",
+    "expBian": "天风姤",
+    "actBian": "天风姤",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天山遁 第3爻动",
+    "expBian": "天地否",
+    "actBian": "天地否",
+    "actQin": "妻财",
+    "qinSelf": "妻财",
+    "qinBen": "妻财"
+  },
+  {
+    "tag": "天山遁 第4爻动",
+    "expBian": "风山渐",
+    "actBian": "风山渐",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天山遁 第5爻动",
+    "expBian": "火山旅",
+    "actBian": "火山旅",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天山遁 第6爻动",
+    "expBian": "泽山咸",
+    "actBian": "泽山咸",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天火同人 第1爻动",
+    "expBian": "天山遁",
+    "actBian": "天山遁",
+    "actQin": "子孙",
+    "qinSelf": "父母",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天火同人 第2爻动",
+    "expBian": "乾为天",
+    "actBian": "乾为天",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天火同人 第3爻动",
+    "expBian": "天雷无妄",
+    "actBian": "天雷无妄",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天火同人 第4爻动",
+    "expBian": "风火家人",
+    "actBian": "风火家人",
+    "actQin": "子孙",
+    "qinSelf": "妻财",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天火同人 第5爻动",
+    "expBian": "离为火",
+    "actBian": "离为火",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天火同人 第6爻动",
+    "expBian": "泽火革",
+    "actBian": "泽火革",
+    "actQin": "子孙",
+    "qinSelf": "官鬼",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天风姤 第1爻动",
+    "expBian": "乾为天",
+    "actBian": "乾为天",
+    "actQin": "子孙",
+    "qinSelf": "子孙",
+    "qinBen": "子孙"
+  },
+  {
+    "tag": "天风姤 第2爻动",
+    "expBian": "天山遁",
+    "actBian": "天山遁",
+    "actQin": "官鬼",
+    "qinSelf": "官鬼",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "天风姤 第3爻动",
+    "expBian": "天水讼",
+    "actBian": "天水讼",
+    "actQin": "官鬼",
+    "qinSelf": "兄弟",
+    "qinBen": "官鬼"
+  },
+  {
+    "tag": "天风姤 第4爻动",
+    "expBian": "巽为风",
+    "actBian": "巽为风",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天风姤 第5爻动",
+    "expBian": "火风鼎",
+    "actBian": "火风鼎",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "天风姤 第6爻动",
+    "expBian": "泽风大过",
+    "actBian": "泽风大过",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "乾为天 第1爻动",
+    "expBian": "天风姤",
+    "actBian": "天风姤",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "乾为天 第2爻动",
+    "expBian": "天火同人",
+    "actBian": "天火同人",
+    "actQin": "父母",
+    "qinSelf": "子孙",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "乾为天 第3爻动",
+    "expBian": "天泽履",
+    "actBian": "天泽履",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "乾为天 第4爻动",
+    "expBian": "风天小畜",
+    "actBian": "风天小畜",
+    "actQin": "父母",
+    "qinSelf": "妻财",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "乾为天 第5爻动",
+    "expBian": "火天大有",
+    "actBian": "火天大有",
+    "actQin": "父母",
+    "qinSelf": "父母",
+    "qinBen": "父母"
+  },
+  {
+    "tag": "乾为天 第6爻动",
+    "expBian": "泽天夬",
+    "actBian": "泽天夬",
+    "actQin": "父母",
+    "qinSelf": "兄弟",
+    "qinBen": "父母"
+  }
+]

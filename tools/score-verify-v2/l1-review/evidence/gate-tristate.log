@@ -1,0 +1,55 @@
+=== 新增门禁三态验证（aipack-snapshot-check.mjs）===
+时间: 2026-10-28T09:31:11+08:00
+
+--- ① 正常通过 ---
+[1/4] 文件集一致
+  · 19 个文件，集合一致
+[2/4] 内容逐字节一致（sha256）
+  · 19 个文件全部逐字节一致
+[3/4] 魂卦关键事实独立断言（按卦名，非全文计数）
+  · K1 魂卦标签 / K2 事实串 / K3 JSON 字段，3 模式 × 各断言通过
+[4/4] 三模式 chart_data 深相等 + 四格式事实串交叉
+  · K4 chart_data 三模式深相等 / K5 txt·json·html·index 四格式交叉一致
+
+✅ aipack-snapshot-check: OK（19 文件逐字节一致，K1-K5 独立断言通过）
+EXIT=0
+
+--- ② 故障注入：篡改冻结快照 1 字节 ---
+[1/4] 文件集一致
+  · 19 个文件，集合一致
+[2/4] 内容逐字节一致（sha256）
+[3/4] 魂卦关键事实独立断言（按卦名，非全文计数）
+  · K1 魂卦标签 / K2 事实串 / K3 JSON 字段，3 模式 × 各断言通过
+[4/4] 三模式 chart_data 深相等 + 四格式事实串交叉
+  · K4 chart_data 三模式深相等 / K5 txt·json·html·index 四格式交叉一致
+
+❌ aipack-snapshot-check: 1 项失败
+  - 1 个文件与冻结快照不一致：
+      - liuyao-quick.txt
+      （若改动是有意的，重跑 node tools/ai-pack-sample.mjs 并人工确认后再发版）
+EXIT=1
+
+--- ③ 恢复后通过 ---
+[1/4] 文件集一致
+  · 19 个文件，集合一致
+[2/4] 内容逐字节一致（sha256）
+  · 19 个文件全部逐字节一致
+[3/4] 魂卦关键事实独立断言（按卦名，非全文计数）
+  · K1 魂卦标签 / K2 事实串 / K3 JSON 字段，3 模式 × 各断言通过
+[4/4] 三模式 chart_data 深相等 + 四格式事实串交叉
+  · K4 chart_data 三模式深相等 / K5 txt·json·html·index 四格式交叉一致
+
+✅ aipack-snapshot-check: OK（19 文件逐字节一致，K1-K5 独立断言通过）
+EXIT=0
+
+--- ④ 故障注入：删除一个文件 ---
+  · K1 魂卦标签 / K2 事实串 / K3 JSON 字段，3 模式 × 各断言通过
+[4/4] 三模式 chart_data 深相等 + 四格式事实串交叉
+  · K4 chart_data 三模式深相等 / K5 txt·json·html·index 四格式交叉一致
+
+❌ aipack-snapshot-check: 1 项失败
+  - 文件集不一致：冻结多出 []，新生成多出 ["tarot-quick.json"]
+EXIT=1
+
+--- ⑤ 恢复后复验 ---
+EXIT=0

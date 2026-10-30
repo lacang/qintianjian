@@ -1,0 +1,24 @@
+=== 关键项识别层·独立核对 ===
+T1  BAGUA_BITS 八纯卦阴阳不符: 0 项
+T1b castByTime 自洽失败: 0/400
+T2  六冲卦 独立/constants/verdict: 10 / 10 / 10
+      verdict 缺: 无 | 多: 无
+T3  六合卦 独立/constants/verdict: 8 / 8 / 8
+      独立: 地天泰、地雷复、天地否、山火贲、水泽节、泽水困、火山旅、雷地豫
+      verdict 缺: 无 | 多: 无
+T16 世应位置不符: 0/64
+T4  土墓库(引擎): 戌
+T5  ruMu 命中爻: 159744  仅月墓 135168 / 仅日墓 12288 / 两者皆 12288
+      日支覆盖: undefined/undefined戌月酉日 undefined/undefined戌月戌日 undefined/undefined戌月亥日 undefined/undefined戌月子日 undefined/undefined戌月丑日 undefined/undefined戌月寅日 undefined/undefined戌月卯日 undefined/undefined戌月辰日 undefined/undefined戌月巳日 undefined/undefined戌月午日 undefined/undefined戌月未日 undefined/undefined戌月申日
+T6  用神平票: 1952（同六亲 1120 取最低 1120；跨六亲 832 取最低 404）
+T7  雷火丰: guaXu=6 isGuiHun=false 世=5 应=2
+T8  动爻被日冲(古法"散"): 12288 爻次，无标记
+T9  动而化墓: 12288 爻次，无标记；动爻自身入墓 79872
+T10 lingTaiOf 不符: 0/25
+T11 独立理论面（lingTaiOf+冲支，不依赖 evalYao）: 静爻 147456；旺/相+月破 12288（其中又被日冲 1024）；休态日冲 2048；死/囚日冲 4096；旺相日冲(暗动面) 5120
+T11b 引擎输出 vs 理论期望: 旺+破 0(应0,破即失气逐例✓)；暗动 5120(应5120,不符0)；日破 7168(应7168)；日冲无归属 0(应0)；休态全归日破 ✓
+T14 六神起法不符: 0
+T15 旬空不符: 0/60
+T17 变爻自身旬空/月破: 化空 24576 爻次、化破 12288 爻次，state 无对应字段
+
+结果已写入 /Coze/Drive/编程专家/每日六爻/tools/score-verify-v2/key-fact-audit/output/verify-facts.json

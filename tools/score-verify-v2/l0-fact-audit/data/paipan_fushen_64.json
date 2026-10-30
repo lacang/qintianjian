@@ -1,0 +1,1246 @@
+[
+  {
+    "gua": "坤为地",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "地雷复",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ]
+  },
+  {
+    "gua": "地水师",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "地泽临",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "地山谦",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      }
+    ]
+  },
+  {
+    "gua": "地火明夷",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "地风升",
+    "missing": [
+      "兄弟",
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "地天泰",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ]
+  },
+  {
+    "gua": "雷地豫",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "庚",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "庚",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "震为雷",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "雷水解",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "庚",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "庚",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "雷泽归妹",
+    "missing": [
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "丁",
+        "zhi": "亥"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "丁",
+        "zhi": "亥"
+      }
+    ]
+  },
+  {
+    "gua": "雷山小过",
+    "missing": [
+      "子孙",
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "丁",
+        "zhi": "亥"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "丁",
+        "zhi": "亥"
+      }
+    ]
+  },
+  {
+    "gua": "雷火丰",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "雷风恒",
+    "missing": [
+      "兄弟"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      }
+    ]
+  },
+  {
+    "gua": "雷天大壮",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "水地比",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "水雷屯",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "坎为水",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "水泽节",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "水山蹇",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      }
+    ]
+  },
+  {
+    "gua": "水火既济",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "水风井",
+    "missing": [
+      "兄弟",
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "水天需",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ]
+  },
+  {
+    "gua": "泽地萃",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "泽雷随",
+    "missing": [
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "泽水困",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "兑为泽",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "泽山咸",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "丁",
+        "zhi": "卯"
+      }
+    ]
+  },
+  {
+    "gua": "泽火革",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "妻财",
+        "gan": "戊",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "泽风大过",
+    "missing": [
+      "兄弟",
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "兄弟",
+        "gan": "庚",
+        "zhi": "寅"
+      },
+      {
+        "position": 4,
+        "liuQin": "子孙",
+        "gan": "庚",
+        "zhi": "午"
+      }
+    ]
+  },
+  {
+    "gua": "泽天夬",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "乙",
+        "zhi": "巳"
+      }
+    ]
+  },
+  {
+    "gua": "山地剥",
+    "missing": [
+      "兄弟"
+    ],
+    "expFu": [
+      {
+        "position": 5,
+        "liuQin": "兄弟",
+        "gan": "壬",
+        "zhi": "申"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 5,
+        "liuQin": "兄弟",
+        "gan": "壬",
+        "zhi": "申"
+      }
+    ]
+  },
+  {
+    "gua": "山雷颐",
+    "missing": [
+      "子孙",
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      },
+      {
+        "position": 5,
+        "liuQin": "子孙",
+        "gan": "辛",
+        "zhi": "巳"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      },
+      {
+        "position": 5,
+        "liuQin": "子孙",
+        "gan": "辛",
+        "zhi": "巳"
+      }
+    ]
+  },
+  {
+    "gua": "山水蒙",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 4,
+        "liuQin": "妻财",
+        "gan": "己",
+        "zhi": "酉"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 4,
+        "liuQin": "妻财",
+        "gan": "己",
+        "zhi": "酉"
+      }
+    ]
+  },
+  {
+    "gua": "山泽损",
+    "missing": [
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      }
+    ]
+  },
+  {
+    "gua": "艮为山",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "山火贲",
+    "missing": [
+      "父母",
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "丙",
+        "zhi": "午"
+      },
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "丙",
+        "zhi": "午"
+      },
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      }
+    ]
+  },
+  {
+    "gua": "山风蛊",
+    "missing": [
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 5,
+        "liuQin": "子孙",
+        "gan": "辛",
+        "zhi": "巳"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 5,
+        "liuQin": "子孙",
+        "gan": "辛",
+        "zhi": "巳"
+      }
+    ]
+  },
+  {
+    "gua": "山天大畜",
+    "missing": [
+      "父母",
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "丙",
+        "zhi": "午"
+      },
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "父母",
+        "gan": "丙",
+        "zhi": "午"
+      },
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      }
+    ]
+  },
+  {
+    "gua": "火地晋",
+    "missing": [
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "火雷噬嗑",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "火水未济",
+    "missing": [
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      }
+    ]
+  },
+  {
+    "gua": "火泽睽",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "火山旅",
+    "missing": [
+      "父母",
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "己",
+        "zhi": "卯"
+      },
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "己",
+        "zhi": "卯"
+      },
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      }
+    ]
+  },
+  {
+    "gua": "离为火",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "火风鼎",
+    "missing": [
+      "父母"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "己",
+        "zhi": "卯"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "父母",
+        "gan": "己",
+        "zhi": "卯"
+      }
+    ]
+  },
+  {
+    "gua": "火天大有",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "风地观",
+    "missing": [
+      "兄弟",
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      },
+      {
+        "position": 5,
+        "liuQin": "兄弟",
+        "gan": "壬",
+        "zhi": "申"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      },
+      {
+        "position": 5,
+        "liuQin": "兄弟",
+        "gan": "壬",
+        "zhi": "申"
+      }
+    ]
+  },
+  {
+    "gua": "风雷益",
+    "missing": [
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      }
+    ]
+  },
+  {
+    "gua": "风水涣",
+    "missing": [
+      "妻财",
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      },
+      {
+        "position": 4,
+        "liuQin": "妻财",
+        "gan": "己",
+        "zhi": "酉"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      },
+      {
+        "position": 4,
+        "liuQin": "妻财",
+        "gan": "己",
+        "zhi": "酉"
+      }
+    ]
+  },
+  {
+    "gua": "风泽中孚",
+    "missing": [
+      "子孙",
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      },
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "子孙",
+        "gan": "丙",
+        "zhi": "申"
+      },
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "风山渐",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "风火家人",
+    "missing": [
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      }
+    ]
+  },
+  {
+    "gua": "巽为风",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "风天小畜",
+    "missing": [
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "辛",
+        "zhi": "酉"
+      }
+    ]
+  },
+  {
+    "gua": "天地否",
+    "missing": [
+      "子孙"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "天雷无妄",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "天水讼",
+    "missing": [
+      "官鬼"
+    ],
+    "expFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 3,
+        "liuQin": "官鬼",
+        "gan": "己",
+        "zhi": "亥"
+      }
+    ]
+  },
+  {
+    "gua": "天泽履",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 5,
+        "liuQin": "妻财",
+        "gan": "丙",
+        "zhi": "子"
+      }
+    ]
+  },
+  {
+    "gua": "天山遁",
+    "missing": [
+      "子孙",
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      },
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "甲",
+        "zhi": "寅"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 1,
+        "liuQin": "子孙",
+        "gan": "甲",
+        "zhi": "子"
+      },
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "甲",
+        "zhi": "寅"
+      }
+    ]
+  },
+  {
+    "gua": "天火同人",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  },
+  {
+    "gua": "天风姤",
+    "missing": [
+      "妻财"
+    ],
+    "expFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "甲",
+        "zhi": "寅"
+      }
+    ],
+    "actFu": [
+      {
+        "position": 2,
+        "liuQin": "妻财",
+        "gan": "甲",
+        "zhi": "寅"
+      }
+    ]
+  },
+  {
+    "gua": "乾为天",
+    "missing": [],
+    "expFu": [],
+    "actFu": []
+  }
+]

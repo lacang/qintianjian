@@ -1,0 +1,9 @@
+  - 1 个文件与冻结快照不一致：
+      - liuyao-quick.txt
+      （若改动是有意的，重跑 node tools/ai-pack-sample.mjs 并人工确认后再发版）
+❌ AI 资料包快照一致性 失败（exit=1，2s）
+
+════════ 门禁汇总（模式 full，共 29s）════════
+[gates] 未通过：AI 资料包快照一致性 
+[gates] 已中止后续步骤（发版/部署不得继续）
+GATES_EXIT=1

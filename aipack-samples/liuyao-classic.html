@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六爻 · 古法推演 · 钦天监 AI 协作资料包</title>
+<meta name="description" content="钦天监 AI 协作资料包：六爻纳甲 · 古法推演。供大模型读取的排盘事实、程序分析、规则判断与典籍出处分层数据。">
+<meta name="ai-content-kind" content="qintianjian-ai-pack">
+<meta name="ai-pack-domain" content="liuyao">
+<meta name="ai-pack-mode" content="classic">
+<meta name="ai-pack-schema-version" content="1">
+<style>
+:root{--ink:#1a1a1a;--muted:#666;--line:#d8d4cc;--paper:#fbfaf7;--accent:#7a2e1f;--ok:#1a6b37;--na:#666;--ni:#9a6a00;--uv:#9c3a00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.75 -apple-system,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif}
+main{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:36px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
+h3{font-size:16px;margin:20px 0 6px;color:var(--accent)}
+.sub{color:var(--muted);margin:0 0 8px;font-size:14px}
+.notice{background:#f3efe6;border:1px solid var(--line);border-left:4px solid var(--accent);padding:12px 16px;border-radius:6px;margin:20px 0;font-size:14.5px}
+table{border-collapse:collapse;width:100%;margin:8px 0 14px;font-size:14.5px;background:#fff}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:#f3efe6;font-weight:600;white-space:nowrap}
+.kv td:first-child{width:110px;color:var(--muted);white-space:nowrap}
+.tag{display:inline-block;padding:0 8px;border-radius:10px;font-size:12.5px;line-height:1.8;border:1px solid currentColor;white-space:nowrap}
+.tag.available{color:var(--ok)}
+.tag.not_applicable{color:var(--na)}
+.tag.not_included{color:var(--ni)}
+.tag.unverified{color:var(--uv)}
+.verdict{background:#fdf6ec;border:1px solid #e8d5b0;border-radius:8px;padding:14px 18px;margin:10px 0}
+.verdict .big{font-size:18px;font-weight:700}
+.muted{color:var(--muted)}
+.src-item{background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin:8px 0}
+.src-kind{font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:10px;margin-right:8px}
+.k-classic_quote{background:#e7f0e9;color:#1a6b37}
+.k-rule_digest{background:#e9eef6;color:#23447a}
+.k-convention{background:#f6e9e4;color:#8a3418}
+blockquote{margin:6px 0;padding:4px 12px;border-left:3px solid var(--line);color:#333}
+ol.constraints{padding-left:22px}ol.constraints li{margin:4px 0}
+.task{background:#eef3ee;border:1px solid #c9dccb;border-radius:8px;padding:14px 18px;font-size:16px}
+details{margin:24px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
+pre{background:#23262b;color:#e6e3da;padding:16px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.55;max-height:560px}
+.toc{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 18px;font-size:14.5px}
+.toc a{color:var(--accent);text-decoration:none;margin-right:14px;white-space:nowrap}
+.dong{color:var(--accent);font-weight:700}
+.unverif{color:var(--uv);font-weight:700}
+footer{margin-top:60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<main>
+<h1>六爻 · 古法推演 · 钦天监 AI 协作资料包</h1>
+<p class="sub">生成时间 2026-10-26 17:35　·　schema v1　·　本页为静态页面，无需 JavaScript 即可完整阅读；数据来自钦天监本地计算，未连接任何外部服务。</p>
+<section class="notice"><strong>致阅读本页的 AI 助手：</strong>
+本页是「钦天监」本地术数工具导出的结构化资料包，分四层呈现：<strong>排盘事实</strong>（程序已计算，请直接采用，不要重算）、<strong>程序分析事实</strong>（可确定验证的计算结果）、<strong>依规则生成的判断</strong>（程序按内置规则的输出，不是客观事实也不是预测准确率）、<strong>资料出处</strong>（古籍原文 / 白话整理 / 自建惯例严格分层）。
+页面底部「结构化数据（JSON）」内嵌了完整机器可读数据。请先读最后的「请你做的事」与「使用约束」。</section>
+<nav class="toc"><a href="#meta">基本信息</a><a href="#chart">排盘事实</a><a href="#facts">程序分析事实</a><a href="#judgments">程序依规则生成的判断</a><a href="#sources">资料出处</a><a href="#status">资料状态</a><a href="#json">结构化 JSON</a></nav>
+<section id="meta"><h2>一、基本信息</h2><table class="kv"><tbody><tr><td>时间</td><td>2026-10-26 17:35</td></tr><tr><td>所问</td><td>这份工作要不要接</td></tr><tr><td>性别</td><td>男</td></tr><tr><td>起卦方式</td><td>手工指定六爻值（少阳/少阴/老阳动/少阳/少阴/老阴动）</td></tr><tr><td>钦天监版本</td><td>v123</td></tr></tbody></table></section>
+<section id="chart"><h2>二、排盘事实（已由钦天监计算，请直接采用，不要重算）</h2><table class="kv"><tbody><tr><td>四柱</td><td>丙午年 戊戌月 癸酉日 辛酉时</td></tr><tr><td>旬空</td><td>戌、亥</td></tr><tr><td>卦身</td><td>辰</td></tr><tr><td>本卦</td><td>雷火丰（震上离下，坎宫水，世5应2）</td></tr><tr><td>变卦</td><td>火雷噬嗑（离上震下）</td></tr><tr><td>动爻</td><td>第 3、6 爻</td></tr></tbody></table><h3>六爻（自上而下）</h3><table><thead><tr><th>爻位</th><th>阴阳</th><th>六神</th><th>纳甲</th><th>五行</th><th>六亲</th><th>世应</th></tr></thead><tbody><tr class="dong"><td>上爻（动）</td><td>阴</td><td>白虎</td><td>庚戌</td><td>土</td><td>官鬼</td><td></td></tr><tr><td>五爻</td><td>阴</td><td>螣蛇</td><td>庚申</td><td>金</td><td>父母</td><td>世</td></tr><tr><td>四爻</td><td>阳</td><td>勾陈</td><td>庚午</td><td>火</td><td>妻财</td><td></td></tr><tr class="dong"><td>三爻（动）</td><td>阳</td><td>朱雀</td><td>己亥</td><td>水</td><td>兄弟</td><td></td></tr><tr><td>二爻</td><td>阴</td><td>青龙</td><td>己丑</td><td>土</td><td>官鬼</td><td>应</td></tr><tr><td>初爻</td><td>阳</td><td>玄武</td><td>己卯</td><td>木</td><td>子孙</td><td></td></tr></tbody></table><h3>变卦六爻（自上而下）</h3><table><thead><tr><th>爻位</th><th>阴阳</th><th>纳甲</th><th>五行</th><th>六亲</th></tr></thead><tbody><tr><td>上爻</td><td>阳</td><td>己巳</td><td>火</td><td>妻财</td></tr><tr><td>五爻</td><td>阴</td><td>己未</td><td>土</td><td>官鬼</td></tr><tr><td>四爻</td><td>阳</td><td>己酉</td><td>金</td><td>父母</td></tr><tr><td>三爻</td><td>阴</td><td>庚辰</td><td>土</td><td>官鬼</td></tr><tr><td>二爻</td><td>阴</td><td>庚寅</td><td>木</td><td>子孙</td></tr><tr><td>初爻</td><td>阳</td><td>庚子</td><td>水</td><td>兄弟</td></tr></tbody></table><h3>神煞（14 项，其中 1 项存疑）</h3><table><thead><tr><th>名称</th><th>取值</th><th>状态</th></tr></thead><tbody><tr><td>驿马</td><td>亥</td><td class="muted">已提供</td></tr><tr><td>桃花</td><td>午</td><td class="muted">已提供</td></tr><tr><td>日禄</td><td>子</td><td class="muted">已提供</td></tr><tr><td>天乙贵人</td><td>卯/巳</td><td class="muted">已提供</td></tr><tr><td>文昌</td><td>卯</td><td class="muted">已提供</td></tr><tr><td>羊刃</td><td>亥</td><td class="muted">已提供</td></tr><tr><td>将星</td><td>酉</td><td class="muted">已提供</td></tr><tr><td>谋星</td><td>未</td><td class="muted">已提供</td></tr><tr><td>劫煞</td><td>寅</td><td class="muted">已提供</td></tr><tr><td>灾煞</td><td>卯</td><td class="muted">已提供</td></tr><tr><td>华盖</td><td>丑</td><td class="muted">已提供</td></tr><tr><td>日德</td><td>巳</td><td class="muted">已提供</td></tr><tr><td>天马</td><td class="unverif">戌（存疑）</td><td><span class="tag unverified">未核验</span></td></tr><tr><td></td><td colspan="2" class="muted">天马按「月建本位」取值，与通行月马口诀不同；源码标注待补其他月份真实盘确认，当前仅有单点校验。</td></tr><tr><td>天医</td><td>酉</td><td class="muted">已提供</td></tr></tbody></table></section>
+<section id="facts"><h2>三、程序分析事实（已计算，非推测）</h2><p><strong>世爻：</strong>五爻 父母（庚申） 相于月、日建比和、帝旺</p><p><strong>应爻：</strong>二爻 官鬼（己丑） 旺于月、爻生日建、入墓</p><h3>用神（事业）：官鬼、父母</h3><table><thead><tr><th>爻位</th><th>六亲</th><th>纳甲</th><th>旺衰</th><th>世应</th></tr></thead><tbody><tr><td>二爻</td><td>官鬼</td><td>己丑</td><td>旺于月、爻生日建、入墓</td><td>应</td></tr><tr><td>上爻</td><td>官鬼</td><td>庚戌</td><td>旺于月、爻生日建、旬空、入墓、动化回头生</td><td></td></tr><tr><td>五爻</td><td>父母</td><td>庚申</td><td>相于月、日建比和、帝旺</td><td>世</td></tr></tbody></table><p class="muted">说明：官鬼、父母多现。《增删卜易》取用神之法：舍其闲爻而用持世、舍其安静而用发动、舍其月破而用不破、舍其旬空而用不空；此处仅罗列，不替占者定取。</p><p>元神：妻财　忌神：子孙　仇神：兄弟</p><h3>动爻变化</h3><table><thead><tr><th>动爻</th><th>变出</th><th>变化性质</th></tr></thead><tbody><tr><td>三爻 兄弟（己亥）</td><td>官鬼（庚辰）</td><td>化回头克</td></tr><tr><td>上爻 官鬼（庚戌）</td><td>妻财（己巳）</td><td>化回头生</td></tr></tbody></table><h3>世应与其他关系</h3><ul><li>官鬼己丑(土) 生 世爻(金)</li><li>官鬼庚戌(土) 生 世爻(金)</li><li>世爻(金) 生 兄弟己亥(水)</li><li>妻财庚午(火) 克 世爻(金)</li><li>世爻(金) 克 子孙己卯(木)</li><li>官鬼庚戌(土) 与 应爻(土) 比和</li><li>应爻(土) 生 父母庚申(金)</li><li>应爻(土) 克 兄弟己亥(水)</li><li>妻财庚午(火) 生 应爻(土)</li><li>子孙己卯(木) 克 应爻(土)</li></ul></section>
+<section id="judgments"><h2>四、程序依规则生成的判断（不是客观事实，也不是预测准确率）</h2><div class="verdict"><div class="big">倾向：吉：倾向「能成」，而且助力实 <span class="muted">（level 2，score 4）</span></div><p>正路格局：职位、文书、你自己都有力，求职/升迁/考试可以全力推进，该报名报名、该谈就谈。</p><p><strong>用神：</strong>官鬼、父母</p></div><h3>逐条依据（3/3 条）</h3><table><thead><tr><th>权重</th><th>判断内容</th><th>程序标注出处</th></tr></thead><tbody><tr><td>2</td><td>父母（庚申，五爻、持世）得月令之气（相于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。</td><td>《增删卜易·四时旺相章》</td></tr><tr><td>1</td><td>父母（庚申，五爻、持世）临帝旺，气最盛。</td><td>《增删卜易·生旺墓绝章》</td></tr><tr><td>1</td><td>应爻生世爻——对方/地头愿意成就你。</td><td>《增删卜易·世应章》</td></tr></tbody></table><p class="muted"><strong>声明：</strong>level / score / headline 是钦天监现有判断逻辑（《增删卜易》《卜筮正宗》通行规则）的输出，不是经独立验证的预测准确率。</p></section>
+<section id="sources"><h2>五、资料出处（原文 / 白话整理 / 自建惯例，已分层）</h2><div class="src-item"><span class="src-kind k-rule_digest">规则·白话整理</span><strong>《增删卜易·四时旺相章》</strong><p>爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。</p><blockquote>原文：当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。</blockquote><p class="muted" style="font-size:13px">规则原文（original）与白话解释（text）均为钦天监代码内置，出处到书名篇目；未与纸本逐字校勘。</p></div><div class="src-item"><span class="src-kind k-rule_digest">规则·白话整理</span><strong>《增删卜易·世应章》</strong><p>世爻代表自己，应爻代表对方、地头、所问的对象。相生相合则彼此成全，相冲相克则顶着来；用神来生世，是事情主动来成就你。</p><blockquote>原文：世为我，应为彼。世应相生相合则相得，相冲相克则相伤；用生世者，事来就我。</blockquote><p class="muted" style="font-size:13px">规则原文（original）与白话解释（text）均为钦天监代码内置，出处到书名篇目；未与纸本逐字校勘。</p></div><div class="src-item"><span class="src-kind k-classic_quote">古籍原文</span><strong>《增删卜易·终身功名有无章》</strong><blockquote>官父兴隆，文章见用。凡得旺父持世、官动生之，或官星持世、父爻旺动，或官星父爻旺动、生合世爻，或日月作官星、父母生合世，皆主成名之象。</blockquote></div><div class="src-item"><span class="src-kind k-classic_quote">古籍原文</span><strong>《增删卜易·终身功名有无章》</strong><blockquote>凡得子孙持世发动，终非朝廊之贵客。世静而临旬空月破，官逢月破自空，皆主不得成名；惟世与官星空破而动者，勿以此断。</blockquote></div><div class="src-item"><span class="src-kind k-classic_quote">古籍原文</span><strong>《增删卜易·学业章》</strong><blockquote>儒业者，父母世爻同旺，终须变化成龙；日月动爻相生，定是王家储器。财动卦中，青灯不久；子孙持世，皓首无成。</blockquote></div><div class="src-item"><span class="src-kind k-classic_quote">古籍原文</span><strong>《卜筮正宗·求名章》</strong><blockquote>功名之卦，以官为用神、父为文章。官旺父兴，世爻得地，必主成名。官衰父破，世爻失陷，纵有奇才，亦难遂志。</blockquote></div><div class="src-item"><span class="src-kind k-classic_quote">古籍原文</span><strong>《增删卜易·岁科考章》</strong><blockquote>大凡卦遇六冲变冲及六爻乱动，父旺世旺，还考平等。倘若父衰受刑克及世爻休囚受克及变凶者，孙山无疑。</blockquote></div></section>
+<section id="status"><h2>六、资料状态（四态）</h2><h3>各资料层状态</h3><table><thead><tr><th>资料层</th><th>状态</th></tr></thead><tbody><tr><td><code>chart_data</code></td><td><span class="tag available">已提供</span></td></tr><tr><td><code>computed_analysis.facts</code></td><td><span class="tag available">已提供</span></td></tr><tr><td><code>computed_analysis.rule_based_judgments</code></td><td><span class="tag available">已提供</span></td></tr><tr><td><code>source_materials</code></td><td><span class="tag available">已提供</span></td></tr><tr><td><code>zhouyi_text</code></td><td><span class="tag not_included">当前模式未包含</span></td></tr><tr><td><code>domain_comparison</code></td><td><span class="tag not_included">当前模式未包含</span></td></tr><tr><td><code>reading_domain</code></td><td><span class="tag available">已提供</span></td></tr></tbody></table><h3>逐条说明</h3><table><thead><tr><th>资料层</th><th>状态</th><th>说明</th></tr></thead><tbody><tr><td><code>domain_comparison</code></td><td><span class="tag not_included">当前模式未包含</span></td><td>其他问事域的用神对照仅在「深度研究」模式提供</td></tr><tr><td><code>chart_data.shen_sha</code></td><td><span class="tag unverified">未核验</span></td><td>天马（戌）：天马按「月建本位」取值，与通行月马口诀不同；源码标注待补其他月份真实盘确认，当前仅有单点校验。</td></tr></tbody></table><p class="muted">四态含义：已提供＝存在且已提供；本术数无此类数据＝该术数本身没有（not_applicable），不是缺陷；当前模式未包含（not_included）＝可切换模式获取；未核验（unverified）＝存在但准确性/来源尚未核实。</p></section>
+<section id="constraints"><h2>使用约束</h2><ol class="constraints"><li>以下排盘结果已由钦天监程序按固定规则计算，请直接采用，不要重新排盘，也不要自行重算旺衰、用神、世应或动变。</li><li>source_materials 中 kind=classic_quote 是古籍原文，kind=rule_digest 是整理后的白话解释（original 字段才是原文），kind=convention 是钦天监自建的惯例值。引用时必须区分，不得把整理层或惯例值当作古籍原文。</li><li>layer_status 标为 not_included 的层是当前模式未包含（可切换模式获取），标为 not_applicable 是本盘本身没有这一类数据，二者都不等于资料缺失。</li><li>不得将未经提供或未经确认的规则冒充典籍原文；如果资料不足，请明确指出。</li><li>zhouyi_text 给的是《周易》经传原文（卦辞/彖传/大象传），属于卦义文本，与六爻纳甲的用神、旺衰、世应、动变不是同一套推演体系：可以借它理解本卦/变卦的卦义，但不得把卦辞或彖象直接当作纳甲断吉凶的规则，也不得据此改写 computed_analysis 里的纳甲结论。</li><li>zhouyi_text 只收阮刻《周易正义》系统本原文，未提供白话翻译；字段为 null 处表示底本无此条或本盘不适用，不要自行补写或用记忆中的其他版本替换。</li></ol></section>
+<section id="task"><h2>请你做的事</h2><div class="task">请依据提供的古法资料分析此卦。先说明各项判断所依据的规则，再结合当前卦象进行推演。不得将未经提供或未经确认的规则冒充典籍原文；如果资料不足，请明确指出。</div></section>
+<details id="json"><summary>结构化数据（application/json，与上方内容同源，共 16272 字符）</summary>
+<script type="application/json" id="ai-pack-json">{
+  "schema_version": 1,
+  "domain": "liuyao",
+  "mode": "classic",
+  "mode_name": "古法推演",
+  "question": "这份工作要不要接",
+  "chart_metadata": {
+    "domain": "liuyao",
+    "domain_name": "六爻纳甲",
+    "cast_at": "2026-10-26 17:35",
+    "cast_method": "手工指定六爻值（少阳/少阴/老阳动/少阳/少阴/老阴动）",
+    "question": "这份工作要不要接",
+    "question_note": null,
+    "gender": "男",
+    "app_version": "v123",
+    "rule_version": 1,
+    "repro_code": null,
+    "schema_version": 1,
+    "mode": "classic"
+  },
+  "chart_data": {
+    "si_zhu": {
+      "yearGanZhi": "丙午",
+      "monthGanZhi": "戊戌",
+      "dayGanZhi": "癸酉",
+      "timeGanZhi": "辛酉"
+    },
+    "xun_kong": [
+      "戌",
+      "亥"
+    ],
+    "gua_shen": "辰",
+    "ben_gua": {
+      "name": "雷火丰",
+      "upper": "震",
+      "lower": "离",
+      "palace": "坎",
+      "palace_wu_xing": "水",
+      "shi_pos": 5,
+      "ying_pos": 2,
+      "shou_gua": "坎为水",
+      "flags": []
+    },
+    "bian_gua": {
+      "name": "火雷噬嗑",
+      "upper": "离",
+      "lower": "震",
+      "palace": "巽",
+      "palace_wu_xing": "木",
+      "shi_pos": 5,
+      "ying_pos": 2,
+      "shou_gua": "巽为风",
+      "flags": []
+    },
+    "moving_positions": [
+      3,
+      6
+    ],
+    "lines": [
+      {
+        "pos": 1,
+        "pos_cn": "初",
+        "yin_yang": "阳",
+        "moving": false,
+        "liu_shen": "玄武",
+        "na_jia": "己卯",
+        "wu_xing": "木",
+        "liu_qin": "子孙",
+        "shi_ying": null
+      },
+      {
+        "pos": 2,
+        "pos_cn": "二",
+        "yin_yang": "阴",
+        "moving": false,
+        "liu_shen": "青龙",
+        "na_jia": "己丑",
+        "wu_xing": "土",
+        "liu_qin": "官鬼",
+        "shi_ying": "应"
+      },
+      {
+        "pos": 3,
+        "pos_cn": "三",
+        "yin_yang": "阳",
+        "moving": true,
+        "liu_shen": "朱雀",
+        "na_jia": "己亥",
+        "wu_xing": "水",
+        "liu_qin": "兄弟",
+        "shi_ying": null
+      },
+      {
+        "pos": 4,
+        "pos_cn": "四",
+        "yin_yang": "阳",
+        "moving": false,
+        "liu_shen": "勾陈",
+        "na_jia": "庚午",
+        "wu_xing": "火",
+        "liu_qin": "妻财",
+        "shi_ying": null
+      },
+      {
+        "pos": 5,
+        "pos_cn": "五",
+        "yin_yang": "阴",
+        "moving": false,
+        "liu_shen": "螣蛇",
+        "na_jia": "庚申",
+        "wu_xing": "金",
+        "liu_qin": "父母",
+        "shi_ying": "世"
+      },
+      {
+        "pos": 6,
+        "pos_cn": "上",
+        "yin_yang": "阴",
+        "moving": true,
+        "liu_shen": "白虎",
+        "na_jia": "庚戌",
+        "wu_xing": "土",
+        "liu_qin": "官鬼",
+        "shi_ying": null
+      }
+    ],
+    "bian_lines": [
+      {
+        "pos": 1,
+        "yin_yang": "阳",
+        "na_jia": "庚子",
+        "wu_xing": "水",
+        "liu_qin": "兄弟"
+      },
+      {
+        "pos": 2,
+        "yin_yang": "阴",
+        "na_jia": "庚寅",
+        "wu_xing": "木",
+        "liu_qin": "子孙"
+      },
+      {
+        "pos": 3,
+        "yin_yang": "阴",
+        "na_jia": "庚辰",
+        "wu_xing": "土",
+        "liu_qin": "官鬼"
+      },
+      {
+        "pos": 4,
+        "yin_yang": "阳",
+        "na_jia": "己酉",
+        "wu_xing": "金",
+        "liu_qin": "父母"
+      },
+      {
+        "pos": 5,
+        "yin_yang": "阴",
+        "na_jia": "己未",
+        "wu_xing": "土",
+        "liu_qin": "官鬼"
+      },
+      {
+        "pos": 6,
+        "yin_yang": "阳",
+        "na_jia": "己巳",
+        "wu_xing": "火",
+        "liu_qin": "妻财"
+      }
+    ],
+    "fu_shen": null,
+    "shen_sha": [
+      {
+        "key": "yiMa",
+        "name": "驿马",
+        "value": "亥",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "taoHua",
+        "name": "桃花",
+        "value": "午",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "riLu",
+        "name": "日禄",
+        "value": "子",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "guiRen",
+        "name": "天乙贵人",
+        "value": "卯/巳",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "wenChang",
+        "name": "文昌",
+        "value": "卯",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "yangRen",
+        "name": "羊刃",
+        "value": "亥",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "jiangXing",
+        "name": "将星",
+        "value": "酉",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "mouXing",
+        "name": "谋星",
+        "value": "未",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "jieSha",
+        "name": "劫煞",
+        "value": "寅",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "zaiSha",
+        "name": "灾煞",
+        "value": "卯",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "huaGai",
+        "name": "华盖",
+        "value": "丑",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "riDe",
+        "name": "日德",
+        "value": "巳",
+        "status": "available",
+        "note": null
+      },
+      {
+        "key": "tianMa",
+        "name": "天马",
+        "value": "戌",
+        "status": "unverified",
+        "note": "天马按「月建本位」取值，与通行月马口诀不同；源码标注待补其他月份真实盘确认，当前仅有单点校验。"
+      },
+      {
+        "key": "tianYi",
+        "name": "天医",
+        "value": "酉",
+        "status": "available",
+        "note": null
+      }
+    ]
+  },
+  "computed_analysis": {
+    "facts": {
+      "month_zhi": "戌",
+      "day_zhi": "酉",
+      "xun_kong": [
+        "戌",
+        "亥"
+      ],
+      "palace": "坎",
+      "palace_wu_xing": "水",
+      "shi": {
+        "pos": 5,
+        "pos_cn": "五",
+        "na_jia": "庚申",
+        "liu_qin": "父母",
+        "liu_shen": "螣蛇",
+        "shi_ying": "世",
+        "hidden": false,
+        "wang_shuai": {
+          "ling_tai": "相",
+          "month_role": "得月建生",
+          "day_role": "日建比和",
+          "tags": [
+            "相于月",
+            "日建比和",
+            "帝旺"
+          ]
+        }
+      },
+      "ying": {
+        "pos": 2,
+        "pos_cn": "二",
+        "na_jia": "己丑",
+        "liu_qin": "官鬼",
+        "liu_shen": "青龙",
+        "shi_ying": "应",
+        "hidden": false,
+        "wang_shuai": {
+          "ling_tai": "旺",
+          "month_role": "与月建比和",
+          "day_role": "爻生日建",
+          "tags": [
+            "旺于月",
+            "爻生日建",
+            "入墓"
+          ]
+        }
+      },
+      "dong": [
+        {
+          "pos": 3,
+          "pos_cn": "三",
+          "na_jia": "己亥",
+          "liu_qin": "兄弟",
+          "liu_shen": "朱雀",
+          "shi_ying": null,
+          "hidden": false,
+          "wang_shuai": {
+            "ling_tai": "死",
+            "month_role": "被月建克",
+            "day_role": "日建生爻",
+            "tags": [
+              "死于月",
+              "日建生爻",
+              "旬空",
+              "动化回头克"
+            ]
+          },
+          "bian": {
+            "pos": 3,
+            "na_jia": "庚辰",
+            "liu_qin": "官鬼",
+            "wu_xing": "土"
+          },
+          "hua_note": "化回头克"
+        },
+        {
+          "pos": 6,
+          "pos_cn": "上",
+          "na_jia": "庚戌",
+          "liu_qin": "官鬼",
+          "liu_shen": "白虎",
+          "shi_ying": null,
+          "hidden": false,
+          "wang_shuai": {
+            "ling_tai": "旺",
+            "month_role": "与月建比和",
+            "day_role": "爻生日建",
+            "tags": [
+              "旺于月",
+              "爻生日建",
+              "旬空",
+              "入墓",
+              "动化回头生"
+            ]
+          },
+          "bian": {
+            "pos": 6,
+            "na_jia": "己巳",
+            "liu_qin": "妻财",
+            "wu_xing": "火"
+          },
+          "hua_note": "化回头生"
+        }
+      ],
+      "relations": [
+        {
+          "from": "官鬼（二爻）",
+          "to": "世爻",
+          "rel": "生",
+          "desc": "官鬼己丑(土) 生 世爻(金)"
+        },
+        {
+          "from": "官鬼（上爻）",
+          "to": "世爻",
+          "rel": "生",
+          "desc": "官鬼庚戌(土) 生 世爻(金)"
+        },
+        {
+          "from": "兄弟（三爻）",
+          "to": "世爻",
+          "rel": "被生",
+          "desc": "世爻(金) 生 兄弟己亥(水)"
+        },
+        {
+          "from": "妻财（四爻）",
+          "to": "世爻",
+          "rel": "克",
+          "desc": "妻财庚午(火) 克 世爻(金)"
+        },
+        {
+          "from": "子孙（初爻）",
+          "to": "世爻",
+          "rel": "被克",
+          "desc": "世爻(金) 克 子孙己卯(木)"
+        },
+        {
+          "from": "官鬼（上爻）",
+          "to": "应爻",
+          "rel": "同",
+          "desc": "官鬼庚戌(土) 与 应爻(土) 比和"
+        },
+        {
+          "from": "父母（五爻）",
+          "to": "应爻",
+          "rel": "被生",
+          "desc": "应爻(土) 生 父母庚申(金)"
+        },
+        {
+          "from": "兄弟（三爻）",
+          "to": "应爻",
+          "rel": "被克",
+          "desc": "应爻(土) 克 兄弟己亥(水)"
+        },
+        {
+          "from": "妻财（四爻）",
+          "to": "应爻",
+          "rel": "生",
+          "desc": "妻财庚午(火) 生 应爻(土)"
+        },
+        {
+          "from": "子孙（初爻）",
+          "to": "应爻",
+          "rel": "克",
+          "desc": "子孙己卯(木) 克 应爻(土)"
+        }
+      ],
+      "yongshen": {
+        "domain": "事业",
+        "primary": [
+          "官鬼",
+          "父母"
+        ],
+        "use_ying": false,
+        "occurrences": [
+          {
+            "pos": 2,
+            "pos_cn": "二",
+            "na_jia": "己丑",
+            "liu_qin": "官鬼",
+            "liu_shen": "青龙",
+            "shi_ying": "应",
+            "hidden": false,
+            "wang_shuai": {
+              "ling_tai": "旺",
+              "month_role": "与月建比和",
+              "day_role": "爻生日建",
+              "tags": [
+                "旺于月",
+                "爻生日建",
+                "入墓"
+              ]
+            }
+          },
+          {
+            "pos": 6,
+            "pos_cn": "上",
+            "na_jia": "庚戌",
+            "liu_qin": "官鬼",
+            "liu_shen": "白虎",
+            "shi_ying": null,
+            "hidden": false,
+            "wang_shuai": {
+              "ling_tai": "旺",
+              "month_role": "与月建比和",
+              "day_role": "爻生日建",
+              "tags": [
+                "旺于月",
+                "爻生日建",
+                "旬空",
+                "入墓",
+                "动化回头生"
+              ]
+            }
+          },
+          {
+            "pos": 5,
+            "pos_cn": "五",
+            "na_jia": "庚申",
+            "liu_qin": "父母",
+            "liu_shen": "螣蛇",
+            "shi_ying": "世",
+            "hidden": false,
+            "wang_shuai": {
+              "ling_tai": "相",
+              "month_role": "得月建生",
+              "day_role": "日建比和",
+              "tags": [
+                "相于月",
+                "日建比和",
+                "帝旺"
+              ]
+            }
+          }
+        ],
+        "note": [
+          "官鬼、父母多现。《增删卜易》取用神之法：舍其闲爻而用持世、舍其安静而用发动、舍其月破而用不破、舍其旬空而用不空；此处仅罗列，不替占者定取。"
+        ],
+        "yuan_shen": "妻财",
+        "ji_shen": "子孙",
+        "chou_shen": "兄弟"
+      },
+      "yongshen_domains_available": [
+        "财运",
+        "事业",
+        "感情",
+        "疾病",
+        "考试",
+        "合作",
+        "行人",
+        "失物",
+        "其他"
+      ],
+      "shi_state": {
+        "ling_tai": "相",
+        "tags": [
+          "相于月",
+          "日建比和",
+          "帝旺"
+        ]
+      }
+    },
+    "rule_based_judgments": {
+      "level": 2,
+      "score": 4,
+      "headline": "吉：倾向「能成」，而且助力实",
+      "takeaway": "正路格局：职位、文书、你自己都有力，求职/升迁/考试可以全力推进，该报名报名、该谈就谈。",
+      "timing": null,
+      "yong_shen_name": "官鬼、父母",
+      "domain_name": "事业学业 · 工作与考试",
+      "dong_count": 2,
+      "signals": [
+        {
+          "weight": 2,
+          "text": "父母（庚申，五爻、持世）得月令之气（相于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。",
+          "source": "《增删卜易·四时旺相章》",
+          "rule": {
+            "id": "wangxiang",
+            "book": "《增删卜易·四时旺相章》",
+            "gu": "当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。",
+            "hua": "爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。"
+          }
+        },
+        {
+          "weight": 1,
+          "text": "父母（庚申，五爻、持世）临帝旺，气最盛。",
+          "source": "《增删卜易·生旺墓绝章》",
+          "rule": {
+            "id": "wangxiang",
+            "book": "《增删卜易·四时旺相章》",
+            "gu": "当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。",
+            "hua": "爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。"
+          }
+        },
+        {
+          "weight": 1,
+          "text": "应爻生世爻——对方/地头愿意成就你。",
+          "source": "《增删卜易·世应章》",
+          "rule": {
+            "id": "shiying",
+            "book": "《增删卜易·世应章》",
+            "gu": "世为我，应为彼。世应相生相合则相得，相冲相克则相伤；用生世者，事来就我。",
+            "hua": "世爻代表自己，应爻代表对方、地头、所问的对象。相生相合则彼此成全，相冲相克则顶着来；用神来生世，是事情主动来成就你。"
+          }
+        }
+      ],
+      "signals_total": 3,
+      "signals_omitted": 0,
+      "basis_note": "level / score / headline 是钦天监现有判断逻辑（《增删卜易》《卜筮正宗》通行规则）的输出，不是经独立验证的预测准确率。"
+    },
+    "domain_comparison": null
+  },
+  "zhouyi_text": null,
+  "source_materials": [
+    {
+      "kind": "rule_digest",
+      "id": "wangxiang",
+      "book": "《增删卜易·四时旺相章》",
+      "text": "爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。",
+      "original": "当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。",
+      "note": "规则原文（original）与白话解释（text）均为钦天监代码内置，出处到书名篇目；未与纸本逐字校勘。"
+    },
+    {
+      "kind": "rule_digest",
+      "id": "shiying",
+      "book": "《增删卜易·世应章》",
+      "text": "世爻代表自己，应爻代表对方、地头、所问的对象。相生相合则彼此成全，相冲相克则顶着来；用神来生世，是事情主动来成就你。",
+      "original": "世为我，应为彼。世应相生相合则相得，相冲相克则相伤；用生世者，事来就我。",
+      "note": "规则原文（original）与白话解释（text）均为钦天监代码内置，出处到书名篇目；未与纸本逐字校勘。"
+    },
+    {
+      "kind": "classic_quote",
+      "text": "官父兴隆，文章见用。凡得旺父持世、官动生之，或官星持世、父爻旺动，或官星父爻旺动、生合世爻，或日月作官星、父母生合世，皆主成名之象。",
+      "source": "《增删卜易·终身功名有无章》"
+    },
+    {
+      "kind": "classic_quote",
+      "text": "凡得子孙持世发动，终非朝廊之贵客。世静而临旬空月破，官逢月破自空，皆主不得成名；惟世与官星空破而动者，勿以此断。",
+      "source": "《增删卜易·终身功名有无章》"
+    },
+    {
+      "kind": "classic_quote",
+      "text": "儒业者，父母世爻同旺，终须变化成龙；日月动爻相生，定是王家储器。财动卦中，青灯不久；子孙持世，皓首无成。",
+      "source": "《增删卜易·学业章》"
+    },
+    {
+      "kind": "classic_quote",
+      "text": "功名之卦，以官为用神、父为文章。官旺父兴，世爻得地，必主成名。官衰父破，世爻失陷，纵有奇才，亦难遂志。",
+      "source": "《卜筮正宗·求名章》"
+    },
+    {
+      "kind": "classic_quote",
+      "text": "大凡卦遇六冲变冲及六爻乱动，父旺世旺，还考平等。倘若父衰受刑克及世爻休囚受克及变凶者，孙山无疑。",
+      "source": "《增删卜易·岁科考章》"
+    }
+  ],
+  "reading_domain": {
+    "id": "career",
+    "name": "事业学业 · 工作与考试",
+    "hint": "换不换工作、升不升、考不考得上、 offer 与项目、职称答辩、考公考编、证书。",
+    "focus": [
+      "官鬼（职位）与父母（文书）两爻旺不旺、生不生合世——古法以官父相生、生合世为顺遂。",
+      "世爻自身旺相还是空破；动化吉还是化退化凶。",
+      "子孙爻动否：占功名考试传统所忌，主与体制、名额、管束无缘或主动抗拒。",
+      "财爻是否生官：以投入换机会；有没有刑冲空破。"
+    ],
+    "yong_shen": [
+      {
+        "yao": "官鬼爻",
+        "forWhom": "职位、编制、上级、考核结果、录用通知"
+      },
+      {
+        "yao": "父母爻",
+        "forWhom": "文书：合同、 offer、考卷、证书、文章、审批、单位"
+      },
+      {
+        "yao": "妻财爻",
+        "forWhom": "官的源头（财生官）：花钱打点、投入成本换来的机会"
+      },
+      {
+        "yao": "子孙爻",
+        "forWhom": "剥官之神：占工作考试传统最忌它持世发动（自由、不想被管、推翻考核）"
+      },
+      {
+        "yao": "世爻",
+        "forWhom": "你自己的状态与竞争力"
+      }
+    ]
+  },
+  "layer_status": {
+    "chart_data": "available",
+    "computed_analysis.facts": "available",
+    "computed_analysis.rule_based_judgments": "available",
+    "source_materials": "available",
+    "zhouyi_text": "not_included",
+    "domain_comparison": "not_included",
+    "reading_domain": "available"
+  },
+  "data_gaps": [
+    {
+      "layer": "domain_comparison",
+      "status": "not_included",
+      "detail": "其他问事域的用神对照仅在「深度研究」模式提供"
+    },
+    {
+      "layer": "chart_data.shen_sha",
+      "status": "unverified",
+      "detail": "天马（戌）：天马按「月建本位」取值，与通行月马口诀不同；源码标注待补其他月份真实盘确认，当前仅有单点校验。"
+    }
+  ],
+  "interpretation_constraints": [
+    "以下排盘结果已由钦天监程序按固定规则计算，请直接采用，不要重新排盘，也不要自行重算旺衰、用神、世应或动变。",
+    "source_materials 中 kind=classic_quote 是古籍原文，kind=rule_digest 是整理后的白话解释（original 字段才是原文），kind=convention 是钦天监自建的惯例值。引用时必须区分，不得把整理层或惯例值当作古籍原文。",
+    "layer_status 标为 not_included 的层是当前模式未包含（可切换模式获取），标为 not_applicable 是本盘本身没有这一类数据，二者都不等于资料缺失。",
+    "不得将未经提供或未经确认的规则冒充典籍原文；如果资料不足，请明确指出。",
+    "zhouyi_text 给的是《周易》经传原文（卦辞/彖传/大象传），属于卦义文本，与六爻纳甲的用神、旺衰、世应、动变不是同一套推演体系：可以借它理解本卦/变卦的卦义，但不得把卦辞或彖象直接当作纳甲断吉凶的规则，也不得据此改写 computed_analysis 里的纳甲结论。",
+    "zhouyi_text 只收阮刻《周易正义》系统本原文，未提供白话翻译；字段为 null 处表示底本无此条或本盘不适用，不要自行补写或用记忆中的其他版本替换。"
+  ],
+  "user_task": "请依据提供的古法资料分析此卦。先说明各项判断所依据的规则，再结合当前卦象进行推演。不得将未经提供或未经确认的规则冒充典籍原文；如果资料不足，请明确指出。"
+}</script>
+<pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;domain&quot;: &quot;liuyao&quot;,
+  &quot;mode&quot;: &quot;classic&quot;,
+  &quot;mode_name&quot;: &quot;古法推演&quot;,
+  &quot;question&quot;: &quot;这份工作要不要接&quot;,
+  &quot;chart_metadata&quot;: {
+    &quot;domain&quot;: &quot;liuyao&quot;,
+    &quot;domain_name&quot;: &quot;六爻纳甲&quot;,
+    &quot;cast_at&quot;: &quot;2026-10-26 17:35&quot;,
+    &quot;cast_method&quot;: &quot;手工指定六爻值（少阳/少阴/老阳动/少阳/少阴/老阴动）&quot;,
+    &quot;question&quot;: &quot;这份工作要不要接&quot;,
+    &quot;question_note&quot;: null,
+    &quot;gender&quot;: &quot;男&quot;,
+    &quot;app_version&quot;: &quot;v123&quot;,
+    &quot;rule_version&quot;: 1,
+    &quot;repro_code&quot;: null,
+    &quot;schema_version&quot;: 1,
+    &quot;mode&quot;: &quot;classic&quot;
+  },
+  &quot;chart_data&quot;: {
+    &quot;si_zhu&quot;: {
+      &quot;yearGanZhi&quot;: &quot;丙午&quot;,
+      &quot;monthGanZhi&quot;: &quot;戊戌&quot;,
+      &quot;dayGanZhi&quot;: &quot;癸酉&quot;,
+      &quot;timeGanZhi&quot;: &quot;辛酉&quot;
+    },
+    &quot;xun_kong&quot;: [
+      &quot;戌&quot;,
+      &quot;亥&quot;
+    ],
+    &quot;gua_shen&quot;: &quot;辰&quot;,
+    &quot;ben_gua&quot;: {
+      &quot;name&quot;: &quot;雷火丰&quot;,
+      &quot;upper&quot;: &quot;震&quot;,
+      &quot;lower&quot;: &quot;离&quot;,
+      &quot;palace&quot;: &quot;坎&quot;,
+      &quot;palace_wu_xing&quot;: &quot;水&quot;,
+      &quot;shi_pos&quot;: 5,
+      &quot;ying_pos&quot;: 2,
+      &quot;shou_gua&quot;: &quot;坎为水&quot;,
+      &quot;flags&quot;: []
+    },
+    &quot;bian_gua&quot;: {
+      &quot;name&quot;: &quot;火雷噬嗑&quot;,
+      &quot;upper&quot;: &quot;离&quot;,
+      &quot;lower&quot;: &quot;震&quot;,
+      &quot;palace&quot;: &quot;巽&quot;,
+      &quot;palace_wu_xing&quot;: &quot;木&quot;,
+      &quot;shi_pos&quot;: 5,
+      &quot;ying_pos&quot;: 2,
+      &quot;shou_gua&quot;: &quot;巽为风&quot;,
+      &quot;flags&quot;: []
+    },
+    &quot;moving_positions&quot;: [
+      3,
+      6
+    ],
+    &quot;lines&quot;: [
+      {
+        &quot;pos&quot;: 1,
+        &quot;pos_cn&quot;: &quot;初&quot;,
+        &quot;yin_yang&quot;: &quot;阳&quot;,
+        &quot;moving&quot;: false,
+        &quot;liu_shen&quot;: &quot;玄武&quot;,
+        &quot;na_jia&quot;: &quot;己卯&quot;,
+        &quot;wu_xing&quot;: &quot;木&quot;,
+        &quot;liu_qin&quot;: &quot;子孙&quot;,
+        &quot;shi_ying&quot;: null
+      },
+      {
+        &quot;pos&quot;: 2,
+        &quot;pos_cn&quot;: &quot;二&quot;,
+        &quot;yin_yang&quot;: &quot;阴&quot;,
+        &quot;moving&quot;: false,
+        &quot;liu_shen&quot;: &quot;青龙&quot;,
+        &quot;na_jia&quot;: &quot;己丑&quot;,
+        &quot;wu_xing&quot;: &quot;土&quot;,
+        &quot;liu_qin&quot;: &quot;官鬼&quot;,
+        &quot;shi_ying&quot;: &quot;应&quot;
+      },
+      {
+        &quot;pos&quot;: 3,
+        &quot;pos_cn&quot;: &quot;三&quot;,
+        &quot;yin_yang&quot;: &quot;阳&quot;,
+        &quot;moving&quot;: true,
+        &quot;liu_shen&quot;: &quot;朱雀&quot;,
+        &quot;na_jia&quot;: &quot;己亥&quot;,
+        &quot;wu_xing&quot;: &quot;水&quot;,
+        &quot;liu_qin&quot;: &quot;兄弟&quot;,
+        &quot;shi_ying&quot;: null
+      },
+      {
+        &quot;pos&quot;: 4,
+        &quot;pos_cn&quot;: &quot;四&quot;,
+        &quot;yin_yang&quot;: &quot;阳&quot;,
+        &quot;moving&quot;: false,
+        &quot;liu_shen&quot;: &quot;勾陈&quot;,
+        &quot;na_jia&quot;: &quot;庚午&quot;,
+        &quot;wu_xing&quot;: &quot;火&quot;,
+        &quot;liu_qin&quot;: &quot;妻财&quot;,
+        &quot;shi_ying&quot;: null
+      },
+      {
+        &quot;pos&quot;: 5,
+        &quot;pos_cn&quot;: &quot;五&quot;,
+        &quot;yin_yang&quot;: &quot;阴&quot;,
+        &quot;moving&quot;: false,
+        &quot;liu_shen&quot;: &quot;螣蛇&quot;,
+        &quot;na_jia&quot;: &quot;庚申&quot;,
+        &quot;wu_xing&quot;: &quot;金&quot;,
+        &quot;liu_qin&quot;: &quot;父母&quot;,
+        &quot;shi_ying&quot;: &quot;世&quot;
+      },
+      {
+        &quot;pos&quot;: 6,
+        &quot;pos_cn&quot;: &quot;上&quot;,
+        &quot;yin_yang&quot;: &quot;阴&quot;,
+        &quot;moving&quot;: true,
+        &quot;liu_shen&quot;: &quot;白虎&quot;,
+        &quot;na_jia&quot;: &quot;庚戌&quot;,
+        &quot;wu_xing&quot;: &quot;土&quot;,
+        &quot;liu_qin&quot;: &quot;官鬼&quot;,
+        &quot;shi_ying&quot;: null
+      }
+    ],
+    &quot;bian_lines&quot;: [
+      {
+        &quot;pos&quot;: 1,
+        &quot;yin_yang&quot;: &quot;阳&quot;,
+        &quot;na_jia&quot;: &quot;庚子&quot;,
+        &quot;wu_xing&quot;: &quot;水&quot;,
+        &quot;liu_qin&quot;: &quot;兄弟&quot;
+      },
+      {
+        &quot;pos&quot;: 2,
+        &quot;yin_yang&quot;: &quot;阴&quot;,
+        &quot;na_jia&quot;: &quot;庚寅&quot;,
+        &quot;wu_xing&quot;: &quot;木&quot;,
+        &quot;liu_qin&quot;: &quot;子孙&quot;
+      },
+      {
+        &quot;pos&quot;: 3,
+        &quot;yin_yang&quot;: &quot;阴&quot;,
+        &quot;na_jia&quot;: &quot;庚辰&quot;,
+        &quot;wu_xing&quot;: &quot;土&quot;,
+        &quot;liu_qin&quot;: &quot;官鬼&quot;
+      },
+      {
+        &quot;pos&quot;: 4,
+        &quot;yin_yang&quot;: &quot;阳&quot;,
+        &quot;na_jia&quot;: &quot;己酉&quot;,
+        &quot;wu_xing&quot;: &quot;金&quot;,
+        &quot;liu_qin&quot;: &quot;父母&quot;
+      },
+      {
+        &quot;pos&quot;: 5,
+        &quot;yin_yang&quot;: &quot;阴&quot;,
+        &quot;na_jia&quot;: &quot;己未&quot;,
+        &quot;wu_xing&quot;: &quot;土&quot;,
+        &quot;liu_qin&quot;: &quot;官鬼&quot;
+      },
+      {
+        &quot;pos&quot;: 6,
+        &quot;yin_yang&quot;: &quot;阳&quot;,
+        &quot;na_jia&quot;: &quot;己巳&quot;,
+        &quot;wu_xing&quot;: &quot;火&quot;,
+        &quot;liu_qin&quot;: &quot;妻财&quot;
+      }
+    ],
+    &quot;fu_shen&quot;: null,
+    &quot;shen_sha&quot;: [
+      {
+        &quot;key&quot;: &quot;yiMa&quot;,
+        &quot;name&quot;: &quot;驿马&quot;,
+        &quot;value&quot;: &quot;亥&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;taoHua&quot;,
+        &quot;name&quot;: &quot;桃花&quot;,
+        &quot;value&quot;: &quot;午&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;riLu&quot;,
+        &quot;name&quot;: &quot;日禄&quot;,
+        &quot;value&quot;: &quot;子&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;guiRen&quot;,
+        &quot;name&quot;: &quot;天乙贵人&quot;,
+        &quot;value&quot;: &quot;卯/巳&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;wenChang&quot;,
+        &quot;name&quot;: &quot;文昌&quot;,
+        &quot;value&quot;: &quot;卯&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;yangRen&quot;,
+        &quot;name&quot;: &quot;羊刃&quot;,
+        &quot;value&quot;: &quot;亥&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;jiangXing&quot;,
+        &quot;name&quot;: &quot;将星&quot;,
+        &quot;value&quot;: &quot;酉&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;mouXing&quot;,
+        &quot;name&quot;: &quot;谋星&quot;,
+        &quot;value&quot;: &quot;未&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;jieSha&quot;,
+        &quot;name&quot;: &quot;劫煞&quot;,
+        &quot;value&quot;: &quot;寅&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;zaiSha&quot;,
+        &quot;name&quot;: &quot;灾煞&quot;,
+        &quot;value&quot;: &quot;卯&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;huaGai&quot;,
+        &quot;name&quot;: &quot;华盖&quot;,
+        &quot;value&quot;: &quot;丑&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;riDe&quot;,
+        &quot;name&quot;: &quot;日德&quot;,
+        &quot;value&quot;: &quot;巳&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      },
+      {
+        &quot;key&quot;: &quot;tianMa&quot;,
+        &quot;name&quot;: &quot;天马&quot;,
+        &quot;value&quot;: &quot;戌&quot;,
+        &quot;status&quot;: &quot;unverified&quot;,
+        &quot;note&quot;: &quot;天马按「月建本位」取值，与通行月马口诀不同；源码标注待补其他月份真实盘确认，当前仅有单点校验。&quot;
+      },
+      {
+        &quot;key&quot;: &quot;tianYi&quot;,
+        &quot;name&quot;: &quot;天医&quot;,
+        &quot;value&quot;: &quot;酉&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;note&quot;: null
+      }
+    ]
+  },
+  &quot;computed_analysis&quot;: {
+    &quot;facts&quot;: {
+      &quot;month_zhi&quot;: &quot;戌&quot;,
+      &quot;day_zhi&quot;: &quot;酉&quot;,
+      &quot;xun_kong&quot;: [
+        &quot;戌&quot;,
+        &quot;亥&quot;
+      ],
+      &quot;palace&quot;: &quot;坎&quot;,
+      &quot;palace_wu_xing&quot;: &quot;水&quot;,
+      &quot;shi&quot;: {
+        &quot;pos&quot;: 5,
+        &quot;pos_cn&quot;: &quot;五&quot;,
+        &quot;na_jia&quot;: &quot;庚申&quot;,
+        &quot;liu_qin&quot;: &quot;父母&quot;,
+        &quot;liu_shen&quot;: &quot;螣蛇&quot;,
+        &quot;shi_ying&quot;: &quot;世&quot;,
+        &quot;hidden&quot;: false,
+        &quot;wang_shuai&quot;: {
+          &quot;ling_tai&quot;: &quot;相&quot;,
+          &quot;month_role&quot;: &quot;得月建生&quot;,
+          &quot;day_role&quot;: &quot;日建比和&quot;,
+          &quot;tags&quot;: [
+            &quot;相于月&quot;,
+            &quot;日建比和&quot;,
+            &quot;帝旺&quot;
+          ]
+        }
+      },
+      &quot;ying&quot;: {
+        &quot;pos&quot;: 2,
+        &quot;pos_cn&quot;: &quot;二&quot;,
+        &quot;na_jia&quot;: &quot;己丑&quot;,
+        &quot;liu_qin&quot;: &quot;官鬼&quot;,
+        &quot;liu_shen&quot;: &quot;青龙&quot;,
+        &quot;shi_ying&quot;: &quot;应&quot;,
+        &quot;hidden&quot;: false,
+        &quot;wang_shuai&quot;: {
+          &quot;ling_tai&quot;: &quot;旺&quot;,
+          &quot;month_role&quot;: &quot;与月建比和&quot;,
+          &quot;day_role&quot;: &quot;爻生日建&quot;,
+          &quot;tags&quot;: [
+            &quot;旺于月&quot;,
+            &quot;爻生日建&quot;,
+            &quot;入墓&quot;
+          ]
+        }
+      },
+      &quot;dong&quot;: [
+        {
+          &quot;pos&quot;: 3,
+          &quot;pos_cn&quot;: &quot;三&quot;,
+          &quot;na_jia&quot;: &quot;己亥&quot;,
+          &quot;liu_qin&quot;: &quot;兄弟&quot;,
+          &quot;liu_shen&quot;: &quot;朱雀&quot;,
+          &quot;shi_ying&quot;: null,
+          &quot;hidden&quot;: false,
+          &quot;wang_shuai&quot;: {
+            &quot;ling_tai&quot;: &quot;死&quot;,
+            &quot;month_role&quot;: &quot;被月建克&quot;,
+            &quot;day_role&quot;: &quot;日建生爻&quot;,
+            &quot;tags&quot;: [
+              &quot;死于月&quot;,
+              &quot;日建生爻&quot;,
+              &quot;旬空&quot;,
+              &quot;动化回头克&quot;
+            ]
+          },
+          &quot;bian&quot;: {
+            &quot;pos&quot;: 3,
+            &quot;na_jia&quot;: &quot;庚辰&quot;,
+            &quot;liu_qin&quot;: &quot;官鬼&quot;,
+            &quot;wu_xing&quot;: &quot;土&quot;
+          },
+          &quot;hua_note&quot;: &quot;化回头克&quot;
+        },
+        {
+          &quot;pos&quot;: 6,
+          &quot;pos_cn&quot;: &quot;上&quot;,
+          &quot;na_jia&quot;: &quot;庚戌&quot;,
+          &quot;liu_qin&quot;: &quot;官鬼&quot;,
+          &quot;liu_shen&quot;: &quot;白虎&quot;,
+          &quot;shi_ying&quot;: null,
+          &quot;hidden&quot;: false,
+          &quot;wang_shuai&quot;: {
+            &quot;ling_tai&quot;: &quot;旺&quot;,
+            &quot;month_role&quot;: &quot;与月建比和&quot;,
+            &quot;day_role&quot;: &quot;爻生日建&quot;,
+            &quot;tags&quot;: [
+              &quot;旺于月&quot;,
+              &quot;爻生日建&quot;,
+              &quot;旬空&quot;,
+              &quot;入墓&quot;,
+              &quot;动化回头生&quot;
+            ]
+          },
+          &quot;bian&quot;: {
+            &quot;pos&quot;: 6,
+            &quot;na_jia&quot;: &quot;己巳&quot;,
+            &quot;liu_qin&quot;: &quot;妻财&quot;,
+            &quot;wu_xing&quot;: &quot;火&quot;
+          },
+          &quot;hua_note&quot;: &quot;化回头生&quot;
+        }
+      ],
+      &quot;relations&quot;: [
+        {
+          &quot;from&quot;: &quot;官鬼（二爻）&quot;,
+          &quot;to&quot;: &quot;世爻&quot;,
+          &quot;rel&quot;: &quot;生&quot;,
+          &quot;desc&quot;: &quot;官鬼己丑(土) 生 世爻(金)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;官鬼（上爻）&quot;,
+          &quot;to&quot;: &quot;世爻&quot;,
+          &quot;rel&quot;: &quot;生&quot;,
+          &quot;desc&quot;: &quot;官鬼庚戌(土) 生 世爻(金)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;兄弟（三爻）&quot;,
+          &quot;to&quot;: &quot;世爻&quot;,
+          &quot;rel&quot;: &quot;被生&quot;,
+          &quot;desc&quot;: &quot;世爻(金) 生 兄弟己亥(水)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;妻财（四爻）&quot;,
+          &quot;to&quot;: &quot;世爻&quot;,
+          &quot;rel&quot;: &quot;克&quot;,
+          &quot;desc&quot;: &quot;妻财庚午(火) 克 世爻(金)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;子孙（初爻）&quot;,
+          &quot;to&quot;: &quot;世爻&quot;,
+          &quot;rel&quot;: &quot;被克&quot;,
+          &quot;desc&quot;: &quot;世爻(金) 克 子孙己卯(木)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;官鬼（上爻）&quot;,
+          &quot;to&quot;: &quot;应爻&quot;,
+          &quot;rel&quot;: &quot;同&quot;,
+          &quot;desc&quot;: &quot;官鬼庚戌(土) 与 应爻(土) 比和&quot;
+        },
+        {
+          &quot;from&quot;: &quot;父母（五爻）&quot;,
+          &quot;to&quot;: &quot;应爻&quot;,
+          &quot;rel&quot;: &quot;被生&quot;,
+          &quot;desc&quot;: &quot;应爻(土) 生 父母庚申(金)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;兄弟（三爻）&quot;,
+          &quot;to&quot;: &quot;应爻&quot;,
+          &quot;rel&quot;: &quot;被克&quot;,
+          &quot;desc&quot;: &quot;应爻(土) 克 兄弟己亥(水)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;妻财（四爻）&quot;,
+          &quot;to&quot;: &quot;应爻&quot;,
+          &quot;rel&quot;: &quot;生&quot;,
+          &quot;desc&quot;: &quot;妻财庚午(火) 生 应爻(土)&quot;
+        },
+        {
+          &quot;from&quot;: &quot;子孙（初爻）&quot;,
+          &quot;to&quot;: &quot;应爻&quot;,
+          &quot;rel&quot;: &quot;克&quot;,
+          &quot;desc&quot;: &quot;子孙己卯(木) 克 应爻(土)&quot;
+        }
+      ],
+      &quot;yongshen&quot;: {
+        &quot;domain&quot;: &quot;事业&quot;,
+        &quot;primary&quot;: [
+          &quot;官鬼&quot;,
+          &quot;父母&quot;
+        ],
+        &quot;use_ying&quot;: false,
+        &quot;occurrences&quot;: [
+          {
+            &quot;pos&quot;: 2,
+            &quot;pos_cn&quot;: &quot;二&quot;,
+            &quot;na_jia&quot;: &quot;己丑&quot;,
+            &quot;liu_qin&quot;: &quot;官鬼&quot;,
+            &quot;liu_shen&quot;: &quot;青龙&quot;,
+            &quot;shi_ying&quot;: &quot;应&quot;,
+            &quot;hidden&quot;: false,
+            &quot;wang_shuai&quot;: {
+              &quot;ling_tai&quot;: &quot;旺&quot;,
+              &quot;month_role&quot;: &quot;与月建比和&quot;,
+              &quot;day_role&quot;: &quot;爻生日建&quot;,
+              &quot;tags&quot;: [
+                &quot;旺于月&quot;,
+                &quot;爻生日建&quot;,
+                &quot;入墓&quot;
+              ]
+            }
+          },
+          {
+            &quot;pos&quot;: 6,
+            &quot;pos_cn&quot;: &quot;上&quot;,
+            &quot;na_jia&quot;: &quot;庚戌&quot;,
+            &quot;liu_qin&quot;: &quot;官鬼&quot;,
+            &quot;liu_shen&quot;: &quot;白虎&quot;,
+            &quot;shi_ying&quot;: null,
+            &quot;hidden&quot;: false,
+            &quot;wang_shuai&quot;: {
+              &quot;ling_tai&quot;: &quot;旺&quot;,
+              &quot;month_role&quot;: &quot;与月建比和&quot;,
+              &quot;day_role&quot;: &quot;爻生日建&quot;,
+              &quot;tags&quot;: [
+                &quot;旺于月&quot;,
+                &quot;爻生日建&quot;,
+                &quot;旬空&quot;,
+                &quot;入墓&quot;,
+                &quot;动化回头生&quot;
+              ]
+            }
+          },
+          {
+            &quot;pos&quot;: 5,
+            &quot;pos_cn&quot;: &quot;五&quot;,
+            &quot;na_jia&quot;: &quot;庚申&quot;,
+            &quot;liu_qin&quot;: &quot;父母&quot;,
+            &quot;liu_shen&quot;: &quot;螣蛇&quot;,
+            &quot;shi_ying&quot;: &quot;世&quot;,
+            &quot;hidden&quot;: false,
+            &quot;wang_shuai&quot;: {
+              &quot;ling_tai&quot;: &quot;相&quot;,
+              &quot;month_role&quot;: &quot;得月建生&quot;,
+              &quot;day_role&quot;: &quot;日建比和&quot;,
+              &quot;tags&quot;: [
+                &quot;相于月&quot;,
+                &quot;日建比和&quot;,
+                &quot;帝旺&quot;
+              ]
+            }
+          }
+        ],
+        &quot;note&quot;: [
+          &quot;官鬼、父母多现。《增删卜易》取用神之法：舍其闲爻而用持世、舍其安静而用发动、舍其月破而用不破、舍其旬空而用不空；此处仅罗列，不替占者定取。&quot;
+        ],
+        &quot;yuan_shen&quot;: &quot;妻财&quot;,
+        &quot;ji_shen&quot;: &quot;子孙&quot;,
+        &quot;chou_shen&quot;: &quot;兄弟&quot;
+      },
+      &quot;yongshen_domains_available&quot;: [
+        &quot;财运&quot;,
+        &quot;事业&quot;,
+        &quot;感情&quot;,
+        &quot;疾病&quot;,
+        &quot;考试&quot;,
+        &quot;合作&quot;,
+        &quot;行人&quot;,
+        &quot;失物&quot;,
+        &quot;其他&quot;
+      ],
+      &quot;shi_state&quot;: {
+        &quot;ling_tai&quot;: &quot;相&quot;,
+        &quot;tags&quot;: [
+          &quot;相于月&quot;,
+          &quot;日建比和&quot;,
+          &quot;帝旺&quot;
+        ]
+      }
+    },
+    &quot;rule_based_judgments&quot;: {
+      &quot;level&quot;: 2,
+      &quot;score&quot;: 4,
+      &quot;headline&quot;: &quot;吉：倾向「能成」，而且助力实&quot;,
+      &quot;takeaway&quot;: &quot;正路格局：职位、文书、你自己都有力，求职/升迁/考试可以全力推进，该报名报名、该谈就谈。&quot;,
+      &quot;timing&quot;: null,
+      &quot;yong_shen_name&quot;: &quot;官鬼、父母&quot;,
+      &quot;domain_name&quot;: &quot;事业学业 · 工作与考试&quot;,
+      &quot;dong_count&quot;: 2,
+      &quot;signals&quot;: [
+        {
+          &quot;weight&quot;: 2,
+          &quot;text&quot;: &quot;父母（庚申，五爻、持世）得月令之气（相于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。&quot;,
+          &quot;source&quot;: &quot;《增删卜易·四时旺相章》&quot;,
+          &quot;rule&quot;: {
+            &quot;id&quot;: &quot;wangxiang&quot;,
+            &quot;book&quot;: &quot;《增删卜易·四时旺相章》&quot;,
+            &quot;gu&quot;: &quot;当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。&quot;,
+            &quot;hua&quot;: &quot;爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。&quot;
+          }
+        },
+        {
+          &quot;weight&quot;: 1,
+          &quot;text&quot;: &quot;父母（庚申，五爻、持世）临帝旺，气最盛。&quot;,
+          &quot;source&quot;: &quot;《增删卜易·生旺墓绝章》&quot;,
+          &quot;rule&quot;: {
+            &quot;id&quot;: &quot;wangxiang&quot;,
+            &quot;book&quot;: &quot;《增删卜易·四时旺相章》&quot;,
+            &quot;gu&quot;: &quot;当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。&quot;,
+            &quot;hua&quot;: &quot;爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。&quot;
+          }
+        },
+        {
+          &quot;weight&quot;: 1,
+          &quot;text&quot;: &quot;应爻生世爻——对方/地头愿意成就你。&quot;,
+          &quot;source&quot;: &quot;《增删卜易·世应章》&quot;,
+          &quot;rule&quot;: {
+            &quot;id&quot;: &quot;shiying&quot;,
+            &quot;book&quot;: &quot;《增删卜易·世应章》&quot;,
+            &quot;gu&quot;: &quot;世为我，应为彼。世应相生相合则相得，相冲相克则相伤；用生世者，事来就我。&quot;,
+            &quot;hua&quot;: &quot;世爻代表自己，应爻代表对方、地头、所问的对象。相生相合则彼此成全，相冲相克则顶着来；用神来生世，是事情主动来成就你。&quot;
+          }
+        }
+      ],
+      &quot;signals_total&quot;: 3,
+      &quot;signals_omitted&quot;: 0,
+      &quot;basis_note&quot;: &quot;level / score / headline 是钦天监现有判断逻辑（《增删卜易》《卜筮正宗》通行规则）的输出，不是经独立验证的预测准确率。&quot;
+    },
+    &quot;domain_comparison&quot;: null
+  },
+  &quot;zhouyi_text&quot;: null,
+  &quot;source_materials&quot;: [
+    {
+      &quot;kind&quot;: &quot;rule_digest&quot;,
+      &quot;id&quot;: &quot;wangxiang&quot;,
+      &quot;book&quot;: &quot;《增删卜易·四时旺相章》&quot;,
+      &quot;text&quot;: &quot;爻在当前月令所处的状态分旺、相、休、囚、死五种。用神旺/相是得时得气、事情有底气；休囚死是失时、力不从心。这是断旺衰的总纲。&quot;,
+      &quot;original&quot;: &quot;当令者旺，我生者相，生我者休，克我者囚，我克者死。用神旺相则事有根，休囚死则力不足。&quot;,
+      &quot;note&quot;: &quot;规则原文（original）与白话解释（text）均为钦天监代码内置，出处到书名篇目；未与纸本逐字校勘。&quot;
+    },
+    {
+      &quot;kind&quot;: &quot;rule_digest&quot;,
+      &quot;id&quot;: &quot;shiying&quot;,
+      &quot;book&quot;: &quot;《增删卜易·世应章》&quot;,
+      &quot;text&quot;: &quot;世爻代表自己，应爻代表对方、地头、所问的对象。相生相合则彼此成全，相冲相克则顶着来；用神来生世，是事情主动来成就你。&quot;,
+      &quot;original&quot;: &quot;世为我，应为彼。世应相生相合则相得，相冲相克则相伤；用生世者，事来就我。&quot;,
+      &quot;note&quot;: &quot;规则原文（original）与白话解释（text）均为钦天监代码内置，出处到书名篇目；未与纸本逐字校勘。&quot;
+    },
+    {
+      &quot;kind&quot;: &quot;classic_quote&quot;,
+      &quot;text&quot;: &quot;官父兴隆，文章见用。凡得旺父持世、官动生之，或官星持世、父爻旺动，或官星父爻旺动、生合世爻，或日月作官星、父母生合世，皆主成名之象。&quot;,
+      &quot;source&quot;: &quot;《增删卜易·终身功名有无章》&quot;
+    },
+    {
+      &quot;kind&quot;: &quot;classic_quote&quot;,
+      &quot;text&quot;: &quot;凡得子孙持世发动，终非朝廊之贵客。世静而临旬空月破，官逢月破自空，皆主不得成名；惟世与官星空破而动者，勿以此断。&quot;,
+      &quot;source&quot;: &quot;《增删卜易·终身功名有无章》&quot;
+    },
+    {
+      &quot;kind&quot;: &quot;classic_quote&quot;,
+      &quot;text&quot;: &quot;儒业者，父母世爻同旺，终须变化成龙；日月动爻相生，定是王家储器。财动卦中，青灯不久；子孙持世，皓首无成。&quot;,
+      &quot;source&quot;: &quot;《增删卜易·学业章》&quot;
+    },
+    {
+      &quot;kind&quot;: &quot;classic_quote&quot;,
+      &quot;text&quot;: &quot;功名之卦，以官为用神、父为文章。官旺父兴，世爻得地，必主成名。官衰父破，世爻失陷，纵有奇才，亦难遂志。&quot;,
+      &quot;source&quot;: &quot;《卜筮正宗·求名章》&quot;
+    },
+    {
+      &quot;kind&quot;: &quot;classic_quote&quot;,
+      &quot;text&quot;: &quot;大凡卦遇六冲变冲及六爻乱动，父旺世旺，还考平等。倘若父衰受刑克及世爻休囚受克及变凶者，孙山无疑。&quot;,
+      &quot;source&quot;: &quot;《增删卜易·岁科考章》&quot;
+    }
+  ],
+  &quot;reading_domain&quot;: {
+    &quot;id&quot;: &quot;career&quot;,
+    &quot;name&quot;: &quot;事业学业 · 工作与考试&quot;,
+    &quot;hint&quot;: &quot;换不换工作、升不升、考不考得上、 offer 与项目、职称答辩、考公考编、证书。&quot;,
+    &quot;focus&quot;: [
+      &quot;官鬼（职位）与父母（文书）两爻旺不旺、生不生合世——古法以官父相生、生合世为顺遂。&quot;,
+      &quot;世爻自身旺相还是空破；动化吉还是化退化凶。&quot;,
+      &quot;子孙爻动否：占功名考试传统所忌，主与体制、名额、管束无缘或主动抗拒。&quot;,
+      &quot;财爻是否生官：以投入换机会；有没有刑冲空破。&quot;
+    ],
+    &quot;yong_shen&quot;: [
+      {
+        &quot;yao&quot;: &quot;官鬼爻&quot;,
+        &quot;forWhom&quot;: &quot;职位、编制、上级、考核结果、录用通知&quot;
+      },
+      {
+        &quot;yao&quot;: &quot;父母爻&quot;,
+        &quot;forWhom&quot;: &quot;文书：合同、 offer、考卷、证书、文章、审批、单位&quot;
+      },
+      {
+        &quot;yao&quot;: &quot;妻财爻&quot;,
+        &quot;forWhom&quot;: &quot;官的源头（财生官）：花钱打点、投入成本换来的机会&quot;
+      },
+      {
+        &quot;yao&quot;: &quot;子孙爻&quot;,
+        &quot;forWhom&quot;: &quot;剥官之神：占工作考试传统最忌它持世发动（自由、不想被管、推翻考核）&quot;
+      },
+      {
+        &quot;yao&quot;: &quot;世爻&quot;,
+        &quot;forWhom&quot;: &quot;你自己的状态与竞争力&quot;
+      }
+    ]
+  },
+  &quot;layer_status&quot;: {
+    &quot;chart_data&quot;: &quot;available&quot;,
+    &quot;computed_analysis.facts&quot;: &quot;available&quot;,
+    &quot;computed_analysis.rule_based_judgments&quot;: &quot;available&quot;,
+    &quot;source_materials&quot;: &quot;available&quot;,
+    &quot;zhouyi_text&quot;: &quot;not_included&quot;,
+    &quot;domain_comparison&quot;: &quot;not_included&quot;,
+    &quot;reading_domain&quot;: &quot;available&quot;
+  },
+  &quot;data_gaps&quot;: [
+    {
+      &quot;layer&quot;: &quot;domain_comparison&quot;,
+      &quot;status&quot;: &quot;not_included&quot;,
+      &quot;detail&quot;: &quot;其他问事域的用神对照仅在「深度研究」模式提供&quot;
+    },
+    {
+      &quot;layer&quot;: &quot;chart_data.shen_sha&quot;,
+      &quot;status&quot;: &quot;unverified&quot;,
+      &quot;detail&quot;: &quot;天马（戌）：天马按「月建本位」取值，与通行月马口诀不同；源码标注待补其他月份真实盘确认，当前仅有单点校验。&quot;
+    }
+  ],
+  &quot;interpretation_constraints&quot;: [
+    &quot;以下排盘结果已由钦天监程序按固定规则计算，请直接采用，不要重新排盘，也不要自行重算旺衰、用神、世应或动变。&quot;,
+    &quot;source_materials 中 kind=classic_quote 是古籍原文，kind=rule_digest 是整理后的白话解释（original 字段才是原文），kind=convention 是钦天监自建的惯例值。引用时必须区分，不得把整理层或惯例值当作古籍原文。&quot;,
+    &quot;layer_status 标为 not_included 的层是当前模式未包含（可切换模式获取），标为 not_applicable 是本盘本身没有这一类数据，二者都不等于资料缺失。&quot;,
+    &quot;不得将未经提供或未经确认的规则冒充典籍原文；如果资料不足，请明确指出。&quot;,
+    &quot;zhouyi_text 给的是《周易》经传原文（卦辞/彖传/大象传），属于卦义文本，与六爻纳甲的用神、旺衰、世应、动变不是同一套推演体系：可以借它理解本卦/变卦的卦义，但不得把卦辞或彖象直接当作纳甲断吉凶的规则，也不得据此改写 computed_analysis 里的纳甲结论。&quot;,
+    &quot;zhouyi_text 只收阮刻《周易正义》系统本原文，未提供白话翻译；字段为 null 处表示底本无此条或本盘不适用，不要自行补写或用记忆中的其他版本替换。&quot;
+  ],
+  &quot;user_task&quot;: &quot;请依据提供的古法资料分析此卦。先说明各项判断所依据的规则，再结合当前卦象进行推演。不得将未经提供或未经确认的规则冒充典籍原文；如果资料不足，请明确指出。&quot;
+}</pre>
+</details>
+<footer>钦天监 · 纯本地命理工具 · 本资料包仅组织排盘结果与可追溯资料，不代替人的判断。</footer>
+</main>
+</body>
+</html>

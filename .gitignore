@@ -37,3 +37,26 @@ qintian-standalone-v84.zip
 .DS_Store
 Thumbs.db
 sed[A-Za-z0-9]*
+
+# ===== 审计证据：日志本身是发布证据，必须进版本库 =====
+# 上面第 17 行的 *.log 会把这些证据静默吞掉（git status 连 ?? 都不显示），
+# 2026-10-28 复核时发现 gate-tristate.log / gate-blocks-release.log / vitest-run.log
+# 三份门禁证据被忽略 —— 发版时会「报告在、证据不在」。故此处显式反向放行。
+!tools/**/evidence/*.log
+
+# ===== 审计中间产物：单份 >20MB 的全量快照不进版本库（可由脚本确定性重跑）=====
+# 这三份是 393216 判读的完整导出，合计约 104MB，进库会让仓库体积失控；
+# 它们的结论已固化在 l1-fix/evidence/diff-PRE-POST.json 与 l1-review/evidence/* 里。
+# 需要复现时按下面命令重跑（输出路径必须与下列模式一致才会再次被忽略）：
+#   node tools/score-verify-v2/l1-fix/scripts/score-snapshot.mjs --out=tools/score-verify-v2/l1-fix/evidence/snap-PRE.json  --tag=PRE
+#   node tools/score-verify-v2/l1-fix/scripts/score-snapshot.mjs --out=tools/score-verify-v2/l1-fix/evidence/snap-POST.json --tag=POST
+#   node tools/score-verify/scripts/run-matrix.mjs
+tools/score-verify-v2/l1-fix/evidence/snap-*.json
+tools/score-verify/output/full-matrix.csv
+
+# ===== 审计脚本的输入数据是证据，不是古籍语料库 =====
+# 上面第 20 行的 `data/` 本意只忽略古籍原文语料，但它不带前导斜杠，
+# 会连 tools/score-verify-v2/*/data/ 一起吞掉（L0 独立核验用的 384 爻表、卦例 CSV 等），
+# 导致「脚本在、输入数据不在」，别人无法复算。此处按目录反向放行。
+!tools/score-verify-v2/l0-fact-audit/data/
+!tools/score-verify-v2/l0-fact-audit/data/**

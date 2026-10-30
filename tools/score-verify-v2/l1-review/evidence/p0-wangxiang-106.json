@@ -1,0 +1,3935 @@
+{
+ "rows": [
+  {
+   "key": "1174|未|未|wealth",
+   "mask": 1174,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1174|未|未|love",
+   "mask": 1174,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1174|未|未|lost",
+   "mask": 1174,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1182|未|未|wealth",
+   "mask": 1182,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1182|未|未|love",
+   "mask": 1182,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1182|未|未|lost",
+   "mask": 1182,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1206|未|未|love",
+   "mask": 1206,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1206|未|未|lost",
+   "mask": 1206,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1214|未|未|wealth",
+   "mask": 1214,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1214|未|未|love",
+   "mask": 1214,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1214|未|未|lost",
+   "mask": 1214,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -5,
+    "level": -2
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1305|未|未|lost",
+   "mask": 1305,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1337|未|未|lost",
+   "mask": 1337,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1433|未|未|lost",
+   "mask": 1433,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1465|未|未|lost",
+   "mask": 1465,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1686|未|未|wealth",
+   "mask": 1686,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1686|未|未|love",
+   "mask": 1686,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1686|未|未|lost",
+   "mask": 1686,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1694|未|未|wealth",
+   "mask": 1694,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1694|未|未|love",
+   "mask": 1694,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1694|未|未|lost",
+   "mask": 1694,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1718|未|未|wealth",
+   "mask": 1718,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1718|未|未|love",
+   "mask": 1718,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1718|未|未|lost",
+   "mask": 1718,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1726|未|未|wealth",
+   "mask": 1726,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1726|未|未|love",
+   "mask": 1726,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1726|未|未|lost",
+   "mask": 1726,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -5,
+    "level": -2
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "1817|未|未|lost",
+   "mask": 1817,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1849|未|未|lost",
+   "mask": 1849,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1945|未|未|lost",
+   "mask": 1945,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "1977|未|未|lost",
+   "mask": 1977,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "风火家人",
+   "yao": "卯",
+   "qin": "兄弟",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "囚",
+    "yp0": false,
+    "rc0": false,
+    "ad0": false,
+    "rp0": false,
+    "ltA1": "囚",
+    "ltA2": "囚",
+    "adA1": false,
+    "rpA1": false,
+    "adA2": false,
+    "rpA2": false,
+    "yp": false,
+    "rc": false
+   }
+  },
+  {
+   "key": "2134|未|未|wealth",
+   "mask": 2134,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2134|未|未|love",
+   "mask": 2134,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2134|未|未|lost",
+   "mask": 2134,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2142|未|未|wealth",
+   "mask": 2142,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2142|未|未|love",
+   "mask": 2142,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2142|未|未|lost",
+   "mask": 2142,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2166|未|未|wealth",
+   "mask": 2166,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2166|未|未|love",
+   "mask": 2166,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2166|未|未|lost",
+   "mask": 2166,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2174|未|未|wealth",
+   "mask": 2174,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2174|未|未|love",
+   "mask": 2174,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2174|未|未|lost",
+   "mask": 2174,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -5,
+    "level": -2
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2262|未|未|wealth",
+   "mask": 2262,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2262|未|未|love",
+   "mask": 2262,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2262|未|未|lost",
+   "mask": 2262,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2270|未|未|wealth",
+   "mask": 2270,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2270|未|未|love",
+   "mask": 2270,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2270|未|未|lost",
+   "mask": 2270,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2294|未|未|wealth",
+   "mask": 2294,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2294|未|未|love",
+   "mask": 2294,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2294|未|未|lost",
+   "mask": 2294,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2302|未|未|wealth",
+   "mask": 2302,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2302|未|未|love",
+   "mask": 2302,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2302|未|未|lost",
+   "mask": 2302,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -5,
+    "level": -2
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2646|未|未|wealth",
+   "mask": 2646,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2646|未|未|love",
+   "mask": 2646,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2646|未|未|lost",
+   "mask": 2646,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2654|未|未|wealth",
+   "mask": 2654,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2654|未|未|love",
+   "mask": 2654,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2654|未|未|lost",
+   "mask": 2654,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2678|未|未|wealth",
+   "mask": 2678,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2678|未|未|love",
+   "mask": 2678,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2678|未|未|lost",
+   "mask": 2678,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2686|未|未|wealth",
+   "mask": 2686,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2686|未|未|love",
+   "mask": 2686,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2686|未|未|lost",
+   "mask": 2686,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -5,
+    "level": -2
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2774|未|未|wealth",
+   "mask": 2774,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2774|未|未|love",
+   "mask": 2774,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2774|未|未|lost",
+   "mask": 2774,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2782|未|未|wealth",
+   "mask": 2782,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2782|未|未|love",
+   "mask": 2782,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2782|未|未|lost",
+   "mask": 2782,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 5,
+    "level": 2
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 5,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2806|未|未|wealth",
+   "mask": 2806,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2806|未|未|love",
+   "mask": 2806,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2806|未|未|lost",
+   "mask": 2806,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2814|未|未|wealth",
+   "mask": 2814,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2814|未|未|love",
+   "mask": 2814,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2814|未|未|lost",
+   "mask": 2814,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "雷风恒",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -5,
+    "level": -2
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3222|未|未|love",
+   "mask": 3222,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3222|未|未|lost",
+   "mask": 3222,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3230|未|未|love",
+   "mask": 3230,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3230|未|未|lost",
+   "mask": 3230,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3254|未|未|love",
+   "mask": 3254,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3262|未|未|love",
+   "mask": 3262,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3734|未|未|wealth",
+   "mask": 3734,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3734|未|未|love",
+   "mask": 3734,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3734|未|未|lost",
+   "mask": 3734,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 4,
+    "level": 2
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 4,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3742|未|未|wealth",
+   "mask": 3742,
+   "mz": "未",
+   "dz": "未",
+   "dom": "wealth",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3742|未|未|love",
+   "mask": 3742,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 3,
+    "level": 1
+   },
+   "A1": {
+    "score": -2,
+    "level": -1
+   },
+   "A2": {
+    "score": 3,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3742|未|未|lost",
+   "mask": 3742,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 4,
+    "level": 2
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 4,
+    "level": 2
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3766|未|未|love",
+   "mask": 3766,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3774|未|未|love",
+   "mask": 3774,
+   "mz": "未",
+   "dz": "未",
+   "dom": "love",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "3774|未|未|lost",
+   "mask": 3774,
+   "mz": "未",
+   "dz": "未",
+   "dom": "lost",
+   "gua": "山风蛊",
+   "yao": "丑",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -6,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "586|丑|丑|lost",
+   "mask": 586,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "610|丑|丑|lost",
+   "mask": 610,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "618|丑|丑|lost",
+   "mask": 618,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "714|丑|丑|lost",
+   "mask": 714,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "738|丑|丑|lost",
+   "mask": 738,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "746|丑|丑|lost",
+   "mask": 746,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2634|丑|丑|lost",
+   "mask": 2634,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2658|丑|丑|lost",
+   "mask": 2658,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2666|丑|丑|lost",
+   "mask": 2666,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2762|丑|丑|lost",
+   "mask": 2762,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 1,
+    "level": 1
+   },
+   "A1": {
+    "score": -4,
+    "level": -2
+   },
+   "A2": {
+    "score": 1,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2786|丑|丑|lost",
+   "mask": 2786,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  },
+  {
+   "key": "2794|丑|丑|lost",
+   "mask": 2794,
+   "mz": "丑",
+   "dz": "丑",
+   "dom": "lost",
+   "gua": "雷地豫",
+   "yao": "未",
+   "qin": "妻财",
+   "A0": {
+    "score": 2,
+    "level": 1
+   },
+   "A1": {
+    "score": -3,
+    "level": -1
+   },
+   "A2": {
+    "score": 2,
+    "level": 1
+   },
+   "st": {
+    "lt0": "旺",
+    "yp0": true,
+    "rc0": true,
+    "ad0": true,
+    "rp0": false,
+    "ltA1": "休",
+    "ltA2": "旺",
+    "adA1": false,
+    "rpA1": true,
+    "adA2": true,
+    "rpA2": false,
+    "yp": true,
+    "rc": true
+   }
+  }
+ ],
+ "dset": {
+  "5": 77,
+  "7": 29
+ },
+ "lvset": {
+  "-1→1": 51,
+  "-1→2": 10,
+  "-2→1": 45
+ }
+}

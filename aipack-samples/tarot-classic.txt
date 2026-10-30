@@ -1,0 +1,71 @@
+﻿【钦天监 · 塔罗 · 古法推演资料包】
+
+■ 基本信息
+时间：2026-10-26 17:35
+所问：这段合作还要不要继续
+牌组：韦特塔罗（RWS） · Public Domain（1909 Rider–Waite–Smith，美国公有领域）
+牌阵：三牌·时间流
+正逆位：启用
+
+■ 排盘事实（已由钦天监计算，请直接采用，不要重算）
+1. 过去｜命运之轮(Wheel of Fortune)（正位）
+   位置含义：导致现状的来处、仍在起作用的背景。
+2. 现在｜宝剑八(Eight of Swords)（逆位）
+   位置含义：当下的核心处境与正在发生的事。
+3. 未来｜太阳(The Sun)（正位）
+   位置含义：若顺势发展可能走向的趋势（非注定）。
+
+■ 程序分析事实（已计算，非推测）
+共 3 张牌，启用正逆位
+1. 过去｜命运之轮（正位）
+   画面：巨轮飘浮于云间，轮缘字母与符号，四角活物持经，蛇与兽随轮升降。
+   关键词：流转、机遇、周期、转折、因缘
+   正位牌义（整理层）：境遇的自然起伏与转机；把握周期性的时机；承认有非己力所控的部分；顺势而变
+   Waite 1910 原文：Destiny, fortune, success, elevation, luck, felicity. Reversed: Increase, abundance, superfluity.
+2. 现在｜宝剑八（逆位）
+   画面：蒙眼缚身的女子立于泥沼，周围八剑如栏，处境多由心造。
+   关键词：自限、受困感、束缚、盲点
+   逆位牌义（整理层）：松绑、找回主动；限制性想法被打破；敢于迈出第一步
+   Waite 1910 原文：Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness. Reversed: Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality.
+3. 未来｜太阳（正位）
+   画面：灿烂太阳下，孩童骑马、展旗，向日葵与石墙，明亮喜悦。
+   关键词：明朗、喜悦、成功、活力、坦诚
+   正位牌义（整理层）：清晰、顺遂与可见的成果；坦诚、富有活力；事情摊在阳光下；积极而有信心
+   Waite 1910 原文：Material happiness, fortunate marriage, contentment. Reversed: The same in a lesser sense.
+
+■ 程序依规则生成的判断（不是客观事实，也不是预测准确率）
+倾向：吉 · 势头明朗（合参分 0.95）
+说明：牌象相互扶持，倾向积极，宜顺势主动。塔罗所示为当下之势与功课，非定命。
+性质：convention（自建惯例值机械合参）
+声明：本倾向由钦天监按每张牌的惯例值（RWS_VAL）与逆位处理公式机械合参得出，是为"这一阵"给参考而编码的中性惯例值，不是某本古籍对每张牌的固定判决，也不是预测准确率。
+
+■ 资料出处（原文 / 整理 / 惯例，已分层）
+〔原文〕Destiny, fortune, success, elevation, luck, felicity. Reversed: Increase, abundance, superfluity.
+  出处：A.E. Waite《Pictorial Key to the Tarot》(1910, PD)（命运之轮）
+〔原文〕Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness. Reversed: Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality.
+  出处：A.E. Waite《Pictorial Key to the Tarot》(1910, PD)（宝剑八逆位）
+〔原文〕Material happiness, fortunate marriage, contentment. Reversed: The same in a lesser sense.
+  出处：A.E. Waite《Pictorial Key to the Tarot》(1910, PD)（太阳）
+〔惯例·自建〕每张牌的基础倾向值 +2/+1/0/-1（逆位按能量受阻处理）　— 钦天监 tarotval_rws.js 自建惯例表
+
+■ 资料状态
+  chart_data：已提供
+  computed_analysis.facts：已提供
+  computed_analysis.rule_based_judgments：已提供
+  source_materials：已提供
+  computed_analysis.reversal_comparison：当前模式未包含
+  computed_analysis.spread_full：当前模式未包含
+缺口说明：
+  · computed_analysis.rule_based_judgments.classic_rules（本盘无此类数据）塔罗没有"按古法规则逐条推导"的判断层（术数本身如此，不是资料缺失）；本层实际提供的是自建惯例合参倾向，性质见 basis=convention。
+  · computed_analysis.reversal_comparison（当前模式未包含）正逆位读法对照与牌阵全位仅在「深度研究」模式提供
+
+■ 使用约束
+  1. 以下牌阵与正逆位已由钦天监抽定，请直接采用，不要重新抽牌或改动牌位。
+  2. facts.cards 里的 scene / keywords / upright_meanings / reversed_meanings 是钦天监自建的中性整理层（kind=rule_digest），不是古籍原文；只有 classic_text 是 A.E. Waite《Pictorial Key to the Tarot》(1910) 原文。引用时必须区分。
+  3. 本牌组的牌义不得套用到其他牌组（牌组身份见 chart_metadata.deck_id）。
+  4. classic_text 是 Waite 原书条目，同一段里并列了正位与「Reversed:」之后两套说法；请按本张牌的实际正逆位取用对应那一套，不要把两套混讲。
+  5. 倾向值来自钦天监自建的惯例表（kind=convention），不是古籍判决，也不是命定；塔罗所示为当下之势与功课，取舍由人。
+  6. layer_status 标为 not_applicable 的层是该术数本身没有这一类数据（如塔罗无古法逐条推导层），标为 not_included 是当前模式未包含，二者都不等于资料缺失。
+
+■ 请你做的事
+请依据提供的牌阵、牌义与 Waite 原文分析这一阵。先说明每个位置上的牌依据哪一条牌义或原文，再综合推演。不得把整理层当作原文，不得把倾向值当作命定；如果资料不足，请明确指出。

@@ -1,0 +1,313 @@
+{
+  "meta": {
+    "generatedAt": "2026-10-28T05:50:31.141Z",
+    "space": {
+      "masks": 4096,
+      "months": 12,
+      "days": 12,
+      "domains": 8,
+      "total": 4718592
+    },
+    "panBuildMs": 704,
+    "runMs": 192027,
+    "note": "8 域全量枚举，PRE=v121 verdict+V0 vendor，POST=current verdict+cur vendor"
+  },
+  "levelDiff": 97492,
+  "ribo": {
+    "records": 12992,
+    "byDomain": {
+      "career": 3344,
+      "wealth": 3216,
+      "love": 3216,
+      "lost": 3216
+    },
+    "pure": 3502,
+    "withYuePo": 0,
+    "withLiuhe": 115,
+    "withOther": 0
+  },
+  "andong": {
+    "records": 1328,
+    "byDomain": {
+      "wealth": 368,
+      "love": 368,
+      "lost": 368,
+      "career": 224
+    },
+    "pure": 571,
+    "withYuePo": 0
+  },
+  "riboAndAndong": 1328,
+  "riboWithAndongLevel": 571,
+  "bothFlagged": 0,
+  "riboByFlow": {
+    "-2→-2": 5660,
+    "-1→-1": 3274,
+    "1→-1": 86,
+    "-1→-2": 1883,
+    "0→-1": 1118,
+    "1→0": 400,
+    "1→1": 439,
+    "-1→0": 2,
+    "2→2": 2,
+    "2→1": 10,
+    "0→1": 2,
+    "2→-1": 10,
+    "0→-2": 61,
+    "1→-2": 45
+  },
+  "riboByDirection": {
+    "0": 24,
+    "1": 26,
+    "-1": 11378,
+    "-2": 168,
+    "-3": 69,
+    "-5": 1262,
+    "-6": 28,
+    "-4": 4,
+    "-7": 33
+  },
+  "riboByPreLingTai": {
+    "休": 12472
+  },
+  "riboByPostLingTai": {
+    "休": 13880
+  },
+  "riboByGua": {
+    "泽风大过": 160,
+    "坤为地": 224,
+    "地泽临": 256,
+    "火风鼎": 160,
+    "风火家人": 352,
+    "天火同人": 256,
+    "地雷复": 256,
+    "雷天大壮": 320,
+    "泽天夬": 160,
+    "地天泰": 160,
+    "震为雷": 336,
+    "风雷益": 352,
+    "风天小畜": 160,
+    "天雷无妄": 192,
+    "山雷颐": 320,
+    "山泽损": 208,
+    "山水蒙": 24,
+    "艮为山": 256,
+    "山火贲": 160,
+    "山天大畜": 160,
+    "水地比": 256,
+    "水天需": 160,
+    "泽雷随": 312,
+    "火雷噬嗑": 336,
+    "水风井": 296,
+    "乾为天": 288,
+    "水泽节": 400,
+    "泽地萃": 320,
+    "山地剥": 128,
+    "天地否": 208,
+    "火地晋": 208,
+    "地水师": 400,
+    "雷山小过": 128,
+    "雷火丰": 448,
+    "水山蹇": 40,
+    "坎为水": 400,
+    "天山遁": 128,
+    "泽山咸": 40,
+    "泽水困": 232,
+    "火水未济": 256,
+    "火天大有": 288,
+    "风水涣": 32,
+    "天水讼": 256,
+    "雷泽归妹": 288,
+    "兑为泽": 288,
+    "火泽睽": 16,
+    "离为火": 224,
+    "风泽中孚": 8,
+    "风山渐": 24,
+    "风地观": 192,
+    "天泽履": 24,
+    "地火明夷": 96,
+    "地风升": 296,
+    "山风蛊": 208,
+    "天风姤": 96,
+    "雷风恒": 208,
+    "地山谦": 16,
+    "水火既济": 16,
+    "巽为风": 128,
+    "泽火革": 16,
+    "雷水解": 352,
+    "水雷屯": 16,
+    "雷地豫": 352,
+    "火山旅": 96
+  },
+  "yongCandidate": {
+    "preIdleRiChong": 28672,
+    "preAnDong": 61440,
+    "preRiPo": 57344
+  },
+  "cases": [
+    {
+      "group": "ribo_added|yuepo0|liuhe0",
+      "mask": 340,
+      "monthZhi": "寅",
+      "dayZhi": "巳",
+      "domain": "career",
+      "benGua": "泽风大过",
+      "change": "ribo_added",
+      "scorePre": -7,
+      "scorePost": -8,
+      "dScore": -1,
+      "levelPre": -2,
+      "levelPost": -2,
+      "withYuePo": false,
+      "withLiuhe": false,
+      "riboPre": false,
+      "riboPost": true,
+      "preLingTaiOfCandidates": [
+        "休",
+        "休"
+      ],
+      "riboTexts": [
+        {
+          "w": -1,
+          "text": "父母（丁亥，四爻、持世）被日辰冲又衰，是「日破」，近期被冲散。"
+        }
+      ]
+    },
+    {
+      "group": "ribo_added|yuepo0|liuhe0",
+      "mask": 342,
+      "monthZhi": "寅",
+      "dayZhi": "巳",
+      "domain": "career",
+      "benGua": "泽风大过",
+      "change": "ribo_added",
+      "scorePre": -7,
+      "scorePost": -8,
+      "dScore": -1,
+      "levelPre": -2,
+      "levelPost": -2,
+      "withYuePo": false,
+      "withLiuhe": false,
+      "riboPre": false,
+      "riboPost": true,
+      "preLingTaiOfCandidates": [
+        "休",
+        "休"
+      ],
+      "riboTexts": [
+        {
+          "w": -1,
+          "text": "父母（丁亥，四爻、持世）被日辰冲又衰，是「日破」，近期被冲散。"
+        }
+      ]
+    },
+    {
+      "group": "ribo_added|yuepo0|liuhe0",
+      "mask": 348,
+      "monthZhi": "寅",
+      "dayZhi": "巳",
+      "domain": "career",
+      "benGua": "泽风大过",
+      "change": "ribo_added",
+      "scorePre": -7,
+      "scorePost": -8,
+      "dScore": -1,
+      "levelPre": -2,
+      "levelPost": -2,
+      "withYuePo": false,
+      "withLiuhe": false,
+      "riboPre": false,
+      "riboPost": true,
+      "preLingTaiOfCandidates": [
+        "休"
+      ],
+      "riboTexts": [
+        {
+          "w": -1,
+          "text": "父母（丁亥，四爻、持世）被日辰冲又衰，是「日破」，近期被冲散。"
+        }
+      ]
+    },
+    {
+      "group": "ribo_added|yuepo0|liuhe1",
+      "mask": 517,
+      "monthZhi": "寅",
+      "dayZhi": "巳",
+      "domain": "love",
+      "benGua": "地泽临",
+      "change": "ribo_added",
+      "scorePre": 1,
+      "scorePost": -1,
+      "dScore": -2,
+      "levelPre": 1,
+      "levelPost": -1,
+      "withYuePo": false,
+      "withLiuhe": true,
+      "riboPre": false,
+      "riboPost": true,
+      "preLingTaiOfCandidates": [
+        "休"
+      ],
+      "riboTexts": [
+        {
+          "w": -1,
+          "text": "妻财（癸亥，五爻、临应）被日辰冲又衰，是「日破」，近期被冲散。"
+        }
+      ]
+    },
+    {
+      "group": "ribo_added|yuepo0|liuhe1",
+      "mask": 519,
+      "monthZhi": "寅",
+      "dayZhi": "巳",
+      "domain": "love",
+      "benGua": "地泽临",
+      "change": "ribo_added",
+      "scorePre": 1,
+      "scorePost": -1,
+      "dScore": -2,
+      "levelPre": 1,
+      "levelPost": -1,
+      "withYuePo": false,
+      "withLiuhe": true,
+      "riboPre": false,
+      "riboPost": true,
+      "preLingTaiOfCandidates": [
+        "休"
+      ],
+      "riboTexts": [
+        {
+          "w": -1,
+          "text": "妻财（癸亥，五爻、临应）被日辰冲又衰，是「日破」，近期被冲散。"
+        }
+      ]
+    },
+    {
+      "group": "ribo_added|yuepo0|liuhe1",
+      "mask": 525,
+      "monthZhi": "寅",
+      "dayZhi": "巳",
+      "domain": "love",
+      "benGua": "地泽临",
+      "change": "ribo_added",
+      "scorePre": -1,
+      "scorePost": -1,
+      "dScore": 0,
+      "levelPre": -1,
+      "levelPost": -1,
+      "withYuePo": false,
+      "withLiuhe": true,
+      "riboPre": false,
+      "riboPost": true,
+      "preLingTaiOfCandidates": [
+        "休"
+      ],
+      "riboTexts": [
+        {
+          "w": -1,
+          "text": "妻财（癸亥，五爻、临应）被日辰冲又衰，是「日破」，近期被冲散。"
+        }
+      ]
+    }
+  ]
+}

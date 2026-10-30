@@ -1,0 +1,237 @@
+{
+  "mode": "diff",
+  "a": {
+    "tag": "PRE",
+    "generatedAt": "2026-10-27T16:31:22.218Z",
+    "rows": {
+      "legal": 49152,
+      "pans": 393216
+    }
+  },
+  "b": {
+    "tag": "POST",
+    "generatedAt": "2026-10-27T16:44:04.681Z",
+    "rows": {
+      "legal": 49152,
+      "pans": 393216
+    }
+  },
+  "totalKeys": 393216,
+  "changed": 393216,
+  "onlyA": 0,
+  "onlyB": 0,
+  "bucket": {
+    "chong_gua": 0,
+    "he_gua": 0,
+    "yuepo_wang": 3480,
+    "xiutai_ribo": 0,
+    "mixed": 0,
+    "other": 386270,
+    "he_gua_or_chong": 3466
+  },
+  "byDomain": {
+    "career": 49152,
+    "wealth": 49152,
+    "love": 49152,
+    "health": 49152,
+    "lost": 49152,
+    "decision": 49152,
+    "life": 49152,
+    "people": 49152
+  },
+  "levelFlip": {
+    "up": 290,
+    "down": 8060
+  },
+  "examples": {
+    "chong_gua": [],
+    "he_gua": [],
+    "yuepo_wang": [
+      {
+        "k": "17|未|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ]
+      },
+      {
+        "k": "19|未|career",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ]
+      },
+      {
+        "k": "20|未|wealth",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ]
+      },
+      {
+        "k": "20|未|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ]
+      },
+      {
+        "k": "20|未|lost",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -7,
+          -2
+        ],
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang",
+          "1:shituo"
+        ]
+      },
+      {
+        "k": "22|未|wealth",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -5,
+          -2
+        ],
+        "added": [
+          "-1:wangxiang"
+        ],
+        "removed": [
+          "2:wangxiang"
+        ]
+      }
+    ],
+    "xiutai_ribo": [],
+    "mixed": [],
+    "other": [
+      {
+        "k": "0|寅|career",
+        "pre": [
+          0,
+          0
+        ],
+        "post": [
+          0,
+          0
+        ],
+        "added": [],
+        "removed": []
+      },
+      {
+        "k": "0|寅|wealth",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "added": [],
+        "removed": []
+      },
+      {
+        "k": "0|寅|love",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "added": [],
+        "removed": []
+      },
+      {
+        "k": "0|寅|health",
+        "pre": [
+          0,
+          0
+        ],
+        "post": [
+          0,
+          0
+        ],
+        "added": [],
+        "removed": []
+      },
+      {
+        "k": "0|寅|lost",
+        "pre": [
+          -7,
+          -2
+        ],
+        "post": [
+          -7,
+          -2
+        ],
+        "added": [],
+        "removed": []
+      },
+      {
+        "k": "0|寅|decision",
+        "pre": [
+          -2,
+          -1
+        ],
+        "post": [
+          -2,
+          -1
+        ],
+        "added": [],
+        "removed": []
+      }
+    ]
+  }
+}

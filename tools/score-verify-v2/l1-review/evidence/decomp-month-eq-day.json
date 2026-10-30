@@ -1,0 +1,400 @@
+{
+  "space": {
+    "months": 12,
+    "masks": 4096,
+    "domains": 8,
+    "total": 393216
+  },
+  "levelDiff": 8711,
+  "byFlow": {
+    "1→2": 14,
+    "0→-1": 1518,
+    "-1→0": 80,
+    "2→1": 224,
+    "1→0": 1171,
+    "-2→-1": 133,
+    "0→1": 40,
+    "-1→1": 25,
+    "1→-1": 775,
+    "-1→-2": 4541,
+    "0→-2": 103,
+    "2→0": 12,
+    "2→-1": 19,
+    "1→-2": 56
+  },
+  "byClass": {
+    "B 纯名单": 1246,
+    "Z 无法归因": 704,
+    "A 纯月破失气": 2912,
+    "F 月破+日破叠加": 3656,
+    "D 名单+日破": 97,
+    "C 名单+月破": 96
+  },
+  "byClassFlow": {
+    "B 纯名单|1→2": 14,
+    "B 纯名单|0→-1": 262,
+    "B 纯名单|-1→0": 72,
+    "B 纯名单|2→1": 129,
+    "Z 无法归因|1→0": 656,
+    "B 纯名单|-2→-1": 120,
+    "B 纯名单|0→1": 40,
+    "B 纯名单|1→0": 231,
+    "B 纯名单|-1→1": 22,
+    "B 纯名单|1→-1": 46,
+    "B 纯名单|-1→-2": 310,
+    "A 纯月破失气|-1→-2": 1732,
+    "F 月破+日破叠加|-1→-2": 2343,
+    "D 名单+日破|0→-1": 15,
+    "F 月破+日破叠加|0→-1": 671,
+    "A 纯月破失气|0→-1": 554,
+    "A 纯月破失气|1→-1": 338,
+    "C 名单+月破|-1→-2": 57,
+    "A 纯月破失气|1→0": 168,
+    "C 名单+月破|-1→0": 3,
+    "D 名单+日破|-1→-2": 51,
+    "D 名单+日破|-1→0": 5,
+    "C 名单+月破|-2→-1": 4,
+    "D 名单+日破|-2→-1": 9,
+    "F 月破+日破叠加|1→0": 99,
+    "F 月破+日破叠加|1→-1": 386,
+    "C 名单+月破|0→-1": 16,
+    "F 月破+日破叠加|0→-2": 79,
+    "A 纯月破失气|0→-2": 21,
+    "A 纯月破失气|2→1": 67,
+    "A 纯月破失气|2→0": 12,
+    "A 纯月破失气|2→-1": 9,
+    "F 月破+日破叠加|2→-1": 10,
+    "F 月破+日破叠加|1→-2": 45,
+    "A 纯月破失气|1→-2": 11,
+    "D 名单+日破|-1→1": 3,
+    "D 名单+日破|1→-1": 1,
+    "C 名单+月破|1→-1": 4,
+    "F 月破+日破叠加|2→1": 23,
+    "C 名单+月破|1→0": 8,
+    "D 名单+日破|1→0": 9,
+    "C 名单+月破|0→-2": 2,
+    "D 名单+日破|2→1": 3,
+    "D 名单+日破|0→-2": 1,
+    "Z 无法归因|-1→-2": 48,
+    "C 名单+月破|2→1": 2
+  },
+  "anomaly": {
+    "dwMismatch": 0,
+    "noSignalDiff": 0
+  },
+  "samples": {
+    "B 纯名单": {
+      "mask": 5,
+      "monthIdx": 0,
+      "monthZhi": "寅",
+      "dayZhi": "寅",
+      "domain": "love",
+      "domainCn": "婚姻",
+      "benGua": "地泽临",
+      "bianGua": "乾为天",
+      "levelPre": 1,
+      "levelPost": 2,
+      "scorePre": 3,
+      "scorePost": 4,
+      "dScore": 1,
+      "sumDw": 1,
+      "deltas": [
+        {
+          "ruleId": "liuhunhun",
+          "dw": 1,
+          "kind": "removed",
+          "wPre": -1,
+          "wPost": 0,
+          "textPre": [
+            "六合变六冲——现在再好，往后也会生变，古法叫\"始亲终疏\"。",
+            "本卦是六合卦，占婚最宜，主易合、关系黏得住。"
+          ],
+          "textPost": []
+        }
+      ],
+      "facts": []
+    },
+    "Z 无法归因": {
+      "mask": 87,
+      "monthIdx": 0,
+      "monthZhi": "寅",
+      "dayZhi": "寅",
+      "domain": "people",
+      "domainCn": "行人",
+      "benGua": "雷天大壮",
+      "bianGua": "天风姤",
+      "levelPre": 1,
+      "levelPost": 0,
+      "scorePre": 1,
+      "scorePost": 0,
+      "dScore": -1,
+      "sumDw": -1,
+      "deltas": [
+        {
+          "ruleId": "xingren",
+          "dw": -1,
+          "kind": "weightChanged",
+          "wPre": 0,
+          "wPost": -1,
+          "textPre": [
+            "用神动化回头克——在外有阻、有灾或回程出变故。",
+            "用神来克世——古法\"用爻克世必然归\"，近日就有消息/人到。"
+          ],
+          "textPost": [
+            "用神动化回头克——在外有阻、有灾或回程出变故。",
+            "用神来克世——古法\"用爻克世必然归\"，近日就有消息/人到。",
+            "六冲卦，行人无定，人在外面跑动、不落定。"
+          ]
+        }
+      ],
+      "facts": []
+    },
+    "A 纯月破失气": {
+      "mask": 65,
+      "monthIdx": 2,
+      "monthZhi": "辰",
+      "dayZhi": "辰",
+      "domain": "career",
+      "domainCn": "事业",
+      "benGua": "震为雷",
+      "bianGua": "乾为天",
+      "levelPre": -1,
+      "levelPost": -2,
+      "scorePre": -2,
+      "scorePost": -4,
+      "dScore": -2,
+      "sumDw": -2,
+      "deltas": [
+        {
+          "ruleId": "wangxiang",
+          "dw": -2,
+          "kind": "weightChanged",
+          "wPre": 3,
+          "wPost": 1,
+          "textPre": [
+            "官鬼（庚申，五爻）得月令之气（相于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。",
+            "世爻旺于月，你自己有底气、扛得住事。"
+          ],
+          "textPost": [
+            "官鬼（庚申，五爻）得月令之气（相于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。",
+            "世爻休于月，你当下气弱，不宜强出头。"
+          ]
+        }
+      ],
+      "facts": [
+        {
+          "pos": 6,
+          "zhi": "戌",
+          "shi": true,
+          "ying": false,
+          "moving": true,
+          "lingTai": "旺→休"
+        }
+      ]
+    },
+    "F 月破+日破叠加": {
+      "mask": 257,
+      "monthIdx": 2,
+      "monthZhi": "辰",
+      "dayZhi": "辰",
+      "domain": "people",
+      "domainCn": "行人",
+      "benGua": "水雷屯",
+      "bianGua": "乾为天",
+      "levelPre": -1,
+      "levelPost": -2,
+      "scorePre": -2,
+      "scorePost": -4,
+      "dScore": -2,
+      "sumDw": -2,
+      "deltas": [
+        {
+          "ruleId": "xingren",
+          "dw": -2,
+          "kind": "weightChanged",
+          "wPre": -1,
+          "wPost": -3,
+          "textPre": [
+            "用神（人/消息）暗动——已经在路上、背地里已经有动作，近期会有信。",
+            "用神墓绝空破——古法\"归信杳然\"，人/消息一时半会儿回不来；若问在外平安，这叫用神\"有病\"，需要挂念。",
+            "世爻克用神——古法\"世克用兮人未动\"，对方还没有动身/回复的打算。"
+          ],
+          "textPost": [
+            "用神墓绝空破——古法\"归信杳然\"，人/消息一时半会儿回不来；若问在外平安，这叫用神\"有病\"，需要挂念。",
+            "世爻克用神——古法\"世克用兮人未动\"，对方还没有动身/回复的打算。"
+          ]
+        }
+      ],
+      "facts": [
+        {
+          "pos": 5,
+          "zhi": "戌",
+          "shi": false,
+          "ying": true,
+          "moving": false,
+          "lingTai": "旺→休",
+          "riPo": "false→true",
+          "anDong": "true→false"
+        }
+      ]
+    },
+    "D 名单+日破": {
+      "mask": 301,
+      "monthIdx": 2,
+      "monthZhi": "辰",
+      "dayZhi": "辰",
+      "domain": "love",
+      "domainCn": "婚姻",
+      "benGua": "水泽节",
+      "bianGua": "天雷无妄",
+      "levelPre": 0,
+      "levelPost": -1,
+      "scorePre": 0,
+      "scorePost": -2,
+      "dScore": -2,
+      "sumDw": -2,
+      "deltas": [
+        {
+          "ruleId": "liuhunhun",
+          "dw": -2,
+          "kind": "added",
+          "wPre": 0,
+          "wPost": -2,
+          "textPre": [],
+          "textPost": [
+            "六合变六冲——现在再好，往后也会生变，古法叫\"始亲终疏\"。"
+          ]
+        }
+      ],
+      "facts": [
+        {
+          "pos": 5,
+          "zhi": "戌",
+          "shi": false,
+          "ying": false,
+          "moving": false,
+          "lingTai": "旺→休",
+          "riPo": "false→true",
+          "anDong": "true→false"
+        }
+      ]
+    },
+    "C 名单+月破": {
+      "mask": 619,
+      "monthIdx": 2,
+      "monthZhi": "辰",
+      "dayZhi": "辰",
+      "domain": "love",
+      "domainCn": "婚姻",
+      "benGua": "震为雷",
+      "bianGua": "火地晋",
+      "levelPre": -1,
+      "levelPost": -2,
+      "scorePre": -3,
+      "scorePost": -8,
+      "dScore": -5,
+      "sumDw": -5,
+      "deltas": [
+        {
+          "ruleId": "wangxiang",
+          "dw": -3,
+          "kind": "weightChanged",
+          "wPre": 2,
+          "wPost": -1,
+          "textPre": [
+            "妻财（庚戌，上爻、持世）得月令之气（旺于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。"
+          ],
+          "textPost": [
+            "妻财（庚戌，上爻、持世）月令休态，气不足，事能成也要多费周折。"
+          ]
+        },
+        {
+          "ruleId": "liuhunhun",
+          "dw": -2,
+          "kind": "weightChanged",
+          "wPre": 0,
+          "wPost": -2,
+          "textPre": [
+            "世应相冲——你和对方/地头顶着来，占婚最忌相冲，主易散、易吵翻。",
+            "六冲变六合——眼下不成、先吵先难，日后反而成，别太早放弃。"
+          ],
+          "textPost": [
+            "世应相冲——你和对方/地头顶着来，占婚最忌相冲，主易散、易吵翻。"
+          ]
+        }
+      ],
+      "facts": [
+        {
+          "pos": 6,
+          "zhi": "戌",
+          "shi": true,
+          "ying": false,
+          "moving": true,
+          "lingTai": "旺→休"
+        }
+      ]
+    }
+  },
+  "ruleFreq": {
+    "liuhunhun": {
+      "count": 1439,
+      "totalDw": -1043,
+      "kinds": {
+        "removed": 817,
+        "added": 271,
+        "weightChanged": 351
+      }
+    },
+    "xingren": {
+      "count": 1428,
+      "totalDw": -2024,
+      "kinds": {
+        "weightChanged": 1428
+      }
+    },
+    "wangxiang": {
+      "count": 5937,
+      "totalDw": -13284,
+      "kinds": {
+        "weightChanged": 5937
+      }
+    },
+    "chishi": {
+      "count": 128,
+      "totalDw": -128,
+      "kinds": {
+        "weightChanged": 128
+      }
+    },
+    "shituo": {
+      "count": 213,
+      "totalDw": -426,
+      "kinds": {
+        "weightChanged": 213
+      }
+    },
+    "andong": {
+      "count": 571,
+      "totalDw": -571,
+      "kinds": {
+        "removed": 571
+      }
+    },
+    "ribo": {
+      "count": 571,
+      "totalDw": -571,
+      "kinds": {
+        "added": 571
+      }
+    }
+  },
+  "factShape": {
+    "无": 1950,
+    "lingTai": 2777,
+    "anDong+lingTai+riPo": 3072,
+    "lingTai ; lingTai": 231,
+    "anDong+lingTai+riPo ; lingTai": 454,
+    "anDong+lingTai+riPo ; anDong+lingTai+riPo": 227
+  },
+  "elapsedMs": 65727
+}

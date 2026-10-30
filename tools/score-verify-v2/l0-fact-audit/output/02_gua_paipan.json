@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-10-27T04:16:52.626Z",
+  "summary": {
+    "T1 卦结构": {
+      "total": 64,
+      "fail": 0
+    },
+    "T2 魂卦标记": {
+      "total": 64,
+      "fail": 0
+    },
+    "T3 纳甲天干": {
+      "total": 384,
+      "fail": 0
+    },
+    "T3 纳甲地支": {
+      "total": 384,
+      "fail": 0
+    },
+    "T3 爻五行": {
+      "total": 384,
+      "fail": 0
+    },
+    "T3 六亲": {
+      "total": 384,
+      "fail": 0
+    },
+    "T3 世应": {
+      "total": 384,
+      "fail": 0
+    },
+    "T3 六神": {
+      "total": 384,
+      "fail": 0
+    },
+    "T4 首卦名": {
+      "total": 64,
+      "fail": 0
+    },
+    "T5 伏神清单": {
+      "total": 64,
+      "fail": 0
+    },
+    "T6 变卦名": {
+      "total": 384,
+      "fail": 0
+    },
+    "T6 动爻位": {
+      "total": 384,
+      "fail": 0
+    },
+    "T6 变爻纳甲": {
+      "total": 384,
+      "fail": 0
+    },
+    "T7 多动变卦": {
+      "total": 24,
+      "fail": 0
+    },
+    "T7 多动爻位": {
+      "total": 24,
+      "fail": 0
+    },
+    "T7 静卦": {
+      "total": 2,
+      "fail": 0
+    },
+    "T9 卦身": {
+      "total": 64,
+      "fail": 0
+    }
+  },
+  "totalCases": 3826,
+  "totalFail": 0,
+  "failures": []
+}
