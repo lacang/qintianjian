@@ -3,10 +3,10 @@
   "app": "钦天监 PWA",
   "updated_at": "2026-10-30T16:27:25.083Z",
   "git": {
-    "commit": "3ca1cab983ae4f46e2e7e9f8b3db62b49b67f3dd",
-    "commit_short": "3ca1cab",
+    "commit": "3f0b3ea50f6686d7725a99f01331977f80d426cb",
+    "commit_short": "3f0b3ea",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -105,7 +105,18 @@
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7702498319854993471",
+    "status": "Succeeded",
+    "version": 122,
+    "deployed_at": "2026-10-30T16:30:00+00:00",
+    "remote_check": {
+      "coze_site": "ok",
+      "github_pages": "ok"
+    },
+    "note": "v122 月破旺衰基线定案 + 六合六冲名单修正 + 归魂位序修复"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
