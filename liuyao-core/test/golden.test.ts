@@ -139,12 +139,13 @@ describe('金标准 02：雷火丰 静卦（2026-10-18 04:06）', () => {
     expect(pan.xunKong).toEqual(['戌', '亥']);
   });
 
-  it('本卦：雷火丰 坎宫归魂 世五应二', () => {
+  it('本卦：雷火丰 坎宫五世卦（非归魂） 世五应二', () => {
     expect(pan.benGua.name).toBe('雷火丰');
     expect(pan.benGua.gong).toBe('坎');
     expect(pan.benGua.upper).toBe('震');
     expect(pan.benGua.lower).toBe('离');
-    expect(pan.benGua.isGuiHun).toBe(true);
+    // 雷火丰是坎宫第六卦（五世卦），归魂是第八卦地水师；见《增删卜易·归魂游魂章》
+    expect(pan.benGua.isGuiHun).toBe(false);
     expect(pan.benGua.isYouHun).toBe(false);
     expect(pan.benGua.shiPosition).toBe(5);
     expect(pan.benGua.yingPosition).toBe(2);

@@ -240,12 +240,17 @@ export function getShouGuaPan(gong: BaGua): { meta: GuaMeta; yaoList: ShouGuaYao
   const meta = withShouGua(getGuaMeta(gong, gong));
   const gx = benGongWuXing(gong);
   // 八纯首卦：上卦=下卦=本宫卦，六爻阴阳直接取经卦三爻表（下卦=初~三，上卦=四~上）
+  // ⚠️ 位序陷阱：BAGUA_BITS 的数组位序是 top-to-bottom（index 0 = 三爻/上爻，index 2 = 初爻），
+  //    而下方 yaoList 的 i 是 bottom-to-top（i=0 即初爻）。故第 (i%3) 爻须取 bits[2 - (i%3)]。
+  //    历史缺陷（L0-002）：此处曾写作 bits[i % 3]，把 index 0 当初爻消费，导致
+  //    兑/震/巽/艮 四宫八纯首卦的藏爻阴阳整体颠倒；乾111/离101/坎010/坤000 属回文卦，
+  //    两种读法同值，所以缺陷只在 4/8 宫暴露。表本身 8/8 正确，无需改动。
   const bits = BAGUA_BITS[gong];
   const yaoList: ShouGuaYao[] = getFullNajia(gong, gong).map((nj, i) => {
     const position = i + 1;
     return {
       position,
-      yinYang: bits[i % 3] ? '阳' : '阴',
+      yinYang: bits[2 - (i % 3)] ? '阳' : '阴',
       gan: nj.gan,
       zhi: nj.zhi,
       wuXing: nj.wuXing,
