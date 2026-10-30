@@ -60,3 +60,9 @@ tools/score-verify/output/full-matrix.csv
 # 导致「脚本在、输入数据不在」，别人无法复算。此处按目录反向放行。
 !tools/score-verify-v2/l0-fact-audit/data/
 !tools/score-verify-v2/l0-fact-audit/data/**
+
+# ===== 早期审计副本：保留在工作区但不入库（2026-10-31 董事长指示）=====
+# verdict.orig.js 是早期审计的 verdict 副本，当前无任何脚本引用
+# （现存脚本引用的是 tools/score-verify-v2/legacy/verdict.orig.mjs）。
+# 按指示不删除、不提交，仅标记忽略，使部署前的脏工作区检查不被它卡住。
+tools/score-verify/baseline/

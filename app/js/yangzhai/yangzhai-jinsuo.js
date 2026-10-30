@@ -5,7 +5,7 @@
 //   「生旺方来水吉、墓绝方去水吉、沐浴方来水桃花」。典籍：赵九峰《地理五诀》（清乾隆十六年 1751）。
 // 纯函数、不接 AI；流派与八宅/玄空并列，断语分歧不合成。
 
-import { PALACES, MOUNTAINS_24, MOUNTAIN_PALACE, mountainsAt } from '../../vendor/bazhai-core.js?v=121';
+import { PALACES, MOUNTAINS_24, MOUNTAIN_PALACE, mountainsAt } from '../../vendor/bazhai-core.js?v=122';
 
 const PALACE_BY_KEY = new Map(PALACES.map((p) => [p.key, p]));
 

@@ -5,8 +5,8 @@ import {
   listFirdariaPeriods,
   listProfectionYears,
   paiBazi,
-} from '../vendor/liuyao-core.js?v=121';
-import { $ } from './state.js?v=121';
+} from '../vendor/liuyao-core.js?v=122';
+import { $ } from './state.js?v=122';
 
 const PLANET_COLOR = {
   sun: 'var(--cinnabar)', moon: 'var(--ink)',

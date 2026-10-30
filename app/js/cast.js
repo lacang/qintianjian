@@ -1,10 +1,10 @@
 // 起卦：摇铜钱 / 天机（梅花易数时间起卦）/ 手录。完成后产出 yaoValues 交 main 排盘。
-import { $, $$, cfg, saveCfg, toast, parseLocalDateTime, toLocalInputValue } from './state.js?v=121';
-import { castCoins, castByTime, castManual } from '../vendor/liuyao-core.js?v=121';
-import { toTrueSolar, trueSolarOffsetMin } from './solartime.js?v=121';
-import { siZhuZi, ziMode } from './zischool.js?v=121';
-import { getPlace, isPlaceSet, refreshLocatedPlace } from './geo.js?v=121';
-import { openPlacePicker } from './placeui.js?v=121';
+import { $, $$, cfg, saveCfg, toast, parseLocalDateTime, toLocalInputValue } from './state.js?v=122';
+import { castCoins, castByTime, castManual } from '../vendor/liuyao-core.js?v=122';
+import { toTrueSolar, trueSolarOffsetMin } from './solartime.js?v=122';
+import { siZhuZi, ziMode } from './zischool.js?v=122';
+import { getPlace, isPlaceSet, refreshLocatedPlace } from './geo.js?v=122';
+import { openPlacePicker } from './placeui.js?v=122';
 
 let coinTosses = []; // 6 轮
 let manualYaos = defaultManual();
@@ -286,8 +286,8 @@ function doToss(onCast) {
 }
 
 // 乾隆通宝真图：正面汉文四字对读，背面满文「宝泉」局名（assets/coin/）
-const COIN_IMG = './assets/coin/coin-z.jpg?v=121';
-const COIN_IMG_B = './assets/coin/coin-b.jpg?v=121';
+const COIN_IMG = './assets/coin/coin-z.jpg?v=122';
+const COIN_IMG_B = './assets/coin/coin-b.jpg?v=122';
 function coinHTML() {
   return `<span class="coin-inner">
     <span class="coin-face cf"><img class="coin-img" src="${COIN_IMG}" alt="字面（乾隆通宝）" draggable="false"></span>

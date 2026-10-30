@@ -5,9 +5,9 @@
 // 自由：点扇形牌让它跳起来预览（可改选）→拖到任意位置松手落位，落好的牌还能再拖动。
 import {
   listSpreads, getDeck, drawSpread, readingToText,
-} from '../vendor/liuyao-core.js?v=121';
-import { $ } from './state.js?v=121';
-import { guideHTML, T } from './tipview.js?v=121';
+} from '../vendor/liuyao-core.js?v=122';
+import { $ } from './state.js?v=122';
+import { guideHTML, T } from './tipview.js?v=122';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (

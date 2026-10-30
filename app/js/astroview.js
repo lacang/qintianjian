@@ -3,12 +3,12 @@
 //      / 中央五大主相位弦线；点星体或相位联动高亮；相位清单、元素·模式分布。
 // 全盘中文化：行星/交点用单字，星座环用「羊牛蟹狮…」，不依赖占星专用符号字体。
 // 出生时刻可由「时间条」或复现码覆盖。
-import { paipanXingpan, guDianTuiYun, shouyeTianxiang } from '../vendor/liuyao-core.js?v=121';
-import { judgeAstro, verdictCardHtml } from './verdicts.js?v=121';
-import { birthArgs, $ } from './state.js?v=121';
-import { guideHTML, T } from './tipview.js?v=121';
-import { foldVerdict } from './ritual.js?v=121';
-import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=121';
+import { paipanXingpan, guDianTuiYun, shouyeTianxiang } from '../vendor/liuyao-core.js?v=122';
+import { judgeAstro, verdictCardHtml } from './verdicts.js?v=122';
+import { birthArgs, $ } from './state.js?v=122';
+import { guideHTML, T } from './tipview.js?v=122';
+import { foldVerdict } from './ritual.js?v=122';
+import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=122';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 

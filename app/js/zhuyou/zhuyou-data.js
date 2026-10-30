@@ -2,7 +2,7 @@
 // 录入原则：只录调研中可核实的书名/卷次/篇名/出土编号等"文献事实"；
 //          咒文、符图无可靠电子原文者一律 originalText=null、imgStatus='待原刻影像校补'，绝不据二手转述拼造。
 // 每条按五元字段分层，疗病类强制现代医学并排提示。
-import { NATURE, LINEAGE } from './zhuyou-meta.js?v=121';
+import { NATURE, LINEAGE } from './zhuyou-meta.js?v=122';
 
 export const ZHUYOU_ITEMS = [
   // ───── 第一层：《内经》祝由本义（理论说明，非符箓） ─────
