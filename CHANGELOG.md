@@ -14,6 +14,7 @@
 - **部署**：`deploy_history_id 7702700237336444966`，status Succeeded。**独立核验**（不只看 deploy.sh 提示）：两站 `sw.js` 内容均为 `qintian-v123`、`index.html` 的 `classic.css?v=123`、6 个观心资源线上 200 且字节数与本地一致（`lunyu-data.js` 134351B / `classicview.js` 31756B / `classic-core.js` 25135B / `classic-schema.js` 8226B / `classic-registry.js` 2076B / `classic.css` 18403B）。两远端 main 均 `d5491e6`。
 - **回滚锚点纠正**：v122 的最终基线是 **`410b854`**（含发布记录回写），不是发布提交 `3f0b3ea`。已按 `410b854` 打 annotated tag `v122` 并推送双远端（tag 对象 `463d8df`，deref 到 `410b854`）。回滚方式：`git revert d5491e6` → `release.sh 123 124` → 部署，**版本号必须递增到 124，绝不退回 122**（SW 缓存名 `qintian-vNNN` 回退会导致已装 v123 的客户端永远拿不到回滚后的代码）。
 - **踩到的坑**：① `deploy.sh` 只在设置了 `QT_DEPLOY_REPORT` 时才写部署结果，本次未设，导致 `releases/v123.json` 首次生成时 `deploy=null`、`git.commit` 停在旧 HEAD——已用 `release-record.mjs --gate-report --deploy-report` 重建为 `commit=d5491e6 dirty=false deploy=Succeeded`。② 线上 curl 有两次 `HTTP 000`（一次 `classic-schema.js` 耗时 45.5s），属 CDN 冷启动抖动，重试即 200，不是部署缺失——**判断线上缺失前必须先重试，不能把网络超时当成文件没上传**。③ 早前统计「`?v=122` 共 183 处」有误：183 是 `js/css/index.html` 的量，加 `sw.js` 内 83 处应为 **266 处**。
+- **踩到的坑（第四条，发版后归档才暴露）**：`acceptance-classic.mjs` 的 `app_version` 是硬编码字符串 `'v122'`，跑在 v123 上却把归档标成 v122。**归档证据标错版本比没有证据更糟——它看起来像证据**。已改为读 `app/sw.js` 的 CACHE 名 + `git rev-parse` 取提交号，工作区脏时在 report.md 里显式标注。这是「把 acceptance 列为固定发版流程」带来的第一个收益：只有真的每次都用它，才会发现它会写错。
 - **技术债（已登记，本轮不改）**：`meta.generated_at` 由 `datetime.date.today()` 生成（`build_content.py:215`），跨日期重跑会让产品数据 sha256 变化（实测仅 1 个字段、差异 2 行）。修法：改为从源文件继承固定值或不写进产品包。
 
 ## v122 · 2026-10-31 · 月破旺衰基线定案 + 六合六冲名单修正 + 归魂位序修复（已上线）
