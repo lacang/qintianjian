@@ -73,14 +73,74 @@
   border: 1px solid var(--line); border-radius: 8px; padding: 5px 9px;
 }
 
-/* ---- 问心 ---- */
-.cl-input {
-  width: 100%; box-sizing: border-box; resize: vertical;
-  background: var(--bg-2); color: var(--ink); font-family: inherit;
-  border: 1px solid var(--line); border-radius: 14px;
-  padding: 14px; font-size: 14px; line-height: 1.8; margin-bottom: 12px;
+/* ---- 问心 · 书写态 ----
+   不是表单，是一张待写的纸：一句提问、一个纸面、一个动作。
+   原来四样东西（提示语/输入框/通栏大按钮/规则卡）各说各的，全挤在上半页，
+   下面留一大片空——看着像没做完。 */
+.cl-write {
+  /* 不居中。居中会让内容变成「中间一块、上下两头空」，
+     像浮在页面上；从顶往下写、下方自然留白，才像一页纸。 */
+  min-height: calc(100vh - 205px);
+  min-height: calc(100dvh - 205px);   /* iOS：100vh 含被地址栏遮住的部分 */
+  display: flex; flex-direction: column;
+  padding: 46px 0 24px;
 }
-.cl-input:focus { outline: none; border-color: rgba(200,163,92,.55); }
+.cl-write-h {
+  font-size: 19px; line-height: 1.7; letter-spacing: .08em;
+  color: var(--ink); font-family: "Noto Serif SC", serif;
+  margin-bottom: 9px;
+  animation: votIn .6s ease-out both;
+}
+.cl-write-s {
+  font-size: 12.5px; letter-spacing: .06em; color: rgba(200,163,92,.68);
+  margin-bottom: 26px;
+  animation: votIn .6s ease-out .06s both;
+}
+/* 纸面：无框、无底色，只有一条下边线。
+   字号必须 ≥16px——iOS Safari 对 <16px 的输入框会在聚焦时把整页放大。 */
+.cl-input {
+  width: 100%; box-sizing: border-box; resize: none;
+  background: transparent; color: var(--ink);
+  font-family: "Noto Serif SC", serif;
+  border: 0; border-bottom: 1px solid rgba(200,163,92,.22);
+  border-radius: 0; padding: 2px 2px 16px;
+  font-size: 17px; line-height: 1.95; letter-spacing: .02em;
+  margin-bottom: 0; min-height: 118px;
+  /* 纸面吃掉剩余高度：下划线落在接近页底的位置，
+     留白就成了「纸的一部分」，而不是「内容写完之后剩下的空」。 */
+  flex: 1 1 auto;
+  transition: border-color .25s;
+  animation: votIn .6s ease-out .12s both;
+}
+.cl-input::placeholder { color: rgba(233,228,216,.34); font-size: 16px; }
+.cl-input:focus { outline: none; border-bottom-color: rgba(200,163,92,.62); }
+
+/* 动作：居中胶囊，不是通栏大色块。
+   通栏按钮读起来像「提交表单」，胶囊读起来像「按一下」。 */
+.cl-ask-go {
+  display: block; width: auto; min-width: 172px;
+  margin: 30px auto 0; padding: 14px 30px;
+  border-radius: 999px;
+  font-size: 14.5px; letter-spacing: .34em; text-indent: .34em;
+  animation: votIn .6s ease-out .18s both;
+}
+
+/* 规则收成一行。抽之前它只是预期管理，不该和「写」争面积。 */
+.cl-rules-fold { margin-top: 30px; }
+.cl-rules-fold summary {
+  font-size: 11.5px; letter-spacing: 1.4px; color: var(--ink-faint);
+  text-align: center; cursor: pointer; list-style: none; padding: 8px 0;
+}
+.cl-rules-fold summary::-webkit-details-marker { display: none; }
+.cl-rules-fold summary::after { content: ' ›'; color: rgba(200,163,92,.45); }
+.cl-rules-fold[open] summary::after { content: ' ⌄'; }
+.cl-rules-plain {
+  border: 0; background: none; border-radius: 0;
+  padding: 6px 0 0; margin-top: 0;
+}
+.cl-rules-plain .cl-rules-h { font-size: 11.5px; text-align: center; letter-spacing: 1.4px; }
+.cl-rules-plain ul { padding-left: 16px; }
+.cl-rules-plain li { font-size: 12px; }
 /* 空问题点「静心一问」时的提示。默认不占位，只在真正需要时出现一行，
    不预先解释规则——用户没写就点，才告诉他。 */
 .cl-ask-warn {
@@ -190,7 +250,7 @@
    放顶部时它会横满一行，比「见贤思齐」还宽——用户第一眼读到的
    是自己刚写完的那句话，不是抽到的那句话。 */
 .cl-vot-q {
-  font-size: 11.5px; line-height: 1.9; color: var(--ink-faint);
+  font-size: 12px; line-height: 1.9; color: var(--ink-faint);
   margin-bottom: 9px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
@@ -265,7 +325,7 @@
 .cl-vot-d p { margin: 8px 0 0; font-size: 13.5px; line-height: 2; color: var(--ink-dim); }
 .cl-vot-a { display: flex; gap: 8px; animation: votIn .7s ease-out .34s both; }
 .cl-vot-note {
-  margin: 0 0 20px; font-size: 11.5px; line-height: 1.95;
+  margin: 0 0 20px; font-size: 12px; line-height: 1.95;
   color: rgba(200,163,92,.42);
 }
 /* 3px 的模糊配 21px 的字，中段看起来是「糊了一下」而不是「浮上来」。

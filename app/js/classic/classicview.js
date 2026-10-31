@@ -254,16 +254,22 @@ function panelAsk() {
 
   // 还没抽：只留「写」这一件事。规则收到最底部，不与输入争注意力。
   if (!result) {
+    // 书写态不做成表单：一句提问、一张纸面、一个动作。
+    // 原来这里是「提示语 + 输入框 + 通栏大按钮 + 规则卡」，四样东西各说各的，
+    // 而且全挤在页面上半截，下面留一大片空——看着像没做完。
     return `
-  <div class="cl-hint">写下一件此刻压在心里的事。不必写清楚，写下来就行。</div>
-  <textarea id="cl-ask-input" class="cl-input" rows="4"
-    placeholder="例如：我在犹豫要不要辞掉现在的工作。">${esc(askQuestion)}</textarea>
-  <button class="btn btn-primary big" id="cl-ask-go" type="button">静心一问</button>
-  <div class="cl-ask-warn ${askEmpty ? 'is-on' : ''}" id="cl-ask-warn" role="status">
-    还没写。先写一句此刻的事，再点「静心一问」。<br>
-    如果只是想随便看看，去「今日相遇」——那里不问你任何事。
-  </div>
-  ${rulesBlock()}`;
+  <div class="cl-write">
+    <div class="cl-write-h">此刻，什么压在你心里</div>
+    <div class="cl-write-s">不必写清楚，写下来就行。</div>
+    <textarea id="cl-ask-input" class="cl-input" rows="4"
+      placeholder="例如：我在犹豫要不要辞掉现在的工作。">${esc(askQuestion)}</textarea>
+    <button class="btn btn-primary cl-ask-go" id="cl-ask-go" type="button">静心一问</button>
+    <div class="cl-ask-warn ${askEmpty ? 'is-on' : ''}" id="cl-ask-warn" role="status">
+      还没写。先写一句此刻的事，再点「静心一问」。<br>
+      如果只是想随便看看，去「今日相遇」——那里不问你任何事。
+    </div>
+    ${rulesFold()}
+  </div>`;
   }
 
   // 抽到了：箴言是唯一主角，其余全部降级为注脚。
@@ -306,9 +312,9 @@ function panelAsk() {
 }
 
 // 「问心不做三件事」。抽之前放底部做预期管理，抽之后仍在底部，不抢箴言的位置。
-function rulesBlock() {
+function rulesBlock(plain = false) {
   return `
-  <div class="cl-rules">
+  <div class="cl-rules${plain ? ' cl-rules-plain' : ''}">
     <div class="cl-rules-h">问心不做三件事</div>
     <ul>
       <li>不根据你的问题挑选条目——抽取只由日期与序号决定</li>
@@ -316,6 +322,16 @@ function rulesBlock() {
       <li>不把今人的理解说成古人的原意</li>
     </ul>
   </div>`;
+}
+
+// 书写态把规则收成一行。抽之前它只是预期管理，不该和「写」这件事争面积；
+// 想先看规矩的人点得开，不想看的人不必先读三条。
+function rulesFold() {
+  return `
+  <details class="cl-rules-fold">
+    <summary>问心不做三件事</summary>
+    ${rulesBlock(true)}
+  </details>`;
 }
 
 // ---------------- 一念三观 ----------------
