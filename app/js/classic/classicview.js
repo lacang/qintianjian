@@ -44,7 +44,10 @@ let askEmpty = false;        // 空问题点「静心一问」时的提示位（
 // 不是加载动画——是让手停下来。没有这一段，结果就是「哗啦一变」。
 let askPhase = 'idle';       // idle | drawing | result
 let askDrawAt = 0;
+let askRiteMs = 0;           // 本次仪式时长（首问 2.4s，同题再抽 1.5s）
 const RITE_MS = 2400;
+// 第二次起缩短。已经知道接下来会发生什么，再等满 2.4 秒就从「静」变成「拖」。
+const RITE_AGAIN_MS = 1500;
 let threeCards = null;       // [{node, group, groupName, open}]
 let debate = null;           // { id, stance, changed, revealed }
 let currentId = null;
@@ -146,14 +149,18 @@ function splitOriginal(text) {
   return lines.map((x) => `<span class="cl-vot-l">${esc(x)}</span>`).join('');
 }
 
-// 抽取仪式层。一个缓慢呼吸的金环 + 一行小字，2.4 秒。
+// 抽取仪式层。三圈错相的呼吸金环 + 一颗最后落定的芯 + 一行小字。
 // 环不转——转圈是「等加载」，呼吸是「静下来」，两者语义相反。
-function riteLayer() {
+// 三圈用负延迟错开相位，读起来是一圈推一圈的涟漪，不是三圈一起闪。
+function riteLayer(ms = RITE_MS) {
   return `
-  <div class="cl-rite" role="status" aria-live="polite">
+  <div class="cl-rite" style="--rite:${ms}ms" role="status" aria-live="polite">
     <div class="cl-rite-orb">
       <div class="cl-rite-halo"></div>
-      <div class="cl-rite-ring"></div>
+      <div class="cl-rite-ring is-1"></div>
+      <div class="cl-rite-ring is-2"></div>
+      <div class="cl-rite-ring is-3"></div>
+      <div class="cl-rite-core"></div>
     </div>
     <div class="cl-rite-word">容它一会儿</div>
   </div>`;
@@ -237,7 +244,8 @@ function panelToday() {
 function panelAsk() {
   // 仪式还没走完就继续等。若用户中途切走再切回，超时后直接给结果，不会卡住。
   if (askPhase === 'drawing') {
-    if (Date.now() - askDrawAt < RITE_MS) return riteLayer();
+    const ms = askRiteMs || RITE_MS;
+    if (Date.now() - askDrawAt < ms) return riteLayer(ms);
     askPhase = 'result';
   }
 
@@ -260,7 +268,10 @@ function panelAsk() {
 
   // 抽到了：箴言是唯一主角，其余全部降级为注脚。
   // 输入框不再出现——留着它，用户改了字发现结果不变，只会以为坏了。
+  // 整块包一层 handoff：换屏是 innerHTML 整体重绘，中间没有过渡，
+  // 看起来像「页面跳了一下」。让它从略大略淡的位置落回原位，接上仪式层末尾的收束。
   return `
+  <div class="cl-vot-wrap">
   ${quoteRite(result)}
   <div class="cl-vot-note">
     ${askQuestion ? `<div class="cl-vot-q">你问的 · ${esc(askQuestion)}</div>` : ''}
@@ -290,7 +301,8 @@ function panelAsk() {
     <button class="btn ghost mini" data-act="ask-again" type="button">再问一次</button>
     <button class="btn ghost mini" data-act="ask-new" type="button">换一个问题</button>
   </div>
-  ${rulesBlock()}`;
+  ${rulesBlock()}
+  </div>`;
 }
 
 // 「问心不做三件事」。抽之前放底部做预期管理，抽之后仍在底部，不抢箴言的位置。
@@ -683,6 +695,7 @@ export function bindClassic() {
       askResult = drawAsk(bumpSeq());
       askFeedback = null;
       askPhase = 'drawing';
+      askRiteMs = RITE_MS;
       askDrawAt = Date.now();
       repaint();
       window.scrollTo(0, 0);
@@ -739,6 +752,7 @@ export function bindClassic() {
       askResult = drawAsk(bumpSeq());
       askFeedback = null;
       askPhase = 'drawing';
+      askRiteMs = RITE_AGAIN_MS;
       askDrawAt = Date.now();
       repaint();
       window.scrollTo(0, 0);
@@ -747,7 +761,7 @@ export function bindClassic() {
         askPhase = 'result';
         repaint();
         window.scrollTo(0, 0);
-      }, RITE_MS + 60);
+      }, RITE_AGAIN_MS + 60);
       return;
     }
 

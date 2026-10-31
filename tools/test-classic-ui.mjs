@@ -205,16 +205,45 @@ try {
   await ev(`(() => { const t = document.querySelector('#cl-ask-input'); t.value = '仪式检查'; return 'ok'; })()`);
   await click('#cl-ask-go');
   await sleep(320);
-  const rite = await ev(`(() => ({
-    rite: !!document.querySelector('#cl-body .cl-rite'),
-    card: document.querySelectorAll('#cl-body .cl-vot').length,
-    word: (document.querySelector('.cl-rite-word') || {}).textContent || ''
-  }))()`);
+  const rite = await ev(`(() => {
+    const r = document.querySelector('#cl-body .cl-rite');
+    return {
+      rite: !!r,
+      card: document.querySelectorAll('#cl-body .cl-vot').length,
+      word: (document.querySelector('.cl-rite-word') || {}).textContent || '',
+      rings: r ? r.querySelectorAll('.cl-rite-ring').length : 0,
+      core: r ? r.querySelectorAll('.cl-rite-core').length : 0,
+      ms: r ? (r.style.getPropertyValue('--rite') || '').trim() : ''
+    };
+  })()`);
   ok(rite.rite && rite.card === 0,
     '★ 点「静心一问」先进入抽取仪式，此时结果卡还没出现', JSON.stringify(rite));
   ok(/容它一会儿/.test(rite.word), '仪式层给出静默提示，不是加载进度条', rite.word);
+  ok(rite.rings === 3 && rite.core === 1,
+    '仪式层是三圈错相 + 一颗落定的芯（不是单一进度圈）', `rings=${rite.rings} core=${rite.core}`);
+  ok(rite.ms === '2400ms', '首问仪式时长 2.4s，由 --rite 传入而不是写死在 CSS 里', rite.ms);
   const riteDone = await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
   ok(riteDone, '仪式走完才出现箴言（抽与读分成两段）');
+
+  // 结果整块必须包在 handoff 容器里。换屏是 innerHTML 整体重绘，
+  // 没有这一层就是硬切——仪式收得再好，切过去那一下仍然像「页面跳了一下」。
+  const wrap = await ev(`(() => {
+    const w = document.querySelector('#cl-body .cl-vot-wrap');
+    if (!w) return null;
+    return { anim: getComputedStyle(w).animationName, hasVot: !!w.querySelector('.cl-vot') };
+  })()`);
+  ok(wrap && wrap.anim === 'handoff' && wrap.hasVot,
+    '★ 结果整块包一层 handoff，仪式收与结果起落在同一节奏上', JSON.stringify(wrap));
+
+  // 「再问一次」已经知道接下来会发生什么，等满 2.4 秒就从「静」变成「拖」。
+  await click('[data-act="ask-again"]');
+  await sleep(300);
+  const againMs = await ev(`(() => {
+    const r = document.querySelector('#cl-body .cl-rite');
+    return r ? (r.style.getPropertyValue('--rite') || '').trim() : 'missing';
+  })()`);
+  ok(againMs === '1500ms', '「再问一次」仪式缩短到 1.5s（重复已知流程不该再等满）', againMs);
+  await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
 
   // 抽完之后输入框收起，必须有回到书写态的路
   const backBtn = await ev(`(() => { const b = document.querySelector('[data-act="ask-new"]'); if (!b) return false; b.click(); return true; })()`);
