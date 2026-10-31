@@ -3,10 +3,10 @@
   "app": "钦天监 PWA",
   "updated_at": "2026-10-31T19:54:30.355Z",
   "git": {
-    "commit": "93d2b3d371daddb362ab29d17697671af059f8d9",
-    "commit_short": "93d2b3d",
+    "commit": "b7433294c4d7c6622d589d23ac551df1202e5d8b",
+    "commit_short": "b743329",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -123,10 +123,42 @@
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7702922234758807571",
+    "status": "Succeeded",
+    "deployed_at": "2026-11-01T04:00:00+08:00",
+    "note": "v126 观心阅读改造"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
   ],
-  "notes": "发布 126：门禁全绿（静态 ESM / 真实浏览器启动 / SW 离线 / 桩测 / 复现码 e2e）"
+  "notes": "发布 126：门禁全绿（静态 ESM / 真实浏览器启动 / SW 离线 / 桩测 / 复现码 e2e）；双远端 main=b743329；两站线上 SHA256 逐字节一致；两站真实浏览器验收 75/75",
+  "online_verify": {
+    "sw_version": "qintian-v126",
+    "coze_site": {
+      "sw_sha256_match": true,
+      "reading_js": "200",
+      "index_html_note": "平台注入 Coze Coding Analytics，?v=126 正确"
+    },
+    "github_site": {
+      "sw_sha256_match": true,
+      "reading_js": "200",
+      "index_html": "与本地逐字节一致"
+    },
+    "core_files_byte_identical": 7,
+    "browser_acceptance": {
+      "github": {
+        "observations": 75,
+        "failed": 0,
+        "shots": 17
+      },
+      "coze": {
+        "observations": 75,
+        "failed": 0,
+        "shots": 17
+      }
+    }
+  }
 }

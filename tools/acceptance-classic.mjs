@@ -95,7 +95,12 @@ function observe(name, value, extra = '', expect = true) {
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const srv = await startStaticServer(APP);
+// 默认起本地静态服务跑本地产物。
+// --url <线上地址> 时直接打线上，用于发版后两站真实浏览器验收：
+// 本地 73 项全过不代表线上全过——SW 抢缓存、CDN 回源、MIME、路径大小写
+// 这些问题只在真站上才暴露。
+const ONLINE = opt('--url') || '';
+const srv = ONLINE ? { url: ONLINE.replace(/\/$/, ''), close: async () => {} } : await startStaticServer(APP);
 const profile = has('--keep-profile')
   ? path.join(os.tmpdir(), 'qt-accept-profile')
   : fs.mkdtempSync(path.join(os.tmpdir(), 'qt-accept-'));
@@ -526,7 +531,10 @@ try {
   section('五、异常与边界：显式失败，不猜一个看起来合理的结果');
 
   // 空手记
-  await openPanel('today');
+  // openPanel 的返回值必须检查：慢网络下它可能失败，页面停在首页，
+  // 后面「找不到输入框 → 点不到按钮 → 没有 toast」会被误读成产品缺陷。
+  const opEmpty = await openPanel('today');
+  observe('（前置）能回到今日面板做空手记测试', opEmpty === 'ok', opEmpty);
   await stepClick(2); await stepClick(3); await stepClick(4); await stepClick(5);
   const emptySave = await ev(`(() => {
     const t = document.querySelector('#cl-journal-input');
@@ -563,7 +571,11 @@ try {
   await ev(`(() => { localStorage.removeItem('qintian.classic.journal'); return 'ok'; })()`);
 
   // 不存在的内容 id
-  await ev(`(() => { location.hash = ''; return 'ok'; })()`);
+  // 原来先 `location.hash = ''` 再 dispatch——但清 hash 本身就会触发路由回首页，
+  // 于是 600ms 后 `#cl-body` 已经不存在，测出来的「观心页面不可用」是测试自己造成的。
+  // GitHub 站只是因为切换慢才侥幸通过，coze 站快一点就红。改成先回到观心再 dispatch。
+  const opBad = await openPanel('today');
+  observe('（前置）能回到今日面板做异常 id 测试', opBad === 'ok', opBad);
   const badId = await ev(`(() => {
     try {
       document.dispatchEvent(new CustomEvent('qintian:classic-goto', { detail: { view: 'classic-detail', id: 'LY-999' } }));
