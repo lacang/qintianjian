@@ -1,12 +1,12 @@
 {
   "version": 123,
   "app": "钦天监 PWA",
-  "updated_at": "2026-10-31T05:29:46.443Z",
+  "updated_at": "2026-10-31T05:43:42.635Z",
   "git": {
-    "commit": "410b8544fd0355eb81a8c8bcf981dd8060d77d63",
-    "commit_short": "410b854",
+    "commit": "d5491e640de80048940b3cff9d1c5ce8f950341a",
+    "commit_short": "d5491e6",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -17,13 +17,13 @@
   "gates": {
     "mode": "full",
     "ok": true,
-    "total_seconds": 56,
+    "total_seconds": 52,
     "steps": [
       {
         "step": 1,
         "name": "静态 ESM 模块图",
         "ok": true,
-        "seconds": 2
+        "seconds": 1
       },
       {
         "step": 2,
@@ -35,13 +35,13 @@
         "step": 3,
         "name": "vendor 产物同步",
         "ok": true,
-        "seconds": 14
+        "seconds": 12
       },
       {
         "step": 4,
         "name": "六爻核心正式测试",
         "ok": true,
-        "seconds": 8
+        "seconds": 7
       },
       {
         "step": 5,
@@ -83,13 +83,13 @@
         "step": 11,
         "name": "v111 桩测",
         "ok": true,
-        "seconds": 0
+        "seconds": 1
       },
       {
         "step": 12,
         "name": "复现码 e2e（含 v1 兼容）",
         "ok": true,
-        "seconds": 1
+        "seconds": 0
       },
       {
         "step": 13,
@@ -113,20 +113,31 @@
         "step": 16,
         "name": "塔罗 v120 回归",
         "ok": true,
-        "seconds": 0
+        "seconds": 1
       },
       {
         "step": 17,
         "name": "AI 资料包快照一致性",
         "ok": true,
-        "seconds": 2
+        "seconds": 1
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7702700237336444966",
+    "status": "Succeeded",
+    "version": 123,
+    "deployed_at": "2026-10-31T05:35:00+00:00",
+    "remote_check": {
+      "coze_site": "ok",
+      "github_pages": "ok"
+    },
+    "note": "v123 观心接入《论语》古典内容板块 v1.0"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
   ],
-  "notes": "发布 123：门禁全绿（静态 ESM / 真实浏览器启动 / SW 离线 / 桩测 / 复现码 e2e）"
+  "notes": "发布 123：观心接入《论语》（五入口 + 详情八层 + 主题标签 v1.0）。门禁 17/17，数据 sha256 a6c80510…1fe1a 未变。"
 }

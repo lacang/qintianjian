@@ -119,11 +119,14 @@
 **唯一路径**（禁止绕过，绕过就等于没有门禁）：
 
 ```
-改代码 → bash tools/gates.sh            # 12 步门禁，全绿才算改完
-发版   → bash tools/release.sh 121 122  # 起点门禁 → bump → 终点门禁 → 写 releases/v122.json
+改代码 → bash tools/gates.sh            # 17 步门禁，全绿才算改完
+发版   → bash tools/release.sh 122 123  # 起点门禁 → bump → 终点门禁 → 写 releases/v123.json
 提交   → git push origin main && git push github main
 部署   → bash tools/deploy.sh           # 门禁不过就绝不部署
+归档   → node tools/acceptance-classic.mjs --out acceptance/v<新版本>-<时间>
 ```
+
+**发版后的体验归档是固定流程，不是可选项**（2026-10-31 董事长批示）。`acceptance-classic.mjs` 不进 `gates.sh`：门禁的职责是**阻断**（机器判定、必须快、必须确定），验收记录的职责是**观察**（人判定、慢、要留证据）。把观察塞进阻断链路，只会让门禁变慢又不敢红。发版成功、线上核验通过之后跑一次，把截图与 `report.md` 连同 `releases/vNNN.json` 一起提交——它是「这一版用户实际看到了什么」的原始凭证。
 
 **门禁清单（`tools/gates.sh`，退出码 0=全绿 / 1=有红 / 2=参数错 / 3=环境不具备）**
 
@@ -173,6 +176,7 @@
 bash tools/release.sh 121 122     # ① 起点门禁 ② bump ③ 终点门禁 ④ 写 releases/v122.json ⑤ 打印后续
 git add <本次改动路径> && git commit && git push origin main && git push github main
 bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → coze-dev deploy → 部署单轮询 → 线上 sw.js 收敛核验 → 写部署报告
+node tools/acceptance-classic.mjs --out acceptance/v123-<时间>   # 发版后体验归档（固定流程）
 ```
 
 `tools/release.sh` 里的 `tools/bump-version.sh` 内含三闸门：写回读回断言 / 旧版本号残留 / import 闭包 ⊆ SW ASSETS，+卫生闸+ESM 语法自检，任一失败 `exit 1` 不得发版。**语法自检必须走 `.mjs` 副本**：`node --check x.js` 会按 CommonJS 解析、放过 ESM 的重复顶层声明——v121 就因两处 `xxxCode` 重复声明静默过闸，真机整个模块图崩、应用完全不启动。
