@@ -131,10 +131,10 @@ async function openPanel(panelId) {
 
 /** 取当前问心结果卡的标题与原文 */
 const ASK_RESULT = `(() => {
-  const q = document.querySelector('#cl-body .cl-quote');
+  const q = document.querySelector('#cl-body .cl-vot');
   if (!q) return null;
-  const t = q.querySelector('.cl-quote-title');
-  const o = q.querySelector('.cl-original');
+  const t = q.querySelector('.cl-vot-t');
+  const o = q.querySelector('.cl-vot-o');
   return { id: q.dataset.id, title: t ? t.textContent.trim() : '', original: o ? o.textContent.trim() : '' };
 })()`;
 
@@ -158,13 +158,24 @@ try {
     return k;
   })()`);
 
+  // 抽完之后输入框收起（避免「改了字结果不变」的误解），要再写必须先回到书写态。
+  async function toWriteState() {
+    const hasInput = await ev(`!!document.querySelector('#cl-ask-input')`);
+    if (!hasInput) {
+      await click('[data-act="ask-new"]');
+      await sleep(140);
+    }
+  }
+
   async function askWith(question, seq = 7) {
     await pinSeq(seq);              // 每次都在同一序号上抽，才能证明问题不参与
     await openPanel('ask');
+    await toWriteState();
     await ev(`(() => { const t = document.querySelector('#cl-ask-input'); t.value = ${JSON.stringify(question)}; return 'ok'; })()`);
     const r = await click('#cl-ask-go');
     if (r !== 'ok') throw new Error('静心一问按钮不可用');
-    await until(`!!document.querySelector('#cl-body .cl-quote')`);
+    // 抽取仪式 2.4 秒后才换屏，这里等结果真的出现，不是等一个固定时长。
+    await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
     return ev(ASK_RESULT);
   }
 
@@ -176,12 +187,61 @@ try {
   ok(A && B && A.original === B.original, '两次的原文完全一致', '原文不一致说明抽取受问题影响');
 
   // 声明条必须在
-  const notice = await ev(`(() => { const n = document.querySelector('#cl-body .cl-notice'); return n ? n.textContent.replace(/\\s+/g,'') : ''; })()`);
-  ok(/与你写下的问题无关/.test(notice), '结果页明确声明「与你写下的问题无关」');
+  const notice = await ev(`(() => { const n = document.querySelector('#cl-body .cl-vot-note'); return n ? n.textContent.replace(/\\s+/g,'') : ''; })()`);
+  ok(/不由你的问题挑选/.test(notice) && /不会替你的问题作答/.test(notice),
+    '结果页明确声明「这一条不由你的问题挑选，也不会替你的问题作答」');
 
   // ---------- 3. 问心：不同序号 → 结果会变 ----------
   const C = await askWith('随便写点别的。', 8);
   ok(C && A && C.id !== A.id, '不同序号给出不同条目（抽取确实在抽）', `seq7=${A && A.id} seq8=${C && C.id}`);
+
+  // ---------- 3a. 抽取仪式：点下去先静，不是立刻糊结果 ----------
+  //
+  // 董事长 2026-10-31 14:36：「输入问题，点击确认，页面哗啦啦一变，就出来了一句箴言。」
+  // 这不是审美偏好，是「抽」和「读」被挤在了同一秒。仪式层必须在，且必须是先仪式后结果。
+  await pinSeq(6);
+  await openPanel('ask');
+  await toWriteState();
+  await ev(`(() => { const t = document.querySelector('#cl-ask-input'); t.value = '仪式检查'; return 'ok'; })()`);
+  await click('#cl-ask-go');
+  await sleep(320);
+  const rite = await ev(`(() => ({
+    rite: !!document.querySelector('#cl-body .cl-rite'),
+    card: document.querySelectorAll('#cl-body .cl-vot').length,
+    word: (document.querySelector('.cl-rite-word') || {}).textContent || ''
+  }))()`);
+  ok(rite.rite && rite.card === 0,
+    '★ 点「静心一问」先进入抽取仪式，此时结果卡还没出现', JSON.stringify(rite));
+  ok(/容它一会儿/.test(rite.word), '仪式层给出静默提示，不是加载进度条', rite.word);
+  const riteDone = await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
+  ok(riteDone, '仪式走完才出现箴言（抽与读分成两段）');
+
+  // 抽完之后输入框收起，必须有回到书写态的路
+  const backBtn = await ev(`(() => { const b = document.querySelector('[data-act="ask-new"]'); if (!b) return false; b.click(); return true; })()`);
+  await sleep(180);
+  const writeState = await ev(`(() => ({
+    input: !!document.querySelector('#cl-ask-input'),
+    go: !!document.querySelector('#cl-ask-go'),
+    card: document.querySelectorAll('#cl-body .cl-vot').length,
+    q: (document.querySelector('#cl-ask-input') || {}).value || ''
+  }))()`);
+  ok(backBtn && writeState.input && writeState.go && writeState.card === 0,
+    '★ 抽完后「换一个问题」能回到书写态（输入框收起不等于没有第二条路）', JSON.stringify(writeState));
+  ok(writeState.q.length > 0, '回到书写态时原问题还在，方便改，不用重打', writeState.q.slice(0, 20));
+
+  // 主次：箴言是全屏最大字号，免责声明只是注脚
+  await pinSeq(6);
+  await askWith('主次检查。', 6);
+  const hierarchy = await ev(`(() => {
+    const o = document.querySelector('#cl-body .cl-vot-o');
+    const n = document.querySelector('#cl-body .cl-vot-note');
+    const q = document.querySelector('#cl-body .cl-vot-q');
+    const px = (e) => e ? parseFloat(getComputedStyle(e).fontSize) : 0;
+    return { original: px(o), note: px(n), question: px(q) };
+  })()`);
+  ok(hierarchy.original > hierarchy.note && hierarchy.original > hierarchy.question,
+    '★ 箴言字号大于免责声明与用户问题（主次分明）',
+    `箴言 ${hierarchy.original}px / 免责 ${hierarchy.note}px / 问题 ${hierarchy.question}px`);
 
   // ---------- 3b. 空问题不得抽取 ----------
   //
@@ -190,6 +250,7 @@ try {
   // 但也不能把人堵在原地，提示里要给出另一条路（今日相遇本来就允许空手）。
   await pinSeq(5);
   await openPanel('ask');
+  await toWriteState();
   await ev(`(() => { const t = document.querySelector('#cl-ask-input'); if (t) t.value = ''; return 'ok'; })()`);
   await click('#cl-ask-go');
   await sleep(260);
@@ -197,7 +258,7 @@ try {
     const w = document.querySelector('#cl-ask-warn');
     let n = null;
     try { n = JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) {}
-    return { warnOn: !!(w && w.classList.contains('is-on')), warnText: w ? w.textContent.replace(/\\s+/g, '') : '', n: n && n.n, quote: document.querySelectorAll('#cl-body .cl-quote').length };
+    return { warnOn: !!(w && w.classList.contains('is-on')), warnText: w ? w.textContent.replace(/\\s+/g, '') : '', n: n && n.n, quote: document.querySelectorAll('#cl-body .cl-vot').length };
   })()`);
   ok(emptyState.warnOn, '★ 空问题点「静心一问」给出提示，而不是直接抽一条');
   ok(emptyState.n === 5, '空问题不消耗当日序号（没有偷偷抽）', `n=${emptyState.n}`);
@@ -213,6 +274,7 @@ try {
   // 纯空白同样不算写了
   await pinSeq(5);
   await openPanel('ask');
+  await toWriteState();
   await ev(`(() => { const t = document.querySelector('#cl-ask-input'); if (t) t.value = '   \\n  \\t '; return 'ok'; })()`);
   await click('#cl-ask-go');
   await sleep(240);
@@ -373,7 +435,7 @@ try {
   // 批示第一部分第 3 条：「这些交互可以影响后续的阅读体验，但不能反过来影响这一次的抽取结果。」
 
   await askWith('我想验证反馈会不会让系统换一条给我。', 3);
-  const fbBefore = await ev(`(() => { const q = document.querySelector('#cl-body .cl-quote'); return q ? q.dataset.id : null; })()`);
+  const fbBefore = await ev(`(() => { const q = document.querySelector('#cl-body .cl-vot'); return q ? q.dataset.id : null; })()`);
   const fbIds = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-fb-b')).map(b => b.dataset.fb))()`);
   ok(fbIds.length === 5, '五种反馈全部呈现', JSON.stringify(fbIds));
   ok(['agree', 'disagree', 'unsure', 'recall', 'more'].every((x) => fbIds.includes(x)),
@@ -383,7 +445,7 @@ try {
   for (const fb of ['agree', 'disagree', 'unsure', 'recall', 'more']) {
     await ev(`(() => { const b = document.querySelector('#cl-body .cl-fb-b[data-fb="${fb}"]'); if (!b) return 'no'; b.click(); return 'ok'; })()`);
     await sleep(140);
-    const now = await ev(`(() => { const q = document.querySelector('#cl-body .cl-quote'); return q ? q.dataset.id : null; })()`);
+    const now = await ev(`(() => { const q = document.querySelector('#cl-body .cl-vot'); return q ? q.dataset.id : null; })()`);
     if (now !== fbBefore) fbChanged++;
   }
   ok(fbChanged === 0, '★ 点完全部五种反馈，当前抽到的条目一次都没有变（反馈不影响本次抽取）',

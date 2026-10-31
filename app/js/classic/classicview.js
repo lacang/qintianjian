@@ -40,6 +40,11 @@ let askQuestion = '';        // 仅作阅读背景展示，永不参与抽取
 let askFeedback = null;      // 五种反馈之一（只影响阅读路径）
 let askNoteOpen = false;     // 「想起自己的某件事」的输入框
 let askEmpty = false;        // 空问题点「静心一问」时的提示位（不抽，只提醒）
+// 「抽」与「读」分成两个状态。点下去到看见箴言之间留一段静默，
+// 不是加载动画——是让手停下来。没有这一段，结果就是「哗啦一变」。
+let askPhase = 'idle';       // idle | drawing | result
+let askDrawAt = 0;
+const RITE_MS = 2400;
 let threeCards = null;       // [{node, group, groupName, open}]
 let debate = null;           // { id, stance, changed, revealed }
 let currentId = null;
@@ -105,6 +110,53 @@ function quoteCard(node, opts = {}) {
     </div>
     ${opts.foot ? `<div class="cl-foot">${opts.foot}</div>` : ''}
   </article>`;
+}
+
+// 问心的箴言卡。刻意不与 quoteCard 共用：那张是「内容卡」，一屏可以有好几张；
+// 问心这一张是全场唯一的主角，所以去掉卡片边框与阴影，用留白和字号立层级，
+// 白话收进折叠，说明文字降成一行小注。主次不分的原因是它们原来一样重。
+function quoteRite(node) {
+  if (!node) return '';
+  const fav = loadFav().has(node.id);
+  return `
+  <article class="cl-vot" data-id="${esc(node.id)}">
+    <div class="cl-vot-t">${esc(node.title)}</div>
+    <blockquote class="cl-vot-o">${splitOriginal(node.original)}</blockquote>
+    <div class="cl-vot-s">${esc(node.location_text)}</div>
+    ${node.idea ? `<details class="cl-vot-d">
+      <summary>这一条在说什么</summary>
+      <p>${esc(node.idea)}</p>
+    </details>` : ''}
+    <div class="cl-vot-a">
+      <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">读原典 ›</button>
+      <button class="btn ghost mini ${fav ? 'on' : ''}" data-act="fav" data-id="${esc(node.id)}" type="button">${fav ? '已收藏' : '收藏'}</button>
+    </div>
+  </article>`;
+}
+
+// 原文按句读拆行。中文按标点断行比按宽度断行好看得多——
+// 「见贤思齐焉，见不贤而内自省也」自动折行会断在「自/省也」这种地方。
+// 拆行后每行还能各自浮现，读起来是一句一句落下来，不是一坨字同时亮。
+// 超过 4 行就不拆（长章按逗号分会碎成一片），退回自然折行。
+function splitOriginal(text) {
+  const raw = String(text || '');
+  const segs = raw.split('，');
+  if (segs.length < 2 || segs.length > 4) return esc(raw);
+  const lines = segs.map((seg, i) => (i < segs.length - 1 ? seg + '，' : seg)).filter((x) => x.length);
+  return lines.map((x) => `<span class="cl-vot-l">${esc(x)}</span>`).join('');
+}
+
+// 抽取仪式层。一个缓慢呼吸的金环 + 一行小字，2.4 秒。
+// 环不转——转圈是「等加载」，呼吸是「静下来」，两者语义相反。
+function riteLayer() {
+  return `
+  <div class="cl-rite" role="status" aria-live="polite">
+    <div class="cl-rite-orb">
+      <div class="cl-rite-halo"></div>
+      <div class="cl-rite-ring"></div>
+    </div>
+    <div class="cl-rite-word">容它一会儿</div>
+  </div>`;
 }
 
 // ---------------- 主视图 ----------------
@@ -183,10 +235,18 @@ function panelToday() {
 // ---------------- 问心 ----------------
 
 function panelAsk() {
+  // 仪式还没走完就继续等。若用户中途切走再切回，超时后直接给结果，不会卡住。
+  if (askPhase === 'drawing') {
+    if (Date.now() - askDrawAt < RITE_MS) return riteLayer();
+    askPhase = 'result';
+  }
+
   const result = askResult;
   const fb = askFeedback ? feedbackEffect(askFeedback) : null;
 
-  return `
+  // 还没抽：只留「写」这一件事。规则收到最底部，不与输入争注意力。
+  if (!result) {
+    return `
   <div class="cl-hint">写下一件此刻压在心里的事。不必写清楚，写下来就行。</div>
   <textarea id="cl-ask-input" class="cl-input" rows="4"
     placeholder="例如：我在犹豫要不要辞掉现在的工作。">${esc(askQuestion)}</textarea>
@@ -195,19 +255,18 @@ function panelAsk() {
     还没写。先写一句此刻的事，再点「静心一问」。<br>
     如果只是想随便看看，去「今日相遇」——那里不问你任何事。
   </div>
-  ${result ? `
-  ${askQuestion ? `
-  <div class="cl-myq">
-    <div class="cl-myq-h">你写下的</div>
-    <div class="cl-myq-t">${esc(askQuestion)}</div>
-    <div class="cl-myq-n">这段字只留在你这一屏，不参与抽取，也不上传。</div>
-  </div>` : ''}
-  <div class="cl-notice">
-    <strong>你抽到的这条，与你写下的问题无关。</strong>
-    它不由你的问题挑选，也不会替你的问题作答。你可以带着自己的问题去读它——
-    真正需要被看见的，往往不是答案，而是你提问时站的位置。
+  ${rulesBlock()}`;
+  }
+
+  // 抽到了：箴言是唯一主角，其余全部降级为注脚。
+  // 输入框不再出现——留着它，用户改了字发现结果不变，只会以为坏了。
+  return `
+  ${quoteRite(result)}
+  <div class="cl-vot-note">
+    ${askQuestion ? `<div class="cl-vot-q">你问的 · ${esc(askQuestion)}</div>` : ''}
+    <div>这一条不由你的问题挑选，也不会替你的问题作答。带着自己的问题去读它——
+    真正需要被看见的，往往不是答案，而是你提问时站的位置。</div>
   </div>
-  ${quoteCard(result, { foot: '问心只提供原典、注疏与分歧，不判断、不预测、不给结论。' })}
 
   <div class="cl-fb">
     <div class="cl-fb-h">读完之后，你怎么看它</div>
@@ -229,7 +288,14 @@ function panelAsk() {
 
   <div class="cl-acts-row">
     <button class="btn ghost mini" data-act="ask-again" type="button">再问一次</button>
-  </div>` : ''}
+    <button class="btn ghost mini" data-act="ask-new" type="button">换一个问题</button>
+  </div>
+  ${rulesBlock()}`;
+}
+
+// 「问心不做三件事」。抽之前放底部做预期管理，抽之后仍在底部，不抢箴言的位置。
+function rulesBlock() {
+  return `
   <div class="cl-rules">
     <div class="cl-rules-h">问心不做三件事</div>
     <ul>
@@ -612,10 +678,21 @@ export function bindClassic() {
         return;
       }
       askEmpty = false;
+      // 抽取在这里就完成（序号当场消费），只是延后展示。
+      // 先抽后等，而不是等完再抽：中途关掉页面，序号也不该白费。
       askResult = drawAsk(bumpSeq());
       askFeedback = null;
+      askPhase = 'drawing';
+      askDrawAt = Date.now();
       repaint();
       window.scrollTo(0, 0);
+      // 仪式走完再换屏。若这段时间用户切去了别的面板，就交给他切回来时处理。
+      setTimeout(() => {
+        if (panel !== 'ask' || askPhase !== 'drawing') return;
+        askPhase = 'result';
+        repaint();
+        window.scrollTo(0, 0);
+      }, RITE_MS + 60);
       return;
     }
 
@@ -644,13 +721,33 @@ export function bindClassic() {
       return;
     }
     if (a === 'three-again') { threeCards = null; repaint(); return; }
+    // 换一个问题：回到书写状态，问题文本留着方便改。
+    // 抽完之后输入框收起，「再问一次」只能沿用原问题——没有这个入口，
+    // 用户想问第二件事就无路可走。
+    if (a === 'ask-new') {
+      askResult = null;
+      askFeedback = null;
+      askPhase = 'idle';
+      repaint();
+      window.scrollTo(0, 0);
+      return;
+    }
     if (a === 'ask-again') {
       // 「再问一次」同样要求先有问题。否则从结果页连点几次，
       // 问心就退化成第二个「今日相遇」——机制不同，前提也不能丢。
       if (!askQuestion) { askEmpty = true; repaint(); return; }
       askResult = drawAsk(bumpSeq());
       askFeedback = null;
+      askPhase = 'drawing';
+      askDrawAt = Date.now();
       repaint();
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        if (panel !== 'ask' || askPhase !== 'drawing') return;
+        askPhase = 'result';
+        repaint();
+        window.scrollTo(0, 0);
+      }, RITE_MS + 60);
       return;
     }
 
