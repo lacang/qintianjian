@@ -1,8 +1,8 @@
 // 点读笔 + 解盘思路：全局「点哪解释哪」+ 每个盘顶部的引导块 + 分步导览
 // 术语内容来自 glossary.js（通用术语）；元素对照含义来自 meaning.js（星曜/星座/宫位/相位/宫位…）。
-import { GLOSSARY } from './glossary.js?v=122';
-import { MEANING } from './meaning.js?v=122';
-import { escapeHtml } from './state.js?v=122';
+import { GLOSSARY } from './glossary.js?v=123';
+import { MEANING } from './meaning.js?v=123';
+import { escapeHtml } from './state.js?v=123';
 
 const ALL = Object.assign({}, GLOSSARY, MEANING);
 

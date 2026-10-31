@@ -60,6 +60,11 @@ const PAGES = [
   // min 是"渲染后 textContent 的最小字数"，按 2026-10-26 实测值往下留余量校准：
   // 目的不是卡字数，而是区分"渲染函数真的跑了"和"只渲染出一个空壳/标题"。
   { id: 'home', name: '首页', enter: 'tab:home', sel: '#home-sizhu', min: 8 },
+  // 经典板块（《论语》）：主视图走 tab；详情页走「点第一条读原典」的真实用户路径
+  // 观心首页是「今日相遇」单条：品牌+分段+一条原文+出处+要旨+统计，正常约 198 字，
+  // 阈值取 150 只用于区分「渲染了」与「空壳」，不用于卡内容量。
+  { id: 'classic', name: '观心', enter: 'tab:classic', sel: '#classic-body', min: 150 },
+  { id: 'classic-detail', name: '原典详情', enter: 'detail', sel: '#classic-detail-body', min: 400 },
   { id: 'yangzhai', name: '阳宅', enter: 'card:yangzhai', sel: '#yangzhai-body', min: 200 },
   { id: 'zhuyou', name: '符箓', enter: 'card:zhuyou', sel: '#zhuyou-body', min: 20000 },
   { id: 'tarot', name: '塔罗', enter: 'card:tarot', sel: '#tarot-body', min: 40 },
@@ -72,7 +77,7 @@ const PAGES = [
 ];
 
 /** 二次进入回归：这些页面的生命周期最容易坏（v121 阳宅空白、v109 牌桌重构）。 */
-const REVISITS = ['yangzhai', 'tarot'];
+const REVISITS = ['yangzhai', 'tarot', 'classic'];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const probeExpr = (sel) => `(() => {
@@ -182,6 +187,15 @@ try {
       if (page.enter.startsWith('tab:')) {
         const r = await tabClick(page.enter.slice(4));
         return r.value === 'ok' ? 'ok' : String(r.value || r.error);
+      }
+      if (page.enter === 'detail') {
+        const tc = await tabClick('classic');
+        if (tc.value !== 'ok') return 'no-classic-tab';
+        await sleep(250);
+        return clickRetry(
+          `(() => { const b = document.querySelector('#classic-body [data-act="open"]'); if (!b) return 'no-node'; b.click(); return 'ok'; })()`,
+          'no-node',
+        );
       }
       // 子视图卡片都在起卦页；先切过去，等一帧让 #more-cards 有内容
       const t = await tabClick('cast');

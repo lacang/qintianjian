@@ -1,16 +1,16 @@
 // 八字本命视图：指定出生时刻 四柱十神/藏干（本中余气）/纳音/五行分布 + 大运（只排事实，不做断语）
-import { tenGod } from '../vendor/liuyao-core.js?v=122';
-import { paiBaziZi, ziMode } from './zischool.js?v=122';
-import { judgeBazi, verdictCardHtml } from './verdicts.js?v=122';
-import { birthArgs, cfg, pad } from './state.js?v=122';
-import { GAN_WX, QI_WEIGHT, wxKey } from './classical.js?v=122';
+import { tenGod } from '../vendor/liuyao-core.js?v=123';
+import { paiBaziZi, ziMode } from './zischool.js?v=123';
+import { judgeBazi, verdictCardHtml } from './verdicts.js?v=123';
+import { birthArgs, cfg, pad } from './state.js?v=123';
+import { GAN_WX, QI_WEIGHT, wxKey } from './classical.js?v=123';
 // 元素对照：十神 / 纳音 的含义 key
 const BZ_GOD_KEY = { 比肩:'bz-god-bijian', 劫财:'bz-god-jiecai', 食神:'bz-god-shishen', 伤官:'bz-god-shangguan',
   偏财:'bz-god-piancai', 正财:'bz-god-zhengcai', 七杀:'bz-god-qisha', 正官:'bz-god-zhengguan',
   偏印:'bz-god-pianyin', 正印:'bz-god-zhengyin' };
 
-import { guideHTML, T } from './tipview.js?v=122';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=122';
+import { guideHTML, T } from './tipview.js?v=123';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=123';
 
 const POS = ['year', 'month', 'day', 'time'];
 const TITLE = { year: '年柱', month: '月柱', day: '日柱', time: '时柱' };

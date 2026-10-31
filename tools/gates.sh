@@ -63,6 +63,11 @@ run_all() {
   # v121 事故（重复声明逃过 node --check 的假绿灯）的直接对策。
   step "静态 ESM 模块图" node tools/check-modules.mjs || return 1
 
+  # ---- 1b. 经典板块（《论语》）纯函数自测 ----
+  # 抽取确定性、问题不参与抽取、关系展示权限、八层层序。
+  # 数据改动后这些是最容易被无声破坏的约束，必须前置。
+  step "经典板块纯函数自测" node tools/test-classic.mjs || return 1
+
   # ---- 2. vendor 产物是否与 liuyao-core/src 同步（防"src 改了 vendor 没重建"漂移） ----
   step "vendor 产物同步" node tools/build-vendor.mjs --check || return 1
 
@@ -76,6 +81,19 @@ run_all() {
     step "真实浏览器启动" node tools/verify-browser.mjs --expect-version "$EXPECT" || return 1
   else
     step "真实浏览器启动" node tools/verify-browser.mjs || return 1
+  fi
+
+  # ---- 4b. 经典板块交互测试（真实点击） ----
+  # 「问题不影响抽取」这条产品承诺只能靠同一序号 + 不同问题的对照点击证明。
+  # 三种抽取机制互不混淆、五种反馈不触发重抽、辩一辩先立场后注疏，也都在这一层验。
+  step "经典板块交互测试" node tools/test-classic-ui.mjs || return 1
+
+  # ---- 4c. 主题标签正式数据合规 ----
+  # 董事长 2026-10-31 批准 v0.2 转正，标签正式进入 pack.topics。
+  # 这一步守三件事：正式数据够格（覆盖/依据/边界）、真的进了产品且与源文件一致、
+  # 以及三条约束在结构上成立（允许交叉 / 标签不产生关系 / 跨经典不带占位内容）。
+  if [ -f ../论语思想单元候选库/_build/topics.json ]; then
+    step "主题标签正式数据合规" node tools/check-topics.mjs || return 1
   fi
 
   [ "$MODE" = "quick" ] && return 0

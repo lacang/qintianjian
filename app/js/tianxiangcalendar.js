@@ -2,8 +2,8 @@
 // 红线：只报天文实算的时刻与事件名，不给宜忌吉凶。
 // 设计：一行一件事；霜降与日入天蝎是同一瞬间（太阳黄经 210°），合并为一项；
 //       默认只露最近 N 项，余者折叠；当前状态压成标题下一行小字。
-import { shouyeTianxiang, getDayCalendar, listJieqiInRange } from '../vendor/liuyao-core.js?v=122';
-import { $ } from './state.js?v=122';
+import { shouyeTianxiang, getDayCalendar, listJieqiInRange } from '../vendor/liuyao-core.js?v=123';
+import { $ } from './state.js?v=123';
 
 const BJ_OFFSET = 8 * 3600 * 1000;
 const WEEK = ['日', '一', '二', '三', '四', '五', '六'];

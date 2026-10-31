@@ -1,0 +1,132 @@
+{
+  "version": 123,
+  "app": "钦天监 PWA",
+  "updated_at": "2026-10-31T05:29:46.443Z",
+  "git": {
+    "commit": "410b8544fd0355eb81a8c8bcf981dd8060d77d63",
+    "commit_short": "410b854",
+    "branch": "main",
+    "dirty": true,
+    "remotes": [
+      "github\thttps://github.com/lacang/qintianjian.git (fetch)",
+      "github\thttps://github.com/lacang/qintianjian.git (push)",
+      "origin\thttps://code.coze.cn/api/v1/git/repositories/240117402398084017.git (fetch)",
+      "origin\thttps://code.coze.cn/api/v1/git/repositories/240117402398084017.git (push)"
+    ]
+  },
+  "gates": {
+    "mode": "full",
+    "ok": true,
+    "total_seconds": 56,
+    "steps": [
+      {
+        "step": 1,
+        "name": "静态 ESM 模块图",
+        "ok": true,
+        "seconds": 2
+      },
+      {
+        "step": 2,
+        "name": "经典板块纯函数自测",
+        "ok": true,
+        "seconds": 1
+      },
+      {
+        "step": 3,
+        "name": "vendor 产物同步",
+        "ok": true,
+        "seconds": 14
+      },
+      {
+        "step": 4,
+        "name": "六爻核心正式测试",
+        "ok": true,
+        "seconds": 8
+      },
+      {
+        "step": 5,
+        "name": "真实浏览器启动",
+        "ok": true,
+        "seconds": 8
+      },
+      {
+        "step": 6,
+        "name": "经典板块交互测试",
+        "ok": true,
+        "seconds": 13
+      },
+      {
+        "step": 7,
+        "name": "主题标签正式数据合规",
+        "ok": true,
+        "seconds": 1
+      },
+      {
+        "step": 8,
+        "name": "SW 离线可用",
+        "ok": true,
+        "seconds": 4
+      },
+      {
+        "step": 9,
+        "name": "桩测 bundle 重建",
+        "ok": true,
+        "seconds": 1
+      },
+      {
+        "step": 10,
+        "name": "塔罗冒烟",
+        "ok": true,
+        "seconds": 0
+      },
+      {
+        "step": 11,
+        "name": "v111 桩测",
+        "ok": true,
+        "seconds": 0
+      },
+      {
+        "step": 12,
+        "name": "复现码 e2e（含 v1 兼容）",
+        "ok": true,
+        "seconds": 1
+      },
+      {
+        "step": 13,
+        "name": "塔罗数据",
+        "ok": true,
+        "seconds": 0
+      },
+      {
+        "step": 14,
+        "name": "塔罗视图",
+        "ok": true,
+        "seconds": 0
+      },
+      {
+        "step": 15,
+        "name": "塔罗 v119 回归",
+        "ok": true,
+        "seconds": 0
+      },
+      {
+        "step": 16,
+        "name": "塔罗 v120 回归",
+        "ok": true,
+        "seconds": 0
+      },
+      {
+        "step": 17,
+        "name": "AI 资料包快照一致性",
+        "ok": true,
+        "seconds": 2
+      }
+    ]
+  },
+  "deploy": null,
+  "urls": [
+    "https://8xjmbcxsf9.page.coze.site",
+    "https://lacang.github.io/qintianjian/"
+  ],
+  "notes": "发布 123：门禁全绿（静态 ESM / 真实浏览器启动 / SW 离线 / 桩测 / 复现码 e2e）"
+}

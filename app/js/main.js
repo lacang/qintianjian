@@ -2,47 +2,48 @@ import {
   $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt,
   birthDate, nowDate, resolveCastDate, copyText, toast, pad,
   parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
-} from './state.js?v=122';
-import { paipanZi } from './zischool.js?v=122';
-import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=122';
-import { renderPan, copyCurrent } from './panview.js?v=122';
-import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=122';
-import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=122';
-import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=122';
-import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=122';
-import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=122';
-import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=122';
-import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=122';
-import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=122';
-import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=122';
-import { initInteract } from './interact.js?v=122';
-import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=122';
-import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=122';
-import { renderGlobe, globeCopyText } from './globe.js?v=122';
-import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=122';
-import { initCast, resetCast } from './cast.js?v=122';
-import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=122';
-import { initTips, initGuides } from './tipview.js?v=122';
+} from './state.js?v=123';
+import { paipanZi } from './zischool.js?v=123';
+import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=123';
+import { renderPan, copyCurrent } from './panview.js?v=123';
+import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=123';
+import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=123';
+import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=123';
+import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=123';
+import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=123';
+import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=123';
+import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=123';
+import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=123';
+import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=123';
+import { initInteract } from './interact.js?v=123';
+import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=123';
+import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=123';
+import { renderGlobe, globeCopyText } from './globe.js?v=123';
+import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=123';
+import { initCast, resetCast } from './cast.js?v=123';
+import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=123';
+import { initTips, initGuides } from './tipview.js?v=123';
 import {
   loadCases, loadCase, saveCase, updateCase, togglePin, removeCase,
   clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP,
-} from './cases.js?v=122';
-import { renderAsk, bindAsk } from './askview.js?v=122';
-import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=122';
-import { onPlaceChange } from './geo.js?v=122';
-import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=122';
-import { renderMoreCards } from './homecards.js?v=122';
-import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=122';
-import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=122';
-import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=122';
-import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=122';
-import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=122';
+} from './cases.js?v=123';
+import { renderAsk, bindAsk } from './askview.js?v=123';
+import { renderClassic, bindClassic, renderClassicDetail, bindClassicDetail } from './classic/classicview.js?v=123';
+import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=123';
+import { onPlaceChange } from './geo.js?v=123';
+import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=123';
+import { renderMoreCards } from './homecards.js?v=123';
+import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=123';
+import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=123';
+import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=123';
+import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=123';
+import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=123';
 
 const SRC_LABEL = { coins: '摇铜钱', tianji: '天机', manual: '手录', time: '天时' };
 const NO_Q = '未填写所占之事';
 
 // 主 tab（底部栏对应）与全屏子视图分开
-const TAB_VIEWS = ['home', 'ask', 'cast', 'history'];
+const TAB_VIEWS = ['home', 'classic', 'ask', 'cast', 'history'];
 let lastTab = 'home';
 let caseFilter = 'all';
 let sheetKind = null;
@@ -86,6 +87,10 @@ function switchView(name) {
   if (name === 'history') renderHistory();
   if (name === 'cast') resetCast();
   if (name === 'ask') renderAsk();
+  if (name === 'classic') {
+    const b = $('#classic-body');
+    if (b) { b.innerHTML = renderClassic(); bindClassic(); }
+  }
 }
 
 function openSubview(name) {
@@ -510,6 +515,13 @@ function bind() {
 
   // 「问问」：选问题 → 推荐术数 → 跳到对应盘（不自动留档）
   bindAsk($('#view-ask'));
+  // 经典板块（《论语》）：主视图与详情视图各自绑定一次，内部用事件委托
+  bindClassic();
+  bindClassicDetail();
+  document.addEventListener('qintian:classic-goto', (e) => {
+    const v = e.detail && e.detail.view;
+    if (v) switchView(v);
+  });
   // 三幕式排盘：点「起盘」后进入盘面（再起一盘时重走门）
   initRitual((key) => {
     // 再起一盘：ritual 已清标记，render 回到起盘门；正常起盘：直接渲染盘面
