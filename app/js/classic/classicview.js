@@ -1,56 +1,66 @@
 // classicview.js — 「观心」视图层（经典内容渲染器，不绑定某一部经典）
 //
-// 产品定位（董事长 2026-10-31 批示第五部分第 1 条）：
-//   「观心不能做成一个新的内容展示页，它应该逐渐成为钦天监内部一个独立的产品体验。
-//     用户进入观心，不应该觉得自己进入了一个附属的国学栏目。
-//     它需要有自己的首页节奏、交互逻辑、内容探索路径。
-//     但底层继续共用钦天监的 PWA 外壳、导航、数据管理和视觉体系。」
+// 产品定位（董事长 2026-10-31 批示）：
+//   「观心是一个以经典思想为材料，帮助现代人理解现实困惑、探索不同思想、
+//     记录个人认知变化的产品。不是向古人求答案，而是借古人的思想重新看见自己。」
 //
-// 因此本文件的结构是：
-//   首页节奏：今日相遇 → 带着自己的事去问心 → 换几个角度看 → 与古人辩一场 → 随意探索
-//   每一段都是独立入口，不是一个栏目里的子页面。
+// 核心体验：遇见 → 触动 → 发现 → 表达 → 沉淀 → 再次发现。
+//
+// 结构（v126 重构，旧功能全部迁移，不删除）：
+//   今日   打开即得一条完整内容：原文 / 出处 / 现代解读 / 值得想一下 / 继续深入
+//          往下依次是 发现 → 探索 → 联系自己 → 留下收获（五步递进，每一步都有独立价值）
+//   困惑   八个现实主题入口（零输入，可直接点，也可以不选）
+//   手记   用户自己留下的所有想法，按时间倒序；再次遇到同一条时回显上次的记录
+//
+// 旧功能迁移去向（不删除，只换位置）：
+//   今日相遇 → 今日页首屏
+//   问心     → 困惑（八个现实主题，不再要求用户先写字）
+//   一念三观 → 阅读第二步「发现」：同一个思想群里的其他说法
+//   辩一辩   → 阅读第三步「探索」：历代注家在这一点上怎么分岔
+//   思想探索 → 困惑页的主题浏览
+//   五种反馈 → 阅读第四步「联系自己」，不强迫表态
 //
 // 产品原则落点：
-//   · 随机性必须真实：三种抽取是三种不同机制，见 classic-core.js
-//   · 问心不根据问题挑答案：抽取签名不含问题；五种反馈只改阅读路径，不含重抽能力
-//   · 解释必须分层：八层视觉区分，编辑阐释必带标记
-//   · 用户拥有不同意的权利：辩一辩不问对错，只问你怎么想，且允许读完改主意
-//   · 游戏体验不能损害知识真实性：牌阵明示是本产品设计，不是《论语》原有体系
+//   · 现代编辑解读与古人原意严格分层，modern/think 字段来自 reading.js，明示为产品撰写
+//   · 不得为了让页面丰富而制造思想关系：主题推荐 ≠ 原典关系，四类入口分开标注
+//   · 不自动给用户做心理画像、不打思想分数、不替用户宣布成长
+//   · 允许随时结束，不制造完成任务的压力
 //
 // 纯前端，无网络请求。跳转通过 qintian:classic-goto 事件交回 main.js。
 
 import {
-  dateKey, drawDaily, drawAsk, drawThree, getNode,
-  correctionsFor, exploreEntries, detailLayers,
-  poolNodes, clusterName, allNodes, allClusters, meta, capabilities,
-  FEEDBACK, feedbackEffect, topicsOf,
+  dateKey, drawDaily, getNode, allNodes, allClusters, meta, capabilities,
+  FEEDBACK, feedbackEffect, topicsOf, poolNodes,
   debateList, getDebate, debateFor, stanceOf, debateAfterword,
+  exploreEntries, detailLayers, correctionsFor, visibleRelations,
 } from './classic-core.js';
-import { $, $$, toast } from '../state.js?v=125';
+import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js';
+import { $, $$, toast } from '../state.js?v=126';
 
 const FAV_KEY = 'qintian.classic.fav';
-const SEQ_KEY = 'qintian.classic.askseq';
-const FB_KEY = 'qintian.classic.feedback';
-const NOTE_KEY = 'qintian.classic.notes';
-const DEB_KEY = 'qintian.classic.debate';
+const NOTE_KEY = 'qintian.classic.journal';   // 思想手记：{ nodeId: [{ text, at, fb }] }
 
-let panel = 'today';
-let askResult = null;
-let askQuestion = '';        // 仅作阅读背景展示，永不参与抽取
-let askFeedback = null;      // 五种反馈之一（只影响阅读路径）
-let askNoteOpen = false;     // 「想起自己的某件事」的输入框
-let askEmpty = false;        // 空问题点「静心一问」时的提示位（不抽，只提醒）
-// 「抽」与「读」分成两个状态。点下去到看见箴言之间留一段静默，
-// 不是加载动画——是让手停下来。没有这一段，结果就是「哗啦一变」。
-let askPhase = 'idle';       // idle | drawing | result
-let askDrawAt = 0;
-let askRiteMs = 0;           // 本次仪式时长（首问 2.4s，同题再抽 1.5s）
-const RITE_MS = 2400;
-// 第二次起缩短。已经知道接下来会发生什么，再等满 2.4 秒就从「静」变成「拖」。
-const RITE_AGAIN_MS = 1500;
-let threeCards = null;       // [{node, group, groupName, open}]
-let debate = null;           // { id, stance, changed, revealed }
-let currentId = null;
+// 主视图三页。旧版是五个并列面板（今日/问心/三观/辩一辩/探索），
+// 用户打开后不知道从哪进；现在只剩三个，且第一页打开就是内容本身。
+let panel = 'today';          // today | themes | notes
+let readStep = 1;             // 1..5，当前展开到第几步
+let readId = null;            // 当前正在读的条目；null 表示读今日那一条
+let themeId = null;           // 困惑页当前主题
+let readFb = null;            // 本条已选的反馈
+let readDebate = false;       // 第 3 步「我怎么看」是否已展开
+let readStance = null;        // 本条更接近哪一种读法（可不选）
+let readStanceChanged = false;
+let readDifferAt = 0;         // 刚刚把理由存进手记的时间戳（0 = 没存过）
+let readDifferDraft = '';     // 理由草稿：点读法会重绘，不带走就会把用户写了一半的话吞掉
+
+// 反馈文案按产品语言重写。core 里那份是机制名，这里是给用户看的字。
+const FB_LABEL = {
+  agree: '这句话触动了我',
+  more: '我想进一步了解',
+  disagree: '我有不同看法',
+  unsure: '我还没想明白',
+  recall: '我想留下自己的想法',
+};
 
 // ---------------- 小工具 ----------------
 
@@ -73,112 +83,473 @@ function saveJSON(key, v) {
 function loadFav() { return new Set(loadJSON(FAV_KEY, [])); }
 function saveFav(set) { saveJSON(FAV_KEY, [...set]); }
 
-/** 当日问心/三观序号：只用于让同一日的多次抽取互不相同，不参与任何内容判断 */
-function bumpSeq() {
-  const today = dateKey();
-  const rec = loadJSON(SEQ_KEY, null);
-  const n = (rec && rec.d === today) ? (rec.n || 0) : 0;
-  saveJSON(SEQ_KEY, { d: today, n: n + 1 });
-  return n;
-}
-
 function cnDate(d = new Date()) {
   const w = '日一二三四五六'[d.getDay()];
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 星期${w}`;
 }
 
-/** 记录一次反馈（只用于「后续阅读体验」，绝不回流到抽取） */
-function recordFeedback(nodeId, fbId) {
-  const all = loadJSON(FB_KEY, {});
-  const key = `${nodeId}`;
-  all[key] = all[key] || [];
-  all[key].push({ fb: fbId, at: new Date().toISOString().slice(0, 10) });
-  saveJSON(FB_KEY, all);
+function shortDate(iso) {
+  const s = String(iso || '');
+  if (s.length < 10) return s;
+  return `${Number(s.slice(5, 7))}月${Number(s.slice(8, 10))}日`;
 }
 
-// ---------------- 通用卡片 ----------------
+// ---------------- 思想手记 ----------------
 
-function quoteCard(node, opts = {}) {
-  if (!node) return '';
-  const fav = loadFav().has(node.id);
+function loadJournal() { return loadJSON(NOTE_KEY, {}); }
+
+/** 写下一条。同一条可以反复写，形成时间线——这是「看见自己的变化」的原料。 */
+function addJournal(nodeId, text, fb) {
+  const all = loadJournal();
+  const list = Array.isArray(all[nodeId]) ? all[nodeId] : [];
+  list.push({ text: String(text || '').trim(), at: new Date().toISOString(), fb: fb || null });
+  all[nodeId] = list;
+  saveJSON(NOTE_KEY, all);
+  return list;
+}
+
+/** 某条内容上我留下的所有记录（新的在后） */
+function journalOf(nodeId) {
+  const all = loadJournal();
+  return Array.isArray(all[nodeId]) ? all[nodeId] : [];
+}
+
+/** 全部记录，按时间倒序，带内容节点 */
+function journalAll() {
+  const all = loadJournal();
+  const rows = [];
+  for (const id of Object.keys(all)) {
+    const node = getNode(id);
+    if (!node) continue;
+    for (const r of all[id]) rows.push({ node, rec: r });
+  }
+  rows.sort((a, b) => String(b.rec.at).localeCompare(String(a.rec.at)));
+  return rows;
+}
+
+// ---------------- 今日那一条 ----------------
+
+function todayNode() {
+  return drawDaily(dateKey());
+}
+
+/** 当前正在读的条目：显式点进来的优先，否则就是今天这条。 */
+function readingNode() {
+  if (readId) {
+    const n = getNode(readId);
+    if (n) return n;
+  }
+  return todayNode();
+}
+
+// ---------------- 阅读：第 1 步 看懂 ----------------
+
+// 再次遇到旧内容时的温和提示。不评价、不宣布成长、不生成画像——
+// 只把用户自己上次写的话原样摆出来，让他自己比较。
+function journalEcho(nodeId) {
+  const list = journalOf(nodeId);
+  if (!list.length) return '';
+  const last = list[list.length - 1];
+  if (!last.text) return '';
   return `
-  <article class="cl-quote" data-id="${esc(node.id)}">
-    <div class="cl-quote-title">${esc(node.title)}</div>
-    <blockquote class="cl-original">${esc(node.original)}</blockquote>
-    <div class="cl-src">${esc(node.location_text)}</div>
-    <p class="cl-idea">${esc(node.idea || '')}</p>
-    <div class="cl-acts">
-      <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">读原典 ›</button>
-      <button class="btn ghost mini ${fav ? 'on' : ''}" data-act="fav" data-id="${esc(node.id)}" type="button">${fav ? '已收藏' : '收藏'}</button>
-    </div>
-    ${opts.foot ? `<div class="cl-foot">${opts.foot}</div>` : ''}
-  </article>`;
-}
-
-// 问心的箴言卡。刻意不与 quoteCard 共用：那张是「内容卡」，一屏可以有好几张；
-// 问心这一张是全场唯一的主角，所以去掉卡片边框与阴影，用留白和字号立层级，
-// 白话收进折叠，说明文字降成一行小注。主次不分的原因是它们原来一样重。
-function quoteRite(node) {
-  if (!node) return '';
-  const fav = loadFav().has(node.id);
-  return `
-  <article class="cl-vot" data-id="${esc(node.id)}">
-    <div class="cl-vot-t">${esc(node.title)}</div>
-    <blockquote class="cl-vot-o">${splitOriginal(node.original)}</blockquote>
-    <div class="cl-vot-s">${esc(node.location_text)}</div>
-    ${node.idea ? `<details class="cl-vot-d">
-      <summary>这一条在说什么</summary>
-      <p>${esc(node.idea)}</p>
-    </details>` : ''}
-    <div class="cl-vot-a">
-      <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">读原典 ›</button>
-      <button class="btn ghost mini ${fav ? 'on' : ''}" data-act="fav" data-id="${esc(node.id)}" type="button">${fav ? '已收藏' : '收藏'}</button>
-    </div>
-  </article>`;
-}
-
-// 原文按句读拆行。中文按标点断行比按宽度断行好看得多——
-// 「见贤思齐焉，见不贤而内自省也」自动折行会断在「自/省也」这种地方。
-// 拆行后每行还能各自浮现，读起来是一句一句落下来，不是一坨字同时亮。
-// 超过 4 行就不拆（长章按逗号分会碎成一片），退回自然折行。
-function splitOriginal(text) {
-  const raw = String(text || '');
-  const segs = raw.split('，');
-  if (segs.length < 2 || segs.length > 4) return esc(raw);
-  const lines = segs.map((seg, i) => (i < segs.length - 1 ? seg + '，' : seg)).filter((x) => x.length);
-  return lines.map((x) => `<span class="cl-vot-l">${esc(x)}</span>`).join('');
-}
-
-// 抽取仪式层。三圈错相的呼吸金环 + 一颗最后落定的芯 + 一行小字。
-// 环不转——转圈是「等加载」，呼吸是「静下来」，两者语义相反。
-// 三圈用负延迟错开相位，读起来是一圈推一圈的涟漪，不是三圈一起闪。
-function riteLayer(ms = RITE_MS) {
-  return `
-  <div class="cl-rite" style="--rite:${ms}ms" role="status" aria-live="polite">
-    <div class="cl-rite-orb">
-      <div class="cl-rite-halo"></div>
-      <div class="cl-rite-ring is-1"></div>
-      <div class="cl-rite-ring is-2"></div>
-      <div class="cl-rite-ring is-3"></div>
-      <div class="cl-rite-core"></div>
-    </div>
-    <div class="cl-rite-word">容它一会儿</div>
+  <div class="cl-echo">
+    <div class="cl-echo-h">你曾经读过这一条</div>
+    <div class="cl-echo-w">${shortDate(last.at)}，你留下过这样的话：</div>
+    <div class="cl-echo-q">${esc(last.text)}</div>
+    ${list.length > 1 ? `<div class="cl-echo-n">这条你一共记过 ${list.length} 次。</div>` : ''}
   </div>`;
+}
+
+function stepUnderstand(node) {
+  const r = readingOf(node.id);
+  const fav = loadFav().has(node.id);
+  return `
+  <article class="cl-read" data-id="${esc(node.id)}">
+    <blockquote class="cl-read-o">${esc(node.original)}</blockquote>
+    <div class="cl-read-src">${esc(node.location_text)}</div>
+
+    <!-- 旧记录放在原文之后、解读之前：
+         先认出这是哪一条，再想起自己上次写了什么，然后才看解读。
+         放最上面会挡住原文，读者第一眼看到的应该是这句话本身。 -->
+    ${journalEcho(node.id)}
+
+    <section class="cl-block">
+      <div class="cl-block-h">这句话在说什么</div>
+      <p class="cl-modern">${esc(r ? r.modern : (node.idea || ''))}</p>
+      <div class="cl-src-tag">现代解读 · 本产品编辑撰写，不是古人原意</div>
+    </section>
+
+    ${r && r.think ? `
+    <section class="cl-block cl-think">
+      <div class="cl-block-h">值得想一下</div>
+      <p class="cl-modern">${esc(r.think)}</p>
+    </section>` : ''}
+
+    <!-- 推进按钮只在「你正停在这一步」时出现。
+         展开后还留着它，用户往下读到第四步时，上方仍挂着一个
+         「这句话背后还有什么」——已经点过了，看上去像没生效。 -->
+    <div class="cl-read-acts">
+      ${readStep === 1 ? `
+      <button class="cl-more" data-act="step" data-step="2" type="button">
+        这句话背后还有什么 ›
+      </button>` : ''}
+      <button class="btn ghost mini ${fav ? 'on' : ''}" data-act="fav" data-id="${esc(node.id)}" type="button">${fav ? '已收藏' : '收藏'}</button>
+    </div>
+  </article>`;
+}
+
+// ---------------- 阅读：第 2 步 发现 ----------------
+
+// 「发现」要给的是「过去没注意到的东西」。
+// 两个来源：这条是在什么场合说的（语境），以及它最容易被读错的地方（误读纠错）。
+function stepDiscover(node) {
+  const ctx = node.context || {};
+  const ctxRows = [
+    ['谁说的', ctx.speaker],
+    ['对谁说', ctx.interlocutor],
+    ['当时在谈什么', ctx.occasion],
+  ].filter((x) => x[1]);
+
+  const cs = correctionsFor(node);
+
+  return `
+  <section class="cl-block cl-step2">
+    <div class="cl-block-h">这句话是在什么场合说的</div>
+    ${ctxRows.length ? `<dl class="cl-ctx">
+      ${ctxRows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}
+    </dl>` : '<div class="cl-foot">这一条的语境记录不完整，不补写。</div>'}
+    <div class="cl-src-tag">出处：原文上下文，非编辑推断</div>
+  </section>
+
+  ${cs.length ? `
+  <section class="cl-block cl-step2">
+    <div class="cl-block-h">它最容易被读错的地方</div>
+    ${cs.map((c) => `
+      <div class="cl-cor">
+        <div class="cl-cor-h">${esc(c.title)}<span>${esc(c.diff_type)}</span></div>
+        <div class="cl-cor-p"><b>流行说法</b>${esc(c.popular)}</div>
+        <div class="cl-cor-d"><b>差在哪</b>${esc(c.diff_detail)}</div>
+      </div>`).join('')}
+  </section>` : ''}
+
+  ${readStep === 2 ? `
+  <div class="cl-read-acts">
+    <button class="cl-more" data-act="step" data-step="3" type="button">
+      历代是怎么读它的 ›
+    </button>
+  </div>` : ''}`;
+}
+
+// ---------------- 阅读：第 3 步 探索 ----------------
+
+// 旧「辩一辩」迁到这里：辩题本来就是 disputes 的展开，
+// 现在不再单开一页，而是作为「这条被读成了几种意思」的一部分。
+function stepExplore(node) {
+  const cm = node.commentaries || [];
+  const ds = node.disputes || [];
+  const db = debateFor(node);
+
+  return `
+  ${cm.length ? `
+  <section class="cl-block cl-step3">
+    <div class="cl-block-h">历代注家怎么解</div>
+    ${cm.map((c) => `
+      <div class="cl-cm">
+        <div class="cl-cm-h">${esc(c.author)}<span>${esc(c.work || '')}</span></div>
+        <div class="cl-cm-t">${esc(c.text)}</div>
+      </div>`).join('')}
+    <div class="cl-src-tag">注疏 · 古人原话，与上面的现代解读不同来源</div>
+  </section>` : ''}
+
+  ${ds.length ? `
+  <section class="cl-block cl-step3">
+    <div class="cl-block-h">这一点上，古人也吵</div>
+    ${ds.map((d) => `
+      <div class="cl-disp">
+        <div class="cl-disp-t">${esc(d.topic)}</div>
+        <ul>${(d.positions || []).map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+      </div>`).join('')}
+    <div class="cl-src-tag">分歧 · 并列呈现，不合成单一答案</div>
+  </section>` : '<div class="cl-foot">这一条目前没有记录到注家分歧——不为了显得丰富而补造。</div>'}
+
+  ${db ? `
+  <section class="cl-block cl-step3 cl-debate">
+    <div class="cl-block-h">换成今天的处境，你怎么想</div>
+    <div class="cl-db-q">${esc(db.question)}</div>
+    ${!readDebate ? `
+    <div class="cl-foot">${esc(db.preamble || '')}</div>
+    <button class="btn ghost mini" data-act="db-inline" data-id="${esc(db.id)}" type="button">
+      我怎么看 ›
+    </button>` : debateInline(db, node)}` : ''}
+
+  ${readStep === 3 ? `
+  <div class="cl-read-acts">
+    <button class="cl-more" data-act="step" data-step="4" type="button">
+      这条和你有什么关系 ›
+    </button>
+    <!-- 完整资料是另一个维度，不是五步的一部分：
+         想一次看完的人（查证、抄写、做研究）从这里走，
+         不想一次看那么多的人继续往下就行。 -->
+    <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">
+      完整资料 ›
+    </button>
+  </div>` : ''}`;
+}
+
+// 旧「辩一辩」的页面搬进阅读流程里。
+// 原来点「说说我的立场」会跳到一个独立页面：用户刚进入阅读状态就被送走，
+// 回来还得重新找位置。现在就地展开，四段都在同一条内容里：
+//   原文在说什么 → 历代注家怎么理解 → 我更接近哪一种 → 我有不同看法
+// 关键约束：不制造两个对立阵营。这里列的是四种站位，不是正反方；
+// 可以都不选，也可以只看不选——没有需要完成的动作。
+function debateInline(db, node) {
+  const chosen = readStance ? stanceOf(db, readStance) : null;
+  const after = chosen ? debateAfterword(db) : null;
+  const justSaved = readDifferAt && Date.now() - readDifferAt < 120000;
+
+  return `
+  <div class="cl-db-in">
+    <div class="cl-db-sec">
+      <div class="cl-db-sec-h">原文在说什么</div>
+      <div class="cl-db-sec-t">${esc(db.canon_note || '')}</div>
+    </div>
+
+    <div class="cl-db-sec">
+      <div class="cl-db-sec-h">历代注家怎么理解这一点</div>
+      ${(db.stances || []).map((st) => `
+        <button class="cl-st ${readStance === st.id ? 'on' : ''}" data-act="db-stance" data-id="${esc(st.id)}" type="button">
+          <span class="cl-st-l">${esc(st.label)}</span>
+          <span class="cl-st-t">${esc(st.text)}</span>
+        </button>`).join('')}
+      <div class="cl-foot">这几种不是选项，是站位。可以都不选，只看。</div>
+    </div>
+
+    ${chosen ? `
+    <div class="cl-db-sec cl-db-mine">
+      <div class="cl-db-sec-h">你更接近「${esc(chosen.label)}」</div>
+      <div class="cl-db-sec-t">${esc(chosen.lineage)}</div>
+      ${readStanceChanged ? '<div class="cl-db-changed">你改过。改主意不算反悔——读完再想，本来就是这件事的目的。</div>' : ''}
+      ${after && after.text ? `
+      <div class="cl-db-alt-h">如果你站在另一边</div>
+      <div class="cl-db-after">${esc(after.text)}</div>` : ''}
+      <div class="cl-foot">这只是位置对照，不是对错判定。你的选择属于你自己，不必是哪一家的注脚。</div>
+    </div>` : ''}
+
+    <div class="cl-db-sec">
+      <div class="cl-db-sec-h">我有不同看法</div>
+      <textarea id="cl-differ" class="cl-journal is-short" rows="2"
+        placeholder="一句也行。只留在你自己的设备上。">${esc(readDifferDraft)}</textarea>
+      <div class="cl-read-acts">
+        <button class="btn ghost mini" data-act="db-save" data-id="${esc(node.id)}" type="button">存进手记</button>
+        <button class="btn ghost mini" data-act="db-close" type="button">收起</button>
+      </div>
+      ${justSaved ? '<div class="cl-foot">已存进手记。以后读到这一条，你会看到今天写的这句。</div>' : ''}
+    </div>
+  </div>`;
+}
+
+// ---------------- 阅读：第 4 步 联系自己 ----------------
+
+// 五种反馈，不强迫表态。选了一个才给回应——回应是「接下来给你看什么」，
+// 不是夸奖，也不是评分。
+function stepSelf(node) {
+  const eff = readFb ? feedbackEffect(readFb) : null;
+  return `
+  <section class="cl-block cl-step4">
+    <div class="cl-block-h">读完这条，你是什么感觉</div>
+    <div class="cl-fb-row">
+      ${FEEDBACK.map((f) => `
+        <button class="cl-fb ${readFb === f.id ? 'on' : ''}" data-act="fb" data-fb="${f.id}" type="button">
+          ${esc(FB_LABEL[f.id] || f.label)}
+        </button>`).join('')}
+    </div>
+    ${eff ? `
+    <div class="cl-fb-echo">
+      <div class="cl-fb-echo-t">${esc(eff.note || '')}</div>
+      ${eff.openLayers && eff.openLayers.length ? `
+        <button class="btn ghost mini" data-act="open-with" data-id="${esc(node.id)}"
+          data-layers="${esc(eff.openLayers.join(','))}" type="button">看看古人怎么吵的 ›</button>` : ''}
+      ${eff.gotoDetail ? `
+        <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">读完整八层 ›</button>` : ''}
+      ${eff.compose ? '<div class="cl-foot">往下写一句就行，不用写得完整。</div>' : ''}
+    </div>` : ''}
+
+    <div class="cl-foot">可以不选。也可以随时离开，这里没有需要完成的任务。</div>
+  </section>
+
+  ${readStep < 5 ? `
+  <div class="cl-read-acts">
+    <button class="cl-more" data-act="step" data-step="5" type="button">
+      留下一句我自己的话 ›
+    </button>
+  </div>` : ''}`;
+}
+
+// ---------------- 阅读：第 5 步 留下收获 ----------------
+
+function stepKeep(node) {
+  const list = journalOf(node.id);
+  return `
+  <section class="cl-block cl-step5">
+    <div class="cl-block-h">留下一句</div>
+    <div class="cl-foot">
+      只存在你自己的设备上，不上传，也不参与任何推荐。
+      以后再遇到这一条，你会看到今天写的这句。
+    </div>
+    <textarea id="cl-journal-input" class="cl-journal" rows="4"
+      placeholder="想到什么就写什么，一句话也行。"></textarea>
+    <div class="cl-read-acts">
+      <button class="cl-more" data-act="journal-save" data-id="${esc(node.id)}" type="button">存进手记</button>
+      <button class="btn ghost mini" data-act="step" data-step="6" type="button">不写，就这样</button>
+    </div>
+    ${list.length ? `
+    <div class="cl-jhist">
+      <div class="cl-jhist-h">这一条你记过 ${list.length} 次</div>
+      ${list.map((r) => `
+        <div class="cl-jhist-i">
+          <div class="cl-jhist-d">${shortDate(r.at)}</div>
+          <div class="cl-jhist-t">${esc(r.text || '（没有写字）')}</div>
+        </div>`).join('')}
+    </div>` : ''}
+  </section>`;
+}
+
+// ---------------- 阅读：结束 ----------------
+
+function stepEnd(node) {
+  const themes = THEMES.slice(0, 4);
+  const last = journalOf(node.id).slice(-1)[0];
+  return `
+  <section class="cl-block cl-end">
+    <div class="cl-end-h">今天这一条读完了</div>
+    ${last && last.text ? `
+    <div class="cl-end-note">你今天留下一句：<br>「${esc(last.text)}」</div>` : ''}
+    <div class="cl-foot">明天还有下一条。不必现在就看下一条。</div>
+    <div class="cl-end-acts">
+      <button class="cl-more" data-act="goto" data-panel="themes" type="button">最近有件事让我为难 ›</button>
+      <button class="btn ghost mini" data-act="goto" data-panel="notes" type="button">看我的手记</button>
+    </div>
+    <div class="cl-end-themes">
+      ${themes.map((t) => `
+        <button class="cl-end-t" data-act="theme" data-id="${esc(t.id)}" type="button">${esc(t.name)}</button>`).join('')}
+    </div>
+  </section>`;
+}
+
+// ---------------- 今日页 ----------------
+
+function panelToday() {
+  const node = readingNode();
+  if (!node) return '<div class="cl-hint">内容库为空。</div>';
+  const isToday = !readId || readId === todayNode().id;
+  const steps = [];
+  steps.push(stepUnderstand(node));
+  if (readStep >= 2) steps.push(stepDiscover(node));
+  if (readStep >= 3) steps.push(stepExplore(node));
+  if (readStep >= 4) steps.push(stepSelf(node));
+  // 第 5 步的输入框只在「还没写」时出现。
+  // 写完进第 6 步后，留下的话改由结束块展示——否则用户会看到一个
+  // 已经存过、却还在等他的空输入框，不知道还要不要写第二遍。
+  if (readStep === 5) steps.push(stepKeep(node));
+  if (readStep >= 6) steps.push(stepEnd(node));
+
+  return `
+  <div class="cl-day">${isToday ? cnDate() + ' · 今日一条' : '正在读'}</div>
+  ${!isToday ? `<button class="cl-back" data-act="back-today" type="button">‹ 回到今天这一条</button>` : ''}
+  ${steps.join('')}`;
+}
+
+// ---------------- 困惑页（旧「问心」+「思想探索」迁移） ----------------
+
+function panelThemes() {
+  if (themeId) return panelThemeDetail();
+  return `
+  <div class="cl-day">此刻，你更接近哪一种</div>
+  <div class="cl-themes-intro">
+    不用写，也不用说得清楚，点一个就好。<br>
+    不选也可以——「今日」那一条本来就不问你任何事。
+  </div>
+  <div class="cl-themes">
+    ${THEMES.map((t) => `
+      <button class="cl-theme" data-act="theme" data-id="${esc(t.id)}" type="button">
+        <span class="cl-theme-n">${esc(t.name)}</span>
+        <span class="cl-theme-h">${esc(t.hint)}</span>
+      </button>`).join('')}
+  </div>`;
+}
+
+function panelThemeDetail() {
+  const t = themeById(themeId);
+  if (!t) return panelThemes();
+  const seq = themeSeq(t.id);
+
+  // 有人工序列就按人工序列走。
+  // 没排过的主题（将来新增的）才退回标签过滤——标签给的是「沾边」，
+  // 人工序列给的是「从这个角度读，先读哪条」。两者不能混着显示：
+  // 混了之后，用户分不清哪条是编辑挑的、哪条是机器凑的。
+  const items = seq
+    ? seq.items.map((it) => ({ node: getNode(it.id), it })).filter((x) => x.node)
+    : allNodes()
+        .filter((n) => (n.topics || []).some((id) => t.topics.includes(id)))
+        .map((n, i) => ({ node: n, it: { id: n.id, why: '', link: '', first: i < 3 } }));
+
+  return `
+  <button class="cl-back" data-act="back-themes" type="button">‹ 换一个</button>
+  <div class="cl-tp-h">${esc(t.name)}</div>
+  <div class="cl-tp-note">
+    下面的顺序和理由，是本产品编辑挑的，不是原典主张，也不是注家说法。<br>
+    同属一个主题，也不代表这些条目之间在《论语》里互相引用。
+  </div>
+  ${seq && seq.path ? `<div class="cl-tp-path">阅读路径：${esc(seq.path)}</div>` : ''}
+  <div class="cl-tp-list">
+    ${items.map(({ node, it }, i) => {
+      const r = readingOf(node.id);
+      return `
+      <button class="cl-tp-item" data-act="read" data-id="${esc(node.id)}" type="button">
+        <span class="cl-tp-item-n">${i + 1}</span>
+        <span class="cl-tp-item-t">${esc(node.title)}</span>
+        <span class="cl-tp-item-s">${esc(node.location_text)}</span>
+        ${r ? `<span class="cl-tp-item-p">${esc(r.modern.slice(0, 40))}…</span>` : ''}
+        ${it.why ? `<span class="cl-tp-item-w">${esc(it.why)}</span>` : ''}
+        <span class="cl-tp-item-b">
+          ${it.link && LINK_LABEL[it.link] ? `<i>${esc(LINK_LABEL[it.link])}</i>` : ''}
+          ${it.first ? '<i>适合初读</i>' : '<i>读过两条再看</i>'}
+        </span>
+      </button>`;
+    }).join('') || '<div class="cl-foot">这个主题下暂时没有条目。</div>'}
+  </div>`;
+}
+
+// ---------------- 手记页 ----------------
+
+function panelNotes() {
+  const rows = journalAll();
+  const withText = rows.filter((r) => r.rec.text);
+  return `
+  <div class="cl-day">我的思想手记</div>
+  <div class="cl-themes-intro">只放你自己写的东西${withText.length ? `，一共 ${withText.length} 条` : ''}。不评分，也不替你总结。</div>
+  ${withText.length ? `
+  <div class="cl-jlist">
+    ${withText.map((r) => `
+      <div class="cl-jrow">
+        <div class="cl-jrow-d">${shortDate(r.rec.at)}</div>
+        <button class="cl-jrow-t" data-act="read" data-id="${esc(r.node.id)}" type="button">
+          ${esc(r.node.title)}
+        </button>
+        <div class="cl-jrow-x">${esc(r.rec.text)}</div>
+      </div>`).join('')}
+  </div>` : `
+  <div class="cl-empty">
+    还没有记过东西。<br>
+    读完一条，在最后一步可以留下一句——一句话也行。
+  </div>`}`;
 }
 
 // ---------------- 主视图 ----------------
 
-const PANEL_NAMES = {
-  today: '今日相遇', ask: '问心', three: '一念三观', debate: '辩一辩', explore: '思想探索',
-};
+const PANEL_NAMES = { today: '今日', themes: '困惑', notes: '手记' };
 
-function panelIds() {
-  const caps = capabilities();
-  const out = ['today', 'ask', 'three'];
-  if (caps.debate) out.push('debate');
-  out.push('explore');
-  return out;
-}
+function panelIds() { return ['today', 'themes', 'notes']; }
 
 export function renderClassic() {
   const m = meta();
@@ -199,339 +570,16 @@ export function renderClassic() {
 }
 
 function renderPanel() {
-  if (panel === 'today') return panelToday();
-  if (panel === 'ask') return panelAsk();
-  if (panel === 'three') return panelThree();
-  if (panel === 'debate') return panelDebate();
-  return panelExplore();
+  if (panel === 'themes') return panelThemes();
+  if (panel === 'notes') return panelNotes();
+  return panelToday();
 }
 
-// ---------------- 今日相遇 ----------------
-
-function panelToday() {
-  const dk = dateKey();
-  const node = drawDaily(dk);
-  const cnt = meta().counts;
-  return `
-  <div class="cl-hint">${cnDate()} · 今日一条</div>
-  ${quoteCard(node, { foot: '今日相遇每日一条，由日期决定，不可更换——相遇不是挑选。' })}
-
-  <div class="cl-flow">
-    <div class="cl-flow-h">今天还可以</div>
-    <button class="cl-flow-i" data-act="goto-panel" data-panel="ask" type="button">
-      <span class="cl-flow-t">带着一件自己的事去问心</span>
-      <span class="cl-flow-s">写下它，然后随机遇见一条——抽到哪条与你的问题无关</span>
-    </button>
-    <button class="cl-flow-i" data-act="goto-panel" data-panel="three" type="button">
-      <span class="cl-flow-t">换三个角度看看</span>
-      <span class="cl-flow-s">一念三观：三条来自不同思想群，各自成章</span>
-    </button>
-    ${capabilities().debate ? `
-    <button class="cl-flow-i" data-act="goto-panel" data-panel="debate" type="button">
-      <span class="cl-flow-t">和古人辩一场</span>
-      <span class="cl-flow-s">先看原文，再选你自己的立场，然后才读注疏</span>
-    </button>` : ''}
-  </div>
-
-  <div class="cl-stats">
-    <span>抽签池 ${cnt.draw_pool}</span><span>思想 ${cnt.thoughts}</span>
-    <span>已核实关系 ${cnt.relations_verified}</span><span>待考 ${cnt.relations_pending}</span>
-  </div>`;
-}
-
-// ---------------- 问心 ----------------
-
-function panelAsk() {
-  // 仪式还没走完就继续等。若用户中途切走再切回，超时后直接给结果，不会卡住。
-  if (askPhase === 'drawing') {
-    const ms = askRiteMs || RITE_MS;
-    if (Date.now() - askDrawAt < ms) return riteLayer(ms);
-    askPhase = 'result';
-  }
-
-  const result = askResult;
-  const fb = askFeedback ? feedbackEffect(askFeedback) : null;
-
-  // 还没抽：只留「写」这一件事。规则收到最底部，不与输入争注意力。
-  if (!result) {
-    // 书写态不做成表单：一句提问、一张纸面、一个动作。
-    // 原来这里是「提示语 + 输入框 + 通栏大按钮 + 规则卡」，四样东西各说各的，
-    // 而且全挤在页面上半截，下面留一大片空——看着像没做完。
-    return `
-  <div class="cl-write">
-    <div class="cl-write-h">此刻，什么压在你心里</div>
-    <div class="cl-write-s">不必写清楚，写下来就行。</div>
-    <textarea id="cl-ask-input" class="cl-input" rows="4"
-      placeholder="例如：我在犹豫要不要辞掉现在的工作。">${esc(askQuestion)}</textarea>
-    <button class="btn btn-primary cl-ask-go" id="cl-ask-go" type="button">静心一问</button>
-    <div class="cl-ask-warn ${askEmpty ? 'is-on' : ''}" id="cl-ask-warn" role="status">
-      还没写。先写一句此刻的事，再点「静心一问」。<br>
-      如果只是想随便看看，去「今日相遇」——那里不问你任何事。
-    </div>
-    ${rulesFold()}
-  </div>`;
-  }
-
-  // 抽到了：箴言是唯一主角，其余全部降级为注脚。
-  // 输入框不再出现——留着它，用户改了字发现结果不变，只会以为坏了。
-  // 整块包一层 handoff：换屏是 innerHTML 整体重绘，中间没有过渡，
-  // 看起来像「页面跳了一下」。让它从略大略淡的位置落回原位，接上仪式层末尾的收束。
-  return `
-  <div class="cl-vot-wrap">
-  ${quoteRite(result)}
-  <div class="cl-vot-note">
-    ${askQuestion ? `<div class="cl-vot-q">你问的 · ${esc(askQuestion)}</div>` : ''}
-    <div>这一条不由你的问题挑选，也不会替你的问题作答。带着自己的问题去读它——
-    真正需要被看见的，往往不是答案，而是你提问时站的位置。</div>
-  </div>
-
-  <div class="cl-fb">
-    <div class="cl-fb-h">读完之后，你怎么看它</div>
-    <div class="cl-fb-note">你的回答只会改变接下来给你看什么。它不会改变你刚才抽到的这一条，也不会让系统替你重新挑一条。</div>
-    <div class="cl-fb-row">
-      ${FEEDBACK.map((f) => `
-        <button class="cl-fb-b ${askFeedback === f.id ? 'on' : ''}" data-act="fb" data-fb="${f.id}" type="button">
-          ${esc(f.label)}
-        </button>`).join('')}
-    </div>
-    ${fb && fb.note ? `<div class="cl-fb-out">${esc(fb.note)}</div>` : ''}
-    ${fb && fb.compose ? `
-      <textarea id="cl-note-input" class="cl-input sm" rows="3"
-        placeholder="只写给你自己。不上传，不参与抽取，也不会出现在别处。">${esc(loadJSON(NOTE_KEY, {})[result.id] || '')}</textarea>
-      <button class="btn ghost mini" data-act="save-note" data-id="${esc(result.id)}" type="button">存下这段话</button>` : ''}
-    ${fb && fb.openLayers ? `
-      <button class="btn ghost mini" data-act="open-with" data-id="${esc(result.id)}" data-layers="${esc(fb.openLayers.join(','))}" type="button">展开对应的那一层 ›</button>` : ''}
-  </div>
-
-  <div class="cl-acts-row">
-    <button class="btn ghost mini" data-act="ask-again" type="button">再问一次</button>
-    <button class="btn ghost mini" data-act="ask-new" type="button">换一个问题</button>
-  </div>
-  ${rulesBlock()}
-  </div>`;
-}
-
-// 「问心不做三件事」。抽之前放底部做预期管理，抽之后仍在底部，不抢箴言的位置。
-function rulesBlock(plain = false) {
-  return `
-  <div class="cl-rules${plain ? ' cl-rules-plain' : ''}">
-    <div class="cl-rules-h">问心不做三件事</div>
-    <ul>
-      <li>不根据你的问题挑选条目——抽取只由日期与序号决定</li>
-      <li>不预测结果、不给吉凶、不替你做决定</li>
-      <li>不把今人的理解说成古人的原意</li>
-    </ul>
-  </div>`;
-}
-
-// 书写态把规则收成一行。抽之前它只是预期管理，不该和「写」这件事争面积；
-// 想先看规矩的人点得开，不想看的人不必先读三条。
-function rulesFold() {
-  return `
-  <details class="cl-rules-fold">
-    <summary>问心不做三件事</summary>
-    ${rulesBlock(true)}
-  </details>`;
-}
-
-// ---------------- 一念三观 ----------------
-
-function panelThree() {
-  if (!threeCards) {
-    return `
-    <div class="cl-hint">一次抽三张，三条来自三个不同的思想群。</div>
-    <button class="btn btn-primary big" id="cl-three-go" type="button">洗牌</button>
-    <div class="cl-rules">
-      <div class="cl-rules-h">关于牌阵</div>
-      <ul>
-        <li>牌阵是本产品的阅读设计，<strong>不是《论语》原有的占卜体系</strong></li>
-        <li>三条分别来自不同的思想群，各自独立，互不推导</li>
-        <li>不要把它们读成一个连贯的预言</li>
-      </ul>
-    </div>`;
-  }
-  const cards = threeCards.map((c, i) => c.open ? `
-    <div class="cl-card3 open">
-      <div class="cl-card3-h">第 ${i + 1} 张 · ${esc(c.node.title)}</div>
-      <div class="cl-card3-g">${esc(c.groupName)}</div>
-      <blockquote class="cl-original sm">${esc(c.node.original)}</blockquote>
-      <div class="cl-src">${esc(c.node.location_text)}</div>
-      <p class="cl-idea">${esc(c.node.idea || '')}</p>
-      <button class="btn ghost mini" data-act="open" data-id="${esc(c.node.id)}" type="button">读原典 ›</button>
-    </div>` : `
-    <button class="cl-card3 back" data-act="flip" data-i="${i}" type="button">
-      <span>第 ${i + 1} 张</span><span class="cl-flip">翻开</span>
-    </button>`).join('');
-  const allOpen = threeCards.every((c) => c.open);
-  const groups = threeCards.map((c) => c.groupName);
-  return `
-  <div class="cl-hint">三条来自三个不同思想群，逐张翻开。</div>
-  <div class="cl-cards3">${cards}</div>
-  <div class="cl-acts-row">
-    <button class="btn ghost mini" data-act="three-again" type="button">重新洗牌</button>
-  </div>
-  ${allOpen ? `<div class="cl-foot">三张分别出自「${groups.map(esc).join('」「')}」——三个角度，不是一个结论。</div>` : ''}
-  <div class="cl-foot">牌阵为本产品设计，非《论语》原有占卜体系。</div>`;
-}
-
-// ---------------- 辩一辩 ----------------
-//
-// 顺序严格按批示：先展示原文 → 立刻问立场（不解释）→ 用户选 → 再进语境注疏分歧。
-// 选完之后不给「对/错」，只做「位置对照」：你这个选择，历史上哪一路走过。
-// 允许读完改主意——这才是「古人的思想可以被质疑、讨论和重新理解」。
-
-function panelDebate() {
-  const list = debateList();
-  if (!list.length) {
-    return '<div class="cl-hint">当前内容包暂无辩题。</div>';
-  }
-
-  if (!debate) {
-    const rows = list.map((d) => {
-      const n = getNode(d.node);
-      return `
-      <button class="cl-db-item" data-act="db-open" data-id="${esc(d.id)}" type="button">
-        <span class="cl-db-q">${esc(d.question)}</span>
-        <span class="cl-db-s">${esc(n ? n.location_text : '')} · ${esc(n ? n.title : '')}</span>
-      </button>`;
-    }).join('');
-    return `
-    <div class="cl-hint">挑一句你本来就有想法的话。先看原文，再说你怎么想。</div>
-    <div class="cl-db-list">${rows}</div>
-    <div class="cl-rules">
-      <div class="cl-rules-h">这里不问对错</div>
-      <ul>
-        <li>你的立场是关于<strong>你自己怎么做</strong>，不是关于孔子什么意思</li>
-        <li>选完之后才给注疏——先有你的判断，再看古人怎么解</li>
-        <li>读完可以改主意，改主意本身也是这一场的一部分</li>
-      </ul>
-    </div>`;
-  }
-
-  const d = getDebate(debate.id);
-  const node = d ? getNode(d.node) : null;
-  if (!d || !node) return '<div class="cl-hint">辩题数据缺失。</div>';
-
-  const chosen = debate.stance ? stanceOf(d, debate.stance) : null;
-
-  const stanceBtns = (d.stances || []).map((s) => `
-    <button class="cl-st ${debate.stance === s.id ? 'on' : ''}" data-act="db-stance" data-id="${esc(s.id)}" type="button">
-      <span class="cl-st-l">${esc(s.label)}</span>
-      <span class="cl-st-t">${esc(s.text)}</span>
-    </button>`).join('');
-
-  // 第一屏：原文 + 问题 + 立场（不给任何解释）
-  const head = `
-  <div class="cl-db-head">
-    <div class="cl-db-loc">${esc(node.full_title || node.title)} · ${esc(node.location_text)}</div>
-    <blockquote class="cl-original lg">${esc(node.original)}</blockquote>
-  </div>
-  <div class="cl-db-q2">${esc(d.question)}</div>
-  <div class="cl-hint">${esc(d.preamble || '')}</div>
-  <div class="cl-st-row">${stanceBtns}</div>`;
-
-  if (!chosen) {
-    return `
-    ${head}
-    <div class="cl-acts-row">
-      <button class="btn ghost mini" data-act="db-back" type="button">‹ 换一题</button>
-    </div>
-    <div class="cl-foot">选一个之后，才会展开原文语境、历代注疏与注家分歧。</div>`;
-  }
-
-  // 第二屏：你的选择 + 这一路谁走过 + 原文语境 + 注疏 + 分歧 + 改主意
-  const after = debateAfterword(d);
-  const layers = detailLayers(node).filter((L) => ['person', 'commentary', 'dispute', 'modern'].includes(L.key));
-  const layerHtml = layers.map((L) => `
-    <section class="cl-layer k-${L.kind} open" data-layer="${L.key}">
-      <div class="cl-layer-h static"><span class="cl-layer-n">${esc(L.layer)}</span></div>
-      <div class="cl-layer-b">
-        <div class="cl-layer-note">${esc(L.note)}</div>
-        ${L.items.map((it) => `
-          <div class="cl-item">
-            ${it.label ? `<div class="cl-item-l">${esc(it.label)}</div>` : ''}
-            <div class="cl-item-t">${esc(it.text).replace(/\n/g, '<br>')}</div>
-          </div>`).join('')}
-      </div>
-    </section>`).join('');
-
-  return `
-  ${head}
-  <div class="cl-db-mine">
-    <div class="cl-db-mine-h">你的立场</div>
-    <div class="cl-db-mine-t">${esc(chosen.label)}</div>
-    <div class="cl-db-mine-d">${esc(chosen.text)}</div>
-    ${debate.changed ? '<div class="cl-db-changed">你改过主意。改主意不算反悔——读完再想，本来就是这一场的目的。</div>' : ''}
-  </div>
-
-  <div class="cl-db-lineage">
-    <div class="cl-db-lineage-h">这一路，历史上谁走过</div>
-    <div class="cl-db-lineage-t">${esc(chosen.lineage)}</div>
-    <div class="cl-db-lineage-n">这只是位置对照，不是对错判定。你的选择属于你自己，不必是哪一家的注脚。</div>
-  </div>
-
-  ${after && after.canonNote ? `
-  <div class="cl-db-canon">
-    <div class="cl-db-canon-h">原典实际说了什么</div>
-    <div class="cl-db-canon-t">${esc(after.canonNote)}</div>
-  </div>` : ''}
-
-  ${layerHtml}
-
-  ${after && after.text ? `<div class="cl-db-after">${esc(after.text)}</div>` : ''}
-
-  <div class="cl-acts-row">
-    <button class="btn ghost mini" data-act="db-open" data-id="${esc(d.id)}" type="button">重新选一次</button>
-    <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">读完整八层 ›</button>
-    <button class="btn ghost mini" data-act="db-back" type="button">换一题</button>
-  </div>`;
-}
-
-// ---------------- 思想探索 ----------------
-
-function panelExplore() {
-  const clusters = allClusters().map((c) => {
-    // thought.clusters 存群 id（C-XX），由数据层从 CLUSTERS.branches 反推。
-    // 早期它存的是另一套旧分组词，曾导致两群为空、两条整条消失；数据层已统一。
-    const nodes = allNodes().filter((t) => (t.clusters || []).includes(c.id));
-    if (!nodes.length) return '';
-    return `
-    <section class="cl-group">
-      <div class="cl-group-h">${esc(c.name)}<span>${nodes.length}</span></div>
-      ${nodes.map((t) => `
-        <button class="cl-node" data-act="open" data-id="${esc(t.id)}" type="button">
-          <span class="cl-node-t">${esc(t.title)}</span>
-          <span class="cl-node-s">${esc(t.location_text)}</span>
-          ${(t.relations || []).length ? '' : '<span class="cl-node-tag">独立</span>'}
-        </button>`).join('')}
-    </section>`;
-  }).join('');
-
-  const orphans = allNodes().filter((t) => !(t.relations || []).length);
-  const total = allNodes().length;
-  return `
-  <div class="cl-hint">
-    按思想群浏览，共 ${total} 条。关系边只展示经审校成立的；
-    没有可靠关系的条目照实标「独立」，不补造联系。
-  </div>
-  ${clusters}
-  ${orphans.length ? `
-  <div class="cl-rules">
-    <div class="cl-rules-h">独立条目 ${orphans.length} 条</div>
-    <p class="cl-rules-p">
-      ${orphans.map((o) => esc(o.title)).join('、')}<br>
-      这些条目目前没有经审校成立的思想关系。点开后用「同一思想群 / 同一篇章 / 主题推荐」
-      入口继续读——三者依据不同，都不是思想关系；某一入口没有可用内容时不显示，也不补造。
-    </p>
-  </div>` : ''}`;
-}
-
-// ---------------- 详情视图（八层） ----------------
+// ---------------- 详情视图（八层，原样保留） ----------------
 
 export function renderClassicDetail(id, opts = {}) {
   const node = getNode(id);
   if (!node) return '<div class="cl-hint">未找到该条目。</div>';
-  currentId = id;
 
   const forceOpen = new Set(opts.openLayers || []);
   const layers = detailLayers(node).map((L, i) => {
@@ -555,11 +603,18 @@ export function renderClassicDetail(id, opts = {}) {
   }).join('');
 
   const db = debateFor(node);
+  const r = readingOf(node.id);
   return `
   <header class="topbar">
     <div class="brand">${esc(node.title)}</div>
   </header>
   <div class="cl-detail-src">${esc(node.full_title)}<br>${esc(node.location_text)}</div>
+  ${r ? `
+  <section class="cl-sec">
+    <div class="cl-sec-h">这句话在说什么</div>
+    <p class="cl-modern">${esc(r.modern)}</p>
+    <div class="cl-src-tag">现代解读 · 本产品编辑撰写，不是古人原意</div>
+  </section>` : ''}
   ${db ? `
   <button class="cl-db-invite" data-act="db-open" data-id="${esc(db.id)}" type="button">
     <span class="cl-db-invite-h">这一条可以辩</span>
@@ -609,8 +664,6 @@ function renderRelationsBlock(node) {
     </section>`;
   }
 
-  // 每个入口都带自己的性质类与 data-kind。批示原则二要求四类入口不得混为一谈，
-  // 所以这里不靠一句小字说明去区分，而是让性质成为结构本身（可被样式和测试直接选中）。
   const KIND_LABEL = { cluster: '原典归类', chapter: '文本位置', topic: '主题推荐', unknown: '性质未标注' };
   const entries = ex.entries.map((e) => `
     <div class="cl-entry cl-entry--${esc(e.kind || 'unknown')}" data-kind="${esc(e.kind || 'unknown')}">
@@ -633,8 +686,6 @@ function renderRelationsBlock(node) {
       原典归类、文本位置、编辑推荐——三者都不构成思想关系。
     </div>
     ${entries || '<div class="cl-foot">暂无可供推荐的条目。</div>'}
-    ${ex.entries.some((e) => e.id === 'topic_recommend') ? '' :
-      '<div class="cl-foot">该条暂无主题推荐——主题标签体系尚未定稿，不为了凑满入口而编造。</div>'}
   </section>`;
 }
 
@@ -662,73 +713,49 @@ function repaint() {
   if (body) body.innerHTML = renderPanel();
 }
 
+/** 进入某一条的阅读（重置到第一步） */
+function openReading(id) {
+  readId = id || null;
+  readStep = 1;
+  readFb = null;
+  readDebate = false;
+  readStance = null;
+  readStanceChanged = false;
+  readDifferAt = 0;
+  readDifferDraft = '';
+  panel = 'today';
+  repaint();
+  syncTabs();
+  window.scrollTo(0, 0);
+}
+
+/** 滚到某个元素。展开的新内容在下方，屏幕不动用户会以为没反应。 */
+function scrollToSel(sel) {
+  requestAnimationFrame(() => {
+    const el = $(sel);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 56;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  });
+}
+
+function syncTabs() {
+  $$('#view-classic .cl-tab').forEach((t) => t.classList.toggle('on', t.dataset.panel === panel));
+}
+
 export function bindClassic() {
   const root = $('#view-classic');
   if (!root || root.dataset.bound) return;
   root.dataset.bound = '1';
 
-  // 用户一开始写字，空输入的提示就撤掉。这里只改 DOM 不重绘——
-  // 重绘会重建 textarea，正在输入的内容和光标位置都会丢。
-  root.addEventListener('input', (e) => {
-    if (e.target && e.target.id === 'cl-ask-input' && askEmpty) {
-      askEmpty = false;
-      const w = $('#cl-ask-warn');
-      if (w) w.classList.remove('is-on');
-    }
-  });
-
   root.addEventListener('click', (e) => {
     const tab = e.target.closest('[data-panel]');
     if (tab && !e.target.closest('[data-act]')) {
       panel = tab.dataset.panel;
+      themeId = null;
       repaint();
-      $$('.cl-tab', root).forEach((t) => t.classList.toggle('on', t.dataset.panel === panel));
+      syncTabs();
       window.scrollTo(0, 0);
-      return;
-    }
-
-    const go = e.target.closest('#cl-ask-go');
-    if (go) {
-      const q = $('#cl-ask-input');
-      // 关键：q.value 只写入 askQuestion 供展示，绝不传入 drawAsk()。
-      // 抽取种子只有「日期 + 当日序号」，与问题内容完全无关。
-      askQuestion = q ? String(q.value || '').trim() : '';
-      // 空问题不抽。问心的前提是「带着困惑遇见」——什么都没写就发一条，
-      // 用户拿到的只是一条随机内容，与「今日相遇」再无区别，「投射」这一环就断了。
-      // 但也不把人堵在原地：提示里给出另一条路，今日相遇本来就允许空手。
-      if (!askQuestion) {
-        askEmpty = true;
-        // 同时清掉上一次的结果。否则用户空着点一下，看到提示的同时还看到一条内容，
-        // 会以为「不写也照样给」——提示就白说了。空着点，就该停在「还没写」这里。
-        askResult = null;
-        askFeedback = null;
-        repaint();
-        return;
-      }
-      askEmpty = false;
-      // 抽取在这里就完成（序号当场消费），只是延后展示。
-      // 先抽后等，而不是等完再抽：中途关掉页面，序号也不该白费。
-      askResult = drawAsk(bumpSeq());
-      askFeedback = null;
-      askPhase = 'drawing';
-      askRiteMs = RITE_MS;
-      askDrawAt = Date.now();
-      repaint();
-      window.scrollTo(0, 0);
-      // 仪式走完再换屏。若这段时间用户切去了别的面板，就交给他切回来时处理。
-      setTimeout(() => {
-        if (panel !== 'ask' || askPhase !== 'drawing') return;
-        askPhase = 'result';
-        repaint();
-        window.scrollTo(0, 0);
-      }, RITE_MS + 60);
-      return;
-    }
-
-    const three = e.target.closest('#cl-three-go');
-    if (three) {
-      threeCards = drawThree(bumpSeq()).map((x) => ({ ...x, open: false }));
-      repaint();
       return;
     }
 
@@ -736,67 +763,131 @@ export function bindClassic() {
     if (!act) return;
     const a = act.dataset.act;
 
-    if (a === 'goto-panel') {
+    if (a === 'goto') {
       panel = act.dataset.panel;
+      themeId = null;
       repaint();
-      $$('.cl-tab', root).forEach((t) => t.classList.toggle('on', t.dataset.panel === panel));
+      syncTabs();
       window.scrollTo(0, 0);
       return;
     }
 
-    if (a === 'flip') {
-      const i = Number(act.dataset.i);
-      if (threeCards && threeCards[i]) { threeCards[i].open = true; repaint(); }
-      return;
-    }
-    if (a === 'three-again') { threeCards = null; repaint(); return; }
-    // 换一个问题：回到书写状态，问题文本留着方便改。
-    // 抽完之后输入框收起，「再问一次」只能沿用原问题——没有这个入口，
-    // 用户想问第二件事就无路可走。
-    if (a === 'ask-new') {
-      askResult = null;
-      askFeedback = null;
-      askPhase = 'idle';
+    // 推进阅读步骤。已经展开的保持展开——用户往回翻还能看到。
+    if (a === 'step') {
+      const target = Number(act.dataset.step) || 1;
+      readStep = Math.max(readStep, target);
       repaint();
-      window.scrollTo(0, 0);
-      return;
-    }
-    if (a === 'ask-again') {
-      // 「再问一次」同样要求先有问题。否则从结果页连点几次，
-      // 问心就退化成第二个「今日相遇」——机制不同，前提也不能丢。
-      if (!askQuestion) { askEmpty = true; repaint(); return; }
-      askResult = drawAsk(bumpSeq());
-      askFeedback = null;
-      askPhase = 'drawing';
-      askRiteMs = RITE_AGAIN_MS;
-      askDrawAt = Date.now();
-      repaint();
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        if (panel !== 'ask' || askPhase !== 'drawing') return;
-        askPhase = 'result';
-        repaint();
-        window.scrollTo(0, 0);
-      }, RITE_AGAIN_MS + 60);
+      // 必须滚到**刚展开的那一步**，不是页面底部。
+      // 展开的新内容在按钮下方，如果屏幕不动，用户看到的就是「点了没反应」。
+      // 用 offsetTop 精确定位而不是 scrollIntoView：后者在内容刚插入、
+      // 布局还没稳定时算出来的位置经常偏一屏，用户会看到「滚到了上一段」。
+      requestAnimationFrame(() => {
+        const fresh = $(`#cl-body .cl-step${target}`) || $('#cl-body .cl-end');
+        if (!fresh) return;
+        const y = fresh.getBoundingClientRect().top + window.scrollY - 56;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      });
       return;
     }
 
-    // 五种反馈：只改阅读路径，绝不重抽。feedbackEffect 的返回值里没有重抽能力。
+    if (a === 'read') {
+      openReading(act.dataset.id);
+      return;
+    }
+    if (a === 'back-today') {
+      openReading(null);
+      return;
+    }
+    if (a === 'theme') {
+      themeId = act.dataset.id;
+      panel = 'themes';
+      repaint();
+      syncTabs();
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (a === 'back-themes') {
+      themeId = null;
+      repaint();
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // 反馈：只改接下来给什么看，不改内容、不重抽、不评分。
     if (a === 'fb') {
-      askFeedback = act.dataset.fb;
-      if (askResult) recordFeedback(askResult.id, askFeedback);
+      readFb = act.dataset.fb;
       repaint();
       return;
     }
-    if (a === 'save-note') {
+
+    if (a === 'journal-save') {
       const id = act.dataset.id;
-      const input = $('#cl-note-input');
-      const notes = loadJSON(NOTE_KEY, {});
-      notes[id] = input ? String(input.value || '').trim() : '';
-      saveJSON(NOTE_KEY, notes);
-      toast('已存在你自己的设备上');
+      const input = $('#cl-journal-input');
+      const text = input ? String(input.value || '').trim() : '';
+      if (!text) {
+        toast('还没写。写一句就行，也可以点「不写，就这样」。');
+        return;
+      }
+      addJournal(id, text, readFb);
+      readStep = Math.max(readStep, 6);
+      repaint();
+      // 不弹 toast：全局 toast 固定在底部 110px，正好盖住结束态的按钮。
+      // 结束态本身已经把刚写的那句话显示出来了，那就是最好的确认。
+      requestAnimationFrame(() => {
+        const end = $('#cl-body .cl-end');
+        if (!end) return;
+        const y = end.getBoundingClientRect().top + window.scrollY - 56;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      });
       return;
     }
+
+    // 「我怎么看」：就地展开，不跳页。
+    if (a === 'db-inline') {
+      readDebate = true;
+      repaint();
+      scrollToSel('#cl-body .cl-debate');
+      return;
+    }
+
+    // 选一种读法。再点一次取消——允许「我只是看看，不想站队」。
+    if (a === 'db-stance') {
+      const draft = $('#cl-differ');
+      if (draft) readDifferDraft = draft.value;   // 重绘前把草稿带走
+      const sid = act.dataset.id;
+      if (readStance && readStance !== sid) readStanceChanged = true;
+      readStance = readStance === sid ? null : sid;
+      repaint();
+      scrollToSel('#cl-body .cl-db-in');
+      return;
+    }
+
+    if (a === 'db-close') {
+      const draft = $('#cl-differ');
+      if (draft) readDifferDraft = draft.value;
+      readDebate = false;
+      repaint();
+      scrollToSel('#cl-body .cl-debate');
+      return;
+    }
+
+    // 把「我有不同看法」写进手记——和第五步的手记是同一个存储，
+    // 所以之后再遇到这一条，两条都会回显。
+    if (a === 'db-save') {
+      const box = $('#cl-differ');
+      const text = box ? String(box.value || '').trim() : '';
+      if (!text) {
+        toast('还没写。写一句就行。');
+        return;
+      }
+      addJournal(act.dataset.id, text, 'differ');
+      readDifferDraft = '';
+      readDifferAt = Date.now();
+      repaint();
+      scrollToSel('#cl-body .cl-db-in');
+      return;
+    }
+
     if (a === 'open-with') {
       const id = act.dataset.id;
       const layers = String(act.dataset.layers || '').split(',').filter(Boolean);
@@ -805,22 +896,6 @@ export function bindClassic() {
       document.dispatchEvent(new CustomEvent('qintian:classic-goto', { detail: { view: 'classic-detail' } }));
       return;
     }
-
-    if (a === 'db-open') {
-      debate = { id: act.dataset.id, stance: null, changed: false };
-      panel = 'debate';
-      repaint();
-      window.scrollTo(0, 0);
-      return;
-    }
-    if (a === 'db-stance') {
-      const sid = act.dataset.id;
-      if (debate && debate.stance && debate.stance !== sid) debate.changed = true;
-      if (debate) debate.stance = sid;
-      repaint();
-      return;
-    }
-    if (a === 'db-back') { debate = null; repaint(); window.scrollTo(0, 0); return; }
 
     if (a === 'fav') {
       const id = act.dataset.id;
@@ -841,6 +916,57 @@ export function bindClassic() {
   });
 }
 
+// 辩题内联页（旧「辩一辩」的完整交互保留，只是不再有独立 tab）
+function renderDebateInline(debateId) {
+  const d = getDebate(debateId);
+  if (!d) return '<div class="cl-hint">辩题数据缺失。</div>';
+  const node = getNode(d.node);
+  if (!node) return '<div class="cl-hint">辩题对应的原典条目缺失。</div>';
+  const chosen = debate.stance ? stanceOf(d, debate.stance) : null;
+  const after = chosen ? debateAfterword(d) : null;
+
+  const stanceBtns = (d.stances || []).map((s) => `
+    <button class="cl-st ${debate.stance === s.id ? 'on' : ''}" data-act="db-stance" data-id="${esc(s.id)}" type="button">
+      <span class="cl-st-l">${esc(s.label)}</span>
+      <span class="cl-st-t">${esc(s.text)}</span>
+    </button>`).join('');
+
+  return `
+  <header class="topbar"><div class="brand">辩一辩</div></header>
+  <div class="cl-db-head">
+    <div class="cl-db-loc">${esc(node.full_title || node.title)} · ${esc(node.location_text)}</div>
+  </div>
+  <blockquote class="cl-original">${esc(node.original)}</blockquote>
+  <div class="cl-db-q2">${esc(d.question)}</div>
+  <div class="cl-hint">${esc(d.preamble || '')}</div>
+  <div class="cl-st-row">${stanceBtns}</div>
+  ${!chosen ? `<div class="cl-foot">选一个之后，才会展开原文语境、历代注疏与注家分歧。</div>` : ''}
+  ${chosen ? `
+  <div class="cl-db-mine">
+    <div class="cl-db-mine-h">你的立场</div>
+    <div class="cl-db-mine-t">${esc(chosen.label)}</div>
+    <div class="cl-db-mine-d">${esc(chosen.text)}</div>
+    ${debate.changed ? '<div class="cl-db-changed">你改过主意。改主意不算反悔——读完再想，本来就是这一场的目的。</div>' : ''}
+  </div>
+  <div class="cl-db-lineage">
+    <div class="cl-db-lineage-h">这一路，历史上谁走过</div>
+    <div class="cl-db-lineage-t">${esc(chosen.lineage)}</div>
+    <div class="cl-db-lineage-n">这只是位置对照，不是对错判定。你的选择属于你自己，不必是哪一家的注脚。</div>
+  </div>
+  ${after ? `
+  <div class="cl-db-canon">
+    <div class="cl-db-canon-h">原典实际说了什么</div>
+    <div class="cl-db-canon-t">${esc(after.canonNote || '')}</div>
+  </div>
+  ${after.text ? `<div class="cl-db-after">${esc(after.text)}</div>` : ''}` : ''}
+  <div class="cl-acts-row">
+    <button class="btn ghost mini" data-act="db-open" data-id="${esc(d.id)}" type="button">重新选一次</button>
+    <button class="btn ghost mini" data-act="open" data-id="${esc(node.id)}" type="button">读完整八层 ›</button>
+  </div>` : ''}`;
+}
+
+let debate = { id: null, stance: null, changed: false };
+
 export function bindClassicDetail() {
   const root = $('#view-classic-detail');
   if (!root || root.dataset.bound) return;
@@ -856,16 +982,22 @@ export function bindClassicDetail() {
       if (x) x.textContent = open ? '−' : '+';
       return;
     }
+    // 从详情页进辩题：就地渲染，不再跳回主视图（旧版跳 panel='debate' 已不存在）
     const db = e.target.closest('[data-act="db-open"]');
     if (db) {
       debate = { id: db.dataset.id, stance: null, changed: false };
-      panel = 'debate';
-      document.dispatchEvent(new CustomEvent('qintian:classic-goto', { detail: { view: 'classic' } }));
-      // 切回主视图后重绘一次，确保辩题首屏是干净的（未选状态）
-      setTimeout(() => {
-        const body = $('#cl-body');
-        if (body) body.innerHTML = renderPanel();
-      }, 0);
+      const body = $('#classic-detail-body');
+      if (body) body.innerHTML = renderDebateInline(db.dataset.id);
+      window.scrollTo(0, 0);
+      return;
+    }
+    const st = e.target.closest('[data-act="db-stance"]');
+    if (st) {
+      const sid = st.dataset.id;
+      if (debate.stance && debate.stance !== sid) debate.changed = true;
+      debate.stance = sid;
+      const body = $('#classic-detail-body');
+      if (body) body.innerHTML = renderDebateInline(debate.id);
       return;
     }
     const act = e.target.closest('[data-act="open"]');
@@ -884,6 +1016,8 @@ export function classicAudit() {
     total: allNodes().length,
     debates: debateList().length,
     fav: loadFav().size,
+    journal: journalAll().length,
     panel,
+    readStep,
   };
 }

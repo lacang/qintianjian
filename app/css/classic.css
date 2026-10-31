@@ -31,6 +31,9 @@
 }
 
 .cl-body { padding: 0 16px; }
+/* 底部要避开 tabbar：主题列表和条目列表都会长过一屏，
+   不留这段空白时最后一项永远被遮住一半。 */
+#view-classic .cl-body { padding-bottom: 56px; }
 .cl-hint {
   font-size: 12.5px; color: var(--ink-faint); letter-spacing: .5px;
   margin: 2px 0 12px; line-height: 1.7;
@@ -173,73 +176,6 @@
 .cl-rules strong { color: var(--cinnabar); font-weight: 600; }
 .cl-rules-p { font-size: 12.5px; line-height: 1.95; color: var(--ink-faint); margin: 0; }
 
-/* ---- 问心 · 抽取仪式 ----
-   「抽」和「读」是两个状态。点下去到看见箴言之间留 2.4 秒静默：
-   不是为了好看，是让手停下来。这一段没有，结果就是「哗啦一变」。
-   环不旋转——转圈是「等加载」，呼吸是「静下来」，语义相反。 */
-/* 时长由 JS 传入（--rite）：首问 2.4s，同题再抽 1.5s。
-   已经知道接下来会发生什么，再等满 2.4 秒就从「静」变成「拖」。 */
-.cl-rite {
-  /* 填满「顶栏 + 分页」到 tabbar 之间的可视高度。
-     用 58vh 时内容居中在页面上三分之一，下面一大片空——仪式看着像飘着。 */
-  min-height: calc(100vh - 190px);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 30px;
-  animation: riteOut var(--rite, 2400ms) ease-in-out forwards;
-}
-.cl-rite-orb { position: relative; width: 88px; height: 88px; }
-.cl-rite-halo {
-  position: absolute; left: -40px; top: -40px; width: 168px; height: 168px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,163,92,.22), rgba(200,163,92,0) 66%);
-  animation: riteBreathe var(--rite, 2400ms) ease-in-out;
-}
-/* 三圈用负延迟错相。正延迟会让三圈同时起步再各自落后，看起来像三段动画；
-   负延迟是从动画中途开始，第一帧就已经落在各自的相位上——是涟漪，不是重播。 */
-.cl-rite-ring {
-  position: absolute; border-radius: 50%;
-  border: 1px solid rgba(200,163,92,.36);
-  animation: riteBreathe var(--rite, 2400ms) ease-in-out;
-}
-.cl-rite-ring.is-1 { inset: 0; }
-.cl-rite-ring.is-2 { inset: 14px; animation-delay: calc(var(--rite, 2400ms) * -.14); border-color: rgba(200,163,92,.30); }
-.cl-rite-ring.is-3 { inset: 28px; animation-delay: calc(var(--rite, 2400ms) * -.28); border-color: rgba(200,163,92,.24); }
-/* 芯：整段里最后亮起的一点，也是唯一一次「落定」。
-   只有三圈在呼吸，看不出抽完了；有了这一颗，才知道签已经落地。 */
-.cl-rite-core {
-  position: absolute; left: 50%; top: 50%;
-  width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%;
-  background: rgba(216,180,112,.92);
-  box-shadow: 0 0 14px rgba(200,163,92,.55);
-  animation: riteCore var(--rite, 2400ms) ease-out;
-}
-.cl-rite-word {
-  font-size: 11.5px; letter-spacing: .42em; text-indent: .42em;
-  color: rgba(200,163,92,.62);
-  animation: riteWord var(--rite, 2400ms) ease-in-out;
-}
-@keyframes riteBreathe {
-  0%   { opacity: .10; transform: scale(.90); }
-  55%  { opacity: .80; transform: scale(1.05); }
-  100% { opacity: .50; transform: scale(1); }
-}
-@keyframes riteCore {
-  0%, 46%  { opacity: 0; transform: scale(.2); }
-  72%, 84% { opacity: 1; transform: scale(1); }
-  100%     { opacity: 0; transform: scale(.25); }
-}
-@keyframes riteWord {
-  0%, 20%  { opacity: 0; transform: translateY(8px); }
-  46%, 88% { opacity: 1; transform: none; }
-  100%     { opacity: 0; transform: translateY(-3px); }
-}
-/* 末尾是「收」，不是「淡」。
-   原来 78% 就开始往外放大淡出，2400ms 里最后 500ms 是一整屏空白——
-   观众看到的是「黑了一下」，不是「抽完了」。
-   改成向内收：环与芯一起缩进中心，像签落回筒里，然后换屏。 */
-@keyframes riteOut {
-  0%, 86% { opacity: 1; transform: scale(1); }
-  100%    { opacity: 0; transform: scale(.88); }
 }
 
 /* ---- 问心 · 箴言（全场唯一主角） ----
@@ -628,4 +564,344 @@
   font-size: 12px; letter-spacing: 1px; color: var(--ink-dim);
   border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px;
   background: rgba(255,255,255,.02);
+}
+
+/* ==========================================================================
+   v126 · 阅读改造
+   分层用色沿用文件头的知识信用规则：
+     原典 = 古金 / 注疏 = 玉色 / 分歧 = 中性灰 / 现代编辑解读 = 冷蓝
+   新增的一律遵守这条，不引入第二种编码方式。
+   ========================================================================== */
+
+/* ---- 日期条与返回 ---- */
+.cl-day {
+  font-size: 12px; letter-spacing: 1.6px; color: var(--ink-faint);
+  padding: 4px 0 18px;
+}
+.cl-back {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: none; border: 0; color: var(--ink-faint);
+  font-size: 12px; letter-spacing: 1.2px; padding: 0 0 14px;
+}
+
+/* ---- 阅读主体 ---- */
+.cl-read { animation: readIn .5s ease-out both; }
+@keyframes readIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 原文是这一页唯一的主角：最大字号、衬线、古金竖线。
+   其余元素一律比它小一到两级，靠字号立层级而不是靠边框。 */
+.cl-read-o {
+  margin: 0 0 12px; padding: 2px 0 2px 14px;
+  border-left: 2px solid rgba(200,163,92,.55);
+  font-family: "Noto Serif SC", serif;
+  font-size: 21px; line-height: 1.95; letter-spacing: .04em;
+  color: var(--ink);
+}
+.cl-read-src {
+  font-size: 11.5px; letter-spacing: 1.1px; color: var(--ink-faint);
+  padding-left: 16px; margin-bottom: 30px;
+}
+
+/* ---- 内容段落 ---- */
+.cl-block {
+  margin-bottom: 34px; animation: readIn .45s ease-out both;
+  /* 推进后滚到这一步，要留出顶栏的高度，否则标题贴在最上面被压住 */
+  scroll-margin-top: 64px;
+}
+.cl-block-h {
+  font-size: 11.5px; letter-spacing: 2.4px; color: var(--gold);
+  margin-bottom: 12px;
+}
+.cl-modern {
+  margin: 0; font-size: 15.5px; line-height: 2.05; letter-spacing: .02em;
+  color: var(--ink); font-family: "Noto Serif SC", serif;
+}
+/* 来源标注不是装饰，是知识信用的一部分：每一段话都要能说清是谁说的 */
+.cl-src-tag {
+  margin-top: 12px; font-size: 11px; letter-spacing: .8px;
+  color: rgba(127,169,139,.75);
+  border-left: 2px solid rgba(127,169,139,.35); padding-left: 8px;
+}
+.cl-think .cl-modern { color: var(--ink-dim); }
+
+/* ---- 推进动作：一个，居中，不像表单提交 ---- */
+.cl-read-acts {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin: 6px 0 34px;
+}
+.cl-more {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: linear-gradient(160deg, rgba(200,163,92,.16), rgba(200,163,92,.05));
+  border: 1px solid rgba(200,163,92,.42); color: var(--ink);
+  font-size: 13.5px; letter-spacing: 1.8px; padding: 12px 22px;
+  border-radius: 999px; transition: border-color .2s, transform .12s;
+}
+.cl-more:active { transform: scale(.97); }
+
+/* ---- 旧记录回显：只摆出用户自己写过的话，不评价 ---- */
+.cl-echo {
+  border: 1px solid rgba(127,169,139,.22); border-radius: 14px;
+  background: rgba(127,169,139,.05);
+  padding: 14px 16px; margin: 22px 0 30px;
+}
+.cl-echo-h { font-size: 11.5px; letter-spacing: 1.6px; color: var(--jade); margin-bottom: 6px; }
+.cl-echo-w { font-size: 11.5px; color: var(--ink-faint); margin-bottom: 8px; }
+.cl-echo-q {
+  font-size: 14px; line-height: 1.9; color: var(--ink-dim);
+  font-family: "Noto Serif SC", serif;
+}
+.cl-echo-n { margin-top: 8px; font-size: 11px; color: var(--ink-faint); }
+
+/* ---- 语境 ---- */
+.cl-ctx { margin: 0; }
+.cl-ctx dt {
+  font-size: 11px; letter-spacing: 1.4px; color: var(--ink-faint); margin-bottom: 3px;
+}
+.cl-ctx dd {
+  margin: 0 0 14px; font-size: 14px; line-height: 1.9; color: var(--ink-dim);
+}
+
+/* ---- 注家：玉色，与原文的古金分开 ---- */
+.cl-cm {
+  border-left: 2px solid rgba(127,169,139,.45);
+  padding: 2px 0 2px 12px; margin-bottom: 16px;
+}
+.cl-cm-h {
+  font-size: 12px; letter-spacing: 1.2px; color: var(--jade); margin-bottom: 6px;
+}
+.cl-cm-h span { color: var(--ink-faint); margin-left: 8px; letter-spacing: .5px; }
+.cl-cm-t { font-size: 14px; line-height: 1.95; color: var(--ink-dim); }
+
+/* ---- 分歧：中性灰，并列，不合成 ---- */
+.cl-disp {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 12px;
+}
+.cl-disp-t { font-size: 12.5px; letter-spacing: 1px; color: var(--ink-dim); margin-bottom: 8px; }
+.cl-disp ul { margin: 0; padding-left: 18px; }
+.cl-disp li { font-size: 13.5px; line-height: 1.9; color: var(--ink-faint); margin-bottom: 5px; }
+
+.cl-db-q {
+  font-size: 16px; line-height: 1.85; color: var(--ink);
+  font-family: "Noto Serif SC", serif; margin-bottom: 8px;
+}
+
+/* ---- 反馈：不强迫表态 ---- */
+/* 五个选项用两列网格，不用 flex-wrap：
+   文案长短不一，flex 换行会排出「1-1-2-1」这种参差的行，看着像没排版。
+   两列固定宽度，五个按钮落成整齐的三行（最后一格留空）。 */
+.cl-fb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cl-fb {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: transparent; border: 1px solid var(--line);
+  color: var(--ink-dim); font-size: 12.5px; letter-spacing: .12em;
+  padding: 12px 8px; border-radius: 999px; text-align: center;
+  transition: color .18s, border-color .18s, background .18s;
+}
+.cl-fb.on {
+  color: var(--ink); border-color: rgba(192,69,47,.6);
+  background: rgba(192,69,47,.14);
+}
+.cl-fb-echo {
+  margin-top: 16px; padding: 14px 16px;
+  border-left: 2px solid rgba(192,69,47,.5);
+  background: rgba(192,69,47,.05); border-radius: 0 12px 12px 0;
+}
+.cl-fb-echo-t { font-size: 13.5px; line-height: 1.9; color: var(--ink-dim); }
+.cl-fb-echo .btn { margin-top: 10px; }
+
+/* ---- 手记输入：一张纸 ---- */
+.cl-journal {
+  width: 100%; box-sizing: border-box; resize: vertical;
+  background: transparent; color: var(--ink);
+  font-family: "Noto Serif SC", serif;
+  border: 0; border-bottom: 1px solid rgba(200,163,92,.22);
+  border-radius: 0; padding: 2px 2px 14px;
+  /* iOS Safari 对 <16px 的输入框会在聚焦时放大整页 */
+  font-size: 17px; line-height: 1.95; letter-spacing: .02em;
+  min-height: 110px; margin-bottom: 18px;
+}
+.cl-journal::placeholder { color: rgba(233,228,216,.32); font-size: 16px; }
+/* 内联辩题里的「我有不同看法」不是主书写区：一句话的事，
+   110px 的纸面会让它看起来像在要一篇文章。 */
+.cl-journal.is-short { min-height: 84px; }
+.cl-journal:focus { outline: none; border-bottom-color: rgba(200,163,92,.6); }
+
+.cl-jhist { margin-top: 26px; }
+.cl-jhist-h {
+  font-size: 11.5px; letter-spacing: 1.6px; color: var(--ink-faint); margin-bottom: 12px;
+}
+.cl-jhist-i {
+  display: flex; gap: 12px; padding: 10px 0;
+  border-bottom: 1px solid rgba(42,51,58,.6);
+}
+.cl-jhist-d {
+  flex: 0 0 52px; font-size: 11px; color: var(--ink-faint); letter-spacing: .5px;
+  padding-top: 2px;
+}
+.cl-jhist-t {
+  flex: 1; font-size: 13.5px; line-height: 1.85; color: var(--ink-dim);
+  font-family: "Noto Serif SC", serif;
+}
+
+/* ---- 结束 ---- */
+.cl-end { text-align: center; padding: 10px 0 20px; }
+.cl-end-h {
+  font-size: 15px; letter-spacing: 2px; color: var(--gold);
+  font-family: "Noto Serif SC", serif; margin-bottom: 10px;
+}
+.cl-end-note {
+  margin: 14px auto 0; max-width: 300px;
+  font-size: 14px; line-height: 1.95; color: var(--ink-dim);
+  font-family: "Noto Serif SC", serif;
+  border-left: 2px solid rgba(200,163,92,.35); padding-left: 12px; text-align: left;
+}
+.cl-end-acts {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  margin: 22px 0 26px;
+}
+.cl-end-themes {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  padding-top: 20px; border-top: 1px solid rgba(42,51,58,.7);
+}
+.cl-end-t {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: none; border: 0; color: var(--ink-faint);
+  font-size: 12px; letter-spacing: 1.2px; padding: 6px 4px;
+}
+
+/* ---- 困惑：八个主题 ---- */
+.cl-themes-intro {
+  font-size: 13px; line-height: 1.95; color: var(--ink-dim);
+  margin-bottom: 22px; letter-spacing: .02em;
+}
+.cl-themes { display: flex; flex-direction: column; gap: 1px; }
+.cl-theme {
+  appearance: none; font-family: inherit; cursor: pointer; text-align: left;
+  background: transparent; border: 0; border-bottom: 1px solid rgba(42,51,58,.7);
+  padding: 18px 4px; display: flex; flex-direction: column; gap: 6px;
+  transition: background .18s;
+}
+.cl-theme:active { background: rgba(200,163,92,.06); }
+.cl-theme-n {
+  font-size: 17px; letter-spacing: 1.6px; color: var(--ink);
+  font-family: "Noto Serif SC", serif;
+}
+.cl-theme-h { font-size: 12px; letter-spacing: .8px; color: var(--ink-faint); }
+
+.cl-tp-h {
+  font-size: 21px; letter-spacing: 1.8px; color: var(--ink);
+  font-family: "Noto Serif SC", serif; margin-bottom: 12px;
+}
+.cl-tp-note {
+  font-size: 11.5px; line-height: 1.85; color: var(--ink-faint);
+  border-left: 2px solid var(--line); padding-left: 10px;
+  margin-bottom: 20px;
+}
+.cl-tp-list { display: flex; flex-direction: column; gap: 1px; }
+.cl-tp-item {
+  appearance: none; font-family: inherit; cursor: pointer; text-align: left;
+  background: transparent; border: 0; border-bottom: 1px solid rgba(42,51,58,.7);
+  padding: 16px 4px; display: flex; flex-direction: column; gap: 5px;
+}
+.cl-tp-item-t {
+  font-size: 15.5px; letter-spacing: 1.2px; color: var(--ink);
+  font-family: "Noto Serif SC", serif;
+}
+.cl-tp-item-s { font-size: 11px; color: var(--ink-faint); letter-spacing: .8px; }
+/* 主题详情里这段是「内容预览」，不是解释：压到比推荐理由更淡一档，
+   否则两段灰字一样重，读者分不清哪句是原典的、哪句是编辑挑的理由。 */
+.cl-tp-item-p { font-size: 11.5px; line-height: 1.75; color: var(--ink-faint); margin-top: 2px; }
+
+/* ---- 手记列表 ---- */
+.cl-jlist { display: flex; flex-direction: column; }
+.cl-jrow { padding: 18px 0; border-bottom: 1px solid rgba(42,51,58,.7); }
+.cl-jrow-d { font-size: 11px; color: var(--ink-faint); letter-spacing: 1px; margin-bottom: 7px; }
+.cl-jrow-t {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: none; border: 0; padding: 0; margin-bottom: 8px;
+  font-size: 15px; letter-spacing: 1.2px; color: var(--gold);
+  font-family: "Noto Serif SC", serif; text-align: left;
+}
+.cl-jrow-x {
+  font-size: 14px; line-height: 1.9; color: var(--ink-dim);
+  font-family: "Noto Serif SC", serif;
+}
+
+.cl-empty {
+  font-size: 13px; line-height: 2.1; color: var(--ink-faint);
+  padding: 40px 0; text-align: center;
+}
+
+/* ---- v126 · 「我怎么看」内联展开 ----
+   旧的辩题是独立页面：点一下，整屏换掉，用户回不来。
+   现在四段都长在这条内容里，不跳页、不换屏。
+   四种读法并排陈列，不用「正方/反方」——那是辩论赛，这里不是。 */
+.cl-db-in { margin-top: 18px; animation: readIn .4s ease-out both; }
+.cl-db-sec { margin-bottom: 26px; }
+.cl-db-sec:last-child { margin-bottom: 0; }
+.cl-db-sec-h {
+  font-size: 11.5px; letter-spacing: 2.2px; color: var(--gold);
+  margin-bottom: 12px;
+}
+.cl-db-sec-t {
+  font-size: 14px; line-height: 1.95; color: var(--ink);
+  font-family: "Noto Serif SC", serif;
+}
+/* 选中后的「你更接近X」不要整框底色。
+   旧样式是「金框 + 淡金底 + 圆角」，那是结论卡的写法；
+   这里只是位置对照，用左侧朱砂细线就够了。
+   整框会让人以为产品在说「你选对了」。 */
+.cl-db-in .cl-db-mine {
+  margin: 0 0 26px; border: 0; background: transparent; border-radius: 0;
+  border-left: 2px solid rgba(192,69,47,.5);
+  padding: 0 0 0 14px;
+}
+/* afterword 是「换到另一边会看到什么」，不是判决书——
+   同样去掉框，只留一段正常正文。 */
+/* 「如果你站在另一边」：这段数据本来就写的是另一种读法会看到什么。
+   不加这个小标题，选了 A 的人读到「如果你选 B」，会以为产品在说他选错了。 */
+.cl-db-alt-h {
+  margin-top: 16px; font-size: 11px; letter-spacing: 1.8px;
+  color: var(--ink-faint); opacity: .85;
+}
+.cl-db-in .cl-db-after {
+  margin: 14px 0 0; padding: 0; border: 0; background: transparent;
+  border-radius: 0; font-size: 13.5px; line-height: 1.95; color: var(--ink-dim);
+}
+.cl-db-mine .cl-db-sec-h { color: var(--cinnabar); }
+.cl-db-after {
+  margin-top: 12px; font-size: 13px; line-height: 1.9; color: var(--ink-dim);
+}
+
+/* ---- v126 · 主题阅读路径与推荐标签 ---- */
+.cl-tp-path {
+  font-size: 12px; line-height: 1.9; color: var(--gold); opacity: .82;
+  letter-spacing: .4px; margin: -6px 0 18px;
+  border-left: 2px solid rgba(200,163,92,.3); padding-left: 10px;
+}
+.cl-tp-item { position: relative; padding-left: 34px; }
+.cl-tp-item-n {
+  position: absolute; left: 4px; top: 18px;
+  font-size: 12px; color: rgba(200,163,92,.55);
+  font-variant-numeric: tabular-nums; letter-spacing: .5px;
+}
+/* 推荐理由是编辑判断，字号压到和正文解释同一档，
+   但用左侧短竖线区分——它不是原典，也不是注家。 */
+.cl-tp-item-w {
+  font-size: 12.5px; line-height: 1.85; color: var(--ink-dim);
+  margin-top: 6px; padding-left: 10px;
+  border-left: 2px solid rgba(200,163,92,.22);
+}
+.cl-tp-item-b {
+  display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+}
+.cl-tp-item-b i {
+  font-style: normal; font-size: 10.5px; letter-spacing: 1.2px;
+  color: var(--ink-faint);
+  border: 1px solid rgba(42,51,58,.9); border-radius: 999px;
+  padding: 2px 8px;
 }

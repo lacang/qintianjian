@@ -192,6 +192,15 @@ try {
         const tc = await tabClick('classic');
         if (tc.value !== 'ok') return 'no-classic-tab';
         await sleep(250);
+        // v126 起观心是「逐步展开」的阅读页，完整资料入口在第三步末尾。
+        // 门禁验的是「详情页进得去且内容完整」，所以先按用户路径展开到第三步。
+        for (const step of ['2', '3']) {
+          await clickRetry(
+            `(() => { const b = document.querySelector('#classic-body [data-act="step"][data-step="${step}"]'); if (!b) return 'no-step'; b.click(); return 'ok'; })()`,
+            'no-step',
+          );
+          await sleep(260);
+        }
         return clickRetry(
           `(() => { const b = document.querySelector('#classic-body [data-act="open"]'); if (!b) return 'no-node'; b.click(); return 'ok'; })()`,
           'no-node',

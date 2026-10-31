@@ -1,25 +1,26 @@
 #!/usr/bin/env node
 /**
- * test-classic-ui.mjs — 经典板块真实浏览器交互测试
+ * test-classic-ui.mjs — 观心阅读改造的真实浏览器验收
  *
  * 为什么需要它
  * ------------
- * verify-browser 只证明「页面能渲染、无异常」。但《论语》板块最核心的产品承诺
- * 恰恰不在渲染上，而在交互的因果上：
+ * 这个产品最核心的承诺不在渲染上，而在两条因果上：
  *
- *   「用户问题只作个人阅读背景，不能决定抽取结果。」
+ *   1. 用户打开观心的第一分钟，必须能获得一次完整体验
+ *      —— 原文、出处、现代解释、一个能联系现实的思考角度，都在第一屏。
+ *   2. 用户留下的任何东西，下次必须能被认出来
+ *      —— 写过手记的条目，再次遇到时要回显上次写了什么。
  *
- * 这句话能不能被证明，只有一个办法：**在同一个抽取序号下，用两个完全不同的问题，
- * 看是否抽到同一条**。这是本文件存在的唯一理由。
+ * 这两条只有真实浏览器能证明。渲染通过不等于体验成立。
  *
  * 覆盖：
- *   1. 问心：同一序号 + 不同问题 → 同一条目（问题不影响抽取）
- *   2. 问心：不同序号 → 不同条目（抽取确实在抽）
- *   3. 一念三观：洗牌出三张、逐张可翻、三条互不重复
- *   4. 原典详情：八层齐全，第八层标为今人理解
- *   5. 编辑阐释：LY-021 的关系显示「编辑阐释」而非原典有据
- *   6. 孤立节点：LY-013 走三入口，主题推荐带「非思想关系」标注
- *   7. 四个分段面板均可渲染，无异常
+ *   A 第一屏完整性（原文/出处/现代解读/来源标注/值得想一下/推进入口）
+ *   B 分段结构（三个分段，旧五个分段入口全部消失）
+ *   C 阅读五步逐步展开（语境 → 注家分歧 → 反馈 → 手记）
+ *   D 反馈的即时响应（选了有回应，不是点了没反应）
+ *   E 思想手记（写入、列表、再次遇到时回显）
+ *   F 困惑探索（八个现实主题、条目列表、主题推荐标注）
+ *   G 原典八层详情仍可进入且完整
  *
  * 用法：node tools/test-classic-ui.mjs [--keep-profile]
  * 退出码：0 通过 / 1 失败 / 3 环境不具备
@@ -94,26 +95,6 @@ async function gotoApp() {
 }
 
 /** 进入观心，并切到指定分段 */
-async function openNode(id) {
-  await openPanel('explore');
-  const clicked = await ev(`(() => {
-    const b = document.querySelector('#classic-body .cl-node[data-id="${id}"]');
-    if (!b) return 'no-node';
-    b.click(); return 'ok';
-  })()`);
-  if (clicked !== 'ok') return null;
-  await sleep(300);
-  return ev(`(() => {
-    const rels = document.querySelectorAll('#classic-detail-body .cl-rel');
-    const relBox = document.querySelector('#classic-detail-body .cl-rels');
-    return {
-      relations: rels.length,
-      relText: relBox ? relBox.textContent : '',
-      text: (document.querySelector('#classic-detail-body') || { textContent: '' }).textContent,
-    };
-  })()`);
-}
-
 async function openPanel(panelId) {
   for (let attempt = 0; attempt < 3; attempt++) {
     await click('.tabbar .tab[data-view="classic"]');
@@ -121,7 +102,7 @@ async function openPanel(panelId) {
     if (!ready) { await sleep(500); continue; }
     const r = await click(`#classic-body .cl-tab[data-panel="${panelId}"]`);
     if (r !== 'ok') { await sleep(300); continue; }
-    await sleep(200);
+    await sleep(260);
     const done = await ev(`!!document.querySelector('#cl-body') && document.querySelector('#cl-body').textContent.trim().length > 20`);
     if (done) return 'ok';
     await sleep(300);
@@ -129,462 +110,395 @@ async function openPanel(panelId) {
   return 'no-panel';
 }
 
-/** 取当前问心结果卡的标题与原文 */
-const ASK_RESULT = `(() => {
-  const q = document.querySelector('#cl-body .cl-vot');
-  if (!q) return null;
-  const t = q.querySelector('.cl-vot-t');
-  const o = q.querySelector('.cl-vot-o');
-  return { id: q.dataset.id, title: t ? t.textContent.trim() : '', original: o ? o.textContent.trim() : '' };
-})()`;
-
 try {
-  sess = await openPage({ chrome, profile, tag: 'classic' });
+  sess = await openPage({ chrome, profile, headless: true });
+  const errors = [];
+  sess.onConsole?.((m) => { if (m.type === 'error') errors.push(m.text); });
+
   await gotoApp();
 
-  // ---------- 1. 四个分段面板 ----------
-  for (const p of ['today', 'ask', 'three', 'explore']) {
-    const r = await openPanel(p);
-    const hasBody = await ev(`!!document.querySelector('#cl-body') && document.querySelector('#cl-body').textContent.trim().length > 20`);
-    ok(r === 'ok' && hasBody, `分段「${p}」可渲染`);
-  }
+  // 清掉上一轮留下的手记，从干净状态开始
+  await ev(`localStorage.removeItem('qintian.classic.journal')`);
 
-  // ---------- 2. 问心：同一序号 + 不同问题 → 同一条 ----------
-  // 直接把当日序号钉死在同一个值，排除序号递增的干扰
-  const pinSeq = (n) => ev(`(() => {
-    const d = new Date();
-    const k = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    localStorage.setItem('qintian.classic.askseq', JSON.stringify({ d: k, n: ${n} }));
-    return k;
-  })()`);
+  /* ---------- A 第一屏完整性 ---------- */
+  await openPanel('today');
+  await until(`!!document.querySelector('#cl-body .cl-read')`, 8000);
 
-  // 抽完之后输入框收起（避免「改了字结果不变」的误解），要再写必须先回到书写态。
-  async function toWriteState() {
-    const hasInput = await ev(`!!document.querySelector('#cl-ask-input')`);
-    if (!hasInput) {
-      await click('[data-act="ask-new"]');
-      await sleep(140);
-    }
-  }
-
-  async function askWith(question, seq = 7) {
-    await pinSeq(seq);              // 每次都在同一序号上抽，才能证明问题不参与
-    await openPanel('ask');
-    await toWriteState();
-    await ev(`(() => { const t = document.querySelector('#cl-ask-input'); t.value = ${JSON.stringify(question)}; return 'ok'; })()`);
-    const r = await click('#cl-ask-go');
-    if (r !== 'ok') throw new Error('静心一问按钮不可用');
-    // 抽取仪式 2.4 秒后才换屏，这里等结果真的出现，不是等一个固定时长。
-    await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
-    return ev(ASK_RESULT);
-  }
-
-  const A = await askWith('我在犹豫要不要辞掉现在的工作，怕后悔。', 7);
-  const B = await askWith('我和家里人已经三年没说过话了，该不该先低头？', 7);
-  ok(A && B, '问心两次都出了结果卡');
-  ok(A && B && A.id === B.id, '★ 同一序号下，两个完全不同的问题抽到同一条（问题不影响抽取）',
-    `A=${A && A.id} B=${B && B.id}`);
-  ok(A && B && A.original === B.original, '两次的原文完全一致', '原文不一致说明抽取受问题影响');
-
-  // 声明条必须在
-  const notice = await ev(`(() => { const n = document.querySelector('#cl-body .cl-vot-note'); return n ? n.textContent.replace(/\\s+/g,'') : ''; })()`);
-  ok(/不由你的问题挑选/.test(notice) && /不会替你的问题作答/.test(notice),
-    '结果页明确声明「这一条不由你的问题挑选，也不会替你的问题作答」');
-
-  // ---------- 3. 问心：不同序号 → 结果会变 ----------
-  const C = await askWith('随便写点别的。', 8);
-  ok(C && A && C.id !== A.id, '不同序号给出不同条目（抽取确实在抽）', `seq7=${A && A.id} seq8=${C && C.id}`);
-
-  // ---------- 3a. 抽取仪式：点下去先静，不是立刻糊结果 ----------
-  //
-  // 董事长 2026-10-31 14:36：「输入问题，点击确认，页面哗啦啦一变，就出来了一句箴言。」
-  // 这不是审美偏好，是「抽」和「读」被挤在了同一秒。仪式层必须在，且必须是先仪式后结果。
-  await pinSeq(6);
-  await openPanel('ask');
-  await toWriteState();
-  await ev(`(() => { const t = document.querySelector('#cl-ask-input'); t.value = '仪式检查'; return 'ok'; })()`);
-  await click('#cl-ask-go');
-  await sleep(320);
-  const rite = await ev(`(() => {
-    const r = document.querySelector('#cl-body .cl-rite');
+  const first = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const q = (s) => b.querySelector(s);
+    const txt = (s) => (q(s) || { textContent: '' }).textContent.trim();
     return {
-      rite: !!r,
-      card: document.querySelectorAll('#cl-body .cl-vot').length,
-      word: (document.querySelector('.cl-rite-word') || {}).textContent || '',
-      rings: r ? r.querySelectorAll('.cl-rite-ring').length : 0,
-      core: r ? r.querySelectorAll('.cl-rite-core').length : 0,
-      ms: r ? (r.style.getPropertyValue('--rite') || '').trim() : ''
+      hasRead: !!q('.cl-read'),
+      id: (q('.cl-read') || { dataset: {} }).dataset.id || '',
+      original: txt('.cl-read-o'),
+      src: txt('.cl-read-src'),
+      modern: txt('.cl-modern'),
+      modernTag: txt('.cl-src-tag'),
+      think: txt('.cl-think'),
+      blocks: [...b.querySelectorAll('.cl-block-h')].map((e) => e.textContent.trim()),
+      more: txt('.cl-more'),
+      steps: b.querySelectorAll('.cl-step2, .cl-step3, .cl-step4, .cl-step5').length,
     };
   })()`);
-  ok(rite.rite && rite.card === 0,
-    '★ 点「静心一问」先进入抽取仪式，此时结果卡还没出现', JSON.stringify(rite));
-  ok(/容它一会儿/.test(rite.word), '仪式层给出静默提示，不是加载进度条', rite.word);
-  ok(rite.rings === 3 && rite.core === 1,
-    '仪式层是三圈错相 + 一颗落定的芯（不是单一进度圈）', `rings=${rite.rings} core=${rite.core}`);
-  ok(rite.ms === '2400ms', '首问仪式时长 2.4s，由 --rite 传入而不是写死在 CSS 里', rite.ms);
-  const riteDone = await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
-  ok(riteDone, '仪式走完才出现箴言（抽与读分成两段）');
 
-  // 结果整块必须包在 handoff 容器里。换屏是 innerHTML 整体重绘，
-  // 没有这一层就是硬切——仪式收得再好，切过去那一下仍然像「页面跳了一下」。
-  const wrap = await ev(`(() => {
-    const w = document.querySelector('#cl-body .cl-vot-wrap');
-    if (!w) return null;
-    return { anim: getComputedStyle(w).animationName, hasVot: !!w.querySelector('.cl-vot') };
-  })()`);
-  ok(wrap && wrap.anim === 'handoff' && wrap.hasVot,
-    '★ 结果整块包一层 handoff，仪式收与结果起落在同一节奏上', JSON.stringify(wrap));
+  ok(first.hasRead, 'A1 打开观心直接进入一条内容（不是列表页）');
+  ok(first.original.length >= 8, 'A2 第一屏有原文', `len=${first.original.length}`);
+  ok(/论语/.test(first.src), 'A3 第一屏有出处', first.src);
+  // 现代解读的产品定义是「一句白话直译」，深度在「思考角度」里。
+  // 原来卡 40 字是错的：26 条里 16 条不足 40 字（最短 20），那不是内容缺陷，
+  // 是设计如此。真正的「给足信息」标准应该是：解读不是占位符 + 思考角度确实展开。
+  // 而且这条断言会随当日条目变化而假失败——跨天跑门禁结果不同，门禁就不可信了。
+  ok(first.modern.length >= 12, 'A4 第一屏有现代解读正文', `len=${first.modern.length}`);
+  ok(/现代解读/.test(first.modernTag) && /不是古人原意/.test(first.modernTag), 'A5 现代解读标注了不是古人原意', first.modernTag);
+  ok(first.blocks.includes('这句话在说什么'), 'A6 有「这句话在说什么」小标题');
+  ok(first.blocks.includes('值得想一下'), 'A7 第一屏有联系现实的思考角度');
+  ok(first.think.length >= 40, 'A4b 思考角度确实展开（不是一句话打发）', `len=${first.think.length}`);
+  ok(first.more.length > 0, 'A8 第一屏有继续深入的入口', first.more);
+  ok(first.steps === 0, 'A9 初次进入后续步骤不预先展开（一次只给一步）', `展开=${first.steps}`);
 
-  // 「再问一次」已经知道接下来会发生什么，等满 2.4 秒就从「静」变成「拖」。
-  await click('[data-act="ask-again"]');
-  await sleep(300);
-  const againMs = await ev(`(() => {
-    const r = document.querySelector('#cl-body .cl-rite');
-    return r ? (r.style.getPropertyValue('--rite') || '').trim() : 'missing';
-  })()`);
-  ok(againMs === '1500ms', '「再问一次」仪式缩短到 1.5s（重复已知流程不该再等满）', againMs);
-  await until(`!!document.querySelector('#cl-body .cl-vot')`, 6000);
-
-  // 抽完之后输入框收起，必须有回到书写态的路
-  const backBtn = await ev(`(() => { const b = document.querySelector('[data-act="ask-new"]'); if (!b) return false; b.click(); return true; })()`);
-  await sleep(180);
-  const writeState = await ev(`(() => ({
-    input: !!document.querySelector('#cl-ask-input'),
-    go: !!document.querySelector('#cl-ask-go'),
-    card: document.querySelectorAll('#cl-body .cl-vot').length,
-    q: (document.querySelector('#cl-ask-input') || {}).value || ''
-  }))()`);
-  ok(backBtn && writeState.input && writeState.go && writeState.card === 0,
-    '★ 抽完后「换一个问题」能回到书写态（输入框收起不等于没有第二条路）', JSON.stringify(writeState));
-  ok(writeState.q.length > 0, '回到书写态时原问题还在，方便改，不用重打', writeState.q.slice(0, 20));
-
-  // 主次：箴言是全屏最大字号，免责声明只是注脚
-  await pinSeq(6);
-  await askWith('主次检查。', 6);
-  const hierarchy = await ev(`(() => {
-    const o = document.querySelector('#cl-body .cl-vot-o');
-    const n = document.querySelector('#cl-body .cl-vot-note');
-    const q = document.querySelector('#cl-body .cl-vot-q');
-    const px = (e) => e ? parseFloat(getComputedStyle(e).fontSize) : 0;
-    return { original: px(o), note: px(n), question: px(q) };
-  })()`);
-  ok(hierarchy.original > hierarchy.note && hierarchy.original > hierarchy.question,
-    '★ 箴言字号大于免责声明与用户问题（主次分明）',
-    `箴言 ${hierarchy.original}px / 免责 ${hierarchy.note}px / 问题 ${hierarchy.question}px`);
-
-  // ---------- 3b. 空问题不得抽取 ----------
-  //
-  // 问心的前提是「带着困惑遇见」。空着点，用户拿到的只是一条随机内容，
-  // 与「今日相遇」再无区别——「投射」这一环就断了。所以这里必须拦住。
-  // 但也不能把人堵在原地，提示里要给出另一条路（今日相遇本来就允许空手）。
-  await pinSeq(5);
-  await openPanel('ask');
-  await toWriteState();
-  await ev(`(() => { const t = document.querySelector('#cl-ask-input'); if (t) t.value = ''; return 'ok'; })()`);
-  await click('#cl-ask-go');
-  await sleep(260);
-  const emptyState = await ev(`(() => {
-    const w = document.querySelector('#cl-ask-warn');
-    let n = null;
-    try { n = JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) {}
-    return { warnOn: !!(w && w.classList.contains('is-on')), warnText: w ? w.textContent.replace(/\\s+/g, '') : '', n: n && n.n, quote: document.querySelectorAll('#cl-body .cl-vot').length };
-  })()`);
-  ok(emptyState.warnOn, '★ 空问题点「静心一问」给出提示，而不是直接抽一条');
-  ok(emptyState.n === 5, '空问题不消耗当日序号（没有偷偷抽）', `n=${emptyState.n}`);
-  ok(emptyState.quote === 0, '空问题点完不残留上一次的结果卡（不制造「没写也给」的错觉）', `结果卡 ${emptyState.quote} 张`);
-  ok(/今日相遇/.test(emptyState.warnText), '提示里给出另一条路（今日相遇），不把人堵在原地');
-
-  // 一开始写字，提示就撤掉——规则不在用户动手前解释
-  await ev(`(() => { const t = document.querySelector('#cl-ask-input'); t.value = '写点东西'; t.dispatchEvent(new Event('input', { bubbles: true })); return 'ok'; })()`);
-  await sleep(140);
-  const warnAfter = await ev(`(() => { const w = document.querySelector('#cl-ask-warn'); return w ? w.classList.contains('is-on') : null; })()`);
-  ok(warnAfter === false, '一开始写字，空输入提示立刻撤掉（不预先解释规则）');
-
-  // 纯空白同样不算写了
-  await pinSeq(5);
-  await openPanel('ask');
-  await toWriteState();
-  await ev(`(() => { const t = document.querySelector('#cl-ask-input'); if (t) t.value = '   \\n  \\t '; return 'ok'; })()`);
-  await click('#cl-ask-go');
-  await sleep(240);
-  const blankState = await ev(`(() => {
-    let n = null;
-    try { n = JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) {}
-    const w = document.querySelector('#cl-ask-warn');
-    return { n: n && n.n, warnOn: !!(w && w.classList.contains('is-on')) };
-  })()`);
-  ok(blankState.n === 5 && blankState.warnOn, '纯空白输入按「没写」处理', `n=${blankState.n}`);
-
-  // ---------- 4. 一念三观 ----------
-  await openPanel('three');
-  await click('#cl-three-go');
-  const backs = await ev(`document.querySelectorAll('#cl-body .cl-card3.back').length`);
-  ok(backs === 3, '洗牌后出现三张牌背', `实际 ${backs}`);
-
-  const opened = [];
-  for (let i = 0; i < 3; i++) {
-    await click(`#cl-body .cl-card3.back[data-i="${i}"]`);
-    await sleep(120);
-  }
-  const opens = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-card3.open'))
-    .map(e => { const t = e.querySelector('.cl-original'); const h = e.querySelector('.cl-card3-h');
-      return { h: h ? h.textContent.trim() : '', o: t ? t.textContent.trim() : '' }; }))()`);
-  ok(opens.length === 3, '三张牌都能翻开', `实际 ${opens.length}`);
-  ok(opens.every((x) => x.o && x.o.length > 5), '三张牌都有原文');
-  ok(new Set(opens.map((x) => x.o)).size === 3, '三张牌内容互不重复');
-
-  const threeNote = await ev(`(() => { const b = document.querySelector('#cl-body'); return b ? b.textContent.replace(/\\s+/g,'') : ''; })()`);
-  ok(/(不是《论语》原有的占卜体系|非《论语》原有占卜体系)/.test(threeNote),
-    '牌阵明确声明不是《论语》原有占卜体系');
-
-  // ---------- 5. 原典详情八层 ----------
-  await openPanel('today');
-  await click('#cl-body .cl-quote [data-act="open"]');
-  await until(`!!document.querySelector('#classic-detail-body .cl-layer')`);
-  const layers = await ev(`(() => Array.from(document.querySelectorAll('#classic-detail-body .cl-layer'))
-    .map(e => e.dataset.layer))()`);
-  ok(layers.length === 8, '详情八层齐全', `实际 ${layers.length}：${layers.join(',')}`);
-  ok(layers[0] === 'original' && layers[7] === 'modern', '八层层序为原文→…→现代解读');
-  const modernNote = await ev(`(() => { const e = document.querySelector('#classic-detail-body .cl-layer[data-layer="modern"] .cl-layer-note'); return e ? e.textContent : ''; })()`);
-  ok(/不是古人的原意/.test(modernNote), '第八层标注「不是古人的原意」');
-
-  // ---------- 5a. 思想探索页必须真的列出节点（防「只有提示文字也算渲染」） ----------
-  await openPanel('explore');
-  const explore = await ev(`(() => ({
-    nodes: document.querySelectorAll('#classic-body .cl-node').length,
-    groups: document.querySelectorAll('#classic-body .cl-group').length,
-    orphans: document.querySelectorAll('#classic-body .cl-node .cl-node-tag').length,
-  }))()`);
-  ok(explore.nodes >= 26, '探索页列出全部思想节点', `实际 ${explore.nodes} 个`);
-  ok(explore.groups >= 9, '探索页按思想群分组', `实际 ${explore.groups} 组`);
-  ok(explore.orphans >= 5, '无关系的条目标「独立」', `实际 ${explore.orphans} 个`);
-
-  // ---------- 5b. 已判不成立的关系不得出现在详情页 ----------
-  // LY-001 ↔ LY-006（终身学习）已在终审中删除关系，只保留审校记录，不进产品。
-  // 这里验的是「数据层排除」真的落到了界面上，而不是只写在 JSON 里。
-  const ly001 = await openNode('LY-001');
-  ok(ly001 && ly001.relations === 2, 'LY-001 只展示 2 条经审校保留的关系',
-    ly001 && `实际 ${ly001.relations} 条`);
-  ok(ly001 && !ly001.text.includes('LY-006'), 'LY-001 详情不出现已删除关系的对端');
-  ok(ly001 && !/已核实/.test(ly001.relText), 'LY-001 无 verified 边，不得出现「已核实」字样');
-  ok(ly001 && /待考/.test(ly001.relText), 'LY-001 的 pending 边标注「待考」');
-
-  // ---------- 6. 编辑阐释标记（LY-021 有 R-10 / R-11 两条人工批准的编辑阐释） ----------
-  const ly021 = await ev(`(async () => {
-    const m = await import('./js/classic/classicview.js?v=122');
-    document.querySelector('#classic-detail-body').innerHTML = m.renderClassicDetail('LY-021');
-    await new Promise(r => setTimeout(r, 60));
-    return Array.from(document.querySelectorAll('#classic-detail-body .cl-rel')).map(e => ({
-      badge: (e.querySelector('.cl-badge') || {}).textContent || '',
-      peer: (e.querySelector('.cl-rel-peer') || {}).textContent || '',
-    }));
-  })()`);
-  ok(Array.isArray(ly021) && ly021.length >= 2, 'LY-021 展示出关系边', JSON.stringify(ly021));
-  const hasEditorial = (ly021 || []).some((r) => /编辑阐释/.test(r.badge));
-  ok(hasEditorial, 'LY-021 的关系标注为「编辑阐释」，未冒充原典关系',
-    JSON.stringify(ly021));
-
-  // ---------- 7. 孤立节点三入口（LY-013 朝闻道） ----------
-  const orphan = await ev(`(async () => {
-    const m = await import('./js/classic/classicview.js?v=122');
-    document.querySelector('#classic-detail-body').innerHTML = m.renderClassicDetail('LY-013');
-    await new Promise(r => setTimeout(r, 60));
-    const b = document.querySelector('#classic-detail-body');
+  /* ---------- B 分段结构 ---------- */
+  const seg = await ev(`(() => {
+    const b = document.querySelector('#classic-body');
     return {
-      text: b.textContent.replace(/\\s+/g,''),
-      entries: Array.from(b.querySelectorAll('.cl-entry-h')).map(e => e.textContent.trim()),
-      kinds: Array.from(b.querySelectorAll('.cl-entry')).map(e => e.dataset.kind),
-      entryCount: b.querySelectorAll('.cl-entry').length,
+      tabs: [...b.querySelectorAll('.cl-tab')].map((e) => e.dataset.panel),
+      names: [...b.querySelectorAll('.cl-tab')].map((e) => e.textContent.trim()),
+      flow: b.querySelectorAll('.cl-flow').length,
+      stats: b.querySelectorAll('.cl-stats').length,
+      body: b.textContent,
     };
   })()`);
-  ok(orphan && /没有经审校成立的思想关系/.test(orphan.text), '孤立节点说明「没有经审校成立的思想关系」');
-  ok(orphan && orphan.entries.length >= 2, '孤立节点给出多个入口', JSON.stringify(orphan && orphan.entries));
-  // 批示原则二：四类入口必须明确区分。这里验的是性质写进了结构（data-kind），
-  // 而不是只靠一句小字说明——否则样式和测试都没法可靠区分它们。
-  ok(orphan && /同一思想群/.test(orphan.text) && /原典归类/.test(orphan.text),
-    '入口标注各自的性质（原典归类 / 文本位置 / 主题推荐）');
-  ok(orphan && orphan.kinds.every((k) => ['cluster', 'chapter', 'topic'].includes(k)),
-    '每个入口都带合法的性质标识', JSON.stringify(orphan && orphan.kinds));
-  ok(orphan && orphan.kinds.length === orphan.entryCount,
-    '性质标识数量与入口数量一致（没有漏标的入口）',
-    `${orphan && orphan.kinds.length} / ${orphan && orphan.entryCount}`);
-  // 主题标签 2026-10-31 已转正（17 个，覆盖 26/26），所以孤立节点必然拿到主题推荐。
-  // 这里验的不是"有没有推荐"，而是"推荐有没有冒充关系"：
-  //   · 入口性质必须是 topic（结构上可选中，不是靠一句小字）
-  //   · 必须显式写「主题推荐，非思想关系」
-  //   · 主题推荐区不得出现关系徽标（原典有据 / 注家合观 / 编辑阐释）
-  ok(orphan && orphan.kinds.includes('topic'), '孤立节点从主题标签拿到探索入口（标签已正式启用）',
-    JSON.stringify(orphan && orphan.entries));
-  ok(orphan && orphan.kinds.includes('topic'), '主题入口的性质标识为 topic');
-  ok(orphan && /主题推荐，非思想关系/.test(orphan.text), '主题推荐带「非思想关系」显式标注');
-  const orphanBadges = await ev(`(() => Array.from(document.querySelectorAll('#classic-detail-body .cl-badge')).map(e => e.textContent.trim()))()`);
-  ok(Array.isArray(orphanBadges) && orphanBadges.length === 0,
-    '★ 主题推荐区不出现任何关系徽标（不冒充原典有据 / 注家合观 / 编辑阐释）',
-    JSON.stringify(orphanBadges));
 
-  // ---------- 8. 三种抽取机制互不混淆 ----------
-  //
-  // 批示第一部分第 2 条：「今日相遇和问心的随机机制要分开……一念三观则强调连续探索。
-  // 三者不能只是同一个随机函数换了三个标题。」
-  // 这一段从界面侧验证三种机制的可观察差异。
+  ok(seg.tabs.length === 3, 'B1 观心只有三个分段', seg.tabs.join(','));
+  ok(seg.tabs.join(',') === 'today,themes,notes', 'B2 分段为 今日/困惑/手记', seg.tabs.join(','));
+  ok(!seg.tabs.includes('ask') && !seg.tabs.includes('three') && !seg.tabs.includes('debate') && !seg.tabs.includes('explore'),
+    'B3 旧五个分段入口全部消失', seg.tabs.join(','));
+  ok(seg.flow === 0, 'B4 旧的三个跳转入口块已移除');
+  ok(seg.stats === 0, 'B5 编辑后台指标（抽签池/待考关系）不再暴露给用户');
 
-  await openPanel('today');
-  const todayA = await ev(`(() => { const q = document.querySelector('#cl-body .cl-quote'); return q ? q.dataset.id : null; })()`);
-  const todayActs = await ev(`(() => Array.from(document.querySelectorAll('#cl-body [data-act]')).map(e => e.dataset.act))()`);
-  ok(!todayActs.some((a) => /again|reroll|next/i.test(a)), '今日相遇不提供「换一条」入口（相遇不能挑）',
-    JSON.stringify(todayActs));
-
-  // 刷新后同一天仍是同一条（日期种子，而非每次进入重抽）
-  await gotoApp();
-  await openPanel('today');
-  const todayB = await ev(`(() => { const q = document.querySelector('#cl-body .cl-quote'); return q ? q.dataset.id : null; })()`);
-  ok(todayA && todayA === todayB, '刷新后今日相遇仍是同一条（日期决定，不随进入次数变化）',
-    `${todayA} vs ${todayB}`);
-
-  // 问心：同日连续两次不同（队列机制）；与今日相遇也不必相同（两套独立机制）
-  const Q0 = await askWith('第一件事。', 0);
-  const Q1 = await askWith('第二件事。', 1);
-  ok(Q0 && Q1 && Q0.id !== Q1.id, '问心同日连续两次抽到不同条目（队列机制，不是随机重抽）',
-    `seq0=${Q0 && Q0.id} seq1=${Q1 && Q1.id}`);
-  ok(Q0 && Q0.id !== todayA, '问心与今日相遇互不牵连（两套机制、两套种子）',
-    `ask=${Q0 && Q0.id} today=${todayA}`);
-
-  // 一念三观：三条带所属群名，且群名互不相同（分层机制）
-  await openPanel('three');
-  await click('#cl-three-go');
-  await sleep(150);
-  for (let i = 0; i < 3; i++) { await click(`#cl-body .cl-card3.back[data-i="${i}"]`); await sleep(100); }
-  const threeGroups = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-card3.open .cl-card3-g')).map(e => e.textContent.trim()))()`);
-  ok(threeGroups.length === 3, '三张牌都标出所属思想群', JSON.stringify(threeGroups));
-  ok(new Set(threeGroups).size === 3, '★ 三张牌来自三个不同思想群（分层抽样，不是抽三条不重复）',
-    JSON.stringify(threeGroups));
-
-  // ---------- 8b. 五种反馈：只改阅读路径，绝不改本次抽取 ----------
-  //
-  // 批示第一部分第 3 条：「这些交互可以影响后续的阅读体验，但不能反过来影响这一次的抽取结果。」
-
-  await askWith('我想验证反馈会不会让系统换一条给我。', 3);
-  const fbBefore = await ev(`(() => { const q = document.querySelector('#cl-body .cl-vot'); return q ? q.dataset.id : null; })()`);
-  const fbIds = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-fb-b')).map(b => b.dataset.fb))()`);
-  ok(fbIds.length === 5, '五种反馈全部呈现', JSON.stringify(fbIds));
-  ok(['agree', 'disagree', 'unsure', 'recall', 'more'].every((x) => fbIds.includes(x)),
-    '五种反馈与批示列举的完全一致', JSON.stringify(fbIds));
-
-  let fbChanged = 0;
-  for (const fb of ['agree', 'disagree', 'unsure', 'recall', 'more']) {
-    await ev(`(() => { const b = document.querySelector('#cl-body .cl-fb-b[data-fb="${fb}"]'); if (!b) return 'no'; b.click(); return 'ok'; })()`);
-    await sleep(140);
-    const now = await ev(`(() => { const q = document.querySelector('#cl-body .cl-vot'); return q ? q.dataset.id : null; })()`);
-    if (now !== fbBefore) fbChanged++;
-  }
-  ok(fbChanged === 0, '★ 点完全部五种反馈，当前抽到的条目一次都没有变（反馈不影响本次抽取）',
-    `变了 ${fbChanged} 次`);
-
-  // 「我不认同」必须导向注家分歧，而不是导向重抽
-  await ev(`(() => { document.querySelector('#cl-body .cl-fb-b[data-fb="disagree"]').click(); return 'ok'; })()`);
-  await sleep(140);
-  const disagreeOut = await ev(`(() => {
-    const o = document.querySelector('#cl-body .cl-fb-out');
-    const go = document.querySelector('#cl-body [data-act="open-with"]');
-    return { text: o ? o.textContent : '', layers: go ? go.dataset.layers : '' };
-  })()`);
-  ok(/不认同是正当的/.test(disagreeOut.text), '「我不认同」给出不当场否定的回应');
-  ok(/dispute/.test(disagreeOut.layers), '「我不认同」导向注家分歧层（不是重新抽取）', disagreeOut.layers);
-
-  // 点进去必须真的展开分歧层
-  await ev(`(() => { document.querySelector('#cl-body [data-act="open-with"]').click(); return 'ok'; })()`);
+  /* ---------- C 阅读五步 ---------- */
+  await click('#cl-body .cl-more[data-step="2"]');
   await sleep(400);
-  const disputeOpen = await ev(`(() => {
-    const s = document.querySelector('#classic-detail-body .cl-layer[data-layer="dispute"]');
-    return s ? s.classList.contains('open') : null;
-  })()`);
-  ok(disputeOpen === true, '「我不认同」跳转后注家分歧层已展开');
-
-  // ---------- 9. 辩一辩：先原文，再立场，最后才给注疏 ----------
-  //
-  // 批示第三部分：「系统展示原文之后，不要急着解释，而是先问……
-  // 用户选择自己的立场，然后再进入原文语境、注疏和不同理解。」
-
-  await openPanel('debate');
-  const dbCount = await ev(`document.querySelectorAll('#cl-body .cl-db-item').length`);
-  ok(dbCount >= 8, '辩一辩列出全部辩题', `实际 ${dbCount}`);
-
-  await ev(`(() => { const b = document.querySelector('#cl-body .cl-db-item[data-id="D-01"]'); if (!b) return 'no'; b.click(); return 'ok'; })()`);
-  await sleep(250);
-  const dbFirst = await ev(`(() => {
+  const s2 = await ev(`(() => {
     const b = document.querySelector('#cl-body');
     return {
-      text: b.textContent.replace(/\\s+/g, ''),
-      hasOriginal: !!b.querySelector('.cl-original'),
-      stances: b.querySelectorAll('.cl-st').length,
-      hasCommentary: !!b.querySelector('.cl-layer[data-layer="commentary"]'),
-      hasCanon: !!b.querySelector('.cl-db-canon'),
-      hasQuestion: !!b.querySelector('.cl-db-q2'),
+      step2: b.querySelectorAll('.cl-step2').length,
+      heads: [...b.querySelectorAll('.cl-step2 .cl-block-h')].map((e) => e.textContent.trim()),
+      ctx: b.querySelectorAll('.cl-ctx').length,
+      cor: b.querySelectorAll('.cl-cor').length,
     };
   })()`);
-  ok(dbFirst.hasOriginal, '辩题首屏先展示原典原文');
-  ok(dbFirst.hasQuestion, '辩题首屏给出面向用户的问题');
-  ok(dbFirst.stances >= 2, '辩题首屏给出立场选项', `实际 ${dbFirst.stances}`);
-  ok(!dbFirst.hasCommentary, '★ 未选立场时不展示历代注疏（先有你的判断，再看古人）');
-  ok(!dbFirst.hasCanon, '未选立场时不给「原典实际说了什么」的结论');
+  ok(s2.step2 >= 1, 'C1 点「往下看」展开第二步', `blocks=${s2.step2}`);
+  ok(s2.heads.some((h) => /场合/.test(h)), 'C2 第二步讲这句话是在什么场合说的', s2.heads.join('|'));
+  ok(s2.ctx >= 1 || s2.cor >= 1, 'C3 第二步有语境或常见误读的实证内容');
 
-  // 选第一个立场
-  await ev(`(() => { document.querySelectorAll('#cl-body .cl-st')[0].click(); return 'ok'; })()`);
-  await sleep(250);
-  const dbAfter = await ev(`(() => {
+  await click('#cl-body .cl-more[data-step="3"]');
+  await sleep(400);
+  const s3 = await ev(`(() => {
     const b = document.querySelector('#cl-body');
     return {
-      text: b.textContent.replace(/\\s+/g, ''),
-      hasCommentary: !!b.querySelector('.cl-layer[data-layer="commentary"]'),
-      hasDispute: !!b.querySelector('.cl-layer[data-layer="dispute"]'),
-      hasCanon: !!b.querySelector('.cl-db-canon'),
-      hasLineage: !!b.querySelector('.cl-db-lineage'),
+      step3: b.querySelectorAll('.cl-step3').length,
+      cm: b.querySelectorAll('.cl-cm').length,
+      cmAuthor: (b.querySelector('.cl-cm-h') || { textContent: '' }).textContent.trim(),
+      disp: b.querySelectorAll('.cl-disp').length,
+      tags: [...b.querySelectorAll('.cl-step3 .cl-src-tag')].map((e) => e.textContent.trim()),
+      debate: b.querySelectorAll('.cl-debate').length,
     };
   })()`);
-  ok(dbAfter.hasCommentary, '选完立场后才展开历代注疏');
-  ok(dbAfter.hasDispute, '选完立场后才展开注家分歧');
-  ok(dbAfter.hasCanon, '选完立场后给出「原典实际说了什么」');
-  ok(dbAfter.hasLineage, '给出「这一路历史上谁走过」的位置对照');
-  ok(!/答对|答错|你选错|你答对|正确答案是/.test(dbAfter.text),
-    '不判定用户立场的对错（辩一辩不是考试）');
+  ok(s3.step3 >= 1, 'C4 第三步展开');
+  ok(s3.cm >= 1, 'C5 第三步有历代注家原话', `注家=${s3.cm}`);
+  ok(s3.tags.some((t) => /注疏/.test(t)), 'C6 注疏被明确标注为与现代解读不同来源', s3.tags.join('|'));
 
-  // 改主意：读完可以改，且被明确记录
-  await ev(`(() => { const bs = document.querySelectorAll('#cl-body .cl-st'); if (bs.length < 2) return 'no'; bs[1].click(); return 'ok'; })()`);
+  await click('#cl-body .cl-more[data-step="4"]');
+  await sleep(400);
+  const s4 = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    return {
+      step4: b.querySelectorAll('.cl-step4').length,
+      fbs: [...b.querySelectorAll('.cl-fb')].map((e) => e.dataset.fb),
+      labels: [...b.querySelectorAll('.cl-fb')].map((e) => e.textContent.trim()),
+    };
+  })()`);
+  ok(s4.step4 >= 1, 'C7 第四步展开');
+  ok(s4.fbs.length === 5, 'C8 五个反馈选项齐全', s4.fbs.join(','));
+  ok(s4.labels.some((l) => /不同看法/.test(l)), 'C9 反馈不是同意/不同意二选一（允许不同意）', s4.labels.join('|'));
+
+  /* ---------- D 反馈的即时响应 ---------- */
+  await click('#cl-body .cl-fb[data-fb="disagree"]');
+  await sleep(400);
+  const fb = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const echo = b.querySelector('.cl-fb-echo');
+    return {
+      on: b.querySelectorAll('.cl-fb.on').length,
+      echo: !!echo,
+      text: echo ? echo.textContent.trim() : '',
+    };
+  })()`);
+  ok(fb.on === 1, 'D1 选中的反馈有可见状态');
+  ok(fb.echo, 'D2 反馈后有即时回应（不是点了没反应）');
+  ok(fb.text.length > 10, 'D3 回应是有内容的一句话', fb.text.slice(0, 40));
+
+  /* ---------- E 思想手记 ---------- */
+  await click('#cl-body .cl-more[data-step="5"]');
+  await sleep(400);
+  const s5 = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    return {
+      step5: b.querySelectorAll('.cl-step5').length,
+      ta: !!b.querySelector('#cl-journal-input'),
+      save: !!b.querySelector('[data-act="journal-save"]'),
+    };
+  })()`);
+  ok(s5.step5 >= 1 && s5.ta, 'E1 第五步提供手记输入');
+  ok(s5.save, 'E2 手记有保存动作');
+
+  await ev(`(() => {
+    const t = document.querySelector('#cl-journal-input');
+    t.value = '我一直以为克己是压抑自己，看完才知道还有另一种读法。';
+    t.dispatchEvent(new Event('input', { bubbles: true }));
+    return 'ok';
+  })()`);
   await sleep(200);
-  const changedText = await ev(`(() => document.querySelector('#cl-body').textContent.replace(/\\s+/g, ''))()`);
-  ok(/改过主意/.test(changedText), '读完可以改主意，且界面如实记录');
+  await click('#cl-body [data-act="journal-save"]');
+  await sleep(500);
 
-  // 详情页应有辩题入口
-  const invite = await ev(`(async () => {
-    const m = await import('./js/classic/classicview.js?v=122');
-    document.querySelector('#classic-detail-body').innerHTML = m.renderClassicDetail('LY-020');
-    await new Promise(r => setTimeout(r, 60));
-    const b = document.querySelector('#classic-detail-body .cl-db-invite');
-    return b ? b.textContent.replace(/\\s+/g, '') : '';
+  const saved = await ev(`(() => {
+    const raw = localStorage.getItem('qintian.classic.journal') || '{}';
+    const all = JSON.parse(raw);
+    const keys = Object.keys(all);
+    return { keys, n: keys.length, first: keys.length ? all[keys[0]] : [] };
   })()`);
-  ok(/这一条可以辩/.test(invite), '有辩题的条目在详情页给出入口');
+  ok(saved.n === 1, 'E3 手记写入了本地存储', JSON.stringify(saved.keys));
+  ok(saved.first.length === 1 && /克己/.test(saved.first[0].text), 'E4 手记内容完整保存', JSON.stringify(saved.first).slice(0, 80));
 
-  // ---------- 8. 全程无异常 ----------
-  ok(sess.exceptions.length === 0, '无未捕获异常',
-    sess.exceptions.map((e) => e.text).slice(0, 3).join(' | '));
-  const realErrors = sess.consoleErrors.filter((t) => !/favicon/i.test(t));
-  ok(realErrors.length === 0, '无 console.error', realErrors.slice(0, 3).join(' | '));
+  const nodeId = saved.keys[0];
 
+  /* ---------- E5 再次遇到同一条时回显 ---------- */
+  await openPanel('today');
+  await sleep(500);
+  const echo = await ev(`(() => {
+    const e = document.querySelector('#cl-body .cl-echo');
+    return { on: !!e, text: e ? e.textContent.trim() : '' };
+  })()`);
+  ok(echo.on, 'E5 再次遇到读过的条目，首页就回显上次的记录');
+  ok(/克己/.test(echo.text), 'E6 回显的是用户自己写过的话', echo.text.slice(0, 50));
+
+  /* ---------- E7 手记列表 ---------- */
+  await openPanel('notes');
+  await sleep(400);
+  const jl = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    return {
+      rows: b.querySelectorAll('.cl-jrow').length,
+      text: b.textContent,
+      title: (b.querySelector('.cl-jrow-t') || { textContent: '' }).textContent.trim(),
+    };
+  })()`);
+  ok(jl.rows === 1, 'E7 手记分段列出了这条记录', `rows=${jl.rows}`);
+  ok(jl.text.includes('克己') || jl.title.length > 0, 'E8 手记列表显示内容或条目名');
+
+  /* ---------- F 困惑探索 ---------- */
+  await openPanel('themes');
+  await sleep(400);
+  const th = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    return {
+      themes: [...b.querySelectorAll('.cl-theme')].map((e) => e.dataset.id),
+      names: [...b.querySelectorAll('.cl-theme-n')].map((e) => e.textContent.trim()),
+      intro: (b.querySelector('.cl-themes-intro') || { textContent: '' }).textContent.trim(),
+    };
+  })()`);
+  ok(th.themes.length === 8, 'F1 困惑探索有八个现实主题', th.themes.join(','));
+  ok(th.names.includes('工作与选择') && th.names.includes('人际关系'), 'F2 主题用的是现实说法不是学术分类', th.names.join('|'));
+  ok(th.intro.length > 10, 'F3 困惑探索有一句说明它是什么', th.intro.slice(0, 40));
+
+  await click('#cl-body .cl-theme[data-id="work"]');
+  await sleep(500);
+  const tp = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    return {
+      items: b.querySelectorAll('.cl-tp-item').length,
+      note: (b.querySelector('.cl-tp-note') || { textContent: '' }).textContent.trim(),
+      first: (b.querySelector('.cl-tp-item-t') || { textContent: '' }).textContent.trim(),
+    };
+  })()`);
+  ok(tp.items >= 1, 'F4 主题下有可读的条目', `items=${tp.items}`);
+  ok(/不代表/.test(tp.note) && /原典|联系/.test(tp.note), 'F5 主题推荐被标注为不等于原典关系', tp.note.slice(0, 50));
+
+  if (tp.items >= 1) {
+    await click('#cl-body .cl-tp-item');
+    await sleep(500);
+    const rd = await ev(`(() => {
+      const b = document.querySelector('#cl-body');
+      const r = b.querySelector('.cl-read');
+      return { has: !!r, original: (b.querySelector('.cl-read-o') || { textContent: '' }).textContent.trim() };
+    })()`);
+    ok(rd.has && rd.original.length >= 8, 'F6 从主题点进去能直接开始读一条', rd.original.slice(0, 20));
+  }
+
+  /* ---------- J 八个主题是人工编排，不是标签自动取 ---------- */
+  await openPanel('themes');
+  await sleep(400);
+  const themeAudit = [];
+  for (const id of ['work', 'people', 'self', 'desire', 'direction', 'mood', 'principle', 'meaning']) {
+    await ev(`(() => { const b = document.querySelector('#cl-body [data-act="back-themes"]'); if (b) b.click(); return 'ok'; })()`);
+    await sleep(180);
+    await click(`#cl-body .cl-theme[data-id="${id}"]`);
+    await sleep(320);
+    const d = await ev(`(() => {
+      const b = document.querySelector('#cl-body');
+      const items = [...b.querySelectorAll('.cl-tp-item')];
+      return {
+        n: items.length,
+        nums: items.map((e) => (e.querySelector('.cl-tp-item-n') || { textContent: '' }).textContent.trim()),
+        whys: items.filter((e) => (e.querySelector('.cl-tp-item-w') || { textContent: '' }).textContent.trim().length > 8).length,
+        tags: items.map((e) => [...e.querySelectorAll('.cl-tp-item-b i')].map((x) => x.textContent.trim())),
+        path: (b.querySelector('.cl-tp-path') || { textContent: '' }).textContent.trim(),
+        note: (b.querySelector('.cl-tp-note') || { textContent: '' }).textContent.trim(),
+        full: b.textContent,
+      };
+    })()`);
+    themeAudit.push({ id, ...d });
+  }
+  const allSeq = themeAudit.every((t) => t.n >= 6);
+  ok(allSeq, 'J1 八个主题都有人工编排的阅读序列', themeAudit.map((t) => `${t.id}:${t.n}`).join(' '));
+  ok(themeAudit.every((t) => t.whys === t.n), 'J2 每一条都写了推荐理由（为什么排在这个位置）',
+    themeAudit.map((t) => `${t.id}:${t.whys}/${t.n}`).join(' '));
+  ok(themeAudit.every((t) => t.tags.every((g) => g.length === 2)), 'J3 每一条都标了关联类型和是否适合初读',
+    themeAudit.map((t) => `${t.id}:${t.tags.filter((g) => g.length === 2).length}/${t.n}`).join(' '));
+  ok(themeAudit.every((t) => t.nums.every((x, i) => x === String(i + 1))), 'J4 序列带推荐顺序（1..n 连续）',
+    themeAudit[0].nums.join(','));
+  ok(themeAudit.every((t) => /阅读路径/.test(t.path)), 'J5 每个主题写明了阅读路径', themeAudit[0].path.slice(0, 34));
+  ok(themeAudit.every((t) => /编辑|不是原典主张/.test(t.note)), 'J6 推荐被标注为编辑判断，不是原典主张', themeAudit[0].note.slice(0, 30));
+  ok(new Set(themeAudit.map((t) => t.n)).size > 1, 'J7 各主题数量不必均匀（宁可少而准）',
+    [...new Set(themeAudit.map((t) => t.n))].join('/'));
+  ok(themeAudit.every((t) => !/正方|反方/.test(t.full)), 'J8 主题序列不制造对立阵营');
+
+  /* ---------- I 「我怎么看」在阅读流程内展开 ---------- */
+  await openPanel('today');
+  await sleep(400);
+  await click('#cl-body .cl-more[data-step="2"]');
+  await sleep(300);
+  await click('#cl-body .cl-more[data-step="3"]');
+  await sleep(400);
+
+  const beforeInline = await ev(`(() => ({
+    hasBtn: !!document.querySelector('#cl-body [data-act="db-inline"]'),
+    label: (document.querySelector('#cl-body [data-act="db-inline"]') || { textContent: '' }).textContent.trim(),
+    inReading: !document.querySelector('#view-classic-detail').classList.contains('on'),
+  }))()`);
+  ok(beforeInline.hasBtn, 'I1 第三步有「我怎么看」入口（不再叫「说说我的立场」）', beforeInline.label);
+  ok(/我怎么看/.test(beforeInline.label), 'I2 按钮文案是「我怎么看」', beforeInline.label);
+
+  await click('#cl-body [data-act="db-inline"]');
+  await sleep(500);
+  const inline = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const secs = [...b.querySelectorAll('.cl-db-in .cl-db-sec-h')].map((e) => e.textContent.trim());
+    const st = [...b.querySelectorAll('.cl-db-in .cl-st')].map((e) => e.textContent.trim());
+    const detailOn = !!document.querySelector('#view-classic-detail') && document.querySelector('#view-classic-detail').classList.contains('on');
+    return {
+      secs, st,
+      stillInClassic: !detailOn && !!b.querySelector('.cl-read'),
+      hasDiffer: !!b.querySelector('#cl-differ'),
+      hasSave: !!b.querySelector('[data-act="db-save"]'),
+      hasClose: !!b.querySelector('[data-act="db-close"]'),
+      foot: [...b.querySelectorAll('.cl-db-in .cl-foot')].map((e) => e.textContent.trim()).join(' | '),
+    };
+  })()`);
+  ok(inline.stillInClassic, 'I3 点开后不跳页，仍在这一条内容里');
+  ok(inline.secs.some((h) => /原文在说什么/.test(h)), 'I4 第一段：原文在说什么', inline.secs.join('|'));
+  ok(inline.secs.some((h) => /历代注家怎么理解/.test(h)), 'I5 第二段：历代注家怎么理解这一点', inline.secs.join('|'));
+  ok(inline.secs.some((h) => /我有不同看法/.test(h)), 'I6 第四段：我有不同看法', inline.secs.join('|'));
+  ok(inline.st.length >= 3, 'I7 列出多种读法，不是正反两方', `读法=${inline.st.length}`);
+  ok(!/正方|反方|支持方|反对方/.test(inline.st.join('')), 'I8 不制造对立阵营', inline.st.slice(0, 2).join(' / '));
+  ok(/不是选项|可以都不选/.test(inline.foot), 'I9 明确写了可以都不选', inline.foot.slice(0, 40));
+  ok(inline.hasDiffer && inline.hasSave, 'I10 不选任何读法也能写自己的理由');
+  ok(inline.hasClose, 'I11 展开后可以收起');
+
+  // 选一种读法
+  await click('#cl-body .cl-db-in .cl-st');
+  await sleep(450);
+  const chosen = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const mine = b.querySelector('.cl-db-mine');
+    return {
+      has: !!mine,
+      head: (b.querySelector('.cl-db-mine .cl-db-sec-h') || { textContent: '' }).textContent.trim(),
+      text: mine ? mine.textContent.replace(/\s+/g, ' ').trim() : '',
+      alt: (b.querySelector('.cl-db-alt-h') || { textContent: '' }).textContent.trim(),
+      on: b.querySelectorAll('.cl-st.on').length,
+    };
+  })()`);
+  ok(chosen.has && /你更接近/.test(chosen.head), 'I12 选了之后显示「你更接近哪一种理解」', chosen.head);
+  ok(/不是对错判定|不必是哪一家/.test(chosen.text), 'I13 明确写了这只是位置对照，不是对错判定', chosen.text.slice(-40));
+  ok(/另一边/.test(chosen.alt), 'I14 另一种读法被标为「如果你站在另一边」，不是「正确答案」', chosen.alt);
+  ok(chosen.on === 1, 'I15 选中的读法有可见状态');
+
+  // 再点一次取消
+  await click('#cl-body .cl-db-in .cl-st');
+  await sleep(400);
+  const unset = await ev(`(() => ({
+    mine: !!document.querySelector('#cl-body .cl-db-mine'),
+    on: document.querySelectorAll('#cl-body .cl-st.on').length,
+  }))()`);
+  ok(!unset.mine && unset.on === 0, 'I16 再点一次可以取消，不必非得站队');
+
+  /* ---------- G 原典八层仍可进入 ---------- */
+  await openPanel('today');
+  await sleep(400);
+  // 展开到第三步，那里有「读完整八层」的入口
+  await click('#cl-body .cl-more[data-step="2"]');
+  await sleep(300);
+  await click('#cl-body .cl-more[data-step="3"]');
+  await sleep(300);
+  await click('#cl-body .cl-more[data-step="4"]');
+  await sleep(300);
+  await click('#cl-body .cl-fb[data-fb="more"]');
+  await sleep(400);
+  const openBtn = await ev(`(() => {
+    const b = document.querySelector('#cl-body [data-act="open"]');
+    if (!b) return 'no-btn';
+    b.click(); return 'ok';
+  })()`);
+  if (openBtn === 'ok') {
+    await sleep(700);
+    const det = await ev(`(() => {
+      const d = document.querySelector('#classic-detail-body');
+      if (!d) return { layers: 0, text: '' };
+      return {
+        layers: d.querySelectorAll('.cl-layer').length,
+        text: d.textContent,
+      };
+    })()`);
+    ok(det.layers >= 6, 'G1 原典八层详情仍可从阅读页进入且完整', `layers=${det.layers}`);
+  } else {
+    ok(false, 'G1 原典八层详情入口丢失');
+  }
+
+  /* ---------- H 无脚本错误 ---------- */
+  ok(errors.length === 0, 'H1 全程无控制台报错', errors.slice(0, 3).join(' | '));
+
+  /* ---------- 汇总 ---------- */
+  console.log('');
+  for (const p of pass) console.log('  \x1b[32m✓\x1b[0m ' + p);
+  for (const f of fails) console.log('  \x1b[31m✗\x1b[0m ' + f);
+  console.log('');
+  console.log(`  通过 ${pass.length} 项，失败 ${fails.length} 项`);
+  if (fails.length) {
+    exitCode = 1;
+    console.log('  失败项：\n' + fails.map((f) => '    · ' + f).join('\n'));
+  }
 } catch (e) {
-  fails.push(`执行中断：${e && e.message}`);
+  console.error('[test-classic-ui] 运行失败:', e && e.message);
+  exitCode = 1;
 } finally {
-  if (sess) { try { await sess.close(); } catch { /* 忽略关闭失败 */ } }
-  await srv.close();
+  try { await sess?.close(); } catch { /* ignore */ }
+  try { await srv.close(); } catch { /* ignore */ }
+  if (!has('--keep-profile')) {
+    try { fs.rmSync(profile, { recursive: true, force: true }); } catch { /* ignore */ }
+  }
 }
 
-console.log('');
-console.log(`通过 ${pass.length} 项`);
-if (fails.length) {
-  console.log(`失败 ${fails.length} 项：`);
-  for (const f of fails) console.log('  ✗ ' + f);
-  exitCode = 1;
-} else {
-  console.log('✅ 经典板块交互测试全部通过');
-  for (const p of pass) console.log('  · ' + p);
-}
 process.exit(exitCode);

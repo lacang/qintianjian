@@ -1,0 +1,34 @@
+{
+  "_note": "v126 发布候选指纹（未发版）。发版后用于线上核验：普通 GET + sha256 比对。",
+  "_generated": "2026-11-01",
+  "_base_commit": "93d2b3d",
+  "_version": "candidate (sw still qintian-v125)",
+  "index.html": {
+    "sha256": "986c6b22b5420eb573a9a9309c7e83020a0639f82c79f8d08e43f1472a3d479b",
+    "bytes": 25035
+  },
+  "sw.js": {
+    "sha256": "c7b7bd0bda3993a856ebbe63535adf63659e2e19dc0cb9df76a166dcc1c5db0a",
+    "bytes": 10930
+  },
+  "css/classic.css": {
+    "sha256": "155df49b2ca93368c8c14ac8be0e22ef0ea7869e2cf27b1ca3506a435383f78f",
+    "bytes": 39298
+  },
+  "js/classic/classicview.js": {
+    "sha256": "50ee70ed642b7756c4ef05710c57517123d7f9b978ffa7bba56c244e20a4336f",
+    "bytes": 40930
+  },
+  "js/classic/reading.js": {
+    "sha256": "47ded9d7243e6601f8c330f36469abaa1159338960c35f0af71088814f18d773",
+    "bytes": 22149
+  },
+  "js/classic/classic-core.js": {
+    "sha256": "ac6ad60a4068d992494dce19e141691b7e760bd1b64847dbed562b6c72c6a455",
+    "bytes": 25135
+  },
+  "js/classic/lunyu-data.js": {
+    "sha256": "a6c8051091f078b122b6ff7450b66004e6f31c215607f70770c9688b83a1fe1a",
+    "bytes": 134351
+  }
+}

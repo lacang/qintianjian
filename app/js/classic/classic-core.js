@@ -456,7 +456,7 @@ export function feedbackEffect(id) {
     case 'disagree':
       return {
         openLayers: ['dispute', 'commentary'],
-        note: '不认同是正当的。这一层把历代注家的分岔摆出来——你会发现，古人也未必只有一种读法。',
+        note: '不认同是正当的。历代注家在这一点上本来就分岔——你会发现，古人也未必只有一种读法。',
       };
     case 'unsure':
       return {

@@ -205,7 +205,6 @@ async function askReal(question) {
   const warnOn = await ev(`(() => { const w = document.querySelector('#cl-ask-warn'); return w ? w.classList.contains('is-on') : null; })()`);
   return { panelOk, typed, clicked: r, warnOn, result: await ev(ASK_RESULT) };
 }
-
 try {
   sess = await openPage({ chrome, profile, tag: 'accept' });
   // 移动端视口：这是 PWA 的真实使用形态，桌面视口看不出产品问题
@@ -214,332 +213,392 @@ try {
   });
   await gotoApp();
 
-  // 从干净状态开始：任何残留的当日序号都会让「连续抽取不重复」这条无法验证
+  // 从干净状态开始：残留的手记会让「再次遇到时提示上次想法」这条无法验证
   await ev(`(() => { localStorage.clear(); return 'ok'; })()`);
   await gotoApp();
 
+  const VH = 844;
+
   // ══════════════════════════════════════════════════════════════════
-  section('一、三个核心流程（董事长验收标准）');
+  // 一、打开观心：第一屏给全了吗
   // ══════════════════════════════════════════════════════════════════
+  section('一、打开观心：第一屏给全了吗（产品文件「第一阶段」）');
+  const tabOk = await click('.tabbar .tab[data-view="classic"]');
+  await sleep(700);
+  observe('从底部导航进入观心', tabOk === 'ok', tabOk);
 
-  // ---------- 1. 问心 ----------
-  section('1. 问心 —— 失败标准：重复抽取、顺序丢失');
-
-  const emptyAsk = await askReal(null);   // 一个字都不写直接点
-  const emptyWarn = await ev(`(() => {
-    const w = document.querySelector('#cl-ask-warn');
-    let n = null;
-    try { n = JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) {}
-    return { on: !!(w && w.classList.contains('is-on')), text: w ? w.textContent.replace(/\\s+/g, '') : '', n: n && n.n };
-  })()`);
-  await shot('ask-01-空输入点静心一问');
-  observe('空问题点「静心一问」：是否给出提示', emptyWarn.on);
-  observe('空问题点「静心一问」：是否消耗当日序号（不应消耗）', emptyWarn.n === 0 || emptyWarn.n === null, `n=${emptyWarn.n}`);
-  observe('提示是否给出另一条路（今日相遇）', /今日相遇/.test(emptyWarn.text), emptyWarn.text.slice(0, 60));
-  observe('空问题时是否仍然抽出了结果（不应抽）', !emptyAsk.result, emptyAsk.result ? '抽出了 ' + emptyAsk.result.id : '未抽取');
-
-  const A = await askReal('我在犹豫要不要辞掉现在的工作，怕后悔。');
-  await shot('ask-02-写下困惑后的结果');
-  observe('问心第一次抽到', A.result ? A.result.id + '｜' + A.result.title : '无结果');
-
-  const B = await askReal('我和家里人已经三年没说过话了，该不该先低头？');
-  await shot('ask-03-同一天第二次问心');
-  observe('问心同一天第二次抽到', B.result ? B.result.id + '｜' + B.result.title : '无结果');
-  observe('★ 同一天连续两次不重复',
-    !!(A.result && B.result && A.result.id !== B.result.id),
-    `${A.result && A.result.id} vs ${B.result && B.result.id}`);
-
-  const seqBefore = await ev(`(() => { try { return JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) { return 'bad'; } })()`);
-  observe('抽两次后的当日序号状态', JSON.stringify(seqBefore));
-
-  // 退出重进：真实 reload，不是手工改 localStorage
-  await gotoApp();
-  await openPanel('ask');
-  const afterReentryText = await ev(`(() => { const t = document.querySelector('#cl-ask-input'); return t ? String(t.value || '') : 'no-input'; })()`);
-  observe('退出重进后输入框是否残留上次的问题', afterReentryText === '' ? '已清空（每次重新问）' : `残留「${afterReentryText}」`);
-
-  const C = await askReal('第三个问题，验证重进之后会不会从头开始。');
-  await shot('ask-04-退出重进后再问一次');
-  observe('退出重进后第三次抽到', C.result ? C.result.id + '｜' + C.result.title : '无结果');
-  const seqAfter = await ev(`(() => { try { return JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) { return 'bad'; } })()`);
-  observe('重进并再问一次后的当日序号状态', JSON.stringify(seqAfter));
-  observe('★ 退出重进后顺序延续（序号递增，不是回到开头）',
-    !!(seqBefore && seqAfter && typeof seqAfter.n === 'number' && typeof seqBefore.n === 'number' && seqAfter.n === seqBefore.n + 1),
-    `重进前 n=${seqBefore && seqBefore.n}，重进后再问 n=${seqAfter && seqAfter.n}`);
-  const ids3 = [A.result && A.result.id, B.result && B.result.id, C.result && C.result.id].filter(Boolean);
-  observe('★ 三次抽取互不重复', new Set(ids3).size === ids3.length, ids3.join(' / '));
-
-  // ---------- 2. 一念三观 ----------
-  section('2. 一念三观 —— 失败标准：仅仅保证三条内容不同');
-
-  await openPanel('three');
-  await shot('three-01-三观初始');
-  await click('#cl-three-go');
-  await sleep(250);
-  const backs = await ev(`document.querySelectorAll('#cl-body .cl-card3.back').length`);
-  await shot('three-02-洗出三张牌背');
-  observe('洗出牌背数量', backs);
-
-  for (let i = 0; i < 3; i++) { await click(`#cl-body .cl-card3.back[data-i="${i}"]`); await sleep(140); }
-  await sleep(200);
-  const three = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-card3.open')).map(e => {
-    const o = e.querySelector('.cl-original');
-    const g = e.querySelector('.cl-card3-g');
-    const t = e.querySelector('.cl-quote-title');
-    return { group: g ? g.textContent.trim() : '', original: o ? o.textContent.trim() : '', title: t ? t.textContent.trim() : '' };
-  }))()`);
-  await shotFull('three-03-三张全翻开');
-  observe('三张牌各自的原文首句', three.map((x) => x.original.slice(0, 18)).join(' ｜ '));
-  observe('三张牌各自所属思想群', three.map((x) => x.group).join(' ｜ '));
-  observe('★ 三条来自三个不同思想群（分层抽样）',
-    new Set(three.map((x) => x.group)).size === 3,
-    `不同群数 ${new Set(three.map((x) => x.group)).size}`);
-  observe('三条内容互不重复', new Set(three.map((x) => x.original)).size === 3);
-
-  // ---------- 3. 辩一辩 ----------
-  section('3. 辩一辩 —— 失败标准：提前泄露解释、出现正确答案、无法修改立场');
-
-  await openPanel('debate');
-  await sleep(200);
-  await shot('debate-01-辩题列表');
-  const dbList = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-db-item')).map(e => ({
-    id: e.dataset.id, text: e.textContent.replace(/\\s+/g,'').slice(0, 40)
-  })))()`);
-  observe('辩题数量', dbList.length);
-  observe('辩题清单', dbList.map((x) => x.id).join(' '));
-
-  await ev(`(() => { const b = document.querySelector('#cl-body .cl-db-item[data-id="D-01"]'); if (b) b.click(); return 'ok'; })()`);
-  await sleep(300);
-  const before = await ev(`(() => {
+  const first = await ev(`(() => {
     const b = document.querySelector('#cl-body');
+    if (!b) return null;
+    const q = (s) => b.querySelector(s);
+    const inView = (el) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.top < ${VH} && r.bottom > 0; };
+    const o = q('.cl-read-o'), src = q('.cl-read-src'), mod = q('.cl-modern'), think = q('.cl-think'), more = q('.cl-more');
     return {
-      text: b.textContent.replace(/\\s+/g, ''),
-      hasOriginal: !!b.querySelector('.cl-original'),
-      hasQuestion: !!b.querySelector('.cl-db-q2'),
-      stances: Array.from(b.querySelectorAll('.cl-st')).map(e => e.textContent.replace(/\\s+/g,'')),
-      hasCommentary: !!b.querySelector('.cl-layer[data-layer="commentary"]'),
-      hasCanon: !!b.querySelector('.cl-db-canon'),
-      hasLineage: !!b.querySelector('.cl-db-lineage'),
+      original: o ? o.textContent.trim() : '',
+      location: src ? src.textContent.trim() : '',
+      modern: mod ? mod.textContent.trim() : '',
+      think: think ? think.textContent.trim() : '',
+      moreLabel: more ? more.textContent.trim() : '',
+      srcTag: q('.cl-src-tag') ? q('.cl-src-tag').textContent.trim() : '',
+      inView: { original: inView(o), location: inView(src), modern: inView(mod), think: inView(think), more: inView(more) },
+      tabs: [...document.querySelectorAll('#view-classic .cl-tab')].map((t) => t.textContent.trim()),
+      hasFav: !!q('[data-act="fav"]'),
+      fullText: b.textContent.replace(/\\s+/g, ' ').trim(),
     };
   })()`);
-  await shot('debate-02-选立场前');
-  observe('选立场前：是否展示原文', before.hasOriginal);
-  observe('选立场前：是否给出面向用户的问题', before.hasQuestion);
-  observe('选立场前：立场选项', before.stances.join(' / '));
-  observe('★ 选立场前不出现历代注疏', !before.hasCommentary);
-  observe('★ 选立场前不出现「原典实际说了什么」', !before.hasCanon);
-  observe('★ 选立场前不出现「这一路历史上谁走过」', !before.hasLineage);
+  if (!first) throw new Error('观心首页没有渲染出 #cl-body');
 
-  await ev(`(() => { const bs = document.querySelectorAll('#cl-body .cl-st'); if (bs.length) bs[0].click(); return 'ok'; })()`);
-  await sleep(320);
-  const after = await ev(`(() => {
-    const b = document.querySelector('#cl-body');
-    return {
-      text: b.textContent.replace(/\\s+/g, ''),
-      hasCommentary: !!b.querySelector('.cl-layer[data-layer="commentary"]'),
-      hasDispute: !!b.querySelector('.cl-layer[data-layer="dispute"]'),
-      hasCanon: !!b.querySelector('.cl-db-canon'),
-      hasLineage: !!b.querySelector('.cl-db-lineage'),
-      canonText: (b.querySelector('.cl-db-canon') || { textContent: '' }).textContent.replace(/\\s+/g,'').slice(0, 80),
-    };
-  })()`);
-  await shotFull('debate-03-选完立场后的依据');
-  observe('选立场后：展开历代注疏', after.hasCommentary);
-  observe('选立场后：展开注家分歧', after.hasDispute);
-  observe('选立场后：给出「原典实际说了什么」', after.hasCanon, after.canonText);
-  observe('选立场后：给出「这一路历史上谁走过」', after.hasLineage);
-  observe('★ 全程不出现对错判定',
-    !/答对|答错|你选错|你答对|正确答案是|标准答案是/.test(after.text),
-    '扫「答对/答错/你选错/你答对/正确答案是/标准答案是」');
+  observe('第一屏有原文', first.original.length > 0, `「${first.original.slice(0, 22)}…」`);
+  observe('第一屏有出处', first.location.length > 0, first.location);
+  observe('第一屏有现代解释', first.modern.length > 0, `「${first.modern.slice(0, 30)}…」`);
+  observe('第一屏有思考角度', first.think.length > 0, `「${first.think.slice(0, 24)}…」`);
+  observe('第一屏有继续探索入口', first.moreLabel.length > 0, first.moreLabel);
+  observe('★ 原文不用滚动就在首屏', first.inView.original === true);
+  observe('★ 现代解释不用滚动就在首屏', first.inView.modern === true);
+  observe('★ 继续探索入口不用滚动就在首屏', first.inView.more === true);
+  observe('现代解释被标注为编辑撰写、不是古人原意', /不是古人原意|编辑撰写/.test(first.srcTag), first.srcTag);
+  observe('三个入口是「今日 / 困惑 / 手记」', JSON.stringify(first.tabs) === JSON.stringify(['今日', '困惑', '手记']), first.tabs.join('/'));
+  observe('收藏仍可用（旧功能未删）', first.hasFav === true);
 
-  await ev(`(() => { const bs = document.querySelectorAll('#cl-body .cl-st'); if (bs.length > 1) bs[1].click(); return 'ok'; })()`);
-  await sleep(260);
-  const changed = await ev(`(() => {
-    const b = document.querySelector('#cl-body');
-    return { text: b.textContent.replace(/\\s+/g,''), on: Array.from(b.querySelectorAll('.cl-st.on')).map(e => e.textContent.replace(/\\s+/g,'')) };
-  })()`);
-  await shot('debate-04-改主意后');
-  observe('★ 允许改立场，且界面如实记录', /改过主意/.test(changed.text), '当前选中：' + changed.on.join('/'));
-  observe('改主意后未被评价（不出现「前后不一 / 立场不稳 / 你之前说」）',
-    !/前后不一|立场不稳|你之前说/.test(changed.text));
+  // 编辑后台词汇不该出现在用户面前
+  const jargon = ['抽取', '随机', '今日第', '序号', '节点', '数据集', '置信度', 'relation', 'cluster'];
+  const hit = jargon.filter((w) => first.fullText.includes(w));
+  observe('★ 首屏不出现编辑后台词汇', hit.length === 0, hit.join('/'));
+  await shot('打开观心第一屏');
 
   // ══════════════════════════════════════════════════════════════════
-  section('二、辅助检查');
+  // 二、阅读五步
   // ══════════════════════════════════════════════════════════════════
+  section('二、阅读五步：看懂 → 发现 → 探索 → 联系自己 → 留下收获');
 
-  // ---------- 4. 五种反馈 ----------
-  const F = await askReal('我想验证点完反馈会不会把这一条换掉。');
-  const fbBefore = F.result && F.result.id;
-  const fbIds = await ev(`(() => Array.from(document.querySelectorAll('#cl-body .cl-fb-b')).map(b => b.dataset.fb))()`);
-  observe('五种反馈全部呈现', fbIds.length === 5, JSON.stringify(fbIds));
-  let fbChanged = 0;
-  for (const fb of ['agree', 'disagree', 'unsure', 'recall', 'more']) {
-    await ev(`(() => { const b = document.querySelector('#cl-body .cl-fb-b[data-fb="${fb}"]'); if (b) b.click(); return 'ok'; })()`);
-    await sleep(150);
-    const now = await ev(`(() => { const q = document.querySelector('#cl-body .cl-quote'); return q ? q.dataset.id : null; })()`);
-    if (now !== fbBefore) fbChanged++;
-  }
-  await shot('fb-01-点完五种反馈');
-  observe('★ 点完全部五种反馈后当前条目保持不变', fbChanged === 0,
-    `原条目 ${fbBefore}，变化 ${fbChanged} 次`);
-
-  // ---------- 5. 孤立节点 ----------
-  //
-  // 走真实入口：探索面板 → 点 LY-013 → 详情页。
-  // 第一版是直接往 #classic-detail-body 注入 HTML，渲染函数验到了，
-  // 但视图没切过去，截出来还是问心面板——孤立节点根本没出现在画面里。
-  // 验收截图必须走用户真正走的那条路。
-  await openPanel('explore');
-  const orphanClick = await click('.cl-node[data-act="open"][data-id="LY-013"]');
-  await sleep(520);
-  observe('从探索面板进入 LY-013 详情页（真实入口）', orphanClick === 'ok', orphanClick);
-  const orphan = await ev(`(() => {
-    const b = document.querySelector('#classic-detail-body');
-    return {
-      text: b.textContent.replace(/\\s+/g, ''),
-      entries: Array.from(b.querySelectorAll('.cl-entry')).map(e => ({ kind: e.dataset.kind, head: (e.querySelector('.cl-entry-h') || {}).textContent || '' })),
-    };
-  })()`);
-  await shotFull('orphan-01-孤立节点LY-013');
-  observe('孤立节点的入口及其性质', orphan.entries.map((e) => `${e.kind}｜${e.head.replace(/\s+/g, '')}`).join(' ; '));
-  const topicEmpty = /暂无主题推荐/.test(orphan.text);
-  const topicFilled = orphan.entries.some((e) => e.kind === 'topic');
-  // 两种结果都合格：有内容就给「同一主题」入口并标注非思想关系；没内容就如实说暂无。
-  // 不合格的只有第三种——既没推荐也没说明，那才是编造或漏做。
-  observe('★ 孤立节点的主题入口有据可查（有内容给入口，无内容如实说明）', topicEmpty || topicFilled,
-    topicEmpty ? '显示「暂无主题推荐」（本节点所属主题下没有其他内容）'
-      : (topicFilled ? '给出「同一主题」入口，并标注「主题推荐，非思想关系」' : '既无推荐也无说明——这才是问题'));
-
-  // ══════════════════════════════════════════════════════════════════
-  section('三、异常状态与交互反馈');
-  // ══════════════════════════════════════════════════════════════════
-
-  // 6a. 空输入
-  await ev(`(() => { localStorage.removeItem('qintian.classic.askseq'); return 'ok'; })()`);
-  const empty2 = await askReal('');
-  await shot('err-01-空输入');
-  observe('空字符串输入点静心一问：不抽取', !empty2.result,
-    `panel=${empty2.panelOk} typed=${JSON.stringify(empty2.typed)} clicked=${empty2.clicked} warn=${empty2.warnOn} result=${empty2.result && empty2.result.id}`);
-
-  // 6b. 只有空白
-  const blank = await askReal('   \n  \t ');
-  observe('纯空白输入按「没写」处理（不抽取）', !blank.result,
-    `panel=${blank.panelOk} typed=${JSON.stringify(blank.typed)} clicked=${blank.clicked} warn=${blank.warnOn} result=${blank.result && blank.result.id}`);
-
-  // 6c. 超长输入
-  const longQ = '我'.repeat(2000);
-  const longRes = await askReal(longQ);
-  await shot('err-02-超长输入');
-  observe('2000 字输入是否崩溃', longRes.result ? '正常抽出 ' + longRes.result.id : '未抽出');
-  observe('2000 字输入后页面是否仍可读',
-    await ev(`document.querySelector('#cl-body').textContent.trim().length > 20`));
-
-  // 6d. 坏 localStorage
-  await ev(`(() => { localStorage.setItem('qintian.classic.askseq', '{这不是JSON'); return 'ok'; })()`);
-  const bad = await askReal('序号数据被写坏了，还能不能正常用。');
-  await shot('err-03-当日序号被写坏后');
-  observe('当日序号是坏 JSON 时是否仍能抽取', !!bad.result, bad.result ? bad.result.id : '未抽出');
-
-  // 6e. 跨日重洗
-  await ev(`(() => { localStorage.setItem('qintian.classic.askseq', JSON.stringify({ d: '1999-01-01', n: 17 })); return 'ok'; })()`);
-  const crossDay = await askReal('换一天会怎么表现。');
-  const crossSeq = await ev(`(() => { try { return JSON.parse(localStorage.getItem('qintian.classic.askseq') || 'null'); } catch (e) { return 'bad'; } })()`);
-  observe('旧日期序号（1999-01-01 n=17）跨日后的处理', JSON.stringify(crossSeq),
-    crossDay.result ? '抽出 ' + crossDay.result.id : '未抽出');
-
-  // 6f. 不存在的内容 id
-  const notFound = await ev(`(async () => {
-    const m = await import('./js/classic/classicview.js?v=122');
-    const box = document.querySelector('#classic-detail-body');
-    box.innerHTML = m.renderClassicDetail('LY-999');
-    const t = box.textContent.replace(/\\s+/g, '');
-    return { len: t.length, text: t.slice(0, 120), layers: box.querySelectorAll('.cl-layer').length };
-  })()`);
-  await shot('err-04-不存在的内容id');
-  observe('渲染不存在的内容 id（LY-999）', `正文 ${notFound.len} 字 / ${notFound.layers} 层`,
-    notFound.text || '（空白）', null);
-  observe('★ 不存在的内容 id 不猜身份、不白屏', notFound.layers === 0 && notFound.len > 0);
-
-  // 6g. undefined id
-  const undef = await ev(`(async () => {
-    const m = await import('./js/classic/classicview.js?v=122');
-    const box = document.querySelector('#classic-detail-body');
-    try { box.innerHTML = m.renderClassicDetail(undefined); } catch (e) { return { threw: true, msg: String(e.message || e) }; }
-    const t = box.textContent.replace(/\\s+/g, '');
-    return { threw: false, len: t.length, text: t.slice(0, 120), layers: box.querySelectorAll('.cl-layer').length };
-  })()`);
-  observe('渲染 undefined id 的处理', undef.threw ? '抛错（显式失败）' : `正文 ${undef.len} 字 / ${undef.layers} 层`,
-    undef.threw ? undef.msg : (undef.text || '（空白）'), null);
-
-  // 6h. 缺失 display_class 的关系不得出现在界面
-  const missing = await ev(`(async () => {
-    const core = await import('./js/classic/classic-core.js?v=122');
-    const bad = core.relationBadge({ id: 'X-TEST', status: 'verified' });
-    const bad2 = core.relationBadge({ id: 'Y-TEST', status: 'verified', display_class: 'something_else' });
-    return { bad, bad2 };
-  })()`);
-  observe('缺 display_class 的关系的展示判定', JSON.stringify(missing.bad));
-  observe('非法 display_class 的关系的展示判定', JSON.stringify(missing.bad2));
-  observe('★ 两者都不会被标成「原典有据」',
-    !/原典有据/.test((missing.bad && missing.bad.badge) || '') && !/原典有据/.test((missing.bad2 && missing.bad2.badge) || ''));
-
-  // ══════════════════════════════════════════════════════════════════
-  section('四、26 个思想节点完整可达');
-  // ══════════════════════════════════════════════════════════════════
-
-  const nodes = await ev(`(async () => {
-    const core = await import('./js/classic/classic-core.js?v=122');
-    return core.allNodes().map(n => n.id);
-  })()`);
-  observe('内容库节点总数', nodes.length);
-
-  const reach = [];
-  for (const id of nodes) {
-    const r = await ev(`(async () => {
-      const m = await import('./js/classic/classicview.js?v=122');
-      const box = document.querySelector('#classic-detail-body');
-      try { box.innerHTML = m.renderClassicDetail(${JSON.stringify(id)}); }
-      catch (e) { return { id: ${JSON.stringify(id)}, threw: String(e.message || e) }; }
-      const t = box.textContent.replace(/\\s+/g, '');
-      return {
-        id: ${JSON.stringify(id)},
-        layers: Array.from(box.querySelectorAll('.cl-layer')).map(e => e.dataset.layer),
-        rels: box.querySelectorAll('.cl-rel').length,
-        entries: box.querySelectorAll('.cl-entry').length,
-        len: t.length,
-        emptyLayer: Array.from(box.querySelectorAll('.cl-layer')).filter(e => e.textContent.replace(/\\s+/g,'').length < 8).map(e => e.dataset.layer),
-      };
-    })()`);
-    reach.push(r);
-    await sleep(20);
-  }
-  const unreachable = reach.filter((r) => r.threw || !r.layers || r.layers.length !== 8 || r.len < 80);
-  const emptyLayers = reach.filter((r) => (r.emptyLayer || []).length > 0);
-  observe('每个节点都能渲染出八层', unreachable.length === 0,
-    unreachable.length ? unreachable.map((b) => `${b.id}:${b.threw || (b.layers || []).length + '层/' + b.len + '字'}`).join(' | ') : `${reach.length}/${reach.length} 均 8 层`);
-  observe('没有空层（某层渲染成空白）', emptyLayers.length === 0,
-    emptyLayers.length ? emptyLayers.map((r) => `${r.id}:${r.emptyLayer.join(',')}`).join(' | ') : '无空层');
-
-  // 逐节点表格写进 report.json，供董事长抽查任意一条
-  fs.writeFileSync(path.join(OUT, 'nodes.json'), JSON.stringify(reach, null, 2));
-
-  // 抽样截图：首条、一条有关系多的、一条孤立的、末条
-  const rich = reach.slice().sort((a, b) => b.rels - a.rels)[0];
-  for (const pick of [reach[0], rich, reach.find((r) => r.rels === 0) || reach[3], reach[reach.length - 1]]) {
-    if (!pick) continue;
-    await ev(`(async () => {
-      const m = await import('./js/classic/classicview.js?v=122');
-      document.querySelector('#classic-detail-body').innerHTML = m.renderClassicDetail(${JSON.stringify(pick.id)});
+  const stepClick = async (n) => {
+    const r = await ev(`(() => {
+      const b = document.querySelector('#cl-body [data-act="step"][data-step="${n}"]');
+      if (!b) return 'no-btn';
+      b.click();
       return 'ok';
     })()`);
-    await sleep(250);
-    await shotFull(`node-${pick.id}`);
-  }
+    await sleep(650);
+    return r;
+  };
+
+  // 第 2 步
+  const s2 = await stepClick(2);
+  observe('第 1 步可以往下展开', s2 === 'ok', s2);
+  const d2 = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const g = (s) => { const e = b.querySelector(s); return e ? e.textContent.replace(/\\s+/g, ' ').trim() : ''; };
+    return { block: !!b.querySelector('.cl-step2'), ctx: g('.cl-step2 .cl-ctx, .cl-step2 .cl-modern, .cl-step2 p'), all: g('.cl-step2') };
+  })()`);
+  observe('第 2 步给出「这句话是在什么场合说的」', d2.all.includes('场合') || d2.all.length > 40, d2.all.slice(0, 40));
+  await shot('第2步发现');
+
+  // 第 3 步
+  const s3 = await stepClick(3);
+  observe('第 2 步可以继续往下展开', s3 === 'ok', s3);
+  const d3 = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const t = (s) => { const e = b.querySelector(s); return e ? e.textContent.replace(/\\s+/g, ' ').trim() : ''; };
+    return {
+      hasStep3: !!b.querySelector('.cl-step3'),
+      hasOpen: !!b.querySelector('[data-act="open"]'),
+      all: t('.cl-step3'),
+    };
+  })()`);
+  observe('第 3 步有「历代注家怎么解」', /注家|注疏|历代/.test(d3.all), d3.all.slice(0, 36));
+  observe('第 3 步有「完整资料」入口（原典八层仍可达）', d3.hasOpen === true);
+  await shot('第3步探索');
+
+  // 「我怎么看」：就地展开，不跳页
+  const dbOpen = await ev(`(() => {
+    const b = document.querySelector('#cl-body [data-act="db-inline"]');
+    if (!b) return { found: false };
+    b.click();
+    return { found: true, label: b.textContent.trim() };
+  })()`);
+  await sleep(550);
+  const dbIn = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const secs = [...b.querySelectorAll('.cl-db-in .cl-db-sec-h')].map((e) => e.textContent.trim());
+    const st = [...b.querySelectorAll('.cl-db-in .cl-st')].map((e) => e.textContent.trim());
+    const detailOn = !!document.querySelector('#view-classic-detail') && document.querySelector('#view-classic-detail').classList.contains('on');
+    return {
+      secs, st,
+      stillHere: !detailOn && !!b.querySelector('.cl-read'),
+      hasDiffer: !!b.querySelector('#cl-differ'),
+    };
+  })()`);
+  observe('第 3 步有「我怎么看」入口', dbOpen.found === true, dbOpen.label || '');
+  observe('★ 点开后不跳页，仍在这一条内容里', dbIn.stillHere === true);
+  observe('四段齐全（原文在说什么/历代注家/我有不同看法）',
+    dbIn.secs.some((h) => /原文在说什么/.test(h)) && dbIn.secs.some((h) => /历代注家/.test(h)) && dbIn.secs.some((h) => /我有不同看法/.test(h)),
+    dbIn.secs.join(' / '));
+  observe('★ 列的是多种读法，不是正反两方', dbIn.st.length >= 3 && !/正方|反方/.test(dbIn.st.join('')), `读法 ${dbIn.st.length} 种`);
+  observe('★ 不选任何读法也能写自己的理由', dbIn.hasDiffer === true);
+  await shot('我怎么看-展开');
+
+  // 选一种读法，看是不是「对错判定」
+  await ev(`(() => { const b = document.querySelector('#cl-body .cl-db-in .cl-st'); if (b) b.click(); return 'ok'; })()`);
+  await sleep(450);
+  const dbChosen = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const mine = b.querySelector('.cl-db-mine');
+    return {
+      head: (b.querySelector('.cl-db-mine .cl-db-sec-h') || { textContent: '' }).textContent.trim(),
+      text: mine ? mine.textContent.replace(/\s+/g, ' ').trim() : '',
+      alt: (b.querySelector('.cl-db-alt-h') || { textContent: '' }).textContent.trim(),
+    };
+  })()`);
+  observe('选了之后显示「你更接近哪一种理解」', /你更接近/.test(dbChosen.head), dbChosen.head);
+  observe('★ 明确写着这不是对错判定', /不是对错判定/.test(dbChosen.text), dbChosen.text.slice(-30));
+  observe('另一种读法被标为「如果你站在另一边」', /另一边/.test(dbChosen.alt), dbChosen.alt);
+  await shot('我怎么看-更接近哪一种');
+
+  // 第 4 步
+  const s4 = await stepClick(4);
+  observe('第 3 步可以继续往下展开', s4 === 'ok', s4);
+  const d4 = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const fb = [...b.querySelectorAll('[data-act="fb"]')].map((e) => e.textContent.trim());
+    return { fb, hasFoot: !!b.querySelector('.cl-step4 .cl-foot') };
+  })()`);
+  observe('★ 五种反馈全部在（触动/了解/不同看法/没想明白/留下想法）', d4.fb.length === 5, d4.fb.join(' / '));
+  observe('★ 明确写了「可以不选」', d4.hasFoot === true);
+  await shot('第4步联系自己');
+
+  // 点「我有不同看法」，看是否有即时回应
+  const fbClick = await ev(`(() => {
+    const b = document.querySelector('#cl-body [data-act="fb"][data-fb="disagree"]');
+    if (!b) return 'no-btn';
+    b.click();
+    return 'ok';
+  })()`);
+  await sleep(500);
+  const fbEcho = await ev(`(() => {
+    const e = document.querySelector('#cl-body .cl-fb-echo');
+    if (!e) return null;
+    return { text: e.textContent.replace(/\\s+/g, ' ').trim(), btns: [...e.querySelectorAll('button')].map((x) => x.textContent.trim()) };
+  })()`);
+  observe('★ 表达「有不同看法」后立刻得到回应', !!fbEcho, fbEcho ? fbEcho.text.slice(0, 40) : '没有回应');
+  observe('回应里给了下一步（不是一句「收到」）', !!(fbEcho && fbEcho.btns.length), fbEcho ? fbEcho.btns.join(' / ') : '');
+  observe('★ 回应文案不含「层」这类内部术语', !(fbEcho && /这一层|第.层|层数/.test(fbEcho.text)), fbEcho ? fbEcho.text : '');
+  await shot('表达不同看法后的回应');
+
+  // 第 5 步
+  const s5 = await stepClick(5);
+  observe('第 4 步可以继续往下展开', s5 === 'ok', s5);
+  const hasInput = await ev(`!!document.querySelector('#cl-journal-input')`);
+  observe('第 5 步有手记输入框', hasInput === true);
+  await shot('第5步留下收获');
+
+  const NOTE = '我一直以为克己是压抑自己。原来还有另一种读法。';
+  await ev(`(() => { const t = document.querySelector('#cl-journal-input'); if (!t) return 'no-input'; t.value = ${JSON.stringify(NOTE)}; return 'ok'; })()`);
+  const saveClick = await ev(`(() => { const b = document.querySelector('#cl-body [data-act="journal-save"]'); if (!b) return 'no-btn'; b.click(); return 'ok'; })()`);
+  await sleep(800);
+  observe('点「存进手记」', saveClick === 'ok', saveClick);
+
+  const afterSave = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const end = b.querySelector('.cl-end');
+    return {
+      hasEnd: !!end,
+      endText: end ? end.textContent.replace(/\\s+/g, ' ').trim() : '',
+      inputLeft: !!b.querySelector('#cl-journal-input'),
+      noteShown: end ? end.textContent.includes('我一直以为克己是压抑自己') : false,
+      stored: (() => { try { const j = JSON.parse(localStorage.getItem('qintian.classic.journal') || '{}'); const k = Object.keys(j)[0]; return k ? j[k].length : 0; } catch { return -1; } })(),
+    };
+  })()`);
+  observe('★ 存完自动进入结束态（不是停在输入框）', afterSave.hasEnd === true);
+  observe('★ 结束态把刚写的那句话显示出来', afterSave.noteShown === true);
+  observe('★ 存完后不再留着空输入框等人写第二遍', afterSave.inputLeft === false);
+  observe('手记真的写进了本地存储', afterSave.stored === 1, `条数 ${afterSave.stored}`);
+  observe('结束态给了下一步（不是「已完成」就没了）', /为难|手记|主题|下一条/.test(afterSave.endText), afterSave.endText.slice(0, 40));
+  await shot('读完之后');
 
   // ══════════════════════════════════════════════════════════════════
-  // 异常收集
+  // 三、思想手记
   // ══════════════════════════════════════════════════════════════════
-  section('五、运行期异常');
+  section('三、思想手记（产品文件称「最重要的长期功能」）');
+
+  const notesOk = await openPanel('notes');
+  observe('能进入手记页', notesOk === 'ok', notesOk);
+  const notesView = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const rows = [...b.querySelectorAll('.cl-jrow')];
+    return {
+      count: rows.length,
+      text: rows.length ? rows[0].textContent.replace(/\\s+/g, ' ').trim() : '',
+      intro: (b.querySelector('.cl-themes-intro') || {}).textContent || '',
+    };
+  })()`);
+  observe('★ 手记页能看到刚写的那条', notesView.count >= 1, `${notesView.count} 条：${notesView.text.slice(0, 40)}`);
+  observe('手记页说明了它是什么', notesView.intro.length > 0, notesView.intro.trim());
+  await shot('手记页');
+
+  // 回到今日，确认「再次遇到时提示上次想法」
+  const backToday = await openPanel('today');
+  observe('能回到今日', backToday === 'ok', backToday);
+  const echo = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const e = b.querySelector('.cl-echo');
+    return { has: !!e, text: e ? e.textContent.replace(/\\s+/g, ' ').trim() : '', hasOriginal: !!b.querySelector('.cl-read-o') };
+  })()`);
+  observe('★ 再次遇到同一条时，提示「你曾经读过」', echo.has === true, echo.text.slice(0, 40));
+  observe('★ 提示里带着上次写的话', /我一直以为克己/.test(echo.text), echo.text.slice(0, 60));
+  observe('旧记录没有挤掉原文（原文仍在）', echo.hasOriginal === true);
+  await shot('再次遇到同一条');
+
+  // ══════════════════════════════════════════════════════════════════
+  // 四、困惑探索
+  // ══════════════════════════════════════════════════════════════════
+  section('四、困惑探索：8 个现实问题入口，零输入可用');
+
+  const themesOk = await openPanel('themes');
+  observe('能进入困惑页', themesOk === 'ok', themesOk);
+  const themesView = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const ts = [...b.querySelectorAll('[data-act="theme"]')].map((e) => e.textContent.replace(/\\s+/g, ' ').trim());
+    return { count: ts.length, names: ts, intro: (b.querySelector('.cl-themes-intro') || {}).textContent || '' };
+  })()`);
+  observe('★ 8 个现实问题入口都在', themesView.count === 8, themesView.names.join(' / '));
+  observe('★ 不需要写任何东西就能用（页面没有输入框）', !(await ev(`!!document.querySelector('#cl-body textarea, #cl-body input')`)));
+  await shot('困惑入口');
+
+  // 逐个点开，看每个主题下有没有内容
+  const themeFill = [];
+  for (const id of ['work', 'people', 'self', 'desire', 'direction', 'mood', 'principle', 'meaning']) {
+    await ev(`(() => {
+      const back = document.querySelector('#cl-body [data-act="back-themes"]');
+      if (back) back.click();
+      return 'ok';
+    })()`);
+    await sleep(200);
+    const opened = await ev(`(() => {
+      const b = document.querySelector('#cl-body [data-act="theme"][data-id="${id}"]');
+      if (!b) return 'no-btn';
+      b.click();
+      return 'ok';
+    })()`);
+    await sleep(350);
+    const n = await ev(`document.querySelectorAll('#cl-body .cl-tp-item').length`);
+    themeFill.push({ id, opened, n });
+  }
+  observe('★ 每个主题下都有可读条目（没有空入口）', themeFill.every((t) => t.n > 0), themeFill.map((t) => `${t.id}:${t.n}`).join(' '));
+
+  // 人工编排：顺序、理由、关联类型、初读建议
+  const seqAudit = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const items = [...b.querySelectorAll('.cl-tp-item')];
+    return {
+      n: items.length,
+      nums: items.map((e) => (e.querySelector('.cl-tp-item-n') || { textContent: '' }).textContent.trim()),
+      whys: items.filter((e) => (e.querySelector('.cl-tp-item-w') || { textContent: '' }).textContent.trim().length > 8).length,
+      tags: items.filter((e) => e.querySelectorAll('.cl-tp-item-b i').length === 2).length,
+      path: (b.querySelector('.cl-tp-path') || { textContent: '' }).textContent.trim(),
+    };
+  })()`);
+  observe('★ 主题内容带推荐顺序', seqAudit.nums.join(',') === Array.from({ length: seqAudit.n }, (_, i) => String(i + 1)).join(','), seqAudit.nums.join(','));
+  observe('★ 每一条都有推荐理由', seqAudit.whys === seqAudit.n, `${seqAudit.whys}/${seqAudit.n}`);
+  observe('★ 每一条都标了关联类型与是否适合初读', seqAudit.tags === seqAudit.n, `${seqAudit.tags}/${seqAudit.n}`);
+  observe('主题写明了阅读路径', /阅读路径/.test(seqAudit.path), seqAudit.path.slice(0, 40));
+  observe('主题页说明了「同主题≠原典关系」', /不代表|不是原典/.test(await ev(`(document.querySelector('#cl-body .cl-tp-note')||{}).textContent||''`)));
+  await shot('主题详情');
+
+  const intoRead = await ev(`(() => {
+    const b = document.querySelector('#cl-body .cl-tp-item');
+    if (!b) return 'no-item';
+    b.click();
+    return 'ok';
+  })()`);
+  await sleep(600);
+  const readFromTheme = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    const o = b.querySelector('.cl-read-o');
+    return { hasOriginal: !!o, original: o ? o.textContent.trim().slice(0, 24) : '', step1Only: !b.querySelector('.cl-step4') };
+  })()`);
+  observe('★ 从主题点进去能直接开始读一条', intoRead === 'ok' && readFromTheme.hasOriginal, readFromTheme.original);
+  observe('从主题进入时回到第 1 步（不是接着上一条的进度）', readFromTheme.step1Only === true);
+  await shot('从主题开始读');
+
+  // ══════════════════════════════════════════════════════════════════
+  // 五、异常与边界
+  // ══════════════════════════════════════════════════════════════════
+  section('五、异常与边界：显式失败，不猜一个看起来合理的结果');
+
+  // 空手记
+  await openPanel('today');
+  await stepClick(2); await stepClick(3); await stepClick(4); await stepClick(5);
+  const emptySave = await ev(`(() => {
+    const t = document.querySelector('#cl-journal-input');
+    if (!t) return { found: false };
+    t.value = '   ';
+    const b = document.querySelector('#cl-body [data-act="journal-save"]');
+    if (!b) return { found: true, btn: 'no-btn' };
+    b.click();
+    return { found: true, btn: 'ok' };
+  })()`);
+  await sleep(400);
+  const emptyAfter = await ev(`(() => {
+    const toastEl = document.querySelector('#toast');
+    const j = JSON.parse(localStorage.getItem('qintian.classic.journal') || '{}');
+    const total = Object.values(j).reduce((a, b) => a + b.length, 0);
+    return { toast: toastEl ? toastEl.textContent.trim() : '', total };
+  })()`);
+  observe('空手记不会存成一条空记录', emptyAfter.total === 1, `总条数 ${emptyAfter.total}`);
+  observe('空手记给出提示而不是静默', emptyAfter.toast.length > 0, emptyAfter.toast);
+  await shot('空手记');
+
+  // 坏 localStorage
+  await ev(`(() => { localStorage.setItem('qintian.classic.journal', '{{{坏数据'); return 'ok'; })()`);
+  await gotoApp();
+  await click('.tabbar .tab[data-view="classic"]');
+  await sleep(700);
+  const broken = await ev(`(() => {
+    const b = document.querySelector('#cl-body');
+    return { rendered: !!b && b.textContent.trim().length > 20, hasOriginal: !!(b && b.querySelector('.cl-read-o')) };
+  })()`);
+  observe('坏 localStorage 下页面仍能打开', broken.rendered === true);
+  observe('坏数据下不崩、原文照常显示', broken.hasOriginal === true);
+  await shot('坏存储');
+  await ev(`(() => { localStorage.removeItem('qintian.classic.journal'); return 'ok'; })()`);
+
+  // 不存在的内容 id
+  await ev(`(() => { location.hash = ''; return 'ok'; })()`);
+  const badId = await ev(`(() => {
+    try {
+      document.dispatchEvent(new CustomEvent('qintian:classic-goto', { detail: { view: 'classic-detail', id: 'LY-999' } }));
+      return 'dispatched';
+    } catch (e) { return 'threw: ' + e.message; }
+  })()`);
+  await sleep(600);
+  const badIdView = await ev(`(() => {
+    const d = document.querySelector('#classic-detail-body');
+    const c = document.querySelector('#cl-body');
+    return { detail: d ? d.textContent.replace(/\\s+/g, ' ').trim().slice(0, 60) : null, classicAlive: !!c && c.textContent.trim().length > 20 };
+  })()`);
+  observe('不存在的内容 id 不抛异常', badId === 'dispatched', badId);
+  observe('不存在的内容 id 时观心页面仍可用', badIdView.classicAlive === true, badIdView.detail || '');
+  await shot('不存在的内容');
+
+  // ══════════════════════════════════════════════════════════════════
+  // 六、正反馈六维
+  // ══════════════════════════════════════════════════════════════════
+  section('六、六维正反馈自查（产品文件检查表）');
+
+  // 六维不重新抓一遍 DOM 来凑答案——上面每一步都留下了真实观察，
+  // 这里只做汇总。重新抓一次只会抓到「刚刷新、还在第 1 步」的空页面，
+  // 那不是产品没做到，是探针看错了地方。
+  observe('① 被理解：打开就有现代解释 + 思考角度', first.modern.length > 0 && first.think.length > 0, `解读 ${first.modern.length} 字 / 思考 ${first.think.length} 字`);
+  observe('② 发现新东西：给出场合、易读错处、历代注家', d2.all.length > 0 && /注家|注疏|历代/.test(d3.all), `第2步 ${d2.all.length} 字 / 第3步 ${d3.all.length} 字`);
+  observe('③ 想法更清晰：能写下自己的话并回看', notesView.count >= 1, `手记 ${notesView.count} 条`);
+  observe('④ 表达后有回应：反馈立刻得到回应与下一步', !!fbEcho && fbEcho.btns.length > 0, fbEcho ? fbEcho.btns.join(' / ') : '');
+  observe('⑤ 带走收获：读完有结束、有下一步', /读完了/.test(afterSave.endText), afterSave.endText.slice(0, 30));
+  observe('⑥ 回来有新理解：再次遇到时提示上次想法', echo.has === true, echo.text.slice(0, 30));
+
+  // ══════════════════════════════════════════════════════════════════
+  // 七、运行期异常
+  // ══════════════════════════════════════════════════════════════════
+  section('七、运行期异常');
   observe('未捕获异常数', sess.exceptions.length, sess.exceptions.map((e) => e.text).slice(0, 3).join(' | '));
   const realErrors = sess.consoleErrors.filter((t) => !/favicon/i.test(t));
   observe('console.error 数', realErrors.length, realErrors.slice(0, 3).join(' | '));
