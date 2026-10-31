@@ -37,11 +37,31 @@ import { fileURLToPath } from 'node:url';
 import { startStaticServer } from './lib/static-server.mjs';
 import { findChrome, parseArgs } from './lib/browser.mjs';
 import { openPage } from './lib/cdp.mjs';
+import { execSync } from 'node:child_process';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(path.join(HERE, '..'));
 const APP = path.join(ROOT, 'app');
 const { has, opt } = parseArgs(process.argv.slice(2));
+
+// 版本号与提交号必须从真实文件读，绝不写死。
+// 2026-10-31 发版后跑本脚本，report 里仍写着 v122 —— 因为这一行原来硬编码了字符串。
+// 归档证据标错版本，比没有证据更糟：它看起来像证据。
+function readAppVersion() {
+  try {
+    const m = fs.readFileSync(path.join(APP, 'sw.js'), 'utf8').match(/qintian-v(\d+)/);
+    return m ? `v${m[1]}` : 'unknown';
+  } catch { return 'unknown'; }
+}
+function readGitHead() {
+  try {
+    const head = execSync('git rev-parse --short HEAD', { cwd: ROOT, encoding: 'utf8' }).trim();
+    const dirty = execSync('git status --porcelain', { cwd: ROOT, encoding: 'utf8' }).trim();
+    return { head, dirty: dirty.length > 0 };
+  } catch { return { head: 'unknown', dirty: null }; }
+}
+const APP_VERSION = readAppVersion();
+const GIT = readGitHead();
 
 const chrome = findChrome();
 if (!chrome) {
@@ -538,14 +558,15 @@ try {
 fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify({
   generated_at: new Date().toISOString(),
   viewport: '390x844 @2x（移动端）',
-  app_version: 'v122',
+  app_version: APP_VERSION,
+  git: GIT,
   observations: steps,
 }, null, 2));
 
 const md = [];
 md.push(`# 观心 P0 体验记录（${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}）`);
 md.push('');
-md.push('- 版本：v122（未提交、未推送、未部署）');
+md.push(`- 版本：${APP_VERSION}（工作区 commit ${GIT.head}${GIT.dirty === true ? '，**有未提交改动**' : GIT.dirty === false ? '，工作区干净' : ''}）`);
 md.push('- 视口：390×844 @2x（移动端真实形态）');
 md.push('- 方式：真实浏览器、真实点击、真实 localStorage，未 pin 任何序号');
 md.push('- 说明：本文件只记录**实际观察到的行为**，通过与否由董事长判定');
