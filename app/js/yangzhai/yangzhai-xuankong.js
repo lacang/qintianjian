@@ -12,7 +12,7 @@
  */
 import {
   chartFor, periodOfYear, mountainsAt, starLuckOf,
-} from '../../vendor/xuankong-core.js?v=123';
+} from '../../vendor/xuankong-core.js?v=124';
 
 /* 九宫格 index（罗盘固定、北向上）→ 宫 key；4=中宫。与 yangzhai-judge.js 完全一致 */
 const CELL_KEY = ['qian', 'kan', 'gen', 'dui', 'center', 'zhen', 'kun', 'li', 'xun'];

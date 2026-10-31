@@ -3,10 +3,10 @@
 // 行星由 astronomy-engine（liuyao-core 打包）实时计算；3D 用 three.js r160（MIT，本地内置、离线）。
 // 单指拖拽旋转、滚轮/双指缩放；点天体名出数据卡；顶部时间条/播放可快进，直观看到每颗星在球面上运行。
 import * as THREE from '../vendor/three/three.module.js';
-import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=123';
-import { getPlace } from './geo.js?v=123';
-import { $, nowDate, pad } from './state.js?v=123';
-import { STARS3 } from './stars.js?v=123';
+import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=124';
+import { getPlace } from './geo.js?v=124';
+import { $, nowDate, pad } from './state.js?v=124';
+import { STARS3 } from './stars.js?v=124';
 
 const R = 10;                         // 天球半径
 const D2R = Math.PI / 180;

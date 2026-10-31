@@ -1,11 +1,11 @@
 // 问事读法视图：按"现代人的问题"分八域，古法用神与典籍原文对照。
 // 吉凶倾向在 verdict.js 的「古法直断」卡里给；这里是逐条依据库。
-import { $, current, copyText } from './state.js?v=123';
+import { $, current, copyText } from './state.js?v=124';
 import {
   listReadingDomains,
   getReadingDomain,
   analyzeNajia,
-} from '../vendor/liuyao-core.js?v=123';
+} from '../vendor/liuyao-core.js?v=124';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"]/g, (c) => (

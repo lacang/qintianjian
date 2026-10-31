@@ -1,15 +1,15 @@
 // 奇门遁甲视图：指定时刻 时家·转盘·拆补 局（只排事实，不做格局吉凶）
 // 统一北京时间；时刻可由「时间条」或复现码覆盖。
 // v55：九宫按卦五行分层底色、加方位标注、值符值使/空亡马星强化、补图例与典籍依据。
-import { paiQiMen } from '../vendor/liuyao-core.js?v=123';
-import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=123';
-import { resolveCastDate, nowDate, pad, toSec } from './state.js?v=123';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=123';
-import { QM_PALACE_DIR, wxKey } from './classical.js?v=123';
-import { guideHTML, T } from './tipview.js?v=123';
+import { paiQiMen } from '../vendor/liuyao-core.js?v=124';
+import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=124';
+import { resolveCastDate, nowDate, pad, toSec } from './state.js?v=124';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=124';
+import { QM_PALACE_DIR, wxKey } from './classical.js?v=124';
+import { guideHTML, T } from './tipview.js?v=124';
 import {
   qmFuFan, qmFind, QM_STEPS, QM_YONGSHEN, QM_FUFAN_QUOTE,
-} from './reading.js?v=123';
+} from './reading.js?v=124';
 
 export function currentQiMen(date = nowDate()) {
   const d = resolveCastDate(date); // 北京时间
