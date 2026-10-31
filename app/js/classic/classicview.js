@@ -26,7 +26,7 @@ import {
   FEEDBACK, feedbackEffect, topicsOf,
   debateList, getDebate, debateFor, stanceOf, debateAfterword,
 } from './classic-core.js';
-import { $, $$, toast } from '../state.js?v=124';
+import { $, $$, toast } from '../state.js?v=125';
 
 const FAV_KEY = 'qintian.classic.fav';
 const SEQ_KEY = 'qintian.classic.askseq';

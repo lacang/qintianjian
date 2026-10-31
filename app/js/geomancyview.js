@@ -10,7 +10,7 @@
 //    Martin of Spain《De geomantia》底本的系统性异文并列存档、绝不合成（见页底「流派」）。
 //  - 象征义属地占公有领域传统（Agrippa 1533 / Cattan 1591 Turner 英译本 / Ibn Khaldun 1377），
 //    现代整理本仅作编排参考。不拿现代流行网站规则冒充古原典。
-import { $, escapeHtml, toast } from './state.js?v=124';
+import { $, escapeHtml, toast } from './state.js?v=125';
 
 /* ============================ 16 符数据 ============================
  * rows = [火, 风, 水, 土]，自上而下；1=单点(奇/阳)，2=双点(偶/阴)。

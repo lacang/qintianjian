@@ -1,10 +1,10 @@
 // 小六壬 · 掐指课：以农历月、日、时辰三数顺数六宫，取落宫断吉凶。
 // 底本：民间通行本《小六壬》（旧题诸葛武侯《马前课》系统，属掌诀，无宋以前官定底本）。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧并列，不合成。
-import { $, nowDate, fmtMoment } from './state.js?v=124';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=124';
-import { getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=124';
-import { T } from './tipview.js?v=124';
+import { $, nowDate, fmtMoment } from './state.js?v=125';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=125';
+import { getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=125';
+import { T } from './tipview.js?v=125';
 
 const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 

@@ -3,7 +3,7 @@
 // 出处：NOAA Global Monitoring Division 太阳计算器算法（NOAA Solar Calculator），
 // 系 Meeus《Astronomical Algorithms》低阶展开的通行工程版本，误差约 ±1 分钟内（对命理时刻判定足够）。
 // v111：观测地不再写死沈阳 —— 优先用调用方传入的经纬，否则取"当前地点"（geo.js，定位或手选城市）
-import { getPlace } from './geo.js?v=124';
+import { getPlace } from './geo.js?v=125';
 
 const rad = Math.PI / 180;
 

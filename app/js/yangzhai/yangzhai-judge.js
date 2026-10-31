@@ -8,7 +8,7 @@
 import {
   PALACES, lifeGua, houseGuaByMountain, mountainsAt, dir8At,
   chartFor, GROUP_NAME,
-} from '../../vendor/bazhai-core.js?v=124';
+} from '../../vendor/bazhai-core.js?v=125';
 
 /* 九宫格 index（罗盘固定、北向上）→ 宫 key；4=中宫无卦 */
 const CELL_KEY = ['qian', 'kan', 'gen', 'dui', null, 'zhen', 'kun', 'li', 'xun'];

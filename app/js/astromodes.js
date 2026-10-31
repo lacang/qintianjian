@@ -4,7 +4,7 @@
 //   A 选时刻起盘（本命/天象/日返/月返/次限/三限/时空盘…）
 //   B 黄经变换（泛音×n / 12分盘 / 13分盘 / 日弧平移 / 龙首重宫 / 重置换地）
 //   C 双轮叠加（比盘系：内本命 + 外推运/对方/合成盘）
-import { paipanXingpan, shouyeTianxiang, guDianTuiYun } from '../vendor/liuyao-core.js?v=124';
+import { paipanXingpan, shouyeTianxiang, guDianTuiYun } from '../vendor/liuyao-core.js?v=125';
 
 const MS_DAY = 86400000;
 const SIGN_ZH = ['白羊','金牛','双子','巨蟹','狮子','室女','天秤','天蝎','人马','摩羯','宝瓶','双鱼'];
@@ -150,7 +150,7 @@ function greekDecennia(chart, birth, now){
 export const B2_KEY = 'qintian.astro.b2';
 export const RESET_KEY = 'qintian.astro.geo';
 // 城市表：接全量离线库（citydata.js），保持 { name, lat, lonEast } 契约，citydata 里北京排第一（默认兜底仍是北京）
-import { CITIES as ALL_CITIES } from './citydata.js?v=124';
+import { CITIES as ALL_CITIES } from './citydata.js?v=125';
 export const CITIES = ALL_CITIES.map(c => ({ name: c.n, lat: c.lat, lonEast: c.lon, py: c.py, ini: c.ini, prov: c.prov }));
 function readB2(){ try{ const raw = localStorage.getItem(B2_KEY); return raw ? JSON.parse(raw) : null; }catch{ return null; } }
 function b2Args(base){

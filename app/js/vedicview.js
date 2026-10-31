@@ -1,9 +1,9 @@
 // 印度占星 · 吠陀 Jyotisha 本命盘子视图（v93）
 // 恒星黄道 Lahiri · 整宫 Rashi(D1) · 九曜 · 二十七宿 · D9 Navamsha · Vimshottari 大运 · Graha Drishti · Yoga
 // 只依赖本地 caelus（已打进 vendor），不接任何在线服务。
-import { paipanVedic } from '../vendor/liuyao-core.js?v=124';
-import { birthArgs, $ } from './state.js?v=124';
-import { gateHTML, stage, isCasted } from './ritual.js?v=124';
+import { paipanVedic } from '../vendor/liuyao-core.js?v=125';
+import { birthArgs, $ } from './state.js?v=125';
+import { gateHTML, stage, isCasted } from './ritual.js?v=125';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
