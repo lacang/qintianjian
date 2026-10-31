@@ -1,12 +1,12 @@
 {
   "version": 124,
   "app": "钦天监 PWA",
-  "updated_at": "2026-10-31T07:06:10.406Z",
+  "updated_at": "2026-10-31T07:12:04.742Z",
   "git": {
-    "commit": "e918b409c0263f68acbe50d9e4fb95c3b262480a",
-    "commit_short": "e918b40",
+    "commit": "ec0358690fb4ee929330a0de17ea62915ad44101",
+    "commit_short": "ec03586",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -17,7 +17,7 @@
   "gates": {
     "mode": "full",
     "ok": true,
-    "total_seconds": 74,
+    "total_seconds": 88,
     "steps": [
       {
         "step": 1,
@@ -29,25 +29,25 @@
         "step": 2,
         "name": "经典板块纯函数自测",
         "ok": true,
-        "seconds": 1
+        "seconds": 2
       },
       {
         "step": 3,
         "name": "vendor 产物同步",
         "ok": true,
-        "seconds": 9
+        "seconds": 16
       },
       {
         "step": 4,
         "name": "六爻核心正式测试",
         "ok": true,
-        "seconds": 8
+        "seconds": 10
       },
       {
         "step": 5,
         "name": "真实浏览器启动",
         "ok": true,
-        "seconds": 7
+        "seconds": 12
       },
       {
         "step": 6,
@@ -119,14 +119,25 @@
         "step": 17,
         "name": "AI 资料包快照一致性",
         "ok": true,
-        "seconds": 3
+        "seconds": 2
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7702724908970754063",
+    "status": "Succeeded",
+    "version": 124,
+    "deployed_at": "2026-10-31T07:10:26.826955+00:00",
+    "remote_check": {
+      "coze_site": "ok",
+      "github_pages": "ok"
+    },
+    "note": "v124 问心仪式"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
   ],
-  "notes": "发布 124：门禁全绿（静态 ESM / 真实浏览器启动 / SW 离线 / 桩测 / 复现码 e2e）"
+  "notes": "发布 124：问心仪式两层重做——三圈负延迟错相的呼吸环 + 一颗落定的芯（2.4s，再问 1.5s）、结果整块 handoff 接力换屏、箴言 21px 独占主角、原问题与免责降为注脚、按句读拆行逐行浮现、新增「换一个问题」。门禁 17/17 全绿（88s），两站核验 ok。"
 }
