@@ -1,12 +1,12 @@
 {
   "version": 125,
   "app": "钦天监 PWA",
-  "updated_at": "2026-10-31T10:44:56.095Z",
+  "updated_at": "2026-10-31T10:50:39.638Z",
   "git": {
-    "commit": "9cc883a96491cece0099a0ac65af2ec450dd2870",
-    "commit_short": "9cc883a",
+    "commit": "1f1b5edb5a879901050872a97365a31e1c5e884e",
+    "commit_short": "1f1b5ed",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -17,19 +17,19 @@
   "gates": {
     "mode": "full",
     "ok": true,
-    "total_seconds": 81,
+    "total_seconds": 77,
     "steps": [
       {
         "step": 1,
         "name": "静态 ESM 模块图",
         "ok": true,
-        "seconds": 1
+        "seconds": 2
       },
       {
         "step": 2,
         "name": "经典板块纯函数自测",
         "ok": true,
-        "seconds": 2
+        "seconds": 0
       },
       {
         "step": 3,
@@ -41,25 +41,25 @@
         "step": 4,
         "name": "六爻核心正式测试",
         "ok": true,
-        "seconds": 9
+        "seconds": 7
       },
       {
         "step": 5,
         "name": "真实浏览器启动",
         "ok": true,
-        "seconds": 7
+        "seconds": 8
       },
       {
         "step": 6,
         "name": "经典板块交互测试",
         "ok": true,
-        "seconds": 42
+        "seconds": 37
       },
       {
         "step": 7,
         "name": "主题标签正式数据合规",
         "ok": true,
-        "seconds": 1
+        "seconds": 2
       },
       {
         "step": 8,
@@ -71,7 +71,7 @@
         "step": 9,
         "name": "桩测 bundle 重建",
         "ok": true,
-        "seconds": 1
+        "seconds": 2
       },
       {
         "step": 10,
@@ -119,14 +119,25 @@
         "step": 17,
         "name": "AI 资料包快照一致性",
         "ok": true,
-        "seconds": 2
+        "seconds": 3
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7702781238897311744",
+    "status": "Succeeded",
+    "version": 125,
+    "deployed_at": "2026-10-31T10:49:18.001342+00:00",
+    "remote_check": {
+      "coze_site": "ok",
+      "github_pages": "ok"
+    },
+    "note": "v125 书写态"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
   ],
-  "notes": "发布 125：门禁全绿（静态 ESM / 真实浏览器启动 / SW 离线 / 桩测 / 复现码 e2e）"
+  "notes": "发布 125：问心书写态重做成一张纸——一句提问（19px 衬线）+ 无框纸面（下金线、17px 衬线、flex 吃掉剩余高度）+ 朱砂胶囊按钮 + 规则折叠一行。修两个 iOS 硬伤：输入框 14px→17px（<16px 聚焦会放大整页）、补 100dvh 覆盖 100vh。门禁 17/17（77s），两站核验 ok。"
 }
