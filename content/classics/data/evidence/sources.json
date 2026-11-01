@@ -1,0 +1,437 @@
+{
+ "generated_at": "2026-11-02",
+ "total": 40,
+ "sources": [
+  {
+   "url": "http://confucian.ruc.edu.cn/xsyj/xsqy/54277ebcc92a4529910ec6a35d88f8b6.htm",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-004"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://confucian.ruc.edu.cn/xsyj/xsqy/ca5b0b2b46804d54ad00d41985581c50.htm",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-011",
+    "LY-012"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://www.cass.cn/xueshuchengguo/wenzhexuebulishixuebu/201404/t20140429_1129412.shtml",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-001"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://cjde.ouchn.edu.cn/CN/Y2026/V46/I7/148",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-001",
+    "LY-008"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://epaper.gmw.cn/zhdsb/html/2015-10/28/nw.D110000zhdsb_20151028_1-13.htm",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-006"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://epc.swu.edu.cn/info/1312/5340.htm",
+   "kind": [
+    "academic",
+    "modern"
+   ],
+   "used_by": [
+    "LY-001",
+    "LY-019"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://news.gmw.cn/2022-03/07/content_35567055.htm",
+   "kind": [
+    "academic",
+    "correction"
+   ],
+   "used_by": [
+    "COR-001",
+    "LY-020"
+   ],
+   "note": "光明网"
+  },
+  {
+   "url": "https://news.gmw.cn/2022-06/20/content_35821636.htm",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-020"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://www.litphil.sinica.edu.tw/newsletter/100/100-93-110.pdf",
+   "kind": [
+    "academic",
+    "commentary"
+   ],
+   "used_by": [
+    "LY-003"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://www.phil.tsinghua.edu.cn/info/1037/2239.htm",
+   "kind": [
+    "academic"
+   ],
+   "used_by": [
+    "LY-002"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://www.xinhuanet.com/politics/2016-01/25/c_128663590.htm",
+   "kind": [
+    "academic",
+    "popular"
+   ],
+   "used_by": [
+    "LY-004",
+    "LY-015"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://m.qikan.cqvip.com/Article/ArticleDetail?id=HS723912025008008",
+   "kind": [
+    "claim-1263"
+   ],
+   "used_by": [
+    "维普条目（第二入口）"
+   ],
+   "note": "同上"
+  },
+  {
+   "url": "https://pdf.hanspub.org/ap_1135944.pdf",
+   "kind": [
+    "claim-1263",
+    "modern"
+   ],
+   "used_by": [
+    "LY-003",
+    "论文 PDF 全文（原始）"
+   ],
+   "note": "杨倩、张莹《仁人理想人格的心理学测量及其应用》《心理学进展》2025,15(8):50-57"
+  },
+  {
+   "url": "http://dianda.cqvip.com/Qikan/Article/Detail?id=672253568",
+   "kind": [
+    "claim-308"
+   ],
+   "used_by": [
+    "维普条目（第二入口）"
+   ],
+   "note": "同上，标注被引量 8"
+  },
+  {
+   "url": "https://jps.ecnu.edu.cn/CN/Y2017/V40/I3/657",
+   "kind": [
+    "claim-308"
+   ],
+   "used_by": [
+    "《心理科学》官网条目页（原始）"
+   ],
+   "note": "张瑞平、李庆安《大学生人格特质与主观幸福感的关系：儒家心理资产的中介作用》2017,40(3):657-663"
+  },
+  {
+   "url": "https://m.sohu.com/a/1085738059_122973919/",
+   "kind": [
+    "claim-86w"
+   ],
+   "used_by": [
+    "搜狐自媒体原文（孤证）"
+   ],
+   "note": "作者「飞海麻雀」，2026-10-10 发布；文中「八十六万人在看」为唯一出处，未附知乎问题链接"
+  },
+  {
+   "url": "http://kzjjh.chinakongzi.org/whyw/202409/t20240902_575703.htm",
+   "kind": [
+    "commentary",
+    "popular"
+   ],
+   "used_by": [
+    "LY-004"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://news.qq.com/rain/a/20260929A040JL00",
+   "kind": [
+    "commentary"
+   ],
+   "used_by": [
+    "LY-001"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://ssjdd.snnu.edu.cn/sbw/info/1051/2359.htm",
+   "kind": [
+    "commentary"
+   ],
+   "used_by": [
+    "LY-006",
+    "LY-008"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://www.guoxue123.com/jinbu/0401/01lyjz/011.htm",
+   "kind": [
+    "commentary"
+   ],
+   "used_by": [
+    "LY-002"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://m.gushiwen.cn/guwen/bookv_31de9be20cdf.aspx",
+   "kind": [
+    "commentary"
+   ],
+   "used_by": [
+    "LY-013"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://m.news.cctv.com/2018/09/28/ARTIo47hUK2tZNNzP9lIUW5E180928.shtml",
+   "kind": [
+    "correction",
+    "popular"
+   ],
+   "used_by": [
+    "COR-001",
+    "COR-004",
+    "COR-006",
+    "LY-020"
+   ],
+   "note": "央视新闻"
+  },
+  {
+   "url": "http://m.toutiao.com/group/7642477909357117962/",
+   "kind": [
+    "correction"
+   ],
+   "used_by": [
+    "COR-003",
+    "COR-005",
+    "COR-007",
+    "COR-008",
+    "COR-009"
+   ],
+   "note": "今日头条（自媒体，可靠性低）"
+  },
+  {
+   "url": "https://zsrbapp.zsnews.cn/mobile/news/viewNews/2/746950",
+   "kind": [
+    "correction",
+    "popular"
+   ],
+   "used_by": [
+    "COR-002",
+    "COR-003",
+    "LY-006"
+   ],
+   "note": "中山日报/刘强讲座"
+  },
+  {
+   "url": "http://www.cppcc.gov.cn/zxww/2026/04/02/ARTI1775097495143127.shtml",
+   "kind": [
+    "popular"
+   ],
+   "used_by": [
+    "LY-018"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://www.qstheory.cn/llwx/2020-01/15/c_1125462971.htm",
+   "kind": [
+    "popular"
+   ],
+   "used_by": [
+    "LY-005",
+    "LY-022"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://m.gushiwen.cn/mingju/juv.aspx?id=b350b4d0ed72",
+   "kind": [
+    "popular"
+   ],
+   "used_by": [
+    "LY-006"
+   ],
+   "note": ""
+  },
+  {
+   "url": "https://www.12371.cn/2021/02/23/VIDE1614091200696328.shtml",
+   "kind": [
+    "popular"
+   ],
+   "used_by": [
+    "LY-001",
+    "LY-007",
+    "LY-009",
+    "LY-010",
+    "LY-017",
+    "LY-018",
+    "LY-025"
+   ],
+   "note": ""
+  },
+  {
+   "url": "http://confucian.ruc.edu.cn/xsyj/xsqy/b450fb2678a14003b6db70d35f1ece6d.htm",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-016（补充核验）"
+   ],
+   "note": "中国人民大学孔子研究院（引朱熹《论语集注》卷三）"
+  },
+  {
+   "url": "http://ssjdd.snnu.edu.cn/sbw/info/1051/2344.htm",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-026（补充核验）"
+   ],
+   "note": "陕西师范大学《十三经注疏》数据库"
+  },
+  {
+   "url": "http://ssjdd.snnu.edu.cn/sbw/info/1051/2357.htm",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-021（补充核验）"
+   ],
+   "note": "陕西师范大学《十三经注疏》数据库"
+  },
+  {
+   "url": "https://ctext.org/si-shu-zhang-ju-ji-zhu/li-ren-di-si/ens",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-021（补充核验）"
+   ],
+   "note": "中国哲学书电子化计划《四书章句集注·里仁》"
+  },
+  {
+   "url": "https://m.gushiwen.cn/guwen/bookv_e5d53259da92.aspx",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-014（补充核验）"
+   ],
+   "note": "古诗文网《四书章句集注·述而第七》"
+  },
+  {
+   "url": "https://www.chinakongzi.org/baike/MINGCI/lunli/201707/t20170731_140208.htm",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-023（补充核验）"
+   ],
+   "note": "中国孔子网"
+  },
+  {
+   "url": "https://www.shidianguji.com/book/CADAL02045666/chapter/1ln96np9u1u02",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-014（补充核验）"
+   ],
+   "note": "识典古籍《论语大全》卷七"
+  },
+  {
+   "url": "https://www.shidianguji.com/book/SK0559/chapter/1l9kmshzog1lv",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-024（补充核验）"
+   ],
+   "note": "识典古籍《四书通·朱子章句》"
+  },
+  {
+   "url": "https://www.shidianguji.com/zh/book/HY3288/chapter/1krw4u8fywbgs",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-024（补充核验）"
+   ],
+   "note": "识典古籍《中庸·四书集注》"
+  },
+  {
+   "url": "https://www.xueruxue.com/xing-xiang-jin-ye.html",
+   "kind": [
+    "历史注疏"
+   ],
+   "used_by": [
+    "LY-026（补充核验）"
+   ],
+   "note": "学儒学（集录诸家注）"
+  },
+  {
+   "url": "http://www.12371.cn/2021/04/07/VIDE1617797103195746.shtml",
+   "kind": [
+    "大众传播"
+   ],
+   "used_by": [
+    "LY-021（补充核验）"
+   ],
+   "note": "共产党员网"
+  },
+  {
+   "url": "https://paper.people.com.cn/rmrb/pc/content/202608/25/content_30176952.html",
+   "kind": [
+    "大众传播"
+   ],
+   "used_by": [
+    "LY-016（补充核验）"
+   ],
+   "note": "人民日报"
+  }
+ ]
+}

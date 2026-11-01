@@ -1,0 +1,221 @@
+[
+ {
+  "id": "COR-001",
+  "title": "以德报怨",
+  "location": "《论语·宪问》第34章",
+  "original": "或曰：「以德报怨，何如？」子曰：「何以报德？以直报怨，以德报德。」",
+  "popular": "「以德报怨」是孔子主张的处世态度——用恩惠回报怨恨，是最高境界的宽容。",
+  "diff_type": "严重误读（立场反转）",
+  "diff_detail": "「以德报怨」在原文中是**提问者**的话，不是孔子的主张。孔子用「何以报德」反问，明确否定了它，并给出自己的方案：以直报怨、以德报德。把提问当成结论，等于让孔子为自己反对的观点背书。",
+  "commentary_note": "朱熹《集注》：直谓「爱憎取舍，一以至公而无私」。何晏《集解》：怨以直报之，德以德报之。",
+  "commentary_status": "朱熹注已核（ctext/古诗文网），何晏注待核底本",
+  "modern_debate": "「直」的解释存在实质分歧：一说至公无私（朱熹），一说正直不曲，一说读为「值」即对等回报（部分当代学者），一说依理而行。这不是训诂细节，而是决定「如何面对伤害」的不同伦理方案。",
+  "related_thought": "LY-020",
+  "relation": "corrects",
+  "risk": "high",
+  "sources": [
+   {
+    "url": "http://m.news.cctv.com/2018/09/28/ARTIo47hUK2tZNNzP9lIUW5E180928.shtml",
+    "name": "央视新闻"
+   },
+   {
+    "url": "https://news.gmw.cn/2022-03/07/content_35567055.htm",
+    "name": "光明网"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-002",
+  "title": "三十而立",
+  "location": "《论语·为政》第4章",
+  "original": "子曰：「吾十有五而志于学，三十而立……」（全章为孔子自述修养进程）",
+  "popular": "三十岁要成家立业、买房立足、事业有基础。",
+  "diff_type": "语义改写（世俗化）",
+  "diff_detail": "「立」在《论语》中有确定含义：《泰伯》「立于礼」、《尧曰》「不知礼，无以立也」。指人格独立、言行合于礼，与买房成家无直接关系。原文也非普遍要求，而是孔子自述。",
+  "commentary_note": "历代注家多训「立」为「有所成立」「立于礼」，无一家解为成家立业。",
+  "commentary_status": "概括性表述，未逐条核对注文原文",
+  "modern_debate": null,
+  "related_thought": "LY-006",
+  "relation": "corrects",
+  "risk": "high",
+  "sources": [
+   {
+    "url": "https://zsrbapp.zsnews.cn/mobile/news/viewNews/2/746950",
+    "name": "中山日报/刘强讲座"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-003",
+  "title": "言必信，行必果",
+  "location": "《论语·子路》第20章",
+  "original": "言必信，行必果，硁硁然小人哉！",
+  "popular": "说话算话、做事果断，是对人可靠程度的最高评价。",
+  "diff_type": "褒贬颠倒",
+  "diff_detail": "原文紧接着「硁硁然小人哉」——孔子评价的是「一味死守诺言、不问是非」的固执，属贬义。孟子亦言「大人者，言不必信，行不必果，惟义所在」（《离娄下》），可互证。",
+  "commentary_note": "「硁硁」形容小石坚硬之貌，喻固执而不通义。",
+  "commentary_status": "概括性表述，未逐字核对注文",
+  "modern_debate": null,
+  "related_thought": null,
+  "soft_related": "LY-009",
+  "relation": "corrects",
+  "risk": "high",
+  "sources": [
+   {
+    "url": "http://m.toutiao.com/group/7642477909357117962/",
+    "name": "今日头条（自媒体，可靠性低）"
+   },
+   {
+    "url": "https://zsrbapp.zsnews.cn/mobile/news/viewNews/2/746950",
+    "name": "中山日报/刘强讲座"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-004",
+  "title": "愚不可及",
+  "location": "《论语·公冶长》第17章",
+  "original": "子曰：「宁武子邦有道则知，邦无道则愚。其知可及也，其愚不可及也。」",
+  "popular": "形容一个人愚蠢到了极点。",
+  "diff_type": "语义完全翻转",
+  "diff_detail": "孔子在称赞宁武子：世道清明时显露才智，世道昏乱时装傻避祸。「其愚不可及」意为「他那种装傻的境界，别人赶不上」——是极高的赞美，不是贬低。",
+  "commentary_note": "注家多解「愚」为「佯愚」「沈晦以免患」，非真愚。",
+  "commentary_status": "概括性表述，未逐字核对注文",
+  "modern_debate": null,
+  "related_thought": null,
+  "relation": "corrects",
+  "risk": "high",
+  "sources": [
+   {
+    "url": "http://m.news.cctv.com/2018/09/28/ARTIo47hUK2tZNNzP9lIUW5E180928.shtml",
+    "name": "央视新闻"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-005",
+  "title": "老而不死，是为贼",
+  "location": "《论语·宪问》第46章",
+  "original": "「幼而不孙弟，长而无述焉，老而不死，是为贼。」以杖叩其胫。（原壤夷俟章）",
+  "popular": "老年人是祸害、是没用的人。",
+  "diff_type": "断章取义（对象丢失）",
+  "diff_detail": "全章是孔子对老朋友原壤的责备，且是坐着伸腿不守礼的具体场景。批评对象是「幼不孝悌、长无建树」的这个人，不是对老年人群体的判断。",
+  "commentary_note": "注家多指出此为「责原壤」之辞，属朋友间的戏责。",
+  "commentary_status": "概括性表述，未逐字核对注文",
+  "modern_debate": null,
+  "related_thought": null,
+  "relation": "corrects",
+  "risk": "high",
+  "sources": [
+   {
+    "url": "http://m.toutiao.com/group/7642477909357117962/",
+    "name": "今日头条（自媒体，可靠性低）"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-006",
+  "title": "学而优则仕",
+  "location": "《论语·子张》第13章",
+  "original": "子夏曰：「仕而优则学，学而优则仕。」",
+  "popular": "学习优秀就去做官。",
+  "diff_type": "语义倒置 + 归属错误",
+  "diff_detail": "「优」意为「有余力」，不是「优秀」。原意是：做官有余力就去学习，学习有余力就去做官——讲的是学与仕的互补循环，不是选拔逻辑。且此句出自子夏，非孔子原话。",
+  "commentary_note": "注家多训「优」为「有余力」。",
+  "commentary_status": "概括性表述，未逐字核对注文",
+  "modern_debate": null,
+  "related_thought": null,
+  "soft_related": "LY-001",
+  "relation": "corrects",
+  "risk": "medium",
+  "sources": [
+   {
+    "url": "http://m.news.cctv.com/2018/09/28/ARTIo47hUK2tZNNzP9lIUW5E180928.shtml",
+    "name": "央视新闻"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-007",
+  "title": "民可使由之，不可使知之",
+  "location": "《论语·泰伯》第9章",
+  "original": "子曰：「民可使由之，不可使知之。」",
+  "popular": "老百姓只要照做就行，不必让他们明白道理——被视为孔子「愚民」的证据。",
+  "diff_type": "句读争议（非单纯误读）",
+  "diff_detail": "原文无标点。传统句读如上；另有学者主张断为「民可，使由之；不可，使知之」（百姓认可就让他们去做，不认可就让他们明白）。断句不同，含义完全相反。这一条应作为「争议」呈现，而不是直接判定谁对谁错。",
+  "commentary_note": "历代主流注本多从传统句读；改读之说在近代以来影响较大，但缺乏版本依据。",
+  "commentary_status": "概括性表述，未逐条核对注文与版本",
+  "modern_debate": "争议焦点：改读是否有版本/训诂支撑，还是出于为孔子辩护的现代需要。这是典型的「学术分歧应并列呈现」条目。",
+  "related_thought": null,
+  "relation": "disputed",
+  "risk": "high",
+  "sources": [
+   {
+    "url": "http://m.toutiao.com/group/7642477909357117962/",
+    "name": "今日头条（自媒体，可靠性低）"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-008",
+  "title": "小不忍则乱大谋",
+  "location": "《论语·卫灵公》第27章",
+  "original": "子曰：「巧言乱德。小不忍，则乱大谋。」",
+  "popular": "小事上不能忍耐，就会坏了大事。",
+  "diff_type": "词义误读",
+  "diff_detail": "有学者考证，先秦至汉代「忍」不带宾语且受否定时，多表「忍心」而非「忍耐」。若如此，「小不忍」指「在小事上不忍心（心太软）」，而非「不能忍耐」。此说尚未成为定论，应作为分歧并列。",
+  "commentary_note": "传统注本多解为「忍耐」。",
+  "commentary_status": "概括性表述，未逐条核对注文",
+  "modern_debate": "「忍」释为「忍心」属当代学者的训诂新说，影响不小但未获普遍接受。",
+  "related_thought": null,
+  "soft_related": "LY-024",
+  "relation": "corrects",
+  "risk": "medium",
+  "sources": [
+   {
+    "url": "http://m.toutiao.com/group/7642477909357117962/",
+    "name": "今日头条（自媒体，可靠性低）"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ },
+ {
+  "id": "COR-009",
+  "title": "君子固穷",
+  "location": "《论语·卫灵公》第2章",
+  "original": "「君子固穷，小人穷斯滥矣。」（在陈绝粮章）",
+  "popular": "君子安于贫穷、甘于清贫。",
+  "diff_type": "词义误读",
+  "diff_detail": "「固」在此为副词「固然」「本来」：「君子固然也有困顿的时候，但不像小人一困顿就胡作非为」。不是「固守贫穷」。孔子并不否定求富——《述而》「富而可求也，虽执鞭之士，吾亦为之」。",
+  "commentary_note": "注家多解「固」为「固有」「固然」。",
+  "commentary_status": "概括性表述，未逐字核对注文",
+  "modern_debate": null,
+  "related_thought": null,
+  "soft_related": "LY-014",
+  "relation": "corrects",
+  "risk": "medium",
+  "sources": [
+   {
+    "url": "http://m.toutiao.com/group/7642477909357117962/",
+    "name": "今日头条（自媒体，可靠性低）"
+   }
+  ],
+  "type": "correction",
+  "classic": "论语"
+ }
+]

@@ -61,6 +61,26 @@ tools/score-verify/output/full-matrix.csv
 !tools/score-verify-v2/l0-fact-audit/data/
 !tools/score-verify-v2/l0-fact-audit/data/**
 
+# ===== 内容库 content/classics：源文件/脚本/Schema/生成数据/审核记录一律进版本库 =====
+# 第 20 行的 `data/` 不带前导斜杠，同样会吞掉 content/classics/data/（产品数据），
+# 结果是「构建脚本在、产品数据不在」，换设备重建后无法比对。按目录反向放行。
+!content/classics/data/
+!content/classics/data/**
+!content/classics/parsed/
+!content/classics/parsed/**
+!content/classics/raw/canon/
+!content/classics/raw/canon/**
+!content/classics/raw/reports/
+!content/classics/raw/reports/**
+!content/classics/raw/SOURCES.json
+
+# 52MB 原始数据集缓存不入库（董事长 2026-11-02 要求：大数据集靠版本/地址/许可/SHA256/脚本保证可复现）。
+# 复现命令：python3 content/classics/_build/fetch_corpus.py
+content/classics/raw/_cache/
+
+# Python 字节码
+__pycache__/
+
 # ===== 早期审计副本：保留在工作区但不入库（2026-10-31 董事长指示）=====
 # verdict.orig.js 是早期审计的 verdict 副本，当前无任何脚本引用
 # （现存脚本引用的是 tools/score-verify-v2/legacy/verdict.orig.mjs）。

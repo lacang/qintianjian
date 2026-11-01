@@ -1,0 +1,74 @@
+{
+  "_note": "原典来源登记。任何原典数据的来历都必须在这里能查到。",
+  "_license_principle": [
+    "古籍原文早已进入公有领域，不受著作权保护。",
+    "数据集自身的许可（如 CC0）覆盖的是数据集的编排与标注，不等于对任何现代校注本的授权。",
+    "现代译文由今人完成，有著作权。译文只能作研究参考，不得直接作为产品文案。",
+    "每次引用具体文本时，须能回溯到本文件记录的版本与文件指纹。"
+  ],
+  "datasets": {
+    "ccc": {
+      "name": "chinese-classical-corpus",
+      "upstream": "gujilab/chinese-classical-corpus (原 zi6me)",
+      "url": "https://hf-mirror.com/datasets/gujilab/chinese-classical-corpus/resolve/main/corpus.jsonl",
+      "license": "CC0-1.0",
+      "license_note": "数据集自述为 CC0 1.0 公有领域奉献，可自由使用与商用。底层古籍本身早已进入公有领域，不受著作权保护。注意：CC0 覆盖的是「数据集的组织与标注」，不等于对任意转引的现代校注本授权。",
+      "record_count": 12009,
+      "scope": "十三经及先秦两汉经部文献，按篇/卷存储，content 内部按换行分章",
+      "fetched_at": "2026-11-02T01:26:27+0800",
+      "sha256": "41f2b6105754dc1f384ecc5c3805cfca85be355f0d6314b855ebd4747f225381",
+      "bytes": 53918993,
+      "parsed_records": 12009,
+      "extracted": {
+        "lunyu": {
+          "file": "raw/canon/lunyu.json",
+          "records": 20,
+          "bytes": 68357,
+          "sha256": "3f5cac0499cba31125598b27d262d48ed3220083a4f8d6cc4dd2b9cf52f7ba2b"
+        },
+        "mengzi": {
+          "file": "raw/canon/mengzi.json",
+          "records": 14,
+          "bytes": 137757,
+          "sha256": "5880872fe0cd3e1489201b98e2e3f4f81273cc07c18670a258a06b8da06b6584"
+        },
+        "daxue": {
+          "file": "raw/canon/daxue.json",
+          "records": 1,
+          "bytes": 6796,
+          "sha256": "3d200644f2a08e87594595d299f2770736efe4bdb88e505f4cfdc34f86216428"
+        },
+        "zhongyong": {
+          "file": "raw/canon/zhongyong.json",
+          "records": 1,
+          "bytes": 13578,
+          "sha256": "ddb688e14714376b8bd5bb65a9c898266ddd0f9c893cfe4c97fdc95d9bcdbf0b"
+        },
+        "shijing": {
+          "file": "raw/canon/shijing.json",
+          "records": 305,
+          "bytes": 158495,
+          "sha256": "8c7d22ca063813bd002aca5b05764a88d6aaaf96129ec4364c50df291f4d4e27"
+        },
+        "zhouyi": {
+          "file": "raw/canon/zhouyi.json",
+          "records": 69,
+          "bytes": 119975,
+          "sha256": "ffa2e9785c814fd86a515ab078fae8277a38bd02aba74c126a49a4ba926a1b90"
+        },
+        "xiaojing": {
+          "file": "raw/canon/xiaojing.json",
+          "records": 18,
+          "bytes": 9684,
+          "sha256": "d39b186f76aeeae3d09185cb192b800347d3682e30b25b1c48d80c0a59953bcf"
+        },
+        "liji": {
+          "file": "raw/canon/liji.json",
+          "records": 47,
+          "bytes": 396681,
+          "sha256": "7f056b726f0b99f379920680ae0004bf456b4c681db1404ab764de272b57025b"
+        }
+      }
+    }
+  }
+}
