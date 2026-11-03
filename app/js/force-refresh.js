@@ -53,23 +53,43 @@ function cleanBustParam() {
 }
 
 /** 真正执行强制刷新。顺序不能反：先清缓存，再注销 SW，最后才重载。 */
+/**
+ * 给清理动作封一个上限。
+ *
+ * 为什么需要：SW 正在 install / 写缓存时，caches.delete 和 unregister
+ * 都可能排在一个长任务后面迟迟不 resolve。这时用户按了按钮、图标转圈、
+ * 页面不动——看起来就是「按钮坏了」。
+ *
+ * 清理是「尽量做」，重载是「必须做」。所以到点就往下走：哪怕缓存没清干净，
+ * 带 _r 时间戳重载也已经绕过了 HTTP 缓存，用户至少能拿到新页面；
+ * 真没清干净再按一次即可，比卡死好。
+ */
+function withTimeout(promise, ms) {
+  return Promise.race([
+    Promise.resolve(promise).catch(() => {}),
+    new Promise((r) => setTimeout(r, ms)),
+  ]);
+}
+
 async function forceRefresh(btn) {
   if (btn) { btn.disabled = true; btn.classList.add('busy'); }
 
-  // 1. 清所有 Cache Storage（SW 预缓存 + 运行时缓存都在这里）
+  // 1. 清所有 Cache Storage（SW 预缓存 + 运行时缓存都在这里），最多等 2.5s
   try {
     if (typeof caches !== 'undefined') {
-      const keys = await caches.keys();
-      await Promise.all(keys.map((k) => caches.delete(k)));
+      await withTimeout((async () => {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k)));
+      })(), 2500);
     }
   } catch { /* 部分 WebView 不支持，继续 */ }
 
   // 2. 注销 SW。不清注册的话，重载后旧 SW 会立刻用旧逻辑再接管一次，
-  //    清了缓存也没意义——它可能又把旧响应写回来。
+  //    清了缓存也没意义——它可能又把旧响应写回来。最多等 2s。
   try {
     if ('serviceWorker' in navigator) {
-      const regs = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map((r) => r.unregister()));
+      await withTimeout(navigator.serviceWorker.getRegistrations()
+        .then((regs) => Promise.all(regs.map((r) => r.unregister()))), 2000);
     }
   } catch { /* ignore */ }
 
