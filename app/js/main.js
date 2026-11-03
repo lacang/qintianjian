@@ -2,42 +2,42 @@ import {
   $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt,
   birthDate, nowDate, resolveCastDate, copyText, toast, pad,
   parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
-} from './state.js?v=126';
-import { paipanZi } from './zischool.js?v=126';
-import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=126';
-import { renderPan, copyCurrent } from './panview.js?v=126';
-import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=126';
-import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=126';
-import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=126';
-import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=126';
-import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=126';
-import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=126';
-import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=126';
-import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=126';
-import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=126';
-import { initInteract } from './interact.js?v=126';
-import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=126';
-import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=126';
-import { renderGlobe, globeCopyText } from './globe.js?v=126';
-import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=126';
-import { initCast, resetCast } from './cast.js?v=126';
-import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=126';
-import { initTips, initGuides } from './tipview.js?v=126';
+} from './state.js?v=127';
+import { paipanZi } from './zischool.js?v=127';
+import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=127';
+import { renderPan, copyCurrent } from './panview.js?v=127';
+import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=127';
+import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=127';
+import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=127';
+import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=127';
+import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=127';
+import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=127';
+import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=127';
+import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=127';
+import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=127';
+import { initInteract } from './interact.js?v=127';
+import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=127';
+import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=127';
+import { renderGlobe, globeCopyText } from './globe.js?v=127';
+import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=127';
+import { initCast, resetCast } from './cast.js?v=127';
+import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=127';
+import { initTips, initGuides } from './tipview.js?v=127';
 import {
   loadCases, loadCase, saveCase, updateCase, togglePin, removeCase,
   clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP,
-} from './cases.js?v=126';
-import { renderAsk, bindAsk } from './askview.js?v=126';
-import { renderClassic, bindClassic, renderClassicDetail, bindClassicDetail } from './classic/classicview.js?v=126';
-import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=126';
-import { onPlaceChange } from './geo.js?v=126';
-import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=126';
-import { renderMoreCards } from './homecards.js?v=126';
-import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=126';
-import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=126';
-import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=126';
-import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=126';
-import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=126';
+} from './cases.js?v=127';
+import { renderAsk, bindAsk } from './askview.js?v=127';
+import { renderClassic, bindClassic, renderClassicDetail, bindClassicDetail } from './classic/classicview.js?v=127';
+import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=127';
+import { onPlaceChange } from './geo.js?v=127';
+import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=127';
+import { renderMoreCards } from './homecards.js?v=127';
+import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=127';
+import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=127';
+import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=127';
+import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=127';
+import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=127';
 
 const SRC_LABEL = { coins: '摇铜钱', tianji: '天机', manual: '手录', time: '天时' };
 const NO_Q = '未填写所占之事';

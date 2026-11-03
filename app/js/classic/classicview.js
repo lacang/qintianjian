@@ -35,7 +35,7 @@ import {
   exploreEntries, detailLayers, correctionsFor, visibleRelations,
 } from './classic-core.js';
 import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js';
-import { $, $$, toast } from '../state.js?v=126';
+import { $, $$, toast } from '../state.js?v=127';
 
 const FAV_KEY = 'qintian.classic.fav';
 const NOTE_KEY = 'qintian.classic.journal';   // 思想手记：{ nodeId: [{ text, at, fb }] }
