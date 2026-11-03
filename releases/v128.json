@@ -1,12 +1,12 @@
 {
   "version": 128,
   "app": "钦天监 PWA",
-  "updated_at": "2026-11-03T19:55:33.333Z",
+  "updated_at": "2026-11-03T20:23:54.354Z",
   "git": {
-    "commit": "73aab72a7d1285a9cc0917b518d7a4bdeb5d18e5",
-    "commit_short": "73aab72",
+    "commit": "db59724ef57e733e8ef91cf36af6117bf489025a",
+    "commit_short": "db59724",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -135,7 +135,18 @@
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7704041802554392614",
+    "status": "Succeeded",
+    "version": 128,
+    "deployed_at": "2026-11-03T20:23:51.288151+00:00",
+    "remote_check": {
+      "coze_site": "ok",
+      "github_pages": "ok"
+    },
+    "note": "v128"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
