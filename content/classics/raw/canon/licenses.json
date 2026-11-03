@@ -1,0 +1,233 @@
+{
+  "_note": "经典级 + 文件级许可记录。每个原典文件的许可必须能在这里独立查到，不允许把不同许可的数据混标成同一许可。",
+  "_rules": [
+    "许可按「经典 → 数据集 → 文件」三级记录，任一文件都必须能定位到所属数据集与许可。",
+    "CC0 数据集（chinese-classical-corpus）与 CC BY-SA 数据集（Kanripo）分开记录，不得统一标记。",
+    "CC BY-SA 是否要求衍生作品整体采用相同许可，取决于具体使用方式与适用许可版本；本文件只记录事实与待审查项，不代替法律判断。",
+    "开源或商业分发前须单独进行许可证兼容性审查，审查结论单独登记在 review 字段。",
+    "许可原文与版本号必须记录，不接受「大概是 CC BY-SA」这类模糊记录。"
+  ],
+  "licenses": {
+    "CC0-1.0": {
+      "name": "Creative Commons Zero v1.0 Universal",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "spdx": "CC0-1.0",
+      "attribution_required": false,
+      "share_alike": false,
+      "commercial_ok": true,
+      "note": "公有领域奉献。覆盖数据集的组织与标注，不等于对任意转引的现代校注本授权。"
+    },
+    "CC-BY-SA-4.0": {
+      "name": "Creative Commons Attribution-ShareAlike 4.0 International",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "spdx": "CC-BY-SA-4.0",
+      "attribution_required": true,
+      "share_alike": true,
+      "commercial_ok": true,
+      "note": "Kanripo 官网页脚声明为 CC BY SA，未标注具体版本号。此处按官方声明记录为「CC BY SA」，具体版本待与 Kanripo 确认后回填；在确认前，下游按最严格解释（SA 传染）评估。",
+      "version_unconfirmed": true,
+      "official_statement": "(c) Kanseki Repository. 作成されたコンテンツは CC BY SA のライセンスで提供する。",
+      "official_statement_source": "https://www.kanripo.org/",
+      "review": {
+        "status": "pending",
+        "required_before": ["开源发布", "商业分发", "对外提供数据下载"],
+        "open_questions": [
+          "CC BY-SA 的具体版本（4.0 或其他）未在官网明示",
+          "「衍生作品」边界：仅提取公有领域古籍原文是否构成对数据库的衍生",
+          "ShareAlike 条款是否传导至整个产品，取决于使用方式与司法辖区"
+        ]
+      }
+    }
+  },
+  "classics": {
+    "lunyu": {
+      "canon_file": "raw/canon/lunyu.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "chinese-classical-corpus 收录的《论语》白文，分 20 篇",
+      "independence": "独立原典文本，非从注本抽取"
+    },
+    "mengzi": {
+      "canon_file": "raw/canon/mengzi.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "chinese-classical-corpus 收录的《孟子》白文，分 14 卷",
+      "independence": "独立原典文本，非从注本抽取"
+    },
+    "daxue": {
+      "canon_file": "raw/canon/daxue.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "《礼记》第四十二篇古本白文，单篇 16 自然段",
+      "independence": "独立原典文本，非从注本抽取",
+      "structure_caution": "古本不含朱子补传 134 字；补传只属注疏层"
+    },
+    "zhongyong": {
+      "canon_file": "raw/canon/zhongyong.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "《礼记》第三十一篇古本白文，单篇 39 自然段",
+      "independence": "独立原典文本，非从注本抽取",
+      "structure_caution": "朱子 33 章为阅读分段锚，古本整篇结构保留"
+    },
+    "shijing": {
+      "canon_file": "raw/canon/shijing.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "chinese-classical-corpus 收录的《诗经》白文，305 篇"
+    },
+    "zhouyi": {
+      "canon_file": "raw/canon/zhouyi.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "chinese-classical-corpus 收录的《周易》白文，69 条"
+    },
+    "xiaojing": {
+      "canon_file": "raw/canon/xiaojing.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "chinese-classical-corpus 收录的《孝经》白文，18 条"
+    },
+    "liji": {
+      "canon_file": "raw/canon/liji.json",
+      "dataset": "ccc",
+      "license": "CC0-1.0",
+      "version_note": "chinese-classical-corpus 收录的《礼记》白文，47 篇"
+    },
+    "laozi": {
+      "canon_file": "raw/canon/laozi.json",
+      "dataset": "kanripo",
+      "license": "CC-BY-SA-4.0",
+      "license_display": "CC BY SA（Kanseki Repository 声明）",
+      "version_note": "《道德真經》河上公系统正统道藏本白文，81 章，带章名与章末字数统计",
+      "edition_warning": [
+        "这是道藏本、河上公系统，不是王弼本",
+        "不得把它的文字冒充王弼本原文",
+        "章次与王弼本对应，不代表文字一致",
+        "已知异文不等于已完成校勘"
+      ],
+      "independence": "独立原典文本，非从注本抽取",
+      "attribution_required": true,
+      "attribution_text": "原典据 Kanseki Repository（https://www.kanripo.org/）《道德真經》KR5c0045，CC BY SA。"
+    },
+    "zhuangzi": {
+      "canon_file": "raw/canon/zhuangzi.json",
+      "dataset": "kanripo",
+      "license": "CC-BY-SA-4.0",
+      "license_display": "CC BY SA（Kanseki Repository 声明）",
+      "version_note": "《南華真經》白文，33 篇（内 7、外 15、杂 11），不含郭象注与陆德明音义",
+      "edition_warning": [
+        "这是白文本，与郭象注本分属不同层次",
+        "注本缺篇属注本数据不完整，不是原典缺失",
+        "不得用郭象注本内篇七篇结构替代完整三十三篇"
+      ],
+      "independence": "独立原典文本，非从注本抽取",
+      "attribution_required": true,
+      "attribution_text": "原典据 Kanseki Repository（https://www.kanripo.org/）《南華真經》KR5c0051，CC BY SA。"
+    }
+  },
+  "files": [
+    {
+      "path": "raw/canon/kanripo/KR5c0045/KR5c0045_000.txt",
+      "classic": "laozi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0045",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0045/ZTDZ/KR5c0045_000.txt",
+      "bytes": 221,
+      "sha256": "4242e4a81b68ab73105c64b0227167441933bfe46907aeb86487600cdfca76aa",
+      "fetched_at": "2026-11-02T03:06:00+0800",
+      "role": "卷首元信息（无正文）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0045/KR5c0045_001.txt",
+      "classic": "laozi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0045",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0045/ZTDZ/KR5c0045_001.txt",
+      "bytes": 10275,
+      "sha256": "c92adc8a76b2ec102df53f9e81a444b7063cf59bdc853e27bffb2d39b6eac1ef",
+      "fetched_at": "2026-11-02T03:06:00+0800",
+      "role": "篇上（第 1-37 章）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0045/KR5c0045_002.txt",
+      "classic": "laozi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0045",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0045/ZTDZ/KR5c0045_002.txt",
+      "bytes": 12296,
+      "sha256": "cbb51fe61f884b13ca6ed9c7b7bee85e4d76444f9d500d81c3d709ff981e11fd",
+      "fetched_at": "2026-11-02T03:06:00+0800",
+      "role": "篇下（第 38-81 章）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0051/KR5c0051_000.txt",
+      "classic": "zhuangzi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0051",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0051/ZTDZ/KR5c0051_000.txt",
+      "bytes": 34458,
+      "sha256": "d9f846a67c91621414deb1a23d7ea5176254891177c7bf1bfeeffcbae1c63c3e",
+      "fetched_at": "2026-11-02T03:05:00+0800",
+      "role": "卷之一（内篇逍遥遊至德充符，篇 1-5）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0051/KR5c0051_001.txt",
+      "classic": "zhuangzi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0051",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0051/ZTDZ/KR5c0051_001.txt",
+      "bytes": 32384,
+      "sha256": "b88d33c38864d0051421137f35130cbce2712f2d3d618236a72de9531967e022",
+      "fetched_at": "2026-11-02T03:04:00+0800",
+      "role": "卷之二（内篇大宗师、应帝王，外篇駢拇等）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0051/KR5c0051_002.txt",
+      "classic": "zhuangzi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0051",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0051/ZTDZ/KR5c0051_002.txt",
+      "bytes": 46998,
+      "sha256": "21e7a0f403cee7e41c2417480837519790c9d7b816d329bf71492e12cd26eb32",
+      "fetched_at": "2026-11-02T03:04:00+0800",
+      "role": "卷之二、三（外篇）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0051/KR5c0051_003.txt",
+      "classic": "zhuangzi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0051",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0051/ZTDZ/KR5c0051_003.txt",
+      "bytes": 61557,
+      "sha256": "878eab71d113f515da71b4b6bd50841997da5cc5b7c47db8c6bf779f3fbe437c",
+      "fetched_at": "2026-11-02T03:04:00+0800",
+      "role": "卷之三、四（外篇、杂篇）"
+    },
+    {
+      "path": "raw/canon/kanripo/KR5c0051/KR5c0051_004.txt",
+      "classic": "zhuangzi",
+      "dataset": "kanripo",
+      "repo": "kanripo/KR5c0051",
+      "branch": "ZTDZ",
+      "url": "https://raw.githubusercontent.com/kanripo/KR5c0051/ZTDZ/KR5c0051_004.txt",
+      "bytes": 51906,
+      "sha256": "2df9fcd524156b8f5826dd353347b7f1392d7e04d563be408d4eef129dc734e8",
+      "fetched_at": "2026-11-02T03:04:00+0800",
+      "role": "卷之四、五（杂篇至天下）"
+    }
+  ],
+  "display": {
+    "_note": "产品展示层必须能取到这两条署名，不允许只存在技术字段里。",
+    "laozi": "原典据 Kanseki Repository《道德真經》（KR5c0045），CC BY SA。此为河上公系统道藏本，与王弼本文字有异。",
+    "zhuangzi": "原典据 Kanseki Repository《南華真經》（KR5c0051），CC BY SA。此为白文本，不含郭象注。",
+    "cc0_classics": "《论语》《孟子》《大学》《中庸》《诗经》《周易》《孝经》《礼记》原文据 chinese-classical-corpus（CC0-1.0）。"
+  }
+}

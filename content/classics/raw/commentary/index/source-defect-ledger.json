@@ -1,0 +1,114 @@
+{
+ "_note": "源文件层缺陷记录。与传本异文台账分开：这里记的是「数字化过程把字弄丢了」，不是「古人写的字不一样」。kind=missing_char 记单字缺失（char_expected / char_present）；kind=missing_passage 记连续文本缺失（anchor_before / anchor_after / expected_text / estimated_missing_chars）。expected_text 是推定的待核文本，不是已核实的底本文字；estimated_missing_chars 是估算值。修复时填 fix.before / fix.after / fix.basis，并另存修复后版本，不覆盖原始文件——源文件修复不等于传本校勘。",
+ "_schema": {
+  "kind": "missing_char 单字缺失 / missing_passage 连续文本缺失",
+  "expected_text": "推定待核文本，expected_text_is_inferred 恒为 true",
+  "estimated_missing_chars": "估算值，不作精确校勘字数使用",
+  "fix": "before / after / basis 三格，status=open 时全为 null",
+  "related_entries": "关联的 variant-ledger ledger_id，保留历史痕迹，不删除"
+ },
+ "items": [
+  {
+   "defect_id": "SD-0001",
+   "kind": "missing_char",
+   "status": "open",
+   "error_source": "ocr_defect",
+   "classic": "mengzi",
+   "commentary": "mengzi-jizhu",
+   "chapter": "公孙丑章句下",
+   "source_file": "mengzi-jizhu.txt",
+   "source_location": "L51",
+   "anchor_before": "蚔",
+   "anchor_after": "曰",
+   "expected_text": "鼃",
+   "expected_text_is_inferred": true,
+   "estimated_missing_chars": 1,
+   "char_expected": "鼃",
+   "char_present": " ",
+   "occurrences": [
+    {
+     "anchor_before": "谓蚔",
+     "anchor_after": "曰",
+     "expected": "鼃"
+    },
+    {
+     "anchor_before": "蚔",
+     "anchor_after": "谏于王",
+     "expected": "鼃"
+    },
+    {
+     "anchor_before": "为蚔",
+     "anchor_after": "，则善矣",
+     "expected": "鼃"
+    }
+   ],
+   "evidence": [
+    "源文件该处为空格，无字",
+    "注本自注「蚔，音迟。␣，乌花反」，「乌花反」即「蛙」之音，证明底本此处有字",
+    "缺失发生在源文件层，不是传本异文"
+   ],
+   "related_entries": [
+    "VL-0028",
+    "VL-0091",
+    "VL-0029",
+    "VL-0092",
+    "VL-0030",
+    "VL-0093"
+   ],
+   "related_groups": [
+    "VG-034",
+    "VG-068",
+    "VG-046"
+   ],
+   "fix": {
+    "before": null,
+    "after": null,
+    "basis": null
+   },
+   "batch": "batch01",
+   "confirmed_by": "owner",
+   "confirmed_at": "2026-11-02"
+  },
+  {
+   "defect_id": "SD-0002",
+   "kind": "missing_passage",
+   "status": "open",
+   "error_source": "ocr_defect",
+   "classic": "mengzi",
+   "commentary": "mengzi-jizhu",
+   "chapter": "公孙丑章句下",
+   "source_file": "mengzi-jizhu.txt",
+   "source_location": "L48",
+   "anchor_before": "明",
+   "anchor_after": "昔者辞以病",
+   "expected_text": "日，出吊于东郭氏，公孙丑曰：",
+   "expected_text_is_inferred": true,
+   "estimated_missing_chars": 12,
+   "evidence": [
+    "源文件 L48 中「明」字后直接接引号，语句结构不完整",
+    "同行注文仍解释「东郭氏，齐大夫家也」「辞疾而出吊」",
+    "经文与注文内容不匹配，缺失属原文叙述而非注家有意省略"
+   ],
+   "related_entries": [
+    "VL-0026",
+    "VL-0089"
+   ],
+   "related_groups": [
+    "VG-015"
+   ],
+   "fix": {
+    "before": null,
+    "after": null,
+    "basis": null
+   },
+   "batch": "batch01",
+   "confirmed_by": "owner",
+   "confirmed_at": "2026-11-02"
+  }
+ ],
+ "count": 2,
+ "by_kind": {
+  "missing_char": 1,
+  "missing_passage": 1
+ }
+}

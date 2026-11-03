@@ -1,0 +1,20 @@
+{
+ "classic": "zhuangzi",
+ "file": "raw/canon/zhuangzi.json",
+ "records": 33,
+ "bytes": 203737,
+ "sha256": "c394d997b48ced90faa8e6c60a58daaac27b7f9466e51f935670138e7ce0a421",
+ "source_files": [
+  "raw/canon/kanripo/KR5c0051/KR5c0051_000.txt",
+  "raw/canon/kanripo/KR5c0051/KR5c0051_001.txt",
+  "raw/canon/kanripo/KR5c0051/KR5c0051_002.txt",
+  "raw/canon/kanripo/KR5c0051/KR5c0051_003.txt",
+  "raw/canon/kanripo/KR5c0051/KR5c0051_004.txt"
+ ],
+ "note": "切自 Kanripo KR5c0051（ZTDZ 分支）白文本，33 篇。篇界由「内篇/外篇/杂篇 + 篇名 + 第N」标记确定，篇名已转简体以与注本篇名对齐。",
+ "issues": [],
+ "license": "CC-BY-SA",
+ "repo": "kanripo/KR5c0051",
+ "branch": "ZTDZ",
+ "edition": "白文本（不含郭象注、陆德明音义）"
+}

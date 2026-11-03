@@ -1,0 +1,461 @@
+{
+ "_note": "大学章级原文。切分自 raw/canon/daxue.json，来源见 raw/SOURCES.json。",
+ "_splitting": "保留古本十六段结构，朱子经传分章只作结构映射，不重切",
+ "_warning": "切分经过结构校验与抽样比对，但不等于全量校勘。引用前仍须核对纸质通行本。",
+ "classic": "daxue",
+ "name": "大学",
+ "count": 16,
+ "chapters": [
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 1,
+   "ref": "大学·古本第1段",
+   "text": "大学之道，在明明德，在亲民，在止于至善。知止而后有定，定而后能静，静而后能安，安而后能虑，虑而后能得。物有本末，事有终始，知所先后，则近道矣。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 1,
+     "jizhu_chapter": "经一章",
+     "jizhu_chapter_name": "经一章"
+    },
+    "note": "朱子本「经一章」含古本第 1、2 段，判为「孔子之言而曾子述之」，凡二百五字。"
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 2,
+   "ref": "大学·古本第2段",
+   "text": "古之欲明明德于天下者，先治其国；欲治其国者，先齐其家；欲齐其家者，先修其身；欲修其身者，先正其心；欲正其心者，先诚其意；欲诚其意者，先致其知，致知在格物。物格而后知至，知至而后意诚，意诚而后心正，心正而后身修，身修而后家齐，家齐而后国治，国治而后天下平。自天子以至于庶人，壹是皆以修身为本。其本乱而末治者否矣，其所厚者薄，而其所薄者厚，未之有也！此谓知本，此谓知之至也。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 2,
+     "jizhu_chapter": "经一章",
+     "jizhu_chapter_name": "经一章"
+    },
+    "note": "朱子本「经一章」含古本第 1、2 段，判为「孔子之言而曾子述之」，凡二百五字。"
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 3,
+   "ref": "大学·古本第3段",
+   "text": "所谓诚其意者，毋自欺也，如恶恶臭，如好好色，此之谓自谦，故君子必慎其独也！小人闲居为不善，无所不至，见君子而后厌然，掩其不善，而著其善。人之视己，如见其肺肝然，则何益矣！此谓诚于中，形于外，故君子必慎其独也。曾子曰：「十目所视，十手所指，其严乎！」富润屋，德润身，心广体胖，故君子必诚其意。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 3,
+     "jizhu_chapter": "传之六章",
+     "jizhu_chapter_name": "传之六章（释诚意）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 4,
+   "ref": "大学·古本第4段",
+   "text": "《诗》云：「瞻彼淇澳，菉竹猗猗。有斐君子，如切如磋，如琢如磨。瑟兮僩兮，赫兮喧兮。有斐君子，终不可諠兮！」「如切如磋」者，道学也；「如琢如磨」者，自修也；「瑟兮僩兮」者，恂栗也；「赫兮喧兮」者，威仪也；「有斐君子，终不可諠兮」者，道盛德至善，民之不能忘也。《诗》云：「於戏前王不忘！」君子贤其贤而亲其亲，小人乐其乐而利其利，此以没世不忘也。",
+   "structure_note": {
+    "structure_type": "reordered",
+    "scope": {
+     "guben_paragraph": 4,
+     "jizhu_chapter": "传之三章",
+     "jizhu_chapter_name": "传之三章（释止于至善）"
+    },
+    "note": "朱子本把古本第 4 段（《诗》云「瞻彼淇澳」）移到第 7 段之后，用以释「止于至善」。古本原序为 3→4，此处为结构重排，不是文字差异。"
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 5,
+   "ref": "大学·古本第5段",
+   "text": "《康诰》曰：「克明德。」《太甲》曰：「顾諟天之明命。」《帝典》曰：「克明峻德。」皆自明也。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 5,
+     "jizhu_chapter": "传之首章",
+     "jizhu_chapter_name": "传之首章（释明明德）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 6,
+   "ref": "大学·古本第6段",
+   "text": "汤之盘铭曰：「茍日新，日日新，又日新。」《康诰》曰：「作新民。」《诗》曰：「周虽旧邦，其命惟新。」是故君子无所不用其极。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 6,
+     "jizhu_chapter": "传之二章",
+     "jizhu_chapter_name": "传之二章（释新民）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 7,
+   "ref": "大学·古本第7段",
+   "text": "《诗》云：「邦畿千里，惟民所止。」《诗》云：「缗蛮黄鸟，止于丘隅。」子曰：「于止，知其所止，可以人而不如鸟乎？」《诗》云：「穆穆文王，于缉熙敬止！」为人君，止于仁；为人臣，止于敬；为人子，止于孝；为人父，止于慈；与国人交，止于信。",
+   "structure_note": {
+    "structure_type": "reordered",
+    "scope": {
+     "guben_paragraph": 7,
+     "jizhu_chapter": "传之三章",
+     "jizhu_chapter_name": "传之三章（释止于至善）"
+    },
+    "note": "朱子本把古本第 4 段（《诗》云「瞻彼淇澳」）移到第 7 段之后，用以释「止于至善」。古本原序为 3→4，此处为结构重排，不是文字差异。"
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 8,
+   "ref": "大学·古本第8段",
+   "text": "子曰：「听讼，吾犹人也，必也使无讼乎！」无情者不得尽其辞，大畏民志。此谓知本。",
+   "structure_note": {
+    "structure_type": "partial",
+    "scope": {
+     "guben_paragraph": 8,
+     "jizhu_chapter": "传之四章",
+     "jizhu_chapter_name": "传之四章（释本末）"
+    },
+    "note": "朱子本取古本第 8 段前半「子曰听讼吾犹人也…此谓知本」，并判「此谓知本」四字为衍文。"
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 9,
+   "ref": "大学·古本第9段",
+   "text": "所谓修身在正其心者：身有所忿懥，则不得其正；有所恐惧，则不得其正；有所好乐，则不得其正；有所忧患，则不得其正。心不在焉，视而不见，听而不闻，食而不知其味。此谓修身在正其心。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 9,
+     "jizhu_chapter": "传之七章",
+     "jizhu_chapter_name": "传之七章（释正心修身）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 10,
+   "ref": "大学·古本第10段",
+   "text": "所谓齐其家在修其身者：人之其所亲爱而辟焉，之其所贱恶而辟焉，之其所畏敬而辟焉，之其所哀矜而辟焉，之其所敖惰而辟焉。故好而知其恶，恶而知其美者，天下鲜矣！故谚有之曰：「人莫知其子之恶，莫知其苗之硕。」此谓身不修不可以齐其家。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 10,
+     "jizhu_chapter": "传之八章",
+     "jizhu_chapter_name": "传之八章（释修身齐家）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 11,
+   "ref": "大学·古本第11段",
+   "text": "所谓治国必先齐其家者，其家不可教而能教人者，无之。故君子不出家而成教于国：孝者，所以事君也；弟者，所以事长也；慈者，所以使众也。《康诰》曰：「如保赤子」，心诚求之，虽不中不远矣。未有学养子而后嫁者也！一家仁，一国兴仁；一家让，一国兴让；一人贪戾，一国作乱。其机如此。此谓一言偾事，一人定国。尧、舜率天下以仁，而民从之；桀、纣率天下以暴，而民从之。其所令反其所好，而民不从。是故君子有诸己而后求诸人，无诸己而后非诸人。所藏乎身不恕，而能喻诸人者，未之有也。故治国在齐其家。《诗》云：「桃之夭夭，其叶蓁蓁；之子于归，宜其家人。」宜其家人，而后可以教国人。《诗》云：「宜兄宜弟。」宜兄宜弟，而后可以教国人。《诗》云：「其仪不忒，正是四国。」其为父子兄弟足法，而后民法之也。此谓治国在齐其家。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 11,
+     "jizhu_chapter": "传之九章",
+     "jizhu_chapter_name": "传之九章（释齐家治国）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 12,
+   "ref": "大学·古本第12段",
+   "text": "所谓平天下在治其国者：上老老而民兴孝，上长长而民兴弟，上恤孤而民不倍，是以君子有絜矩之道也。所恶于上，毋以使下；所恶于下，毋以事上；所恶于前，毋以先后；所恶于后，毋以从前；所恶于右，毋以交于左；所恶于左，毋以交于右。此之谓絜矩之道。《诗》云：「乐只君子，民之父母。」民之所好好之，民之所恶恶之，此之谓民之父母。《诗》云：「节彼南山，维石岩岩。赫赫师尹，民具尔瞻。」有国者不可以不慎，辟则为天下戮矣。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 12,
+     "jizhu_chapter": "传之十章",
+     "jizhu_chapter_name": "传之十章（释治国平天下）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 13,
+   "ref": "大学·古本第13段",
+   "text": "《诗》云：「殷之未丧师，克配上帝。仪监于殷，峻命不易。」道得众则得国，失众则失国。是故君子先慎乎德。有德此有人，有人此有土，有土此有财，有财此有用。德者本也，财者末也，外本内末，争民施夺。是故财聚则民散，财散则民聚。是故言悖而出者，亦悖而入；货悖而入者，亦悖而出。《康诰》曰：「惟命不于常！」道善则得之，不善则失之矣。楚书曰：「楚国无以为宝，惟善以为宝。」舅犯曰：「亡人无以为宝，仁亲以为宝。」",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 13,
+     "jizhu_chapter": "传之十章",
+     "jizhu_chapter_name": "传之十章（释治国平天下）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 14,
+   "ref": "大学·古本第14段",
+   "text": "《秦誓》曰：「若有一个臣，断断兮无他技，其心休休焉，其如有容焉。人之有技，若己有之；人之彦圣，其心好之，不啻若自其口出。实能容之，以能保我子孙黎民，尚亦有利哉！人之有技，媢嫉以恶之；人之彦圣，而违之俾不通。实不能容，以不能保我子孙黎民，亦曰殆哉！」唯仁人放流之，迸诸四夷，不与同中国，此谓唯仁人为能爱人，能恶人。见贤而不能举，举而不能先，命也；见不善而不能退，退而不能远，过也。好人之所恶，恶人之所好，是谓拂人之性，灾必逮夫身。是故君子有大道，必忠信以得之，骄泰以失之。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 14,
+     "jizhu_chapter": "传之十章",
+     "jizhu_chapter_name": "传之十章（释治国平天下）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 15,
+   "ref": "大学·古本第15段",
+   "text": "生财有大道。生之者众，食之者寡，为之者疾，用之者舒，则财恒足矣。仁者以财发身，不仁者以身发财。未有上好仁而下不好义者也，未有好义其事不终者也，未有府库财非其财者也。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 15,
+     "jizhu_chapter": "传之十章",
+     "jizhu_chapter_name": "传之十章（释治国平天下）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  },
+  {
+   "classic": "daxue",
+   "book": "大学",
+   "book_index": 1,
+   "chapter": 16,
+   "ref": "大学·古本第16段",
+   "text": "孟献子曰：「畜马乘，不察于鸡豚；伐冰之家，不畜牛羊；百乘之家，不畜聚敛之臣。与其有聚敛之臣，宁有盗臣。」此谓国不以利为利，以义为利也。长国家而务财用者，必自小人矣。彼为善之，小人之使为国家，灾害并至。虽有善者，亦无如之何矣！此谓国不以利为利，以义为利也。",
+   "structure_note": {
+    "structure_type": "overlap",
+    "scope": {
+     "guben_paragraph": 16,
+     "jizhu_chapter": "传之十章",
+     "jizhu_chapter_name": "传之十章（释治国平天下）"
+    },
+    "note": ""
+   },
+   "align": {
+    "canon_source": "raw/canon/daxue.json（古本，独立原典）",
+    "status": "ok"
+   }
+  }
+ ],
+ "_structure": {
+  "_note": "古本与朱子《大学章句》的结构差异记录。原典层保留古本结构；朱子经传分章属于注家解释体系，只做映射记录，不改写原典。朱子补传一百三十四字在古本中不存在，因此不出现在本文件的 chapters 里。",
+  "jizhu_supplement": {
+   "chapter": "传之五章",
+   "chapter_name": "传之五章（释格物致知）",
+   "in_canon": false,
+   "note": "朱子自述此章「而今亡矣」，取程子之意补传。补传文字属于朱子补入，不得进入原典层；如需进入注疏层，必须显式标记 author=朱熹、nature=jizhu_supplement。",
+   "char_count": 134
+  },
+  "mapping": [
+   {
+    "jizhu_chapter": "经一章",
+    "jizhu_chapter_name": "经一章",
+    "guben_paragraphs": [
+     1,
+     2
+    ],
+    "structure_type": "overlap",
+    "note": "朱子本「经一章」含古本第 1、2 段，判为「孔子之言而曾子述之」，凡二百五字。"
+   },
+   {
+    "jizhu_chapter": "传之首章",
+    "jizhu_chapter_name": "传之首章（释明明德）",
+    "guben_paragraphs": [
+     5
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   },
+   {
+    "jizhu_chapter": "传之二章",
+    "jizhu_chapter_name": "传之二章（释新民）",
+    "guben_paragraphs": [
+     6
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   },
+   {
+    "jizhu_chapter": "传之三章",
+    "jizhu_chapter_name": "传之三章（释止于至善）",
+    "guben_paragraphs": [
+     7,
+     4
+    ],
+    "structure_type": "reordered",
+    "note": "朱子本把古本第 4 段（《诗》云「瞻彼淇澳」）移到第 7 段之后，用以释「止于至善」。古本原序为 3→4，此处为结构重排，不是文字差异。"
+   },
+   {
+    "jizhu_chapter": "传之四章",
+    "jizhu_chapter_name": "传之四章（释本末）",
+    "guben_paragraphs": [
+     8
+    ],
+    "structure_type": "partial",
+    "note": "朱子本取古本第 8 段前半「子曰听讼吾犹人也…此谓知本」，并判「此谓知本」四字为衍文。"
+   },
+   {
+    "jizhu_chapter": "传之五章",
+    "jizhu_chapter_name": "传之五章（释格物致知）",
+    "guben_paragraphs": [],
+    "structure_type": "jizhu_supplement",
+    "note": "古本无此章。朱子自述「右传之五章，盖释格物、致知之义，而今亡矣」，取程子之意补传一百三十四字。此段为朱子补入，不属于原典层，仅可作为注疏层内容，且必须标记为朱子补入。"
+   },
+   {
+    "jizhu_chapter": "传之六章",
+    "jizhu_chapter_name": "传之六章（释诚意）",
+    "guben_paragraphs": [
+     3
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   },
+   {
+    "jizhu_chapter": "传之七章",
+    "jizhu_chapter_name": "传之七章（释正心修身）",
+    "guben_paragraphs": [
+     9
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   },
+   {
+    "jizhu_chapter": "传之八章",
+    "jizhu_chapter_name": "传之八章（释修身齐家）",
+    "guben_paragraphs": [
+     10
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   },
+   {
+    "jizhu_chapter": "传之九章",
+    "jizhu_chapter_name": "传之九章（释齐家治国）",
+    "guben_paragraphs": [
+     11
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   },
+   {
+    "jizhu_chapter": "传之十章",
+    "jizhu_chapter_name": "传之十章（释治国平天下）",
+    "guben_paragraphs": [
+     12,
+     13,
+     14,
+     15,
+     16
+    ],
+    "structure_type": "overlap",
+    "note": ""
+   }
+  ]
+ }
+}

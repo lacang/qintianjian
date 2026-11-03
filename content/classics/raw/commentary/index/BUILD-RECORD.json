@@ -1,0 +1,347 @@
+{
+ "_note": "本轮注疏索引成果的构建复现记录。记录输入底本、脚本链、产出与各自的 SHA256，用于证明「这一版索引由哪些东西按哪条链生成」。它不是校勘结论，也不改变任何 align.status。",
+ "schema_version": 1,
+ "stage": "P1 注疏索引（已验收）",
+ "generated_at": "2026-11-02T21:22:50+08:00",
+ "environment": {
+  "python": "3.13.12",
+  "platform": "linux"
+ },
+ "build_chain": [
+  {
+   "step": 1,
+   "script": "_build/split_chapters.py",
+   "role": "原典切分（孟子/大学/中庸/老子/庄子）",
+   "produces": "parsed/canon/*.json",
+   "note": "本轮未重跑，输入已固化在 parsed/canon 的 SHA256 中"
+  },
+  {
+   "step": 2,
+   "script": "_build/build_commentary_index.py",
+   "role": "注疏索引构建（对齐 + 状态判定）",
+   "produces": "raw/commentary/index/commentary-index.json"
+  },
+  {
+   "step": 3,
+   "script": "_build/verify_alignment.py",
+   "role": "抽样验证（八项检查）+ 异文台账落盘",
+   "produces": "raw/commentary/index/variant-ledger.json",
+   "must_be_zero": [
+    "fails",
+    "warns"
+   ]
+  },
+  {
+   "step": 4,
+   "script": "_build/freeze_build_record.py",
+   "role": "固化本记录",
+   "produces": "raw/commentary/index/BUILD-RECORD.json"
+  }
+ ],
+ "shared_module": {
+  "path": "_build/cn_norm.py",
+  "role": "繁简 / 异体 / 标点归一表，切分器与注疏索引共用一份。两边各写一份必然漂移，最后出现「切分器能对上、索引对不上」这类极难查的 bug。",
+  "constraint": "归一必须 1 字符 → 1 字符，否则锚点索引映射失效"
+ },
+ "inputs": {
+  "commentary": [
+   {
+    "key": "daxue-zhangju-jizhu",
+    "path": "raw/commentary/text/daxue-zhangju-jizhu.txt",
+    "sha256": "561d291da53493410412678c151d99fbedd740f82b75e8b95817dee1a9f8e225",
+    "sha256_recorded_matches_file": true,
+    "bytes": 24937
+   },
+   {
+    "key": "laozi-wangbi",
+    "path": "raw/commentary/text/laozi-wangbi.txt",
+    "sha256": "4a93542f85e39ad12aae707a5bd1d63f327619178aa7cb865734c9954263522d",
+    "sha256_recorded_matches_file": true,
+    "bytes": 44807
+   },
+   {
+    "key": "laozi-wangbi-daozang",
+    "path": "raw/commentary/text/laozi-wangbi-daozang.txt",
+    "sha256": "d22ae9e800a1da22d2abb9bd10b9d9468f911418f7ecb00f6dea027362ddc4a3",
+    "sha256_recorded_matches_file": true,
+    "bytes": 72890
+   },
+   {
+    "key": "laozi-wangbi-jin",
+    "path": "raw/commentary/text/laozi-wangbi-jin.txt",
+    "sha256": "25a948999d9f3f0f8e46eae0207a8438209fe951848a0b7a458a1de833c29d82",
+    "sha256_recorded_matches_file": true,
+    "bytes": 72617
+   },
+   {
+    "key": "lunyu-jizhu",
+    "path": "raw/commentary/text/lunyu-jizhu.txt",
+    "sha256": "5db4353604b133ad296d0c023971f35b1c6780472db7273077610ca470628561",
+    "sha256_recorded_matches_file": true,
+    "bytes": 299847
+   },
+   {
+    "key": "lunyu-zhushu",
+    "path": "raw/commentary/text/lunyu-zhushu.txt",
+    "sha256": "609105daab153abca8a8dcf42bbf8a72ceb2f0c6c71d85317ddb12bb645055c0",
+    "sha256_recorded_matches_file": true,
+    "bytes": 642613
+   },
+   {
+    "key": "mengzi-jizhu",
+    "path": "raw/commentary/text/mengzi-jizhu.txt",
+    "sha256": "3303482da3c269f7e3e8c2cc1f711919bbd1fe9a3e8b541e6c751bba9d062f2a",
+    "sha256_recorded_matches_file": true,
+    "bytes": 364950
+   },
+   {
+    "key": "mengzi-zhushu",
+    "path": "raw/commentary/text/mengzi-zhushu.txt",
+    "sha256": "909d180536d632b7811c4a98ecd68b25343ff4db087a021be10f5022ad83d94a",
+    "sha256_recorded_matches_file": true,
+    "bytes": 1000335
+   },
+   {
+    "key": "nanhua-zhushu",
+    "path": "raw/commentary/text/nanhua-zhushu.txt",
+    "sha256": "00f2fd10f85baa594a2582e8314fc64dc04df1041d062392ed7c2e57a8d1d766",
+    "sha256_recorded_matches_file": true,
+    "bytes": 1255515
+   },
+   {
+    "key": "sishu-zhangju-jizhu",
+    "path": "raw/commentary/text/sishu-zhangju-jizhu.txt",
+    "sha256": "e40ac2ca6985c9d43ccaf3642fc014773f4dcb35475325c704a05b2dd0eec33c",
+    "sha256_recorded_matches_file": true,
+    "bytes": 776770
+   },
+   {
+    "key": "zhongyong-zhangju-jizhu",
+    "path": "raw/commentary/text/zhongyong-zhangju-jizhu.txt",
+    "sha256": "7411f59135fe1b2ab744956c7d2dc968cbdbb3129e572a9eaf7ac49a42af8def",
+    "sha256_recorded_matches_file": true,
+    "bytes": 52779
+   },
+   {
+    "key": "zhuangzi-guoxiang",
+    "path": "raw/commentary/text/zhuangzi-guoxiang.txt",
+    "sha256": "eb231c441847a680b80f1725d8099820e9d461b1280e43c15d1e1abd653f55b6",
+    "sha256_recorded_matches_file": true,
+    "bytes": 281932
+   }
+  ],
+  "canon": [
+   {
+    "classic": "daxue",
+    "path": "parsed/canon/daxue.json",
+    "sha256": "54b7c445c8079a592b5f5372e5bc33bdf9f58a1e5c207aa7a6362d36f595308d",
+    "sha256_recorded_matches_file": true,
+    "bytes": 18882
+   },
+   {
+    "classic": "laozi",
+    "path": "parsed/canon/laozi.json",
+    "sha256": "1c1e683a3761fd3c27a15c782ae62390d81c73c9800437741bcbc1a7939c86f8",
+    "sha256_recorded_matches_file": true,
+    "bytes": 66227
+   },
+   {
+    "classic": "lunyu",
+    "path": "parsed/canon/lunyu.json",
+    "sha256": "6504334d46e5f4bddc339d84c05831246cd87eb2a09e9251c4c09f04398e6f47",
+    "sha256_recorded_matches_file": true,
+    "bytes": 162416
+   },
+   {
+    "classic": "mengzi",
+    "path": "parsed/canon/mengzi.json",
+    "sha256": "d65569851f68af89274a22c784f93f1d99d93c31599e2288ea06e062d103001b",
+    "sha256_recorded_matches_file": true,
+    "bytes": 340126
+   },
+   {
+    "classic": "zhongyong",
+    "path": "parsed/canon/zhongyong.json",
+    "sha256": "5c391b459e9e8c0b1989b02145742ddb49f8946471247b797cd4f61e55fe7e55",
+    "sha256_recorded_matches_file": true,
+    "bytes": 38019
+   },
+   {
+    "classic": "zhuangzi",
+    "path": "parsed/canon/zhuangzi.json",
+    "sha256": "7639821f0feb6f908e67f163d76e3ce9e4efb19aac952325d24c5c027a81bd21",
+    "sha256_recorded_matches_file": true,
+    "bytes": 218247
+   }
+  ]
+ },
+ "scripts": [
+  {
+   "path": "_build/cn_norm.py",
+   "bytes": 34466,
+   "sha256": "a109eb9f9a0efab4ec408f20091906b22180c4f98cac17d0209dd9f1a13aa740"
+  },
+  {
+   "path": "_build/split_chapters.py",
+   "bytes": 39591,
+   "sha256": "ecf7ff74ac439cbb99966e3cb4b5bb1e36372d474321375e6c994be64c3ddedf"
+  },
+  {
+   "path": "_build/build_commentary_index.py",
+   "bytes": 50343,
+   "sha256": "b30d884df782da0646ce7f8e0035a22880aba830e2607832cc75931ebc326e85"
+  },
+  {
+   "path": "_build/verify_alignment.py",
+   "bytes": 17243,
+   "sha256": "9f9b375f02a1e463936702f4dd6fe87039b1ee0c97c15fbe9ae164d1ea344f74"
+  },
+  {
+   "path": "_build/locate_snippet.py",
+   "bytes": 5900,
+   "sha256": "d38bdbd8edcd90e2f1bfa5d08ba527005fa3361b7d76a598ea789ccad1ad8558"
+  },
+  {
+   "path": "_build/make_variant_worklist.py",
+   "bytes": 5176,
+   "sha256": "5e1b3090e851d9c9910d0e9be399bb94541c9c8b88614cc7fae8fafe221cf60f"
+  },
+  {
+   "path": "_build/make_review_batch.py",
+   "bytes": 4401,
+   "sha256": "bbc77978691c5a4781ab94e93319d236008cf15e7e95ab06a34b6c94b0c2daf2"
+  },
+  {
+   "path": "_build/apply_review_batch01.py",
+   "bytes": 19161,
+   "sha256": "30d7b65fbf875169e761ec94ec8a30b23ad608fa1411c41d0cac73b1588d5cea"
+  },
+  {
+   "path": "_build/check_review_writeback.py",
+   "bytes": 8130,
+   "sha256": "5ea0063b317f7fb84b5f78051d69a9e3a58fd0c200ac10259c545fe545d2025c"
+  },
+  {
+   "path": "_build/build_laozi_variant_ledger.py",
+   "bytes": 22407,
+   "sha256": "01c2c3711565ba6c5866fc136a601541aaaa22a75275a9554bd63e738d98cc39"
+  },
+  {
+   "path": "_build/make_laozi_review_sheet.py",
+   "bytes": 8209,
+   "sha256": "73abe3ab4b2ff516356a8ccc3e683178ed577648362b6a352454620251fa02a7"
+  },
+  {
+   "path": "_build/freeze_build_record.py",
+   "bytes": 11904,
+   "sha256": "5a4f429f320c7f9c63c3e375d7d795a3d91a97ffeaf9c5c7f5cdfa151a647d1e"
+  }
+ ],
+ "outputs": [
+  {
+   "path": "raw/commentary/index/commentary-index.json",
+   "bytes": 19323512,
+   "sha256": "1a6d631f8eac30947fa76b9d5e6b7fa724e6239809a729a2adfcb900c76114c3"
+  },
+  {
+   "path": "raw/commentary/index/variant-ledger.json",
+   "bytes": 122857,
+   "sha256": "0b274e31dde9b8c074574ab26f7bc932f924bffcde55cac42c0e26fe54147b18"
+  },
+  {
+   "path": "raw/commentary/index/variant-review-worklist.md",
+   "bytes": 122753,
+   "sha256": "438c4994ba409d7f45638c6d6c14193d50d7b65c7839f6793e6aa927f90b6676"
+  },
+  {
+   "path": "raw/commentary/index/variant-review-batch1.md",
+   "bytes": 19409,
+   "sha256": "8f8a7db4ef19d6561e73ed6ebe3724639adc710f8fa4d977aa0a1748d1d31513"
+  },
+  {
+   "path": "raw/commentary/index/laozi-variant-ledger.json",
+   "bytes": 385388,
+   "sha256": "1a0941e5f62466ddcb1d15484b605d539362470569fcfca5c33b25b075bacac9"
+  },
+  {
+   "path": "raw/commentary/index/laozi-variant-review-sheet.md",
+   "bytes": 61794,
+   "sha256": "3544dab51d41a2c1550eeab5f18d3f29f1ff71212f8f112cb9d0cc68c91c95c7"
+  },
+  {
+   "path": "raw/commentary/index/source-defect-ledger.json",
+   "bytes": 3516,
+   "sha256": "dcbdb77e5c30d50a276922fd7c76e3695951286bcd04744f47faa42babaca825"
+  }
+ ],
+ "counts": {
+  "entries": 15445,
+  "empty_entries": 0,
+  "verified_non_null": 0,
+  "status": {
+   "self_contained": 6537,
+   "ok": 7879,
+   "jizhu_supplement": 1,
+   "ok_variant": 958,
+   "chapter_level": 70
+  },
+  "per_book": {
+   "lunyu-zhushu": 502,
+   "lunyu-jizhu": 1281,
+   "mengzi-zhushu": 261,
+   "mengzi-jizhu": 2506,
+   "sishu-zhangju-jizhu": 3786,
+   "daxue-zhangju-jizhu": 106,
+   "zhongyong-zhangju-jizhu": 206,
+   "laozi-wangbi": 78,
+   "laozi-wangbi-daozang": 454,
+   "laozi-wangbi-jin": 426,
+   "zhuangzi-guoxiang": 70,
+   "nanhua-zhushu": 5769
+  },
+  "variant_ledger": {
+   "count": 142,
+   "group_count": 62,
+   "grouped_count": 124,
+   "confirmed_count": 12
+  }
+ },
+ "verification": {
+  "script": "_build/verify_alignment.py",
+  "checks": [
+   "canon_text 必须能被其来源层（原典 / 注本自身）证伪",
+   "note_text 必须能在源文件里找到",
+   "不得产出空壳条目",
+   "verified_by / verified_at 必须全空",
+   "源文件与原典 SHA256 必须齐全",
+   "align.status 必须在已定义状态集内",
+   "大学结构映射必须完整（11 章 + 补传 in_canon=False）",
+   "老子第 13/76 章必须在产品展示层带出差异提示"
+  ],
+  "last_result": {
+   "fails": 0,
+   "warns": 0
+  }
+ },
+ "known_gaps": [
+  "daxue-zhangju-jizhu 缺朱子补传正文（本底本仅 61 字结语，应 134 字），未代拟",
+  "laozi-wangbi 缺第 31/66/75 章",
+  "laozi-wangbi-jin 缺 10 章（8/14/15/19/30/54/62/70/71/78）",
+  "zhuangzi-guoxiang 仅内篇七篇，chapter_level，未做文字比对",
+  "nanhua-zhushu 源文件 14 处 &#39; 残渣，已清洗并记录",
+  "中庸 17/795、大学 15/355、四书合刻 31 条章级小句未定位",
+  "老子 ok_variant 958 条尚无结构化异文清单（仅第 29 章有 variant 记录）"
+ ],
+ "boundaries": [
+  "不是全量人工校勘",
+  "不是全部注疏已完成文字级对齐（仍有 chapter_level 70 条）",
+  "不是所有条目都取得引用资格（verified_by 全空是正确状态，不是待消除缺陷）",
+  "未进行生产发布，未 commit / push / 部署"
+ ],
+ "reproduce": [
+  "cd content/classics/_build",
+  "python3 build_commentary_index.py",
+  "python3 verify_alignment.py     # 必须 fails=0 warns=0",
+  "python3 freeze_build_record.py  # 与本记录比对 outputs 的 sha256"
+ ]
+}

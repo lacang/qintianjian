@@ -1,0 +1,18 @@
+{
+ "classic": "laozi",
+ "file": "raw/canon/laozi.json",
+ "records": 81,
+ "bytes": 27941,
+ "sha256": "c9e020c59ad049d74e23dbbb5425c811608311dd012dc8a31feb7ba58a057677",
+ "source_files": [
+  "raw/canon/kanripo/KR5c0045/KR5c0045_000.txt",
+  "raw/canon/kanripo/KR5c0045/KR5c0045_001.txt",
+  "raw/canon/kanripo/KR5c0045/KR5c0045_002.txt"
+ ],
+ "note": "切自 Kanripo KR5c0045（ZTDZ 分支）河上公系统道藏本白文，81 章。章界由章名锚与章末计数锚双重确定，章末声明字数与实际字数逐章比对。",
+ "issues": [],
+ "license": "CC-BY-SA",
+ "repo": "kanripo/KR5c0045",
+ "branch": "ZTDZ",
+ "edition": "河上公系统正统道藏本（非王弼本）"
+}
