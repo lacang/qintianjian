@@ -2,42 +2,43 @@ import {
   $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt,
   birthDate, nowDate, resolveCastDate, copyText, toast, pad,
   parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
-} from './state.js?v=127';
-import { paipanZi } from './zischool.js?v=127';
-import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=127';
-import { renderPan, copyCurrent } from './panview.js?v=127';
-import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=127';
-import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=127';
-import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=127';
-import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=127';
-import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=127';
-import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=127';
-import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=127';
-import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=127';
-import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=127';
-import { initInteract } from './interact.js?v=127';
-import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=127';
-import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=127';
-import { renderGlobe, globeCopyText } from './globe.js?v=127';
-import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=127';
-import { initCast, resetCast } from './cast.js?v=127';
-import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=127';
-import { initTips, initGuides } from './tipview.js?v=127';
+} from './state.js?v=128';
+import { paipanZi } from './zischool.js?v=128';
+import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=128';
+import { renderPan, copyCurrent } from './panview.js?v=128';
+import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=128';
+import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=128';
+import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=128';
+import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=128';
+import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=128';
+import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=128';
+import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=128';
+import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=128';
+import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=128';
+import { initInteract } from './interact.js?v=128';
+import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=128';
+import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=128';
+import { renderGlobe, globeCopyText } from './globe.js?v=128';
+import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=128';
+import { initCast, resetCast } from './cast.js?v=128';
+import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=128';
+import { initForceRefresh, shouldSkipAutoReload } from './force-refresh.js?v=128';
+import { initTips, initGuides } from './tipview.js?v=128';
 import {
   loadCases, loadCase, saveCase, updateCase, togglePin, removeCase,
   clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP,
-} from './cases.js?v=127';
-import { renderAsk, bindAsk } from './askview.js?v=127';
-import { renderClassic, bindClassic, renderClassicDetail, bindClassicDetail } from './classic/classicview.js?v=127';
-import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=127';
-import { onPlaceChange } from './geo.js?v=127';
-import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=127';
-import { renderMoreCards } from './homecards.js?v=127';
-import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=127';
-import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=127';
-import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=127';
-import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=127';
-import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=127';
+} from './cases.js?v=128';
+import { renderAsk, bindAsk } from './askview.js?v=128';
+import { renderClassic, bindClassic, renderClassicDetail, bindClassicDetail } from './classic/classicview.js?v=128';
+import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=128';
+import { onPlaceChange } from './geo.js?v=128';
+import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=128';
+import { renderMoreCards } from './homecards.js?v=128';
+import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=128';
+import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=128';
+import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=128';
+import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=128';
+import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=128';
 
 const SRC_LABEL = { coins: '摇铜钱', tianji: '天机', manual: '手录', time: '天时' };
 const NO_Q = '未填写所占之事';
@@ -747,6 +748,8 @@ if ('serviceWorker' in navigator) {
   // 新 SW 接管（skipWaiting+claim）后自动刷新一次，确保打开即最新，无需手动强刷
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // 用户刚按过「强制刷新」：这次重载已经是新资源，再刷一次只会让页面连闪两下。
+    if (shouldSkipAutoReload()) return;
     if (!reloaded) { reloaded = true; window.location.reload(); }
   });
   // updateViaCache:'none' 强制每次注册都绕过 HTTP 缓存去检查 sw.js：
@@ -791,6 +794,9 @@ onPlaceChange(() => {
     syncTimeBars();
   } catch (e) { console.warn('[place] 重算失败', e); }
 });
+// 首页右下角的版本号与强制刷新。异步读版本，不阻塞首屏。
+try { initForceRefresh(); } catch (e) { console.warn('[refresh] 初始化失败', e); }
+
 safeHome();
 setTimeout(safeSky, 0); // 星历较重，延迟到首帧之后，不阻塞首屏与点击
 safeBars();

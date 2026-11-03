@@ -820,8 +820,11 @@
 .cl-jlist { display: flex; flex-direction: column; }
 .cl-jrow { padding: 18px 0; border-bottom: 1px solid rgba(42,51,58,.7); }
 .cl-jrow-d { font-size: 11px; color: var(--ink-faint); letter-spacing: 1px; margin-bottom: 7px; }
+/* 标题独占一行：它和下面的「撤销」都是按钮，并排会紧贴在一起，
+   点标题很容易点到撤销。垂直分开，各占一行，误触就没了。 */
 .cl-jrow-t {
   appearance: none; font-family: inherit; cursor: pointer;
+  display: block; width: 100%;
   background: none; border: 0; padding: 0; margin-bottom: 8px;
   font-size: 15px; letter-spacing: 1.2px; color: var(--gold);
   font-family: "Noto Serif SC", serif; text-align: left;
@@ -904,4 +907,192 @@
   color: var(--ink-faint);
   border: 1px solid rgba(42,51,58,.9); border-radius: 999px;
   padding: 2px 8px;
+}
+
+/* ============================================================
+   遇见（v128）—— 连续思想发现
+   ------------------------------------------------------------
+   视觉上刻意不做交友软件的语汇：没有红心、没有叉号、没有「匹配」。
+   滑动在这里是翻页，不是投票。卡片沿用 .cl-quote 的边框与底色，
+   让「遇见」和「今日」看起来是同一本书的两页，而不是两个产品。
+   ============================================================ */
+
+.cl-feed-hd {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 4px 0 14px;
+}
+.cl-feed-hd-t {
+  font-size: 12px; letter-spacing: 1.6px; color: var(--ink-faint);
+}
+.cl-feed-hd-n {
+  font-size: 11px; letter-spacing: 1.2px; color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 手势区：pan-y 把纵向滚动留给浏览器，横向归脚本。
+   不写这条的话，横向拖动会被浏览器当成滚动，滑到一半就断。 */
+.cl-feed-stage {
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+.cl-card {
+  position: relative;
+  border: 1px solid rgba(200,163,92,.2);
+  background: linear-gradient(168deg, rgba(255,255,255,.05), rgba(255,255,255,.012));
+  border-radius: 18px; padding: 20px 18px 22px;
+  min-height: 56vh;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+  user-select: none; -webkit-user-select: none;
+  transition: none;
+}
+/* 已经标过的卡片：只换左边一条细线，不整张变色。
+   整张变色会让人以为这条「被判定」了什么。 */
+.cl-card.is-keep { border-left: 2px solid rgba(200,163,92,.55); }
+.cl-card.is-doubt { border-left: 2px solid rgba(127,169,139,.55); }
+
+.cl-card-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cl-card-idx {
+  font-size: 11px; letter-spacing: 1.4px; color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.cl-card-who {
+  font-size: 12px; letter-spacing: 1.4px; color: var(--gold);
+  font-family: "Noto Serif SC", serif;
+}
+
+.cl-card-orig {
+  margin: 0 0 10px; padding: 0;
+  font-family: "Noto Serif SC", serif;
+  font-size: 19px; line-height: 2; letter-spacing: .06em;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.cl-card-src {
+  font-size: 11.5px; color: var(--ink-faint);
+  letter-spacing: 1px; margin-bottom: 4px;
+}
+
+/* 原典与现代解读之间的硬分隔：不是留白，是分层。
+   读者扫一眼就知道「上面是古人的话，下面是今人的话」。 */
+.cl-card-rule {
+  height: 1px; margin: 18px 0 16px;
+  background: linear-gradient(90deg, rgba(200,163,92,.32), rgba(200,163,92,.04) 70%, transparent);
+}
+.cl-card-modern {
+  margin: 0; font-size: 15px; line-height: 2; letter-spacing: .02em;
+  color: var(--ink); font-family: "Noto Serif SC", serif;
+}
+.cl-card-tag {
+  margin-top: 10px; font-size: 10.5px; letter-spacing: .7px;
+  color: rgba(127,169,139,.72);
+  border-left: 2px solid rgba(127,169,139,.3); padding-left: 8px;
+}
+
+.cl-card-think {
+  margin-top: 20px; padding-top: 16px;
+  border-top: 1px dashed rgba(42,51,58,.9);
+}
+.cl-card-think-h {
+  font-size: 11px; letter-spacing: 2px; color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.cl-card-think p {
+  margin: 0; font-size: 14.5px; line-height: 1.95;
+  color: var(--ink-dim); font-family: "Noto Serif SC", serif;
+}
+
+/* ---- 三个动作 ---- */
+.cl-card-acts {
+  display: grid; grid-template-columns: 1fr 1.35fr 1fr;
+  gap: 8px; margin-top: 16px;
+}
+.cl-act {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: transparent; border: 1px solid var(--line);
+  color: var(--ink-dim); border-radius: 999px;
+  font-size: 13px; letter-spacing: 1.4px; padding: 12px 6px;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.cl-act:active { transform: scale(.97); }
+.cl-act-doubt.on {
+  color: rgba(127,169,139,.95); border-color: rgba(127,169,139,.6);
+  background: rgba(127,169,139,.1);
+}
+.cl-act-keep.on {
+  color: var(--gold); border-color: rgba(200,163,92,.62);
+  background: linear-gradient(160deg, rgba(200,163,92,.16), rgba(200,163,92,.04));
+}
+.cl-act-deep {
+  color: var(--ink);
+  border-color: rgba(200,163,92,.42);
+  background: linear-gradient(160deg, rgba(200,163,92,.14), rgba(200,163,92,.04));
+}
+
+.cl-feed-hint {
+  margin-top: 14px; text-align: center;
+  font-size: 11.5px; letter-spacing: .8px; color: var(--ink-faint);
+}
+
+/* ---- 走完一轮 ---- */
+.cl-feed-end {
+  border: 1px solid rgba(200,163,92,.16);
+  border-radius: 18px; padding: 28px 20px;
+  background: linear-gradient(168deg, rgba(255,255,255,.035), rgba(255,255,255,.008));
+  text-align: center;
+}
+.cl-feed-end-h {
+  font-size: 16px; letter-spacing: 1.6px; color: var(--gold);
+  font-family: "Noto Serif SC", serif; margin-bottom: 14px;
+}
+.cl-feed-end-p {
+  font-size: 13px; line-height: 2; color: var(--ink-dim);
+  margin-bottom: 12px;
+}
+.cl-feed-end-n {
+  font-size: 12.5px; letter-spacing: .8px; color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+.cl-feed-end-acts {
+  display: flex; flex-direction: column; gap: 10px; align-items: center;
+  margin-bottom: 16px;
+}
+.cl-feed-empty { padding: 60px 0; text-align: center; }
+
+/* ---- 手记筛选与标记徽章 ---- */
+.cl-jfilter {
+  display: flex; gap: 8px; margin-bottom: 4px;
+}
+.cl-jf {
+  appearance: none; font-family: inherit; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); color: var(--ink-dim);
+  font-size: 12px; letter-spacing: 1.2px; padding: 7px 14px; border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+.cl-jf.on {
+  color: var(--ink); border-color: rgba(200,163,92,.55);
+  background: linear-gradient(160deg, rgba(200,163,92,.16), rgba(200,163,92,.04));
+}
+.cl-jm {
+  font-style: normal; font-size: 10px; letter-spacing: .8px;
+  padding: 2px 7px; border-radius: 999px; margin-left: 8px;
+}
+.cl-jm-keep { color: var(--gold); border: 1px solid rgba(200,163,92,.4); }
+.cl-jm-doubt { color: rgba(127,169,139,.9); border: 1px solid rgba(127,169,139,.4); }
+.cl-jrow-u {
+  appearance: none; font-family: inherit; cursor: pointer;
+  display: inline-block;
+  background: none; border: 0; padding: 4px 0; margin: 0;
+  font-size: 11.5px; letter-spacing: .8px; color: var(--ink-faint);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.cl-jrow-u:active { color: var(--cinnabar); }
+
+/* 减少动态效果：滑动不做位移动画，直接切卡。
+   这是系统级偏好，不是「可选优化」。 */
+@media (prefers-reduced-motion: reduce) {
+  .cl-card { transition: none !important; }
 }

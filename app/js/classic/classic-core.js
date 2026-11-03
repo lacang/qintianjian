@@ -10,11 +10,12 @@
 //      编辑阐释即使 verified 也不得被当作原典关系。
 //   4. 确定性 —— 同一日期 / 同一种子必得同一结果，符合钦天监「确定性」铁律。
 //
-// 三种抽取是三种不同机制，不是同一个随机函数换三个标题
-// （董事长 2026-10-31 批示第一部分第 2 条明确要求）：
+// 抽取是四种不同机制，不是同一个随机函数换四个标题
+// （董事长 2026-10-31 批示第一部分第 2 条明确要求；v128 新增第四种）：
 //   今日相遇 = 年度洗牌 + 按日序取    → 相邻两天必不同，一年内均匀走遍全池
-//   问心     = 当日洗牌队列 + 按序号取 → 同日多次绝不重复，跨日重新洗牌
+//   问心     = 当日洗牌队列 + 按序号取 → 同日多次绝不重复，跨日重新洗牌（已停用，保留以备恢复）
 //   一念三观 = 分层抽样（按思想群）    → 三条来自不同群，构成多角度而非三条同质
+//   遇见     = 跨群交错遍历            → 连续两条必不同群，一轮内不重复，走完即耗尽
 
 import { activeClassic } from './classic-registry.js';
 import { LAYER_KEYS, packCapabilities } from './classic-schema.js';
@@ -155,6 +156,82 @@ export function drawThree(seq, dk = dateKey()) {
     out.push({ node: pick, group: gid, groupName: clusterName(gid) });
   }
   return out;
+}
+
+/**
+ * 遇见 —— 机制：跨思想群交错遍历。
+ *
+ * 为什么不能复用前三种（董事长 2026-10-31「多种抽取必须是多种机制」的延长线）：
+ *   今日 = 年度线性队列，节奏是日历（一天一格，相邻天必不同）；
+ *   问心 = 当日线性队列，节奏是一次对话（同日不重复，跨日重洗）；
+ *   一念三观 = 一次取三条分层，节奏是一次多角度对照（三条必来自三个群）。
+ *   「遇见」要的是**连续陌生感**：连续滑下去，相邻两张不能讲同一件事。
+ *
+ * 做法：先按轮次种子把群打乱，群内也打乱，然后交错合并——
+ *   取第 1 群第 1 条、第 2 群第 1 条……再回头取第 2 群第 1 条之后的第 2 条……
+ * 得到的队列里，相邻两条必来自不同群（群数 ≥ 2 时恒成立）。
+ * 一轮内每条只出现一次，走完即耗尽，不伪造下一轮。
+ *
+ * 种子只含轮次，**不含日期、不含用户状态**：
+ *   · 跨日继续滑，队列不变（昨天滑到第 10 张，今天接着第 11 张）；
+ *   · 用户存疑或留下，不会改变后面抽到什么；
+ *   · 与今日抽取的种子前缀不同（`feed-` vs `encounter-year-`），两者互不影响。
+ *
+ * @param {number} round 第几轮（0 起）。用户滑完一轮后由状态层 +1。
+ * @returns {object[]} 本轮完整队列
+ */
+export function feedOrder(round = 0) {
+  const pool = poolNodes();
+  if (!pool.length) return [];
+  const r = Math.max(0, Math.floor(Number(round)) || 0);
+
+  // 一条可能属于多个群：只归到第一个群，保证一轮里不出现两遍。
+  // 归组只影响「交错顺序」，不改变任何内容归属。
+  const byGroup = new Map();
+  for (const t of pool) {
+    const gid = (t.clusters || [])[0] || '__ungrouped__';
+    if (!byGroup.has(gid)) byGroup.set(gid, []);
+    byGroup.get(gid).push(t);
+  }
+
+  const groupIds = [...byGroup.keys()].sort();
+  const gOrder = shuffledOrder(`feed-groups::${r}`, groupIds);
+  const queues = gOrder.map((gid) => shuffledOrder(`feed-in::${r}::${gid}`, byGroup.get(gid)));
+
+  const out = [];
+  const maxLen = queues.reduce((m, q) => Math.max(m, q.length), 0);
+  for (let i = 0; i < maxLen; i++) {
+    for (const q of queues) {
+      if (i < q.length) out.push(q[i]);
+    }
+  }
+  return out;
+}
+
+/**
+ * 遇见第 seq 张（0 起）。越界返回 null —— 这是「本轮耗尽」的唯一信号，
+ * 调用方必须据此显示耗尽提示，不得回绕取模假装还有内容。
+ */
+export function drawFeed(seq, round = 0) {
+  const order = feedOrder(round);
+  if (!order.length) return null;
+  const n = Math.max(0, Math.floor(Number(seq)) || 0);
+  return order[n] || null;
+}
+
+/**
+ * 本轮容量（= 抽签池大小）。耗尽提示要用真实数字，不写「很多」。
+ *
+ * 为什么是 18 不是 26：内容包共 26 条，其中 8 条在审核时被标为
+ * `draw_suitability: '需要上下文'`（曾皙言志、克己复礼、吾十有五而志于学等，
+ * 脱离上下文单独成卡会失真）。这 8 条**故意不进抽签池**——宁可池子小，
+ * 也不把需要上下文的话切成孤立金句。遇见沿用同一个审核结论，不另立标准。
+ *
+ * 所以耗尽提示说「18 条」是真话；26 是内容总量，18 是能独立成卡的量。
+ * 将来补内容时，补的是「能单独成卡」的新条目，不是把 8 条硬塞进来。
+ */
+export function feedCapacity() {
+  return poolNodes().length;
 }
 
 // ---------------- 节点与关系 ----------------

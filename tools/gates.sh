@@ -68,6 +68,12 @@ run_all() {
   # 数据改动后这些是最容易被无声破坏的约束，必须前置。
   step "经典板块纯函数自测" node tools/test-classic.mjs || return 1
 
+  # ---- 1c. 「遇见」抽取与状态迁移自测 ----
+  # v128 新增第四种抽取机制（跨群交错）。这一步守三件事：
+  # 一轮内不重复、走完返回 null 不回绕、用户标记不影响后续抽取；
+  # 以及旧版收藏（qintian.classic.fav）无损迁移为「留下」、旧键保留。
+  step "遇见板块自测" node tools/test-classic-feed.mjs || return 1
+
   # ---- 2. vendor 产物是否与 liuyao-core/src 同步（防"src 改了 vendor 没重建"漂移） ----
   step "vendor 产物同步" node tools/build-vendor.mjs --check || return 1
 
@@ -87,6 +93,18 @@ run_all() {
   # 「问题不影响抽取」这条产品承诺只能靠同一序号 + 不同问题的对照点击证明。
   # 三种抽取机制互不混淆、五种反馈不触发重抽、辩一辩先立场后注疏，也都在这一层验。
   step "经典板块交互测试" node tools/test-classic-ui.mjs || return 1
+
+  # ---- 4b2. 「遇见」交互测试（真实指针事件） ----
+  # 左滑存疑 / 右滑留下 / 小幅回弹 / 纵向不被吃，这四条渲染测试证明不了。
+  # 还有刷新恢复、耗尽态真实数字、重开一轮不清手记，都只能在这一层验。
+  step "遇见板块交互测试" node tools/test-classic-feed-ui.mjs || return 1
+
+  # ---- 4b3. 首页版本号与强制刷新 ----
+  # 这个功能只有一个风险点：清缓存时不能把用户数据一起清掉。
+  # 出生配置、手记、留下/存疑全在 localStorage，和 Cache Storage 是两套东西，
+  # 但「强制刷新」四个字很容易被实现成顺手 clear()。所以这里预置三类真实数据、
+  # 按一次强刷、重载后逐项核对；再用一个不在 ASSETS 里的探针缓存证明缓存确实被清了。
+  step "强制刷新与版本号" node tools/test-force-refresh-ui.mjs || return 1
 
   # ---- 4c. 主题标签正式数据合规 ----
   # 董事长 2026-10-31 批准 v0.2 转正，标签正式进入 pack.topics。

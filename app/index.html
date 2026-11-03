@@ -8,15 +8,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="钦天监" />
 <link rel="manifest" href="./manifest.webmanifest" />
-<link rel="stylesheet" href="./css/style.css?v=127" />
-<link rel="stylesheet" href="./css/tibet.css?v=127" />
-<link rel="stylesheet" href="./css/tarot.css?v=127" />
-<link rel="stylesheet" href="./css/vedic.css?v=127" />
-<link rel="stylesheet" href="./css/zhuyou.css?v=127" />
-<link rel="stylesheet" href="./css/place.css?v=127" />
-<link rel="stylesheet" href="./css/planet-hour.css?v=127" />
-<link rel="stylesheet" href="./css/yangzhai.css?v=127" />
-<link rel="stylesheet" href="./css/classic.css?v=127" />
+<link rel="stylesheet" href="./css/style.css?v=128" />
+<link rel="stylesheet" href="./css/tibet.css?v=128" />
+<link rel="stylesheet" href="./css/tarot.css?v=128" />
+<link rel="stylesheet" href="./css/vedic.css?v=128" />
+<link rel="stylesheet" href="./css/zhuyou.css?v=128" />
+<link rel="stylesheet" href="./css/place.css?v=128" />
+<link rel="stylesheet" href="./css/planet-hour.css?v=128" />
+<link rel="stylesheet" href="./css/yangzhai.css?v=128" />
+<link rel="stylesheet" href="./css/classic.css?v=128" />
 <title>钦天监 · 命理星象工作台</title>
 </head>
 <body>
@@ -66,6 +66,20 @@
     <div id="rhythm-body"><div class="qt-skeleton rhythm"></div></div>
 
     <div class="today-card-wrap" id="today-card-body"><div class="qt-skeleton today"></div></div>
+
+    <!-- 版本号 + 强制刷新：放在右下角、压在 tabbar 上方，刻意不显眼。
+         平时是灰的，几乎看不见；只有「换了版本但内容没更新好」时才需要它。
+         它只清 Cache Storage 与 SW 注册，不碰 localStorage（出生配置/手记/标记都在那）。 -->
+    <div class="home-refresh" id="home-refresh">
+      <span class="hr-ver" id="hr-ver">v—</span>
+      <button class="hr-btn" id="hr-btn" type="button"
+              aria-label="强制刷新" title="强制刷新：清掉本机缓存，重新下载最新版本（不会清你的数据）">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 11a8 8 0 1 0-2.3 5.7" />
+          <path d="M20 5v6h-6" />
+        </svg>
+      </button>
+    </div>
   </section>
 
   <!-- ============ 观心（经典：今日相遇 / 问心 / 一念三观 / 思想探索） ============ -->
@@ -554,6 +568,6 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script type="module" src="./js/main.js?v=127"></script>
+<script type="module" src="./js/main.js?v=128"></script>
 </body>
 </html>

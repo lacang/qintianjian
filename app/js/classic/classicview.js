@@ -9,15 +9,16 @@
 // 结构（v126 重构，旧功能全部迁移，不删除）：
 //   今日   打开即得一条完整内容：原文 / 出处 / 现代解读 / 值得想一下 / 继续深入
 //          往下依次是 发现 → 探索 → 联系自己 → 留下收获（五步递进，每一步都有独立价值）
-//   困惑   八个现实主题入口（零输入，可直接点，也可以不选）
+//   遇见   连续发现陌生思想（左右滑存疑/留下，按钮进深入阅读）
+//   探索   八个主题入口（零输入，按主题找，不要求先承认有困惑）
 //   手记   用户自己留下的所有想法，按时间倒序；再次遇到同一条时回显上次的记录
 //
 // 旧功能迁移去向（不删除，只换位置）：
 //   今日相遇 → 今日页首屏
-//   问心     → 困惑（八个现实主题，不再要求用户先写字）
+//   问心     → 探索（八个主题，不再要求用户先写字）
 //   一念三观 → 阅读第二步「发现」：同一个思想群里的其他说法
 //   辩一辩   → 阅读第三步「探索」：历代注家在这一点上怎么分岔
-//   思想探索 → 困惑页的主题浏览
+//   思想探索 → 探索页的主题浏览
 //   五种反馈 → 阅读第四步「联系自己」，不强迫表态
 //
 // 产品原则落点：
@@ -35,17 +36,27 @@ import {
   exploreEntries, detailLayers, correctionsFor, visibleRelations,
 } from './classic-core.js';
 import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js';
-import { $, $$, toast } from '../state.js?v=127';
+import {
+  loadMarks, setMark, markOf, markStats, keptIds,
+  MARK_KEEP, MARK_DOUBT,
+} from './feed-state.js';
+import { renderFeedPanel, bindFeedGesture, doFeedAction, startNextRound } from './feed.js';
+import { $, $$, toast } from '../state.js?v=128';
 
-const FAV_KEY = 'qintian.classic.fav';
 const NOTE_KEY = 'qintian.classic.journal';   // 思想手记：{ nodeId: [{ text, at, fb }] }
 
-// 主视图三页。旧版是五个并列面板（今日/问心/三观/辩一辩/探索），
-// 用户打开后不知道从哪进；现在只剩三个，且第一页打开就是内容本身。
-let panel = 'today';          // today | themes | notes
+// 主视图四页（v128）。旧版是五个并列面板（今日/问心/三观/辩一辩/探索），
+// v126 压成三个，v128 加回一个「遇见」——但这次不是把旧入口摆回来，
+// 而是新增一条产品线：今日负责「每天一条」，遇见负责「连续陌生」。
+//
+// 为什么「困惑」改叫「探索」：原来那页是「此刻，你更接近哪一种」，
+// 要求用户先承认自己有某种困惑才点得下去；现在改成按主题找思想，
+// 不预设用户的状态。内容（8 主题 / 51 条人工序列）一条没动，只换表达。
+let panel = 'today';          // today | feed | explore | notes
 let readStep = 1;             // 1..5，当前展开到第几步
 let readId = null;            // 当前正在读的条目；null 表示读今日那一条
-let themeId = null;           // 困惑页当前主题
+let themeId = null;           // 探索页当前主题
+let notesFilter = 'all';      // 手记页筛选：all | keep | doubt
 let readFb = null;            // 本条已选的反馈
 let readDebate = false;       // 第 3 步「我怎么看」是否已展开
 let readStance = null;        // 本条更接近哪一种读法（可不选）
@@ -80,8 +91,10 @@ function saveJSON(key, v) {
   try { localStorage.setItem(key, JSON.stringify(v)); } catch { /* 忽略配额错误 */ }
 }
 
-function loadFav() { return new Set(loadJSON(FAV_KEY, [])); }
-function saveFav(set) { saveJSON(FAV_KEY, [...set]); }
+// 「收藏」在 v128 升级为「留下」，与「存疑」并列。
+// 旧键 qintian.classic.fav 由 feed-state 在首次读取时迁移为 keep，原键保留不删，
+// 所以这里直接读新的标记表，读到的就是迁移后的结果。
+function loadFav() { return new Set(keptIds()); }
 
 function cnDate(d = new Date()) {
   const w = '日一二三四五六'[d.getDay()];
@@ -426,7 +439,7 @@ function stepEnd(node) {
     <div class="cl-end-note">你今天留下一句：<br>「${esc(last.text)}」</div>` : ''}
     <div class="cl-foot">明天还有下一条。不必现在就看下一条。</div>
     <div class="cl-end-acts">
-      <button class="cl-more" data-act="goto" data-panel="themes" type="button">最近有件事让我为难 ›</button>
+      <button class="cl-more" data-act="goto" data-panel="explore" type="button">按主题再找一条 ›</button>
       <button class="btn ghost mini" data-act="goto" data-panel="notes" type="button">看我的手记</button>
     </div>
     <div class="cl-end-themes">
@@ -459,15 +472,22 @@ function panelToday() {
   ${steps.join('')}`;
 }
 
-// ---------------- 困惑页（旧「问心」+「思想探索」迁移） ----------------
+// ---------------- 探索页（v128：从「困惑」改回主题浏览） ----------------
+//
+// 内容一条没动：8 个主题、51 条人工编排序列、每条后面的 why / link / first 标注全在。
+// 改的只是产品表达——原来这一页是「此刻，你更接近哪一种」，
+// 要求用户先承认自己有某种困惑才点得下去；现在直接说「按主题找思想」。
+//
+// 为什么不预设状态：董事长 2026-11-04「不要求用户先承认自己有某种困惑」。
+// 主题是检索入口，不是心理自诊表。
 
-function panelThemes() {
+function panelExplore() {
   if (themeId) return panelThemeDetail();
   return `
-  <div class="cl-day">此刻，你更接近哪一种</div>
+  <div class="cl-day">按主题找思想</div>
   <div class="cl-themes-intro">
-    不用写，也不用说得清楚，点一个就好。<br>
-    不选也可以——「今日」那一条本来就不问你任何事。
+    八个主题，每个都是一条编辑排过序的路径。<br>
+    不用先想清楚自己有什么问题，随便点一个看看就行。
   </div>
   <div class="cl-themes">
     ${THEMES.map((t) => `
@@ -475,12 +495,15 @@ function panelThemes() {
         <span class="cl-theme-n">${esc(t.name)}</span>
         <span class="cl-theme-h">${esc(t.hint)}</span>
       </button>`).join('')}
+  </div>
+  <div class="cl-foot">
+    主题是编辑按阅读角度分的，不是原典自带的分类，也不是注家说法。
   </div>`;
 }
 
 function panelThemeDetail() {
   const t = themeById(themeId);
-  if (!t) return panelThemes();
+  if (!t) return panelExplore();
   const seq = themeSeq(t.id);
 
   // 有人工序列就按人工序列走。
@@ -523,33 +546,74 @@ function panelThemeDetail() {
 // ---------------- 手记页 ----------------
 
 function panelNotes() {
+  const marks = loadMarks();
+  const stats = markStats();
   const rows = journalAll();
-  const withText = rows.filter((r) => r.rec.text);
+
+  // 把「写过手记的」和「只标了记的」并成一张表：用户在这一页要看的是
+  // 自己跟这些条目发生过的全部关系，不是只有写成文字的那一部分。
+  const map = new Map();
+  for (const r of rows) {
+    if (!r.rec.text) continue;
+    map.set(r.node.id, { node: r.node, at: r.rec.at, text: r.rec.text, mark: marks[r.node.id] || null });
+  }
+  for (const id of Object.keys(marks)) {
+    if (map.has(id)) continue;
+    const n = getNode(id);
+    if (n) map.set(id, { node: n, at: null, text: '', mark: marks[id] });
+  }
+  const all = [...map.values()].sort((a, b) => (b.at || 0) - (a.at || 0));
+  const list = notesFilter === 'all' ? all : all.filter((x) => x.mark === notesFilter);
+  const journalCount = all.filter((x) => x.text).length;
+
+  const filters = [
+    ['all', '全部', all.length],
+    [MARK_KEEP, '留下', stats.keep],
+    [MARK_DOUBT, '存疑', stats.doubt],
+  ];
+
   return `
   <div class="cl-day">我的思想手记</div>
-  <div class="cl-themes-intro">只放你自己写的东西${withText.length ? `，一共 ${withText.length} 条` : ''}。不评分，也不替你总结。</div>
-  ${withText.length ? `
+  <div class="cl-themes-intro">
+    ${all.length ? `留下 ${stats.keep} 条 · 存疑 ${stats.doubt} 条 · 写过 ${journalCount} 条。` : ''}
+    只放在你自己的设备上。不评分，也不替你总结。
+  </div>
+  ${all.length ? `
+  <div class="cl-jfilter">
+    ${filters.map(([f, label, n]) => `
+      <button class="cl-jf${notesFilter === f ? ' on' : ''}" data-act="notes-filter" data-f="${f}" type="button">
+        ${label}${n ? ` ${n}` : ''}
+      </button>`).join('')}
+  </div>` : ''}
+  ${list.length ? `
   <div class="cl-jlist">
-    ${withText.map((r) => `
+    ${list.map((x) => `
       <div class="cl-jrow">
-        <div class="cl-jrow-d">${shortDate(r.rec.at)}</div>
-        <button class="cl-jrow-t" data-act="read" data-id="${esc(r.node.id)}" type="button">
-          ${esc(r.node.title)}
+        <div class="cl-jrow-d">
+          ${x.at ? shortDate(x.at) : '未写手记'}
+          ${x.mark ? `<i class="cl-jm cl-jm-${x.mark}">${x.mark === MARK_KEEP ? '留下' : '存疑'}</i>` : ''}
+        </div>
+        <button class="cl-jrow-t" data-act="read" data-id="${esc(x.node.id)}" type="button">
+          ${esc(x.node.title)}
         </button>
-        <div class="cl-jrow-x">${esc(r.rec.text)}</div>
+        ${x.text ? `<div class="cl-jrow-x">${esc(x.text)}</div>` : ''}
+        ${x.mark ? `<button class="cl-jrow-u" data-act="unmark" data-id="${esc(x.node.id)}" type="button">撤销${x.mark === MARK_KEEP ? '留下' : '存疑'}</button>` : ''}
       </div>`).join('')}
   </div>` : `
   <div class="cl-empty">
-    还没有记过东西。<br>
-    读完一条，在最后一步可以留下一句——一句话也行。
+    ${all.length
+      ? '这个筛选下还没有东西。'
+      : '还没有记过东西。<br>读完一条，在最后一步可以留下一句——一句话也行。'}
   </div>`}`;
 }
 
 // ---------------- 主视图 ----------------
 
-const PANEL_NAMES = { today: '今日', themes: '困惑', notes: '手记' };
+// 四个入口。顺序有讲究：今日在最左（打开就是内容），遇见第二（想继续看就点这里），
+// 探索第三（有具体方向时才用），手记最后（那是回头看的动作，不是当下的动作）。
+const PANEL_NAMES = { today: '今日', feed: '遇见', explore: '探索', notes: '手记' };
 
-function panelIds() { return ['today', 'themes', 'notes']; }
+function panelIds() { return ['today', 'feed', 'explore', 'notes']; }
 
 export function renderClassic() {
   const m = meta();
@@ -570,7 +634,8 @@ export function renderClassic() {
 }
 
 function renderPanel() {
-  if (panel === 'themes') return panelThemes();
+  if (panel === 'feed') return renderFeedPanel();
+  if (panel === 'explore') return panelExplore();
   if (panel === 'notes') return panelNotes();
   return panelToday();
 }
@@ -800,7 +865,7 @@ export function bindClassic() {
     }
     if (a === 'theme') {
       themeId = act.dataset.id;
-      panel = 'themes';
+      panel = 'explore';
       repaint();
       syncTabs();
       window.scrollTo(0, 0);
@@ -899,10 +964,11 @@ export function bindClassic() {
 
     if (a === 'fav') {
       const id = act.dataset.id;
-      const fav = loadFav();
-      if (fav.has(id)) { fav.delete(id); toast('已取消收藏'); }
-      else { fav.add(id); toast('已收藏'); }
-      saveFav(fav);
+      // 再点一次撤销。与遇见面板的「留下」共用同一份标记数据，
+      // 两处不能各存一份，否则同一个条目在今日标了留下、在遇见里看不到。
+      const now = markOf(id);
+      setMark(id, now === MARK_KEEP ? null : MARK_KEEP);
+      toast(now === MARK_KEEP ? '已撤销' : '已留下');
       repaint();
       return;
     }
@@ -913,7 +979,40 @@ export function bindClassic() {
       document.dispatchEvent(new CustomEvent('qintian:classic-goto', { detail: { view: 'classic-detail' } }));
       return;
     }
+
+    // ---- 遇见 ----
+    // 存疑 / 留下共用 doFeedAction：写标记、前进一张、重绘，顺序固定。
+    if (a === 'feed-mark') {
+      doFeedAction(act.dataset.kind, act.dataset.id, repaint);
+      return;
+    }
+    // 深入阅读走的是原有五步，不是另做一套阅读界面。
+    // 遇见只是入口，读法始终只有一个——否则同一条内容会有两种深度。
+    if (a === 'feed-deep') {
+      openReading(act.dataset.id);
+      return;
+    }
+    if (a === 'feed-next-round') {
+      startNextRound(repaint);
+      return;
+    }
+
+    // ---- 手记 ----
+    if (a === 'notes-filter') {
+      notesFilter = act.dataset.f || 'all';
+      repaint();
+      return;
+    }
+    if (a === 'unmark') {
+      setMark(act.dataset.id, null);
+      toast('已撤销');
+      repaint();
+      return;
+    }
   });
+
+  // 手势挂在视图根节点上，用事件委托，重绘不会丢绑定。
+  bindFeedGesture(root, repaint);
 }
 
 // 辩题内联页（旧「辩一辩」的完整交互保留，只是不再有独立 tab）
@@ -1011,13 +1110,17 @@ export function bindClassicDetail() {
 
 /** 供自检与调试 */
 export function classicAudit() {
+  const ms = markStats();
   return {
     pool: poolNodes().length,
     total: allNodes().length,
     debates: debateList().length,
-    fav: loadFav().size,
+    fav: ms.keep,          // 兼容旧字段名：值仍是「留下」的数量
+    keep: ms.keep,
+    doubt: ms.doubt,
     journal: journalAll().length,
     panel,
+    panels: panelIds(),
     readStep,
   };
 }

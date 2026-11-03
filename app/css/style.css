@@ -2451,3 +2451,38 @@ body:has(#view-cards.cd-fullscreen){overflow:hidden}
 .global-back:active{background:rgba(60,46,18,.9);}
 /* 塔罗全屏牌桌：桌内右下自带「展牌形式」圆钮，且 .tr-table 底部抬高 56px，home 键需再上移避让 */
 .global-back.tarot-table{bottom:calc(126px + var(--safe-b,0px));}
+
+/* ============ 首页右下角：版本号 + 强制刷新 ============
+   刻意做得很轻：默认 opacity .42，字 10.5px，比正文小一半。
+   它是个兜底工具，不该出现在正常使用路径里。
+   位置压在 tabbar 之上（tabbar z-index 40，这里 35），
+   右侧对齐 #app 的内容边界而不是屏幕边缘，宽屏时不至于飘到很远。 */
+.home-refresh{
+  position:fixed;
+  right:max(10px, calc((100vw - 560px) / 2 + 12px));
+  bottom:calc(72px + var(--safe-b));
+  z-index:35;
+  display:flex;align-items:center;gap:5px;
+  opacity:.42;
+  transition:opacity .2s ease;
+}
+.home-refresh:hover,.home-refresh:active{opacity:.92}
+.hr-ver{
+  font-size:10.5px;letter-spacing:1px;color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;
+  user-select:none;-webkit-user-select:none;
+}
+.hr-btn{
+  appearance:none;background:none;border:0;margin:0;padding:3px;
+  display:flex;align-items:center;cursor:pointer;
+  color:var(--ink-faint);
+}
+.hr-btn svg{width:13px;height:13px;display:block}
+.hr-btn:active{color:var(--gold)}
+.hr-btn[disabled]{cursor:default;opacity:.55}
+.hr-btn.busy svg{animation:hr-spin .9s linear infinite}
+@keyframes hr-spin{to{transform:rotate(360deg)}}
+/* 减少动态效果：转圈也去掉，只保留「不可点」的状态差异 */
+@media (prefers-reduced-motion: reduce){
+  .hr-btn.busy svg{animation:none}
+}

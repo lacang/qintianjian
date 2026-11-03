@@ -169,9 +169,11 @@ try {
     };
   })()`);
 
-  ok(seg.tabs.length === 3, 'B1 观心只有三个分段', seg.tabs.join(','));
-  ok(seg.tabs.join(',') === 'today,themes,notes', 'B2 分段为 今日/困惑/手记', seg.tabs.join(','));
-  ok(!seg.tabs.includes('ask') && !seg.tabs.includes('three') && !seg.tabs.includes('debate') && !seg.tabs.includes('explore'),
+  // v128：从三入口扩到四入口（新增「遇见」），「困惑」改名为「探索」。
+  // 旧五入口（问心/三观/辩一辩/思想探索）仍然必须消失——这是 v126 的产品决定，不回退。
+  ok(seg.tabs.length === 4, 'B1 观心有四个入口', seg.tabs.join(','));
+  ok(seg.tabs.join(',') === 'today,feed,explore,notes', 'B2 入口为 今日/遇见/探索/手记', seg.tabs.join(','));
+  ok(!seg.tabs.some((t) => ['ask', 'three', 'debate', 'themes'].includes(t)),
     'B3 旧五个分段入口全部消失', seg.tabs.join(','));
   ok(seg.flow === 0, 'B4 旧的三个跳转入口块已移除');
   ok(seg.stats === 0, 'B5 编辑后台指标（抽签池/待考关系）不再暴露给用户');
@@ -299,7 +301,7 @@ try {
   ok(jl.text.includes('克己') || jl.title.length > 0, 'E8 手记列表显示内容或条目名');
 
   /* ---------- F 困惑探索 ---------- */
-  await openPanel('themes');
+  await openPanel('explore');
   await sleep(400);
   const th = await ev(`(() => {
     const b = document.querySelector('#cl-body');
@@ -309,7 +311,7 @@ try {
       intro: (b.querySelector('.cl-themes-intro') || { textContent: '' }).textContent.trim(),
     };
   })()`);
-  ok(th.themes.length === 8, 'F1 困惑探索有八个现实主题', th.themes.join(','));
+  ok(th.themes.length === 8, 'F1 探索页有八个现实主题', th.themes.join(','));
   ok(th.names.includes('工作与选择') && th.names.includes('人际关系'), 'F2 主题用的是现实说法不是学术分类', th.names.join('|'));
   ok(th.intro.length > 10, 'F3 困惑探索有一句说明它是什么', th.intro.slice(0, 40));
 
@@ -338,7 +340,7 @@ try {
   }
 
   /* ---------- J 八个主题是人工编排，不是标签自动取 ---------- */
-  await openPanel('themes');
+  await openPanel('explore');
   await sleep(400);
   const themeAudit = [];
   for (const id of ['work', 'people', 'self', 'desire', 'direction', 'mood', 'principle', 'meaning']) {
