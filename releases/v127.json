@@ -1,12 +1,12 @@
 {
   "version": 127,
   "app": "钦天监 PWA",
-  "updated_at": "2026-11-03T18:42:14.596Z",
+  "updated_at": "2026-11-03T18:45:37.824Z",
   "git": {
-    "commit": "709ee25ce8ce2f9d0dea35a6e526fb1a4118f513",
-    "commit_short": "709ee25",
+    "commit": "894eb5f4d6e7e2530c61ecf0c5be7ac440243073",
+    "commit_short": "894eb5f",
     "branch": "main",
-    "dirty": true,
+    "dirty": false,
     "remotes": [
       "github\thttps://github.com/lacang/qintianjian.git (fetch)",
       "github\thttps://github.com/lacang/qintianjian.git (push)",
@@ -117,10 +117,50 @@
       }
     ]
   },
-  "deploy": null,
+  "deploy": {
+    "app_id": "7697839050836901888",
+    "deploy_history_id": "7704016950703341603",
+    "status": "Succeeded",
+    "version": 127,
+    "deployed_at": "2026-11-04T03:20:00+08:00",
+    "remote_check": {
+      "coze_site": "ok",
+      "github_pages": "ok"
+    },
+    "note": "v127 内容库注疏层核校批03 + AGENTS 内容库纪律"
+  },
   "urls": [
     "https://8xjmbcxsf9.page.coze.site",
     "https://lacang.github.io/qintianjian/"
   ],
-  "notes": "发布 127：内容库注疏层核校批03完成（62条/40单元，台账142条 confirmed 108）+ batch02 同源复核 17组34条全部独立成立 + AGENTS 增 4.2/4.3 两条内容库纪律 + lunyu-data 删一条失效来源 URL"
+  "notes": "发布 127：内容库注疏层核校批03完成（62条/40单元，台账142条 confirmed 108）+ batch02 同源复核 17组34条全部独立成立 + AGENTS 增 4.2/4.3 两条内容库纪律 + lunyu-data 删一条失效来源 URL",
+  "online_verify": {
+    "sw_version": "qintian-v127",
+    "coze_site": {
+      "sw_sha256_match": true,
+      "index_html_version": "127"
+    },
+    "github_site": {
+      "sw_sha256_match": true,
+      "index_html_version": "127"
+    },
+    "browser_acceptance": {
+      "local": {
+        "observations": 75,
+        "failed": 0,
+        "shots": 17
+      },
+      "github": {
+        "observations": 75,
+        "failed": 0,
+        "shots": 17
+      },
+      "coze": {
+        "observations": 75,
+        "failed": 0,
+        "shots": 17,
+        "note": "1 条 console.error：SW 脚本请求返回 HTTP 444，平台 CDN 侧行为；观察项 75/75 通过，资源加载失败 0"
+      }
+    }
+  }
 }

@@ -6,6 +6,22 @@
 
 ---
 
+## v127：内容库注疏层核校批03完成 · 2026-11-04（已发版）
+
+- **触发**：董事长「上线」。这一版 app 侧只有一个改动（`lunyu-data.js` 重新导出、删掉一条失效来源 URL），主体是 `content/classics/` 内容库的注疏层核校成果入库。
+- **内容侧（不进 app 产物，只进仓库）**：
+  - 注疏层核校批 03：41–80 组 62 条全部落地，40 个单元零 pending。`textual_variant` 11 / `orthographic_variant` 30 / `ocr_defect` 20 / `source_excerpt_issue` 1。台账 142 条：confirmed 108 / pending 26 / source_defect 8。
+  - batch02 同源影响复核：20 组 40 条逐组判定，17 组 34 条 confirmed **全部独立成立**（16 `independent` + 1 `independent_with_note`），0 条需重新核定。结论：同源问题真实存在，但没有一条结论是靠「两个文件都这么说」撑起来的。
+  - B 类资料需求：9 个单元列影印本需求、版本与位置、资料到位后的核校方法。**只有 2 条标注影印页可能推翻现判**（组 57 VG-022 无注文自证仅句法推定；组 61 VG-071 若刻本与注文复述不一致需降级 `mixed`）。
+- **自我纠错（上一轮误判）**：分流报告曾写「工作单是 62 组，BUILD.md 说 80 组是错的」。**错的是我**。根因是提取标题的正则用 `\d{3}`，只匹配 3 位编号；63–80 组的键是 `VL-0136` 这类 4 位编号，18 个单条组全被漏掉，于是数出 62。改成 `\d{3,4}` 并加 `assert == 80`。BUILD.md 本身无误，不需要修正。已在分流报告里把「偏差三」整节重写为更正说明。
+- **规范侧（AGENTS.md 新增两条长期纪律，都源自这一线的真实事故）**：
+  - **4.2 构建产物确定性**：生成时间可变，构建输入/脚本/产物的指纹不可因时间变化。根因是古籍内容库的 `set()` 事故——`for x in set(...)` 的输出顺序受 `PYTHONHASHSEED` 影响，同一份输入跑两遍产物不同。凡影响输出顺序一律 `sorted()`；比对时不能拿整文件 SHA，要比 `inputs`/`scripts`/`outputs` 三段；记录不能自己证明自己，必须有独立 `--check` 入口。
+  - **4.3 源文件修复不等于传本校勘**：四类来源（传本异文/通假异体/注本讹误/数字化缺陷）不得混记；缺陷分 `missing_char` / `missing_passage` 两种 kind；`expected_text` 必须标明是推定的；**不允许修复后的文本覆盖原始来源证据**；没看底本影印页的不写成版本学结论。第 ⑦ 条补于老子 181 条核校：录入字体层差异（`頑/顽`）单列 `font_normalization`，不混进 `orthographic_variant`——混进去异文总量会被录入瑕疵撑大。第 ⑩ 条补于注疏层 21–40 组：**同源载体不构成互证**，同一部书的两个电子本很可能出自同一数字化底本，一起脱同一个字恰恰说明同源。
+- **验证**：`gates.sh` 三次全绿（改前 71s / release 起点+终点 63s / deploy 前 73s）；部署单 `7704016950703341603` status=Succeeded；两站线上 `sw.js` 与本地**字节一致**、`index.html ?v=127`；真实浏览器体验记录跑三份（本地 / GitHub Pages / coze.site），各 75 观察项 / 17 图 / 0 观察失败。
+- **唯一一条 console.error**：coze.site 站出现 `A bad HTTP response code (444) was received when fetching the script`。是平台 CDN 对某个脚本请求返回 444 空响应，观察项 75/75 全过、资源加载失败 0，判为平台侧行为，不影响功能。
+- **证据归档**：`acceptance/v127-20261104/`（本地）、`acceptance/v127-20261104-github/`、`acceptance/v127-20261104-coze/`；发布记录 `releases/v127.json`。
+- **发版后补记的坑**：`deploy.sh` 只在设置了 `QT_DEPLOY_REPORT` 环境变量时才写部署结果 JSON，不设就只打印。这次因此 `releases/v127.json` 的 `deploy` 段先是 `null`，靠 `tools/release-record.mjs --deploy-report` 手工补写。**下次发版记得先 export 这个变量**，或者直接用 release-record 收尾。
+
 ## 观心 v126 二轮：三项裁决落地 · 2026-10-31（未发版）
 
 - **触发**：董事长批示「v126 产品体验改造通过，可以进入发布准备阶段」，同时给出四项正式裁决。
