@@ -116,8 +116,8 @@ async function ev(expr) {
 async function until(expr, timeout = 8000) {
   const t0 = Date.now();
   while (Date.now() - t0 < timeout) {
-    const v = await ev(expr);
-    if (v) return true;
+    // 导航进行中 evaluate 会因 context 销毁而失败，那是预期内的，继续等就行。
+    try { if (await ev(expr)) return true; } catch { /* 正在导航 */ }
     await sleep(120);
   }
   return false;
@@ -164,10 +164,19 @@ async function shotFull(label) {
 }
 
 async function gotoApp() {
-  await sess.goto(srv.url + '/', 30000);
-  await until(`document.readyState === 'complete' && !!document.querySelector('.tabbar .tab')`, 20000);
-  await sleep(1500);
-  await until(`!!document.querySelector('.tabbar .tab[data-view="classic"]')`, 15000);
+  // coze.site 是共享域，被反爬限流时会先回 444 再重试。
+  // 关键一点：Page.navigate 的**响应**超时，不代表导航没发生——请求可能已经在路上，
+  // 页面正在加载。所以 send 超时不要当成失败直接放弃，接着看 readyState 就行。
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      await sess.cdp.send('Page.navigate', { url: srv.url + '/' });
+    } catch { /* 响应超时 ≠ 导航失败，下面用 readyState 判真伪 */ }
+    const ready = await until(`document.readyState === 'complete' && !!document.querySelector('.tabbar .tab')`, 30000);
+    if (!ready) { await sleep(1500); continue; }
+    await sleep(1200);
+    if (await until(`!!document.querySelector('.tabbar .tab[data-view="classic"]')`, 15000)) return;
+  }
+  throw new Error('页面三次都没就绪');
 }
 
 async function openPanel(panelId) {
@@ -262,7 +271,9 @@ try {
   observe('★ 现代解释不用滚动就在首屏', first.inView.modern === true);
   observe('★ 继续探索入口不用滚动就在首屏', first.inView.more === true);
   observe('现代解释被标注为编辑撰写、不是古人原意', /不是古人原意|编辑撰写/.test(first.srcTag), first.srcTag);
-  observe('三个入口是「今日 / 困惑 / 手记」', JSON.stringify(first.tabs) === JSON.stringify(['今日', '困惑', '手记']), first.tabs.join('/'));
+  // v128：三入口扩到四入口，新增「遇见」，「困惑」改名为「探索」
+  observe('四个入口是「今日 / 遇见 / 探索 / 手记」',
+    JSON.stringify(first.tabs) === JSON.stringify(['今日', '遇见', '探索', '手记']), first.tabs.join('/'));
   observe('收藏仍可用（旧功能未删）', first.hasFav === true);
 
   // 编辑后台词汇不该出现在用户面前
@@ -456,10 +467,10 @@ try {
   // ══════════════════════════════════════════════════════════════════
   // 四、困惑探索
   // ══════════════════════════════════════════════════════════════════
-  section('四、困惑探索：8 个现实问题入口，零输入可用');
+  section('四、探索：8 个现实问题入口，零输入可用');
 
-  const themesOk = await openPanel('themes');
-  observe('能进入困惑页', themesOk === 'ok', themesOk);
+  const themesOk = await openPanel('explore');
+  observe('能进入探索页', themesOk === 'ok', themesOk);
   const themesView = await ev(`(() => {
     const b = document.querySelector('#cl-body');
     const ts = [...b.querySelectorAll('[data-act="theme"]')].map((e) => e.textContent.replace(/\\s+/g, ' ').trim());
@@ -469,30 +480,46 @@ try {
   observe('★ 不需要写任何东西就能用（页面没有输入框）', !(await ev(`!!document.querySelector('#cl-body textarea, #cl-body input')`)));
   await shot('困惑入口');
 
-  // 逐个点开，看每个主题下有没有内容
+  // 逐个点开，看每个主题下有没有内容。
+  // 不用固定 sleep：详情页渲染快慢取决于网络，慢站上 350ms 读到的还是列表，
+  // 数出来是 0，报「空入口」这种假红。两个方向都轮询到状态确定为止。
+  async function backToThemeList() {
+    for (let i = 0; i < 40; i++) {
+      const st = await ev(`(() => {
+        const back = document.querySelector('#cl-body [data-act="back-themes"]');
+        if (back) { back.click(); return 'clicked'; }
+        return document.querySelector('#cl-body [data-act="theme"]') ? 'list' : 'wait';
+      })()`);
+      if (st === 'list') return true;
+      await sleep(200);
+    }
+    return false;
+  }
+
   const themeFill = [];
   for (const id of ['work', 'people', 'self', 'desire', 'direction', 'mood', 'principle', 'meaning']) {
-    await ev(`(() => {
-      const back = document.querySelector('#cl-body [data-act="back-themes"]');
-      if (back) back.click();
-      return 'ok';
-    })()`);
-    await sleep(200);
+    // 回到列表失败（多点了一次 back 会退出探索面板）时，直接重开面板兜底，
+    // 否则后面每轮都点不到主题，会把「面板被自己点出去了」误记成「主题是空入口」。
+    if (!(await backToThemeList())) await openPanel('explore');
     const opened = await ev(`(() => {
       const b = document.querySelector('#cl-body [data-act="theme"][data-id="${id}"]');
       if (!b) return 'no-btn';
       b.click();
       return 'ok';
     })()`);
-    await sleep(350);
+    const got = await until(`document.querySelectorAll('#cl-body .cl-tp-item').length > 0`, 8000);
     const n = await ev(`document.querySelectorAll('#cl-body .cl-tp-item').length`);
-    themeFill.push({ id, opened, n });
+    themeFill.push({ id, opened, n, got });
+    if (!got) await openPanel('explore');
   }
-  observe('★ 每个主题下都有可读条目（没有空入口）', themeFill.every((t) => t.n > 0), themeFill.map((t) => `${t.id}:${t.n}`).join(' '));
+  observe('★ 每个主题下都有可读条目（没有空入口）', themeFill.every((t) => t.n > 0),
+    themeFill.map((t) => `${t.id}:${t.n}${t.opened !== 'ok' ? '(' + t.opened + ')' : ''}`).join(' '));
 
   // 人工编排：顺序、理由、关联类型、初读建议
+  await until(`!!document.querySelector('#cl-body')`, 8000);
   const seqAudit = await ev(`(() => {
     const b = document.querySelector('#cl-body');
+    if (!b) return { n: 0, nums: [], whys: 0, tags: 0, path: '' };
     const items = [...b.querySelectorAll('.cl-tp-item')];
     return {
       n: items.length,
@@ -515,9 +542,12 @@ try {
     b.click();
     return 'ok';
   })()`);
-  await sleep(600);
+  // 点进阅读页时 #cl-body 会被整体重绘，中间有一段它不存在。轮询到原文出现再读，
+  // 不要用固定 sleep —— 慢站上 600ms 读到的还是空壳，会报「点不进去」这种假红。
+  await until(`!!(document.querySelector('#cl-body') && document.querySelector('#cl-body .cl-read-o'))`, 8000);
   const readFromTheme = await ev(`(() => {
     const b = document.querySelector('#cl-body');
+    if (!b) return { hasOriginal: false, original: '', step1Only: false };
     const o = b.querySelector('.cl-read-o');
     return { hasOriginal: !!o, original: o ? o.textContent.trim().slice(0, 24) : '', step1Only: !b.querySelector('.cl-step4') };
   })()`);
@@ -545,7 +575,9 @@ try {
     b.click();
     return { found: true, btn: 'ok' };
   })()`);
-  await sleep(400);
+  // toast 是短命元素：固定等 400ms 在慢站上可能已经错过它弹出的瞬间，
+  // 报出「静默不提示」这种假红。轮询到它出现（或确实没出现）再读。
+  await until(`(() => { const t = document.querySelector('#toast'); return !!t && t.textContent.trim().length > 0; })()`, 4000);
   const emptyAfter = await ev(`(() => {
     const toastEl = document.querySelector('#toast');
     const j = JSON.parse(localStorage.getItem('qintian.classic.journal') || '{}');
@@ -559,8 +591,10 @@ try {
   // 坏 localStorage
   await ev(`(() => { localStorage.setItem('qintian.classic.journal', '{{{坏数据'); return 'ok'; })()`);
   await gotoApp();
-  await click('.tabbar .tab[data-view="classic"]');
-  await sleep(700);
+  // 不用固定 sleep：GitHub Pages 的 CDN 首包比 coze 站慢，700ms 会读到还没渲染的空壳，
+  // 报出「坏存储下页面打不开」这种假红。改成轮询到真的渲染出来为止。
+  await openPanel('today');
+  await until(`(() => { const b = document.querySelector('#cl-body'); return !!b && b.textContent.trim().length > 20; })()`, 8000);
   const broken = await ev(`(() => {
     const b = document.querySelector('#cl-body');
     return { rendered: !!b && b.textContent.trim().length > 20, hasOriginal: !!(b && b.querySelector('.cl-read-o')) };
