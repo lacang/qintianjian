@@ -1,0 +1,66 @@
+name: 门禁
+
+# 去扣子化后的 CI：只跑不依赖浏览器的那部分门禁。
+# 为什么不全跑：tools/gates.sh 的完整 20 步里有真实浏览器交互（playwright/chrome）、
+# SW 离线、桩测 bundle（要 esbuild）等重步骤，放在 CI 里既慢又容易因环境差异假红。
+# 定位是「机器判定、必须快、必须确定」的那几条放在这里阻断；浏览器那部分留在本地
+# `bash tools/gates.sh` 由人跑（见 AGENTS.md §5）。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: 静态检查（无依赖）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 版本号一致性（index.html ?v= 必须等于 sw.js qintian-v）
+        run: |
+          set -e
+          VER=$(grep -o '?v=[0-9]\+' app/index.html | head -1 | tr -d '?v=')
+          SW=$(grep -o 'qintian-v[0-9]\+' app/sw.js | head -1 | sed 's/qintian-v//')
+          echo "index.html ?v=$VER / sw.js qintian-v$SW"
+          if [ "$VER" != "$SW" ]; then
+            echo "::error::版本号不一致——bump 没做完，拒绝合并"
+            exit 1
+          fi
+
+      - name: 静态 ESM 模块图（语法 + import 目标存在 + 具名导出存在）
+        run: node tools/check-modules.mjs
+
+      - name: 经典板块纯函数自测
+        run: node tools/test-classic.mjs
+
+      - name: 遇见板块自测
+        run: node tools/test-classic-feed.mjs
+
+  core:
+    name: 六爻核心单测 + vendor 同步
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: liuyao-core/package-lock.json
+
+      - name: 安装内核依赖
+        run: cd liuyao-core && npm ci
+
+      - name: vendor 产物同步（src 改了 vendor 必须重建）
+        run: node tools/build-vendor.mjs --check
+
+      - name: 六爻核心正式测试（Vitest）
+        run: bash tools/test-core.sh

@@ -4,6 +4,12 @@
 # 用法：
 #   bash tools/deploy.sh [--no-gates] [--no-remote-check] [--note "说明"]
 #   bash tools/deploy.sh --verify-only   # 只做线上核验，不跑门禁也不部署（排障用）
+#   bash tools/deploy.sh --with-coze     # 额外再发一份到扣子 coze.site（默认不发，见下）
+#
+# 2026-11-10 去扣子化：**默认只发 GitHub Pages**，完全不碰扣子。
+# 发 GitHub Pages 不需要"执行部署"：push 到 github/main 之后 Pages 自己构建。
+# 所以默认的"部署"动作 = 确认本地 HEAD 已推到 github/main，然后等线上收敛。
+# 只有显式传 --with-coze 才会走 coze-dev deploy（扣子站已降级为历史备用 CDN）。
 #
 # 环境变量：
 #   QT_DRY_RUN=1             只打印将要执行的部署命令，不真的部署（用于故障注入自测）
@@ -27,12 +33,15 @@ GH_URL="https://lacang.github.io/qintianjian/"
 NO_GATES=0
 NO_REMOTE=0
 VERIFY_ONLY=0
+GITHUB_ONLY=1          # 默认只发 GitHub Pages（去扣子化）；--with-coze 才发扣子
 NOTE=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --no-gates) NO_GATES=1 ;;
     --no-remote-check) NO_REMOTE=1 ;;
     --verify-only) VERIFY_ONLY=1; NO_GATES=1 ;;
+    --github-only) GITHUB_ONLY=1 ;;
+    --with-coze) GITHUB_ONLY=0 ;;
     --note) NOTE="${2:-}"; shift ;;
     *) echo "[deploy] 未知参数：$1" >&2; exit 2 ;;
   esac
@@ -79,6 +88,24 @@ if [ -n "${QT_DRY_RUN_MARKER:-}" ]; then
   printf 'reached-deploy version=%s commit=%s\n' "$VER" "$(git rev-parse --short HEAD)" > "$QT_DRY_RUN_MARKER"
 fi
 
+if [ "$GITHUB_ONLY" -eq 1 ]; then
+  # ---------- 3-GH. GitHub Pages：push 即发布 ----------
+  LOCAL_HEAD=$(git rev-parse HEAD)
+  REMOTE_HEAD=$(git rev-parse github/main 2>/dev/null || echo "")
+  if [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]; then
+    echo "[deploy] ❌ 本地 HEAD（${LOCAL_HEAD:0:8}）与 github/main（${REMOTE_HEAD:0:8}）不一致。" >&2
+    echo "[deploy]    先 git push github main，再发版；Pages 只会构建已推送的提交。" >&2
+    exit 1
+  fi
+  STATUS="Pushed"
+  echo "[deploy] ✅ 本地 HEAD 已推送（${LOCAL_HEAD:0:8}），等 GitHub Pages 构建…"
+
+  if [ "${QT_DRY_RUN:-0}" = "1" ]; then
+    echo "[deploy] DRY-RUN：门禁全绿、提交已推送，将只做线上核验。"
+    exit 0
+  fi
+else
+
 DEPLOY_CMD=(coze-dev deploy --format json --source-root . --application-type pages --name "$APP_NAME" --yes)
 
 if [ "${QT_DRY_RUN:-0}" = "1" ]; then
@@ -120,6 +147,7 @@ if [ "$STATUS" != "Succeeded" ]; then
   echo "[deploy] ❌ 部署单最终状态为 $STATUS，不是 Succeeded。" >&2
   exit 1
 fi
+fi   # ← 结束 coze 部署段
 fi   # ← 结束 VERIFY_ONLY 跳过段（--verify-only 时直接进入线上核验）
 
 # ---------- 5. 线上核验：两站 sw.js 必须与本地字节一致 + index.html 版本一致 ----------
@@ -137,8 +165,9 @@ if [ "$NO_REMOTE" -eq 0 ] && [ "${QT_SKIP_REMOTE:-0}" != "1" ]; then
 
   # 返回 0=一致 / 1=读到内容但不一致 / 2=一直读不到（网络或 CDN 抖动）
   check_site() {
-    local name="$1" base="$2" i swsha htmlver
-    for i in $(seq 1 6); do
+    local name="$1" base="$2" i swsha htmlver tries=6
+    [ "$GITHUB_ONLY" -eq 1 ] && tries=18
+    for i in $(seq 1 $tries); do
       swsha=$(curl -s -m 30 "$base/sw.js" | sha256sum | awk '{print $1}')
       if [ "$swsha" = "$EMPTY_SHA" ]; then
         echo "[deploy]   $name 第 $i 次：读不到 sw.js（网络/CDN 抖动），重试…"
@@ -164,13 +193,21 @@ if [ "$NO_REMOTE" -eq 0 ] && [ "${QT_SKIP_REMOTE:-0}" != "1" ]; then
     return 1
   }
 
-  echo ""
-  echo "[deploy] 核验 coze.site："
-  check_site "coze.site" "$COZE_URL"; RC_COZE=$?
-  echo "[deploy] 核验 github.io："
-  check_site "github.io" "$GH_URL"; RC_GH=$?
+  if [ "$GITHUB_ONLY" -eq 1 ]; then
+    echo ""
+    echo "[deploy] 核验 github.io（Pages 构建通常 30–90s，最多等 3 分钟）："
+    check_site "github.io" "$GH_URL"; RC_GH=$?
+    RC_COZE=0; REMOTE_COZE="skipped"
+  else
+    echo ""
+    echo "[deploy] 核验 coze.site："
+    check_site "coze.site" "$COZE_URL"; RC_COZE=$?
+    echo "[deploy] 核验 github.io："
+    check_site "github.io" "$GH_URL"; RC_GH=$?
+  fi
 
-  if [ "$RC_COZE" = "0" ]; then REMOTE_COZE="ok"; elif [ "$RC_COZE" = "2" ]; then REMOTE_COZE="unreachable"; else REMOTE_COZE="mismatch"; fi
+  if [ "$GITHUB_ONLY" -eq 1 ]; then REMOTE_COZE="skipped"
+  elif [ "$RC_COZE" = "0" ]; then REMOTE_COZE="ok"; elif [ "$RC_COZE" = "2" ]; then REMOTE_COZE="unreachable"; else REMOTE_COZE="mismatch"; fi
   if [ "$RC_GH" = "0" ]; then REMOTE_GH="ok"; elif [ "$RC_GH" = "2" ]; then REMOTE_GH="unreachable"; else REMOTE_GH="mismatch"; fi
 
   if [ "$RC_COZE" = "1" ] || [ "$RC_GH" = "1" ]; then
@@ -186,7 +223,11 @@ if [ "$NO_REMOTE" -eq 0 ] && [ "${QT_SKIP_REMOTE:-0}" != "1" ]; then
     echo "[deploy]    coze.site=$REMOTE_COZE / github.io=$REMOTE_GH"
     echo "[deploy]    已至少核验一个站点；请人工在浏览器里确认另一个站点。"
   fi
-  echo "[deploy] 线上核验：coze.site=$REMOTE_COZE / github.io=$REMOTE_GH"
+  if [ "$GITHUB_ONLY" -eq 1 ]; then
+    echo "[deploy] 线上核验：github.io=$REMOTE_GH（扣子已跳过）"
+  else
+    echo "[deploy] 线上核验：coze.site=$REMOTE_COZE / github.io=$REMOTE_GH"
+  fi
 fi
 
 # ---------- 6. 写部署结果（供发布记录引用） ----------
@@ -212,5 +253,5 @@ fi
 
 echo ""
 echo "[deploy] ✅ v$VER 完成：status=${STATUS}"
-echo "[deploy]    coze.site   $COZE_URL"
+[ "$GITHUB_ONLY" -eq 0 ] && echo "[deploy]    coze.site   $COZE_URL"
 echo "[deploy]    github.io   $GH_URL"

@@ -41,3 +41,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # 部署成功不等于线上真的换了新代码：Pages CDN 有缓存窗口。
+      # 用字节比对而不是版本号比对——"版本号 bump 了、内容还是旧的"只有 sha256 能抓出来。
+      - name: 线上冒烟（sw.js 与本地字节一致）
+        run: |
+          set -u
+          LOCAL=$(sha256sum app/sw.js | awk '{print $1}')
+          URL="${{ steps.deployment.outputs.page_url }}sw.js"
+          for i in $(seq 1 12); do
+            sleep 10
+            REMOTE=$(curl -fsS "$URL" 2>/dev/null | sha256sum | awk '{print $1}')
+            if [ "$REMOTE" = "$LOCAL" ]; then
+              echo "✅ 线上 sw.js 与本地字节一致（第 $i 次收敛）"
+              exit 0
+            fi
+            echo "…第 $i 次未收敛（本地 $LOCAL / 线上 ${REMOTE:-空}）"
+          done
+          echo "::error::线上 sw.js 与本地不一致，Pages 可能没构建成功或 CDN 未刷新"
+          exit 1

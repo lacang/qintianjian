@@ -69,7 +69,7 @@
 | `tools/lib/cdp.mjs` | 零依赖 CDP 客户端（Node 22 自带全局 WebSocket）：起 Chrome → `/json/list` 直连 page target → 取 DOM/缓存条目/异常 |
 | `tools/test-gates.mjs` | **门禁故障注入自测**：对每道门禁故意注入故障并断言它必须红，同时配"无故障必须绿"的对照组；跑完自动 `git checkout --` 还原 |
 | `tools/release.sh` | **发版唯一入口**：起点门禁 → bump → 终点门禁 → 写发布记录 → 打印提交/部署指引 |
-| `tools/deploy.sh` | **部署唯一入口**：脏工作区检查 → 门禁（失败即中止，绝不部署）→ `coze-dev deploy` → 轮询部署单 → 线上 sw.js 版本收敛核验 → 写部署报告 |
+| `tools/deploy.sh` | **部署唯一入口**：脏工作区检查 → 门禁（失败即中止，绝不部署）→ 确认 HEAD 已推 github（Pages 自己构建）→ 线上 sw.js 字节核验 → 写部署报告。**默认只发 GitHub**，`--with-coze` 才发扣子 |
 | `tools/release-record.mjs` | 写 `releases/vNNN.json`：提交哈希/分支/远端、门禁逐步结果、部署单号与线上核验、版本号、备注 |
 | `releases/vNNN.json` | 每次发布留档的证据文件（"当时到底发了什么"） |
 | `tools/build-vendor.mjs` | 重建 `app/vendor/liuyao-core.js`（tsup 打 ESM 单 bundle + 裁 iztro 非中文 locale、保留 zh-CN）；`--check` 校验是否与 `liuyao-core/src/**` 漂移 |
@@ -219,27 +219,27 @@
 
 ```
 bash tools/release.sh 121 122     # ① 起点门禁 ② bump ③ 终点门禁 ④ 写 releases/v122.json ⑤ 打印后续
-git add <本次改动路径> && git commit && git push origin main && git push github main
-bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → coze-dev deploy → 部署单轮询 → 线上 sw.js 收敛核验 → 写部署报告
+git add <本次改动路径> && git commit && git push github main
+bash tools/deploy.sh              # 脏工作区拒绝 → 门禁 → 确认 HEAD 已推 github → 线上 sw.js 字节核验 → 写部署报告
 node tools/acceptance-classic.mjs --out acceptance/v123-<时间>   # 发版后体验归档（固定流程）
 ```
 
 `tools/release.sh` 里的 `tools/bump-version.sh` 内含三闸门：写回读回断言 / 旧版本号残留 / import 闭包 ⊆ SW ASSETS，+卫生闸+ESM 语法自检，任一失败 `exit 1` 不得发版。**语法自检必须走 `.mjs` 副本**：`node --check x.js` 会按 CommonJS 解析、放过 ESM 的重复顶层声明——v121 就因两处 `xxxCode` 重复声明静默过闸，真机整个模块图崩、应用完全不启动。
 
-**双路部署与线上核验**：①`coze-dev deploy`（coze.site，备用 CDN）；②推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5）。两路都要核验 SW 版本号 + 关键资源内容 + 老代码已消失。`tools/deploy.sh` 的核验方式是**普通 GET（不带 cache-buster、不带 no-cache 头）+ 最多 6 次重试 + sha256 内容比对**：比对远端 `sw.js` 与本地 `app/sw.js` 的**字节**（版本号对但内容旧也算失败），再核 `index.html` 的 `?v=`；任一站点 mismatch 直接硬失败，两站都读不到也硬失败（"本次没有任何线上证据"），只有单站读不到才降级为 ⚠️ + 人工确认。最后**双远端 git 同步哈希对齐** → 记忆归档 → 汇报（结论先行 + 真机待验收项）。
+**部署与线上核验（2026-11-10 起单路）**：推 main 到 github 触发 GitHub Pages Actions（见 5.4/5.5），`deploy.sh` 默认只走这条路。扣子 `coze-dev deploy` 已停用，仅在传 `--with-coze` 时才作为历史备用 CDN 使用。`tools/deploy.sh` 的核验方式是**普通 GET（不带 cache-buster、不带 no-cache 头）+ 最多 6 次重试 + sha256 内容比对**：比对远端 `sw.js` 与本地 `app/sw.js` 的**字节**（版本号对但内容旧也算失败），再核 `index.html` 的 `?v=`；任一站点 mismatch 直接硬失败，两站都读不到也硬失败（"本次没有任何线上证据"），只有单站读不到才降级为 ⚠️ + 人工确认。最后**双远端 git 同步哈希对齐** → 记忆归档 → 汇报（结论先行 + 真机待验收项）。
 
 **每次发版必须留下 `releases/vNNN.json`**：提交哈希、门禁逐步结果、部署单号、线上核验、版本号。出问题先看这个文件，不要靠"某个 AI 还记得"。
 
-### 5.4 Git 双远端同步（2026-10-25 起）
-项目纳管平台云 Git，并有 GitHub 远端，**两个远端都要推、保持同一 commit**：
-- `origin` = 平台云 Git（`code.coze.cn/.../240117402398084017.git`，权威主远端，`main` 的 upstream 指它）
-- `github` = `https://github.com/lacang/qintianjian.git`（**公开 public** 仓库，用 gh CLI 凭据推送）
-- 每次发版提交后执行：`git push origin main && git push github main`，推完用两边 `rev-parse`/`ls-remote` 哈希对齐核验。
+### 5.4 Git 远端（2026-11-10 去扣子化后：GitHub 为唯一主远端）
+- `github` = `https://github.com/lacang/qintianjian.git`（**公开 public**，用 gh CLI 凭据推送）——**唯一权威远端，Pages 从它构建**。
+- `origin` = 平台云 Git（`code.coze.cn/...`）——扣子平台的遗留远端，**已停用，不再推送**；仓库里保留只为历史追溯，主人停用扣子后它随时可能失效，不要依赖。
+- 每次发版提交后执行：`git push github main`，推完 `git rev-parse HEAD` 与 `git rev-parse github/main` 哈希对齐核验。
 - 只 `git add` 本次实际改动的路径，禁止 `git add .` / `git add -A` / `force push`。
 - GitHub 仓库为 public，提交信息/代码里**绝不能出现任何 token/密钥/私有凭据**（发版前可用密钥正则扫一遍）。`本人出生配置.json` 与 `app/js/state.js` 的 BIRTH 默认值含主人真实生辰，**主人已明确知情并同意公开（仅生日生时，非敏感）**，保留入库。
 
 ### 5.5 GitHub Pages 部署（2026-10-25 起，主用对外地址）
-- **背景**：`page.coze.site` 是 Coze 共享域名，被微信整体封禁（申诉无果，连坐与本项目内容无关）。GitHub Pages 走 `github.io` 域名，微信可直接打开，作为**主用对外地址**；coze.site 降级为备用 CDN。
+- **背景**：`page.coze.site` 是 Coze 共享域名，被微信整体封禁（申诉无果，连坐与本项目内容无关）。GitHub Pages 走 `github.io` 域名，微信可直接打开，作为**唯一对外地址**。
+- **2026-11-10 去扣子化**：主人即将停用扣子账号，coze.site 这条线彻底下线，`deploy.sh` 默认不再发扣子。**本项目此后只依赖 GitHub（仓库 + Pages + Actions），任何步骤都不得再引入扣子平台能力。**
 - 线上地址：**https://lacang.github.io/qintianjian/**
 - 机制：`.github/workflows/deploy-pages.yml` 在 main 分支 `app/**` 变更时，把 **`app/` 目录发布到 Pages 根路径**（Pages 设置 build_type=workflow）。推 main 到 github 即自动部署；查看 `gh run list --repo lacang/qintianjian`，失败用 `gh run view <id> --log-failed`。
 - PWA 全部用相对路径（`./sw.js`、ASSETS `./`、manifest `start_url/scope=./`），适配 `/qintianjian/` 子路径，**禁止改成根绝对路径**。
@@ -275,6 +275,6 @@ node tools/acceptance-classic.mjs --out acceptance/v123-<时间>   # 发版后�
 
 ## 7. 边界
 
-- 生产发版需主人明确指令；线上 https://8xjmbcxsf9.page.coze.site（`app_id 7697839050836901888`）。
-- `app/.coze` 里的 `project_id`/`app_id` 保留复用，**禁止手改**。
+- 生产发版需主人明确指令；线上唯一地址 https://lacang.github.io/qintianjian/（GitHub Pages）。
+- `app/.coze` 里的 `project_id`/`app_id` 为扣子遗留，**已不再使用**；文件保留不动，但不要据此部署。
 - 主人单人自用；涉及"删文件/改线上配置/对外发布"等不可逆动作，先确认。
