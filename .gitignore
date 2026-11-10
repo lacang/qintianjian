@@ -104,3 +104,6 @@ __pycache__/
 # （现存脚本引用的是 tools/score-verify-v2/legacy/verdict.orig.mjs）。
 # 按指示不删除、不提交，仅标记忽略，使部署前的脏工作区检查不被它卡住。
 tools/score-verify/baseline/
+
+# 扣子部署配置：2026-11-10 去扣子化，不再使用，也不进仓库
+.coze
