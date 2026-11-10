@@ -61,6 +61,14 @@ tools/score-verify/output/full-matrix.csv
 !tools/score-verify-v2/l0-fact-audit/data/
 !tools/score-verify-v2/l0-fact-audit/data/**
 
+# ===== 六爻注解事实层：构建必需输入（2026-11-10 CI 首次跑红暴露）=====
+# 第 20 行的 `data/` 同样吞掉了 liuyao-core/src/annotations/data/，结果 GitHub Actions
+# 与任何新 clone 都构建不了：tsup 报 `Could not resolve "./data/zhouyi.lite"`。
+# 该文件是「自动生成、请勿手改」的精简包，但生成源 data/annotations/zhouyi.json 已不在仓库，
+# 它现在是**唯一可用的构建输入**，必须进版本库。
+!liuyao-core/src/annotations/data/
+!liuyao-core/src/annotations/data/**
+
 # ===== 内容库 content/classics：源文件/脚本/Schema/生成数据/审核记录一律进版本库 =====
 # 第 20 行的 `data/` 不带前导斜杠，同样会吞掉 content/classics/data/（产品数据），
 # 结果是「构建脚本在、产品数据不在」，换设备重建后无法比对。按目录反向放行。
