@@ -154,6 +154,19 @@
 
 ## 4. 交接检查清单（新模型/新 Agent 接手时按序做）
 
+**先解决 clone**：仓库约 100MB、工作树约 160MB（`app/assets` 78M 塔罗牌图 + `content` 30M 古籍 + `acceptance` 30M 历史截图 + `tools` 17M）。慢链路上直接 `git clone` 会跑几十分钟甚至卡死，**一律用浅克隆**：
+
+```bash
+git clone --depth 1 https://github.com/lacang/qintianjian.git   # 只要最新树，约 160MB
+git fetch --unshallow                                          # 真需要完整历史时再补
+```
+
+只改文档、不碰图片时用部分克隆（blob 按需拉）：
+
+```bash
+git clone --filter=blob:none https://github.com/lacang/qintianjian.git
+```
+
 1. 读 `AGENTS.md`（本文）→ 2. 读 `00_产品方向与路线图.md` → 3. 读 `CHANGELOG.md` 最近 5 版 → 4. 读记忆：`MEMORY.md` 核心状态锚点 + `recent_memory/index.json` 命中的条目 → 5. **跑 `bash tools/gates.sh` 确认基线绿**（不是"看一眼能不能打开"）→ 6. 跑一次 `node tools/test-gates.mjs` 确认门禁本身没坏（11/11）→ 7. 只改一个点，单独成版。
 8. 动手前先复述一句需求与影响面，确认后再改（改错比改慢贵）。
 
