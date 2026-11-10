@@ -15,6 +15,12 @@ on:
 permissions:
   contents: read
 
+# 时区必须钉死：core 的 castByTime 测试用 new Date(2026,9,18,2,48) 构造本地时刻并断言丑时，
+# 而 GitHub runner 默认 UTC，同一行代码会算成巳时（差 8 小时）→ 9 个用例假红。
+# 这不是代码 bug，是环境前提；本地开发机本来就是北京时间，所以本地永远看不到。
+env:
+  TZ: Asia/Shanghai
+
 jobs:
   static:
     name: 静态检查（无依赖）
