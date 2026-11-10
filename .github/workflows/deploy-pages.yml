@@ -51,7 +51,7 @@ jobs:
           URL="${{ steps.deployment.outputs.page_url }}sw.js"
           for i in $(seq 1 12); do
             sleep 10
-            REMOTE=$(curl -fsS "$URL" 2>/dev/null | sha256sum | awk '{print $1}')
+            REMOTE=$(curl -fsS -m 15 "$URL" 2>/dev/null | sha256sum | awk '{print $1}')
             if [ "$REMOTE" = "$LOCAL" ]; then
               echo "✅ 线上 sw.js 与本地字节一致（第 $i 次收敛）"
               exit 0

@@ -94,7 +94,7 @@ cat <<EOF
 接下来按顺序做（缺一不可）：
   1. 提交并推送双远端：
        git add -A && git commit -m "feat(v$NEW): <说明>"
-       git push origin main && git push github main
+       git push
   2. 部署（部署前会再跑一遍门禁，脏工作区会被拒绝）：
        bash tools/deploy.sh --note "v$NEW"
   3. 部署后核验：tools/deploy.sh 会自动核对线上 sw.js 版本号并写进 releases/v$NEW.json

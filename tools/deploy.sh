@@ -7,8 +7,8 @@
 #   bash tools/deploy.sh --with-coze     # 额外再发一份到扣子 coze.site（默认不发，见下）
 #
 # 2026-11-10 去扣子化：**默认只发 GitHub Pages**，完全不碰扣子。
-# 发 GitHub Pages 不需要"执行部署"：push 到 github/main 之后 Pages 自己构建。
-# 所以默认的"部署"动作 = 确认本地 HEAD 已推到 github/main，然后等线上收敛。
+# 发 GitHub Pages 不需要"执行部署"：push 到 origin/main（= GitHub）之后 Pages 自己构建。
+# 所以默认的"部署"动作 = 确认本地 HEAD 已推到 origin/main，然后等线上收敛。
 # 只有显式传 --with-coze 才会走 coze-dev deploy（扣子站已降级为历史备用 CDN）。
 #
 # 环境变量：
@@ -91,10 +91,10 @@ fi
 if [ "$GITHUB_ONLY" -eq 1 ]; then
   # ---------- 3-GH. GitHub Pages：push 即发布 ----------
   LOCAL_HEAD=$(git rev-parse HEAD)
-  REMOTE_HEAD=$(git rev-parse github/main 2>/dev/null || echo "")
+  REMOTE_HEAD=$(git rev-parse origin/main 2>/dev/null || echo "")
   if [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]; then
-    echo "[deploy] ❌ 本地 HEAD（${LOCAL_HEAD:0:8}）与 github/main（${REMOTE_HEAD:0:8}）不一致。" >&2
-    echo "[deploy]    先 git push github main，再发版；Pages 只会构建已推送的提交。" >&2
+    echo "[deploy] ❌ 本地 HEAD（${LOCAL_HEAD:0:8}）与 origin/main（${REMOTE_HEAD:0:8}）不一致。" >&2
+    echo "[deploy]    先 git push，再发版；Pages 只会构建已推送的提交。" >&2
     exit 1
   fi
   STATUS="Pushed"
