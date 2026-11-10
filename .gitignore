@@ -69,6 +69,16 @@ tools/score-verify/output/full-matrix.csv
 !liuyao-core/src/annotations/data/
 !liuyao-core/src/annotations/data/**
 
+# ===== 测试 fixture：测试直接 readFileSync 的文件必须入库（2026-11-10 CI 首次跑红暴露）=====
+# 第 20 行 `data/` 吞掉了 liuyao-core/data/（三份注解 JSON，880KB），
+# 第 33 行 `对标素材/` 吞掉了 format.test.ts 的《复制卦例模板.md》金标准。
+# 结果：本地能跑、CI 与任何新 clone 都 ENOENT。只放行测试真正读的那几个文件，PNG 素材仍不入库。
+!liuyao-core/data/
+!liuyao-core/data/**
+!对标素材/
+对标素材/*
+!对标素材/复制卦例模板.md
+
 # ===== 内容库 content/classics：源文件/脚本/Schema/生成数据/审核记录一律进版本库 =====
 # 第 20 行的 `data/` 不带前导斜杠，同样会吞掉 content/classics/data/（产品数据），
 # 结果是「构建脚本在、产品数据不在」，换设备重建后无法比对。按目录反向放行。
