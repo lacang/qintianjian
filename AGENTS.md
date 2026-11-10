@@ -154,7 +154,7 @@
 
 ## 4. 交接检查清单（新模型/新 Agent 接手时按序做）
 
-**先解决 clone**：远端约 100MB、当前树约 100MB（`app/assets` 78M 塔罗牌图 + `content` 30M 古籍 + `tools` 17M）。`acceptance/` 已于 2026-11-11 停止追踪，但**历史里的 30M 还在**——所以 `git clone` 仍然要下 100MB，`--depth 1` 才是真正的解法。慢链路上直接完整 `git clone` 会跑几十分钟甚至卡死，**一律用浅克隆**：
+**先解决 clone**：远端 pack 约 100MB、工作树约 130MB（`app/assets` 78M 塔罗牌图 + `content` 30M 古籍 + `tools` 17M）。实测 `--depth 1` 克隆后落盘 218MB（pack 99M + 工作树 119M）。`acceptance/` 已于 2026-11-11 停止追踪，但**历史里的 30M 还在**——所以 `git clone` 仍然要下 100MB，`--depth 1` 才是真正的解法。慢链路上直接完整 `git clone` 会跑几十分钟甚至卡死，**一律用浅克隆**：
 
 ```bash
 git clone --depth 1 https://github.com/lacang/qintianjian.git   # 只要最新树，约 160MB
