@@ -49,7 +49,25 @@ const byId = () => {
 // 单张日抽/三牌时间流/三牌现状建议结果/凯尔特十字/六芒星/关系双人/二择一/周运七牌/十二宫）。
 // positions 归一化坐标直接驱动牌桌槽位与结果页阵图，新增牌阵只加数据不改引擎。
 const TAROT_SPREADS = BUILTIN_SPREADS.filter(s => s.deckKinds && s.deckKinds.includes('tarot'));
-const spreadObj = () => TAROT_SPREADS.find(s => s.id === state.spread) || TAROT_SPREADS[0];
+// v130：自由牌阵。不预置槽位——牌拖到画布哪里松手，哪里就是它的位置。
+// 关键设计：spreadObj() 在 free 模式下把「已放下的牌」变成 positions，
+// 于是牌桌渲染、槽位标签、翻牌解局全都复用同一套代码，不用另写一份。
+const FREE_ID = 'free';
+const spreadObj = () => {
+  if (state.spread === FREE_ID) {
+    const placed = (state.tableSlots || []).filter(Boolean);
+    return {
+      id: FREE_ID, name: '自由牌阵', count: state.freeCount,
+      intro: '不设固定位置：拖到哪儿松手，牌就落在哪儿（最少 1 张，最多 12 张）',
+      positions: placed.map((pc, i) => ({
+        x: pc.fx, y: (pc.fy - 10) / 0.66 + 8,        // 反算回数据坐标，供 TABLE_POS 再压一次
+        label: '牌' + (i + 1), meaning: '自己摆的第 ' + (i + 1) + ' 张',
+        rotate: pc._rot || 0,
+      })),
+    };
+  }
+  return TAROT_SPREADS.find(s => s.id === state.spread) || TAROT_SPREADS[0];
+};
 const countOf = () => spreadObj().count;
 const possArr = () => spreadObj().positions.map(p => p.label);
 // 数据坐标 y∈[12,90] 压进牌桌 canvas 安全区（顶部 12% ~ 展牌区上方 8%）
@@ -67,6 +85,7 @@ const GROUPS = ['大阿尔卡那', '权杖', '圣杯', '宝剑', '星币'];
 
 let state = {
   spread: 'three-time', question: '',
+  freeCount: 3,               // v130 自由牌阵的目标张数
   useRev: true,
   mode: 'manual',
   layout: curLayout(),          // v108 展牌三式：stack 牌堆（可切牌）| fan 手上扇面 | bridge 赌神拱桥
@@ -267,7 +286,11 @@ function tableHTML() {
   const placed = tablePlaced(), full = placed >= n, flipped = state.tableFlip.filter(Boolean).length;
   const allFlip = full && flipped >= n;
   const layoutName = (LAYOUTS.find(l => l.id === state.layout) || LAYOUTS[1]).name;
-  const hint = !full ? `点选一张牌，亲手拖到发光的位置 · ${placed}/${n}（展牌：${layoutName}）`
+  const freeMode = state.spread === FREE_ID;
+  const hint = freeMode
+    ? (!full ? `自由牌阵：把牌拖到画布任意位置松手（${placed}/${n}）`
+             : (!allFlip ? `牌摆好了，逐张点开（已翻 ${flipped}/${n}）` : '全部翻开 · 开牌解局'))
+    : !full ? `点选一张牌，亲手拖到发光的位置 · ${placed}/${n}（展牌：${layoutName}）`
     : !allFlip ? `牌已放好，点桌面上的牌逐张翻开（已翻 ${flipped}/${n}）`
     : '牌已全部翻开 · 开牌解局';
 
@@ -298,6 +321,8 @@ function tableHTML() {
       <div class="trt-stage-label">${full ? '已放满' : '点牌堆切牌（一张牌从上面切到底下）· 把牌拖到发光位置'}</div></div>`;
   }
 
+  const freeTip = freeMode && !full
+    ? '<div class="trt-freetip">拖牌到画布任意位置 · 松手即落位</div>' : '';
   const autoBtn = state.mode === 'auto' && !full
     ? '<button class="trt-flipallbtn" id="trt-autodraw">🜨 自动抽牌</button>' : '';
 
@@ -305,7 +330,7 @@ function tableHTML() {
     <button class="trt-exit" id="trt-menu" aria-label="牌桌设置">☰</button>
     <div class="trt-topbar">${state.question ? esc(state.question) : '深呼吸，在心里默念你要问的事'}</div>
     <button class="trt-reshuffle" data-tr-reshuffle aria-label="重新发牌">↺</button>
-    <div class="trt-canvas" id="trt-canvas"><div class="trt-moon">🌙</div>${slots}</div>
+    <div class="trt-canvas ${freeMode ? 'is-free' : ''}" id="trt-canvas"><div class="trt-moon">🌙</div>${freeTip}${slots}</div>
     <div class="trt-hint"><span>${hint}</span></div>
     <div class="trt-stagepos" id="trt-stagepos">
       ${allFlip ? '<button class="trt-readbtn" id="trt-read">☯ 开牌解局</button>'
@@ -392,9 +417,24 @@ function showAboutPage() {
 }
 function paintTable() { paintResult(tableHTML()); bindTable(); }
 // 从剩余牌栈抽出第 pidx 张落到槽位（pidx 缺省取牌堆顶=下一空槽）
-function landFromTable(pidx, slotIdx) {
+function landFromTable(pidx, slotIdx, pt) {
   const n = countOf();
   if (tablePlaced() >= n || !state.pickDeck || !state.pickDeck.length) return false;
+
+  // v130 自由牌阵：给了落点就按落点追加一张（位置即槽位）
+  if (state.spread === FREE_ID && pt) {
+    let idx0 = pidx;
+    if (idx0 == null || idx0 < 0 || idx0 >= state.pickDeck.length) idx0 = 0;
+    const c0 = state.pickDeck.splice(idx0, 1)[0];
+    c0._rot = randBelow(11) - 5;
+    c0.fx = pt.x; c0.fy = pt.y;
+    state.picked.push(c0);
+    state.tableSlots.push(c0);
+    state.tableFlip.push(false);
+    state.fanShift = 0; state.tablePick = null;
+    paintTable();
+    return true;
+  }
   let idx = pidx;
   if (idx == null || idx < 0 || idx >= state.pickDeck.length) idx = 0;
   let si = slotIdx;
@@ -872,8 +912,18 @@ function bindTable() {
     if (decision === 'pull') {
       drag.hidden = true; drag.style.transform = ''; nearSlotClear();
       suppress = true; setTimeout(() => { suppress = false; }, 300);
-      const hit = nearestFree(p.clientX, p.clientY);
       const takeIdx = state.tablePick ? state.tablePick.idx : idx;
+      if (state.spread === FREE_ID) {
+        // v130 自由牌阵：松手位置换算成画布百分比，直接落在那儿
+        const cr = canvas.getBoundingClientRect();
+        const fx = ((p.clientX - cr.left) / cr.width) * 100;
+        const fy = ((p.clientY - cr.top) / cr.height) * 100;
+        if (fx > 2 && fx < 98 && fy > 2 && fy < 98) landFromTable(takeIdx, null, { x: fx, y: fy });
+        else { state.tablePick = null; paintTable(); }     // 拖出画布=放弃
+        decision = null;
+        return;
+      }
+      const hit = nearestFree(p.clientX, p.clientY);
       if (hit) landFromTable(takeIdx, hit.i);             // 对准发光空槽→亲手放下
       else { state.tablePick = null; paintTable(); }      // 任意位置松手/没对准→牌回原位
     }
@@ -980,6 +1030,8 @@ export function initTarot() {
       closeMenu(); state.phase = null; enterTable(); return;
     }
     // ---- 落座页（v129）：选阵 → 选组 → 洗牌 ----
+    const fc = e.target.closest('[data-tr-free-count]');
+    if (fc) { state.freeCount = parseInt(fc.getAttribute('data-tr-free-count'), 10) || 3; paintSetup(); return; }
     const spk = e.target.closest('[data-tr-spread-pick]');
     if (spk) { state.spread = spk.getAttribute('data-tr-spread-pick'); paintSetup(); return; }
     const dkp = e.target.closest('[data-tr-deck-pick]');
@@ -1028,6 +1080,15 @@ function paintSetup() {
       <b>${DECK_SHORT[x.id] || esc(x.name)}</b>
       <small>${n} 张 · ${d.allowsReversal ? '有逆位' : '无逆位'}</small></button>`;
   }).join('');
+  const freeOn = state.spread === FREE_ID;
+  const freeCard = `<button type="button" class="tr-su-spread tr-su-free${freeOn ? ' on' : ''}" data-tr-spread-pick="free">
+      <b>自由牌阵</b><small>自己摆 · 拖到哪儿落哪儿</small></button>`;
+  const freeCountRow = freeOn
+    ? `<div class="tr-su-count"><span>摆几张</span>${
+        [1, 2, 3, 4, 5, 6, 7, 8, 10, 12].map(n =>
+          `<button type="button" data-tr-free-count="${n}" class="${state.freeCount === n ? 'on' : ''}">${n}</button>`).join('')
+      }</div>`
+    : '';
   const spreadBtns = TAROT_SPREADS.map(sp =>
     `<button type="button" class="tr-su-spread${state.spread === sp.id ? ' on' : ''}" data-tr-spread-pick="${sp.id}">
       <b>${esc(sp.name)}</b><small>${sp.count} 张 · ${esc(sp.positions.map(z => z.label).join(' / ')).slice(0, 22)}</small></button>`).join('');
@@ -1038,7 +1099,7 @@ function paintSetup() {
     </div>
     <section class="tr-su-sec">
       <div class="tr-su-t"><span class="tr-su-n">1</span>选牌阵<em>${esc(spreadObj().intro || '')}</em></div>
-      <div class="tr-su-grid">${spreadBtns}</div>
+      <div class="tr-su-grid">${spreadBtns}${freeCard}</div>${freeCountRow}
     </section>
     <section class="tr-su-sec">
       <div class="tr-su-t"><span class="tr-su-n">2</span>选牌组<em>当前 ${dk.cards.length} 张</em></div>
