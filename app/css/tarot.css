@@ -477,3 +477,33 @@
 .tr-gname{display:block;font-size:10px;color:rgba(214,207,190,.78);margin-top:4px;}
 .tr-galgrp-t{margin:14px 0 8px;font-size:13px;color:rgba(201,168,90,.85);}
 .tr-aboutpage .tr-castbtn{width:100%;margin-top:14px;}
+
+/* ============ v129 落座页（选牌阵 → 选牌组 → 洗牌） ============ */
+.tr-setup{max-width:760px;margin:0 auto;padding:18px 16px 26px;display:flex;flex-direction:column;gap:18px}
+.tr-su-head h2{margin:0 0 6px;font-size:19px;letter-spacing:.06em}
+.tr-su-sub{margin:0;font-size:12.5px;line-height:1.6;opacity:.62}
+.tr-su-sec{display:flex;flex-direction:column;gap:9px}
+.tr-su-t{display:flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.04em}
+.tr-su-t em{margin-left:auto;font-style:normal;font-size:11.5px;opacity:.5;max-width:58%;text-align:right}
+.tr-su-n{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;
+  font-size:11px;background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.45);color:#d4af37}
+.tr-su-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.tr-su-decks{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.tr-su-spread,.tr-su-deck{display:flex;flex-direction:column;gap:3px;padding:10px 11px;text-align:left;
+  border-radius:10px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.03);
+  color:inherit;font:inherit;cursor:pointer;transition:border-color .16s,background .16s}
+.tr-su-spread b,.tr-su-deck b{font-size:13px;font-weight:600;letter-spacing:.02em}
+.tr-su-spread small,.tr-su-deck small{font-size:10.5px;opacity:.55;line-height:1.35}
+.tr-su-spread.on,.tr-su-deck.on{border-color:rgba(212,175,55,.72);background:rgba(212,175,55,.1)}
+.tr-su-spread.on b,.tr-su-deck.on b{color:#d4af37}
+.tr-su-note{margin:2px 0 0;font-size:11px;line-height:1.55;opacity:.48}
+.tr-su-seg{flex-wrap:wrap}
+.tr-su-foot{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.tr-su-go{padding:13px;border-radius:12px;border:1px solid rgba(212,175,55,.6);
+  background:linear-gradient(180deg,rgba(212,175,55,.22),rgba(212,175,55,.09));
+  color:#f2e6c4;font:inherit;font-size:14.5px;letter-spacing:.12em;cursor:pointer}
+.tr-su-go:active{transform:scale(.99)}
+.tr-su-links{display:flex;gap:14px;justify-content:center}
+.tr-su-links button{background:none;border:0;color:inherit;font:inherit;font-size:11.5px;opacity:.55;
+  cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:420px){.tr-su-grid{grid-template-columns:1fr 1fr}.tr-su-t em{display:none}}
