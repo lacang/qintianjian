@@ -87,12 +87,27 @@ let state = {
 
 
 // ---------- 洗牌（78 张，带随机正逆） ----------
+// v129：真随机。原先用 Math.random()（可预测的伪随机），抽牌等于自己给自己发牌。
+// 改用 crypto.getRandomValues —— 取的是操作系统熵池（含硬件中断噪声），
+// 再用「拒绝采样」消除取模偏差，保证 0..max-1 严格等概率。
+function randBelow(max) {
+  if (max <= 0) return 0;
+  const c = (typeof crypto !== 'undefined' && crypto.getRandomValues) ? crypto : null;
+  if (!c) return Math.floor(Math.random() * max);      // 极老环境兜底，正常走不到
+  const limit = Math.floor(0x100000000 / max) * max;   // 大于 limit 的样本一律重抽
+  const buf = new Uint32Array(1);
+  let v;
+  do { c.getRandomValues(buf); v = buf[0]; } while (v >= limit);
+  return v % max;
+}
+
 function shuffled() {
   const dk = deck();
-  const useRev = state.useRev && dk.allowsReversal;
-  const a = dk.cards.map(c => ({ id: c.id, rev: useRev && !!c.reversible && Math.random() < 0.5 }));
+  const useRev = dk.allowsReversal ? state.useRev : false;
+  const a = dk.cards.map(c => ({ id: c.id, rev: useRev && !!c.reversible && randBelow(2) === 1 }));
+  // Fisher–Yates，每一步都用 CSPRNG 取下标（不是先洗一次再固定顺序）
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = randBelow(i + 1);
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
@@ -344,6 +359,10 @@ function openMenu() {
   requestAnimationFrame(() => sheet.classList.add('open'));
 }
 function closeMenu() { const s = document.getElementById('tr-menu-sheet'); if (s) s.classList.remove('open'); }
+function paintSetup_keepQuestion() {
+  const qi = document.getElementById('tr-q-setup');
+  if (qi) state.question = qi.value.trim();
+}
 function showGalleryPage() {
   if (state.tableUnbind) { try { state.tableUnbind(); } catch {} state.tableUnbind = null; }
   state.phase = 'gallery';
@@ -384,7 +403,7 @@ function landFromTable(pidx, slotIdx) {
     if (si < 0) return false;
   }
   const card = state.pickDeck.splice(idx, 1)[0];
-  card._rot = ((Math.random() * 10 - 5) | 0);
+  card._rot = randBelow(11) - 5;   // 摆位微倾角，同样走 CSPRNG
   state.picked.push(card);
   state.tableSlots[si] = card;
   state.fanShift = 0; state.tablePick = null;
@@ -674,6 +693,7 @@ export function restoreTarot(spreadIndex, cardsArr, deckId) {
 
 // v109：菜单内改设置后，牌桌仍在 fixed 覆盖层，只重绘画布即可，不整体重挂。
 function rerender() {
+  if (state.phase === 'setup') { paintSetup(); return; }
   if (state.phase === 'table' && state.pickDeck) { paintTable(); return; }
   const body = $('#tarot-body');
   if (!body) return;
@@ -695,7 +715,7 @@ export function mountTarot() {
     paintResult(resultWrap((state.question ? `<div class="tr-q">所问：${esc(state.question)}</div>` : '') + readResult(state.drawn).html));
     return;
   }
-  enterTable();
+  paintSetup();          // v129：不再直接落座牌桌，先选牌阵与牌组
 }
 
 // ---------- v108 牌桌交互：三式展牌 + 拖拽落位（touch / mouse 统一） ----------
@@ -931,10 +951,12 @@ export function initTarot() {
     // 设置抽屉关闭 / 图鉴·说明页返回
     if (e.target.closest('[data-tr-menuclose]')) { closeMenu(); return; }
     if (e.target.closest('#trt-goback') || e.target.closest('#trt-goback2')) {
-      closeMenu(); state.phase = null; enterTable(); return;
+      closeMenu(); state.phase = null;
+      if (state.pickDeck || state.drawn) enterTable(); else paintSetup();   // v129：没开局就回落座页
+      return;
     }
     // 牌桌顶栏 ☰ / 结果页「牌组·牌阵」→ 开设置抽屉
-    if (e.target.closest('#trt-menu') || e.target.closest('#trt-menu2')) { syncQuestion(); openMenu(); return; }
+    if (e.target.closest('#trt-menu') || e.target.closest('#trt-menu2')) { syncQuestion(); paintSetup(); return; }
     if (e.target.closest('#trm-gallery')) { syncQuestion(); showGalleryPage(); return; }
     if (e.target.closest('#trm-about')) { syncQuestion(); showAboutPage(); return; }
     // 结果页「再抽一局」
@@ -957,6 +979,29 @@ export function initTarot() {
       try { localStorage.setItem(DECK_KEY, dk.getAttribute('data-tr-deck')); } catch {}
       closeMenu(); state.phase = null; enterTable(); return;
     }
+    // ---- 落座页（v129）：选阵 → 选组 → 洗牌 ----
+    const spk = e.target.closest('[data-tr-spread-pick]');
+    if (spk) { state.spread = spk.getAttribute('data-tr-spread-pick'); paintSetup(); return; }
+    const dkp = e.target.closest('[data-tr-deck-pick]');
+    if (dkp) {
+      try { localStorage.setItem(DECK_KEY, dkp.getAttribute('data-tr-deck-pick')); } catch {}
+      paintSetup(); return;
+    }
+    const mdp = e.target.closest('[data-tr-mode-pick]');
+    if (mdp) { state.mode = mdp.getAttribute('data-tr-mode-pick'); paintSetup(); return; }
+    if (e.target.closest('#tr-rev-setup')) {
+      state.useRev = !state.useRev;
+      try { localStorage.setItem('qintian.tarot.rev', state.useRev ? '1' : '0'); } catch {}
+      paintSetup(); return;
+    }
+    if (e.target.closest('#tr-go-table')) {
+      const qi = document.getElementById('tr-q-setup');
+      if (qi) state.question = qi.value.trim();
+      state.drawn = null; state.revealing = null;
+      enterTable(); return;
+    }
+    if (e.target.closest('#tr-setup-gallery')) { paintSetup_keepQuestion(); showGalleryPage(); return; }
+    if (e.target.closest('#tr-setup-about')) { paintSetup_keepQuestion(); showAboutPage(); return; }
     const md = e.target.closest('[data-tr-mode]');
     if (md) { state.mode = md.getAttribute('data-tr-mode'); closeMenu(); state.phase = null; enterTable(); return; }
     const sp = e.target.closest('[data-tr-spread]');
@@ -964,7 +1009,64 @@ export function initTarot() {
   });
   document.addEventListener('input', (e) => {
     if (e.target && e.target.id === 'tr-question') state.question = e.target.value;
+    if (e.target && e.target.id === 'tr-q-setup') state.question = e.target.value;   // v129 落座页输入
   });
+}
+
+
+// ---------- 幕零：落座（选牌阵 → 选牌组 → 洗牌开牌） ----------
+// 主人定调：原来一进来就是牌桌，牌阵/牌组藏在 ☰ 抽屉里，顺序是反的。
+// 现在先选阵、再选组、最后才洗牌落座；改设置不再默默丢掉已摆的牌，而是明确回到这一步。
+function paintSetup() {
+  if (state.shufT) { clearTimeout(state.shufT); state.shufT = null; }
+  if (state.tableUnbind) { try { state.tableUnbind(); } catch {} state.tableUnbind = null; }
+  const dk = deck();
+  const deckBtns = listDecks().filter(x => x.kind === 'tarot').map(x => {
+    const d = getDeck(x.id);
+    const n = d.cards.length;
+    return `<button type="button" class="tr-su-deck${curDeckId() === x.id ? ' on' : ''}" data-tr-deck-pick="${x.id}">
+      <b>${DECK_SHORT[x.id] || esc(x.name)}</b>
+      <small>${n} 张 · ${d.allowsReversal ? '有逆位' : '无逆位'}</small></button>`;
+  }).join('');
+  const spreadBtns = TAROT_SPREADS.map(sp =>
+    `<button type="button" class="tr-su-spread${state.spread === sp.id ? ' on' : ''}" data-tr-spread-pick="${sp.id}">
+      <b>${esc(sp.name)}</b><small>${sp.count} 张 · ${esc(sp.positions.map(z => z.label).join(' / ')).slice(0, 22)}</small></button>`).join('');
+  paintResult(`<div class="tr-setup glass-card">
+    <div class="tr-su-head">
+      <h2>塔罗 · 落座</h2>
+      <p class="tr-su-sub">三步：选牌阵 → 选牌组 → 洗牌。抽完自己摆，摆完自己翻。</p>
+    </div>
+    <section class="tr-su-sec">
+      <div class="tr-su-t"><span class="tr-su-n">1</span>选牌阵<em>${esc(spreadObj().intro || '')}</em></div>
+      <div class="tr-su-grid">${spreadBtns}</div>
+    </section>
+    <section class="tr-su-sec">
+      <div class="tr-su-t"><span class="tr-su-n">2</span>选牌组<em>当前 ${dk.cards.length} 张</em></div>
+      <div class="tr-su-grid tr-su-decks">${deckBtns}</div>
+      <p class="tr-su-note">${esc(deckSrc(curDeckId()))}</p>
+    </section>
+    <section class="tr-su-sec">
+      <div class="tr-su-t"><span class="tr-su-n">3</span>所问与抽法</div>
+      <input id="tr-q-setup" class="tr-qinput" type="text" maxlength="40"
+        placeholder="例：这段关系接下来该怎么走？（可留空）" value="${esc(state.question)}"/>
+      <div class="tr-seg tr-su-seg">
+        <button type="button" data-tr-mode-pick="manual" class="${state.mode === 'manual' ? 'on' : ''}">亲手抽牌</button>
+        <button type="button" data-tr-mode-pick="auto" class="${state.mode === 'auto' ? 'on' : ''}">自动抽牌</button>
+        ${dk.allowsReversal
+          ? `<button type="button" id="tr-rev-setup" class="tr-revtoggle ${state.useRev ? 'on' : ''}">逆位 ${state.useRev ? '开' : '关'}</button>`
+          : '<span class="tr-revoff">此牌组无逆位</span>'}
+      </div>
+      <p class="tr-su-note">洗牌用的是浏览器 CSPRNG（操作系统熵池），不是 Math.random。</p>
+    </section>
+    <div class="tr-su-foot">
+      <button class="tr-su-go" id="tr-go-table" type="button">洗牌开牌 →</button>
+      <div class="tr-su-links">
+        <button id="tr-setup-gallery" type="button">▸ 全牌图鉴</button>
+        <button id="tr-setup-about" type="button">▸ 读法与依据</button>
+      </div>
+    </div>
+  </div>`);
+  state.phase = 'setup';
 }
 
 // v107 牌桌纯渲染/状态导出（供渲染桩测；运行时无副作用）
