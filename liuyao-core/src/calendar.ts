@@ -7,7 +7,9 @@
  * - 年柱、月柱必须使用精确节气系列 API：getYearInGanZhiExact / getMonthInGanZhiExact。
  *   普通 API 在节气当天 0 点即换柱，立春/寒露等边界会差几个时辰。
  * - 日柱同样使用 Exact 系列；时柱用 getTimeInGanZhi（时辰按整点换界，23:00 进次日子时）。
- * - 旬空用 getDayXunKong()（日空亡；时空亡本项目不输出）。
+ * - 旬空由日柱自算（xunKongOf），与本层日柱同源。**不要用库的 getDayXunKong()**——
+ *   它按 00:00 换日的默认日柱算，晚子时跨旬那天会与日柱矛盾（见函数注释）。
+ *   时空亡本项目不输出。
  * - 晚子时（23:00–24:00）日柱归属：**口径已定（主人 2026-10-21）——按 23:00 换日**，
  *   即时柱进次日子时、日柱亦进次日。当前实现用 lunar-javascript `getDayInGanZhiExact()`
  *   （23:00 换日），与此口径一致；实测 2026-10-21 23:30 得己巳日甲子时，与 10-22 00:30 同日柱。
@@ -16,6 +18,30 @@
  */
 import { Solar } from 'lunar-javascript';
 import type { DiZhi, SiZhu, SolarDateInput, TianGan } from './types.js';
+
+const GAN_ORDER = '甲乙丙丁戊己庚辛壬癸';
+const ZHI_ORDER = '子丑寅卯辰巳午未申酉戌亥';
+
+/**
+ * 由日干支推旬空（日空亡）。
+ *
+ * 为什么不用 lunar-javascript 的 getDayXunKong()：它按「00:00 换日」的默认日柱计算，
+ * 而本层日柱走 getDayInGanZhiExact()（23:00 换日）。两者在晚子时跨旬那天会冲突——
+ * 例：2026-10-26 23:30 日柱已进甲戌，getDayXunKong() 仍返回戌亥（申酉才对）。
+ * 自算可保证旬空恒与本层日柱同源。
+ *
+ * 等价性：2026 全年 365 天 × 12:00 抽样，本函数与 getDayXunKong() 365/365 一致。
+ */
+function xunKongOf(ganZhi: string): [DiZhi, DiZhi] {
+  const g = GAN_ORDER.indexOf(ganZhi.charAt(0));
+  const z = ZHI_ORDER.indexOf(ganZhi.charAt(1));
+  if (g < 0 || z < 0) throw new Error(`非法日干支: ${ganZhi}`);
+  const head = ((z - g) % 12 + 12) % 12; // 旬首地支序号
+  return [
+    ZHI_ORDER.charAt((head + 10) % 12) as DiZhi,
+    ZHI_ORDER.charAt((head + 11) % 12) as DiZhi,
+  ];
+}
 
 export function solarToSiZhu(input: SolarDateInput): SiZhu {
   const { year, month, day, hour } = input;
@@ -27,8 +53,7 @@ export function solarToSiZhu(input: SolarDateInput): SiZhu {
   const monthGanZhi = lunar.getMonthInGanZhiExact();
   const dayGanZhi = lunar.getDayInGanZhiExact();
   const timeGanZhi = lunar.getTimeInGanZhi();
-  const xk = lunar.getDayXunKong();
-  const xunKong = [xk.charAt(0), xk.charAt(1)] as [DiZhi, DiZhi];
+  const xunKong = xunKongOf(dayGanZhi);
 
   return {
     year,
