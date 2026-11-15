@@ -32,7 +32,7 @@ const ZHI_ORDER = '子丑寅卯辰巳午未申酉戌亥';
  *
  * 等价性：2026 全年 365 天 × 12:00 抽样，本函数与 getDayXunKong() 365/365 一致。
  */
-function xunKongOf(ganZhi: string): [DiZhi, DiZhi] {
+export function xunKongOf(ganZhi: string): [DiZhi, DiZhi] {
   const g = GAN_ORDER.indexOf(ganZhi.charAt(0));
   const z = ZHI_ORDER.indexOf(ganZhi.charAt(1));
   if (g < 0 || z < 0) throw new Error(`非法日干支: ${ganZhi}`);
