@@ -8,6 +8,7 @@ import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=128';
 import { renderPan, copyCurrent } from './panview.js?v=128';
 import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=128';
 import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=128';
+import { renderHeCan, initHeCan } from './hecanview.js?v=132';
 import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=128';
 import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=128';
 import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=128';
@@ -99,6 +100,8 @@ function openSubview(name) {
   if (name === 'bazi') $('#bazi-body').innerHTML = renderBazi();
   if (name === 'meihua') $('#meihua-body').innerHTML = renderMeiHua();
   if (name === 'qimen') $('#qimen-body').innerHTML = renderQiMen();
+  // 多盘合参：三格盘位 + 机械三态对照（本阶段只接梅花）
+  if (name === 'hecan') { const b = $('#hecan-body'); if (b) { b.innerHTML = renderHeCan(); initHeCan(b); } }
   if (name === 'astro') renderAstro();
   if (name === 'vedic') renderVedic();
   if (name === 'zhuyou') renderZhuyou();
