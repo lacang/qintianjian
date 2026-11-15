@@ -74,3 +74,27 @@ describe('十神 tenGod 单元', () => {
     expect(tenGod('己', '丁')).toBe('偏印');
   });
 });
+
+/**
+ * 八字旬空与日柱同源（与 calendar.test.ts 的晚子时用例同源）。
+ * 历史 bug：getDayXunKong() 按 00:00 换日的默认日柱算，
+ * 在每个旬最后一天 23:00–24:00 与 getDayInGanZhiExact 的日柱矛盾。
+ */
+describe('八字旬空跟随 Exact 日柱', () => {
+  it('跨旬日晚子时：甲戌日旬空为申酉（不是戌亥）', () => {
+    const r = paiBazi({ year: 2026, month: 10, day: 26, hour: 23, minute: 30, gender: '男' });
+    expect(r.day.ganZhi).toBe('甲戌');
+    expect(r.xunKong).toEqual(['申', '酉']);
+  });
+
+  it('非跨旬日晚子时不受影响：乙亥日仍申酉', () => {
+    const r = paiBazi({ year: 2026, month: 10, day: 27, hour: 23, minute: 30, gender: '男' });
+    expect(r.day.ganZhi).toBe('乙亥');
+    expect(r.xunKong).toEqual(['申', '酉']);
+  });
+
+  it('白天时段与旧实现一致（不改动既有行为）', () => {
+    expect(paiBazi({ year: 2026, month: 10, day: 26, hour: 12, minute: 0, gender: '男' }).xunKong).toEqual(['戌','亥']);
+    expect(paiBazi({ year: 2026, month: 10, day: 27, hour: 12, minute: 0, gender: '男' }).xunKong).toEqual(['申','酉']);
+  });
+});
