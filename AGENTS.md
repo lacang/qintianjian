@@ -279,7 +279,7 @@ node tools/acceptance-classic.mjs --out acceptance/v123-<时间>   # 发版后�
 - **渲染函数必须 return 字符串**：`renderXxx()` 忘了 `return` → `innerHTML = undefined` → 页面出现字面量 "undefined"。
 - **微信内置浏览器缓存**：SW 走 networkFirst + `cache:no-cache`；改完要让用户强刷或等 SW 更新，否则看到旧版。
 - **经纬度不得写死**：真太阳时/行星时/日出日落/二十八宿都依赖所在地。v111 起统一走 `app/js/geo.js` 的当前地点（`getPlace()`），需要新地点能力时**扩展 geo.js，不要再各自写一份**。
-- **旬空不能直接调 `getDayXunKong()`**：它按「00:00 换日」的默认日柱算，而本层日柱走 `getDayInGanZhiExact()`（23:00 换日）。每个旬的**最后一天 23:00–24:00** 会自相矛盾——日柱已进次日、旬空还是当日（例 2026-10-26 23:30：日柱甲戌，库返回戌亥，应为申酉）。`calendar.ts` 已改为 `xunKongOf(dayGanZhi)` 自算（commit `60cd92b`），2026 全年 365 天非边界抽样与库结果 365/365 一致，**只在晚子时边界正确偏离**。别再改回 `getDayXunKong()`。
+- **旬空不能直接调 `getDayXunKong()`**：它按「00:00 换日」的默认日柱算，而本层日柱走 `getDayInGanZhiExact()`（23:00 换日）。每个旬的**最后一天 23:00–24:00** 会自相矛盾——日柱已进次日、旬空还是当日（例 2026-10-26 23:30：日柱甲戌，库返回戌亥，应为申酉）。`calendar.ts` 与 `bazi.ts` 均已改为 `xunKongOf(dayGanZhi)` 自算（`calendar.ts:60cd92b`、`bazi.ts:67751a6`），2026 全年 365 天非边界抽样与库结果 365/365 一致，**只在晚子时边界正确偏离**。**全项目任何地方都别再调 `getDayXunKong()`**——它是 00:00 换日口径，与本项目的 23:00 换日不兼容。
 - **同一文件并行 `edit_file` 会互相覆盖**：改同一文件必须串行，或一次性写完；改完立刻复核（整文件重写易打错天文常数）。
 - **`node --check` 对 `.js` 是假绿灯**：Node 对无 `package.json` type=module 的 `.js` 按 CommonJS 解析，**会放过 ESM 的重复顶层声明**（v121 事故：两处 `xxxCode` 重复声明，node --check 全绿、真机整个模块图崩、应用不启动）。校验 app 侧 ESM 一律先 `cp x.js /tmp/x.mjs && node --check /tmp/x.mjs`；`tools/check-modules.mjs` 已含此项 + import 目标存在 + 具名导出存在。`tools/test-gates.mjs` 用例 A 会现场打印这条"假绿灯"对照证据。
 - **`spawnSync` 会阻塞 Node 事件循环**：门禁脚本里用 `spawnSync` 跑 Chrome，同进程的静态服务无法响应浏览器请求 → Chrome 一直等 → 表现为"卡 120s 超时、DOM 为空"（排查了很久的真根因）。跑浏览器一律用异步 `spawn`（`tools/lib/browser.mjs` 的 `runChrome`）。
