@@ -405,9 +405,14 @@
 /* v116 半抽出定格（占星猫式）：选中牌仍夹在原列、保持原角度，只沿自身轴向扇面外探一截；
    z-index 压到邻牌之下 → 牌身下半截被相邻牌盖住（底部与牌堆重叠），只有越过扇面弧顶的上半截
    探出、倾斜独立，定格「已抽出、未翻面」。绝不整张贴到扇面上方。 */
-.trf-item.is-pick{z-index:0;filter:brightness(1.16);
-  transform:rotate(var(--a,0deg)) translateY(calc(-1 * var(--R,120px) - var(--pick-lift, 34px))) scale(1.02);
-  transition:transform .2s cubic-bezier(.2,.8,.3,1.1),filter .15s ease;}
+/* v131：选中牌必须留在扇面原位。
+   原实现把位移写在 rotate 之后，位移走的是旋转后的坐标轴——
+   中间那张往上、边上的那张斜着往外滑，看起来像"飞出队"。
+   现在不做任何位移（transform 与未选中完全一致），只靠描边/提亮/抬层表示选中。 */
+.trf-item.is-pick{z-index:9;filter:brightness(1.2) drop-shadow(0 0 10px rgba(212,175,55,.85));
+  transform:rotate(var(--a,0deg)) translateY(calc(-1 * var(--R,120px))) scale(1.0);
+  outline:2px solid rgba(212,175,55,.95); outline-offset:-2px; border-radius:6px;
+  transition:filter .16s ease;}
 .trf-item.is-hidden{opacity:0;}
 /* v115 拱桥展牌式已撤下（主人定），相关 .trg-* 样式一并移除 */
 .trt-stacktop.is-pick{transform:translateY(-10px) scale(1.05);filter:brightness(1.18);}
