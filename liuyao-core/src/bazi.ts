@@ -6,11 +6,12 @@
  *
  * 口径：
  * - 真太阳时由上层校正后传入（本模块直接按北京时间分量解释 input）。
- * - 节气换月用 Exact；晚子时沿用 lunar 默认（未 setSect(2)），TODO 见 calendar.ts。
+ * - 节气换月用 Exact；日柱走 getDayInGanZhiExact（23:00 换日），旬空由 xunKongOf(dayGZ) 自算，与日柱同源（同 calendar.ts）。
  * - 大运：阳男阴女顺排、阴男阳女逆排，起运岁数取 lunar Yun；本模块每步大运附干支与起止年份/岁数。
  */
 import { Solar } from 'lunar-javascript';
 import type { SolarDateInput, TianGan, DiZhi, WuXing } from './types.js';
+import { xunKongOf } from './calendar.js';
 
 export type Gender = '男' | '女';
 
@@ -149,8 +150,7 @@ export function paiBazi(input: BaziInput): BaziResult {
   const timeGZ = lunar.getTimeInGanZhi();
   const dayGan = dayGZ.charAt(0) as TianGan;
 
-  const xk = lunar.getDayXunKong();
-  const xunKong = [xk.charAt(0), xk.charAt(1)] as [DiZhi, DiZhi];
+  const xunKong = xunKongOf(dayGZ);
 
   const pillars = {
     year: buildPillar(yearGZ, dayGan, ec.getYearNaYin(), false),
