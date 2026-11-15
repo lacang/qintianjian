@@ -47,3 +47,45 @@ describe('lunar Exact 节气边界', () => {
     expect(solarToSiZhu({ year: 2026, month: 10, day: 18, hour: 4, minute: 6 }).timeGanZhi).toBe('戊寅');
   });
 });
+
+/**
+ * 晚子时（23:00–24:00）日界与旬空的一致性。
+ *
+ * 口径（2026-10-21 定案）：按 23:00 换日 —— 日柱进次日、时柱进次日子时。
+ * 旬空必须与该日柱同源。历史 bug：getDayXunKong() 按 00:00 换日的默认日柱算，
+ * 在每个旬的最后一天 23:00–24:00 会与日柱矛盾（日柱已进次日、旬空还是当日），
+ * 已于 2026-11-15 改为 xunKongOf(dayGanZhi) 自算（commit 60cd92b）。
+ */
+describe('晚子时换日与旬空一致性', () => {
+  it('23:30 日柱进次日，且与次日 00:30 同柱（己巳日甲子时）', () => {
+    const lateZi = solarToSiZhu({ year: 2026, month: 10, day: 21, hour: 23, minute: 30 });
+    const nextEarlyZi = solarToSiZhu({ year: 2026, month: 10, day: 22, hour: 0, minute: 30 });
+    expect(lateZi.dayGanZhi).toBe('己巳');
+    expect(lateZi.timeGanZhi).toBe('甲子');
+    expect(lateZi.dayGanZhi).toBe(nextEarlyZi.dayGanZhi);
+    expect(lateZi.timeGanZhi).toBe(nextEarlyZi.timeGanZhi);
+  });
+
+  it('22:30 仍属当日（不误进次日）', () => {
+    expect(solarToSiZhu({ year: 2026, month: 10, day: 21, hour: 22, minute: 30 }).dayGanZhi).toBe('戊辰');
+  });
+
+  it('跨旬日的晚子时：旬空必须跟随日柱（甲戌日 → 申酉，不是戌亥）', () => {
+    // 2026-10-26 22:30 为癸酉日（旬空戌亥）；23:30 日柱已进甲戌（甲戌旬，旬空申酉）
+    expect(solarToSiZhu({ year: 2026, month: 10, day: 26, hour: 22, minute: 30 }).xunKong).toEqual(['戌', '亥']);
+    const late = solarToSiZhu({ year: 2026, month: 10, day: 26, hour: 23, minute: 30 });
+    expect(late.dayGanZhi).toBe('甲戌');
+    expect(late.xunKong).toEqual(['申', '酉']);
+  });
+
+  it('非跨旬日的晚子时：旬空不变（乙亥日仍申酉）', () => {
+    const late = solarToSiZhu({ year: 2026, month: 10, day: 27, hour: 23, minute: 30 });
+    expect(late.dayGanZhi).toBe('乙亥');
+    expect(late.xunKong).toEqual(['申', '酉']);
+  });
+
+  it('白天时段不受晚子时口径影响', () => {
+    expect(solarToSiZhu({ year: 2026, month: 10, day: 26, hour: 12, minute: 0 }).xunKong).toEqual(['戌', '亥']);
+    expect(solarToSiZhu({ year: 2026, month: 10, day: 27, hour: 12, minute: 0 }).xunKong).toEqual(['申', '酉']);
+  });
+});
