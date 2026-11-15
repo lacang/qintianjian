@@ -8,15 +8,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="钦天监" />
 <link rel="manifest" href="./manifest.webmanifest" />
-<link rel="stylesheet" href="./css/style.css?v=131" />
-<link rel="stylesheet" href="./css/tibet.css?v=131" />
-<link rel="stylesheet" href="./css/tarot.css?v=131" />
-<link rel="stylesheet" href="./css/vedic.css?v=131" />
-<link rel="stylesheet" href="./css/zhuyou.css?v=131" />
-<link rel="stylesheet" href="./css/place.css?v=131" />
-<link rel="stylesheet" href="./css/planet-hour.css?v=131" />
-<link rel="stylesheet" href="./css/yangzhai.css?v=131" />
-<link rel="stylesheet" href="./css/classic.css?v=131" />
+<link rel="stylesheet" href="./css/style.css?v=132" />
+<link rel="stylesheet" href="./css/tibet.css?v=132" />
+<link rel="stylesheet" href="./css/tarot.css?v=132" />
+<link rel="stylesheet" href="./css/vedic.css?v=132" />
+<link rel="stylesheet" href="./css/zhuyou.css?v=132" />
+<link rel="stylesheet" href="./css/place.css?v=132" />
+<link rel="stylesheet" href="./css/planet-hour.css?v=132" />
+<link rel="stylesheet" href="./css/yangzhai.css?v=132" />
+<link rel="stylesheet" href="./css/classic.css?v=132" />
 <title>钦天监 · 命理星象工作台</title>
 </head>
 <body>
@@ -55,6 +55,14 @@
       <div class="ng-foot">
         <button class="btn ghost mini" id="btn-cast-now" type="button">详细 ›</button>
       </div>
+    </div>
+
+    <!-- v132：多盘合参（问事）入口 —— 只做机械对照，不做叙事合并 -->
+    <div class="quick-row" id="home-hecan-row">
+      <button class="quick-btn" type="button" data-open="hecan"
+              style="grid-column:1/-1;flex-direction:row;justify-content:center;gap:9px">
+        <span class="q-ico">合</span><span>多盘合参 · 问事</span>
+      </button>
     </div>
 
     <div class="meridian-strip" id="home-meridian"></div>
@@ -156,6 +164,16 @@
       <button class="tb-btn primary" type="button" data-act="go">排盘</button>
     </div>
     <div class="subview-body" id="qimen-body"></div>
+  </section>
+
+  <!-- ============ 多盘合参（问事）：三格盘位 + 机械三态对照 ============ -->
+  <section class="view subview" id="view-hecan">
+    <header class="topbar">
+      <button class="icon-btn" data-back>‹</button>
+      <div class="brand">多盘合参 · 问事</div>
+      <div class="top-right"></div>
+    </header>
+    <div class="subview-body" id="hecan-body"></div>
   </section>
 
   <!-- ============ 本命星盘（西方古典占星） ============ -->
@@ -568,6 +586,6 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script type="module" src="./js/main.js?v=131"></script>
+<script type="module" src="./js/main.js?v=132"></script>
 </body>
 </html>
