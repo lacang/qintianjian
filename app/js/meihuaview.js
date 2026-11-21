@@ -2,6 +2,7 @@
 // 统一北京时间；时刻可由「时间条」或复现码覆盖。
 // v56：本/互/变三卦可点按、可左右滑动切换；经传面板随卦切换；体用生克图示 + 五行配色 + 动爻高亮。
 import { meiHuaByTime, getGuaAnnotation, ZHOUYI_META } from '../vendor/liuyao-core.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { judgeMeiHua, verdictCardHtml } from './verdicts.js?v=133';
 import { resolveCastDate, nowDate, pad, toSec } from './state.js?v=133';
 import { wxKey } from './classical.js?v=133';
@@ -202,7 +203,7 @@ const MH_GUIDE = {
   note: '体用生克是梅花判断的地基；这张盘目前先给事实，综合直断即将接入。',
 };
 
-export function renderMeiHua(date = nowDate()) {
+function __renderMeiHua(date = nowDate()) {
   if (!isCastedMeiHua()) return gateHTML('meihua');
   const { result: mh, castDate } = currentMeiHua(date);
   const ti = mh.ti, yong = mh.yong;
@@ -307,3 +308,6 @@ export function meiHuaCode(date = nowDate()) {
     sub: `${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · 第${mh.movingPosition}爻动`,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderMeiHua = guard(__renderMeiHua, '梅花起卦失败', '#meihua-body');

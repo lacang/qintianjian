@@ -1,6 +1,7 @@
 // 经传视图（M5）：在排盘下方展示《周易》经传原文事实，不做吉凶解释。
 // 内容全部来自 liuyao-core 的白文查表层（getGuaAnnotation / getMovingLineAnnotation）。
 import { $ } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   getGuaAnnotation,
   getMovingLineAnnotation,
@@ -24,7 +25,7 @@ function block(label, text, cls = '') {
  * 渲染经传事实区。
  * @param {object} pan current.pan（含 benGua.name / bianGua?.name / movingPositions）
  */
-export function renderJingZhuan(pan) {
+function __renderJingZhuan(pan) {
   const host = $('#jingzhuan-body');
   if (!host) return;
   if (!pan || !pan.benGua || !pan.benGua.name) { host.innerHTML = ''; return; }
@@ -103,3 +104,6 @@ export function renderJingZhuan(pan) {
       <div class="jz-foot">经传为白文事实，仅供参看；本应用只排盘、不解卦。</div>
     </div>`;
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderJingZhuan = guard(__renderJingZhuan, '京房易排盘失败', '#jingzhuan-body');

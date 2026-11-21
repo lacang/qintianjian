@@ -8,9 +8,11 @@
  *   UTC 绝对时刻、标准时、是否在夏令时、真太阳时、时区偏移与来源。
  *
  * 口径（勿改，改动要连带改 test/time-context.test.ts）：
- * 1. 中国境内（含新疆、西藏）一律 UTC+8 —— 这是官方时区，**不按经度拆**。
+ * 1. 中国境内（含新疆、西藏）1949-10-01 起一律 UTC+8 —— 这是官方时区，**不按经度拆**。
  *    所以乌鲁木齐钟面 12:00 的 UTC 时刻与北京一样，差的是真太阳时（约 2.1 小时），
- *    不是时区。
+ *    不是时区。**1949 年以前例外**：1912–1949 中国分五时区（中原 +8 / 陇蜀 +7 /
+ *    新藏 +6 / 昆仑 +5.5 / 长白 +8.5），按城市历史表 `CHINA_HIST_TZ` 折算并写 warning，
+ *    不再静默 +8（实测成都 1930、乌鲁木齐 1940、拉萨 1940 各差一个时辰）。
  * 2. 境外按城市查表（CITY_TZ_TABLE，150+ 城市）。夏令时规则硬编：
  *    EU / US / AU / NZ / CL / IL 六套，外加中国 1986–1991 专用表（chinaDstWindow）。
  *    EU 自 1996、US 自 2007 起才用现行起止规则，更早年份标 warnings（近似）。
@@ -26,6 +28,10 @@
  * 5. 纯函数、零依赖浏览器 API，Node / 浏览器 / Service Worker 均可直接调用。
  */
 import { Body, Equator, Observer } from 'astronomy-engine';
+import {
+  validateDateTime, validateGeo, utcMsOf, type YearRangeId,
+} from './validate.js';
+import { tzOverrideWindow, tzOverrideNote } from './tz-data.js';
 
 /** 民用时钟面分量（本地钟，即用户看到的时间） */
 export interface CivilTime {
@@ -38,7 +44,10 @@ export interface CivilTime {
 }
 
 /** 夏令时规则标识 */
-export type DstRuleId = 'none' | 'CN1986' | 'EU' | 'US' | 'AU' | 'NZ' | 'CL' | 'IL';
+export type DstRuleId =
+  | 'none' | 'CN1986' | 'EU' | 'US' | 'AU' | 'NZ' | 'CL' | 'IL'
+  /** `TZ:<IANA 名>`：交给 tz-data.ts 的覆盖表（近年改过规则的国家） */
+  | `TZ:${string}`;
 
 /**
  * 晚子时（23:00–23:59）换日口径。四家用的是同一组传统分歧，不是各术数特有的：
@@ -107,6 +116,11 @@ export interface TimeResolveInput {
   preferCoordinates?: boolean;
   /** 晚子时换日口径（默认 '23'） */
   lateZiMode?: LateZiMode;
+  /**
+   * 缺省 hour 时的行为（默认 true = 抛 InvalidTimeError）。
+   * 传 false 则按 0 点排，并把「未提供小时，按 0 点计」写进 warnings。
+   */
+  strict?: boolean;
 }
 
 export interface TimeResolution {
@@ -285,16 +299,20 @@ const CITY_ROWS: CityRow[] = [
   ['多哈', 'doha', '卡塔尔', 'Asia/Qatar', 25.2854, 51.5310, 3, 'none'],
   ['利雅得', 'riyadh', '沙特', 'Asia/Riyadh', 24.7136, 46.6753, 3, 'none'],
   ['吉达', 'jeddah', '沙特', 'Asia/Riyadh', 21.4858, 39.1925, 3, 'none'],
-  ['德黑兰', 'tehran', '伊朗', 'Asia/Tehran', 35.6892, 51.3890, 3.5, 'none'],
+  ['德黑兰', 'tehran', '伊朗', 'Asia/Tehran', 35.6892, 51.3890, 3.5, 'TZ:Asia/Tehran'],
   ['特拉维夫', 'tel aviv', '以色列', 'Asia/Jerusalem', 32.0853, 34.7818, 2, 'IL'],
+  ['安曼', 'amman', '约旦', 'Asia/Amman', 31.9454, 35.9284, 3, 'TZ:Asia/Amman'],
+  ['大马士革', 'damascus', '叙利亚', 'Asia/Damascus', 33.5138, 36.2765, 3, 'TZ:Asia/Damascus'],
+  ['贝鲁特', 'beirut', '黎巴嫩', 'Asia/Beirut', 33.8938, 35.5018, 2, 'TZ:Asia/Beirut'],
 
   // —— 非洲 ——
-  ['开罗', 'cairo', '埃及', 'Africa/Cairo', 30.0444, 31.2357, 2, 'none'],
+  ['开罗', 'cairo', '埃及', 'Africa/Cairo', 30.0444, 31.2357, 2, 'TZ:Africa/Cairo'],
   ['内罗毕', 'nairobi', '肯尼亚', 'Africa/Nairobi', -1.2921, 36.8219, 3, 'none'],
   ['约翰内斯堡', 'johannesburg', '南非', 'Africa/Johannesburg', -26.2041, 28.0473, 2, 'none'],
   ['开普敦', 'cape town', '南非', 'Africa/Johannesburg', -33.9249, 18.4241, 2, 'none'],
   ['拉各斯', 'lagos', '尼日利亚', 'Africa/Lagos', 6.5244, 3.3792, 1, 'none'],
-  ['卡萨布兰卡', 'casablanca', '摩洛哥', 'Africa/Casablanca', 33.5731, -7.5898, 1, 'none'],
+  ['卡萨布兰卡', 'casablanca', '摩洛哥', 'Africa/Casablanca', 33.5731, -7.5898, 0, 'TZ:Africa/Casablanca'],
+  ['拉巴特', 'rabat', '摩洛哥', 'Africa/Casablanca', 34.0209, -6.8416, 0, 'TZ:Africa/Casablanca'],
   ['亚的斯亚贝巴', 'addis ababa', '埃塞俄比亚', 'Africa/Addis_Ababa', 9.0300, 38.7400, 3, 'none'],
 
   // —— 欧洲 ——
@@ -368,20 +386,21 @@ const CITY_ROWS: CityRow[] = [
   ['埃德蒙顿', 'edmonton', '加拿大', 'America/Edmonton', 53.5461, -113.4938, -7, 'US'],
   ['温尼伯', 'winnipeg', '加拿大', 'America/Winnipeg', 49.8951, -97.1384, -6, 'US'],
   ['哈利法克斯', 'halifax', '加拿大', 'America/Halifax', 44.6488, -63.5752, -4, 'US'],
-  ['墨西哥城', 'mexico city', '墨西哥', 'America/Mexico_City', 19.4326, -99.1332, -6, 'none'],
-  ['瓜达拉哈拉', 'guadalajara', '墨西哥', 'America/Mexico_City', 20.6597, -103.3496, -6, 'none'],
+  ['墨西哥城', 'mexico city', '墨西哥', 'America/Mexico_City', 19.4326, -99.1332, -6, 'TZ:America/Mexico_City'],
+  ['瓜达拉哈拉', 'guadalajara', '墨西哥', 'America/Mexico_City', 20.6597, -103.3496, -6, 'TZ:America/Mexico_City'],
   ['蒂华纳', 'tijuana', '墨西哥', 'America/Tijuana', 32.5149, -117.0382, -8, 'US'],
 
   // —— 中南美 ——
   ['圣保罗', 'sao paulo', '巴西', 'America/Sao_Paulo', -23.5505, -46.6333, -3, 'none'],
   ['里约热内卢', 'rio de janeiro', '巴西', 'America/Sao_Paulo', -22.9068, -43.1729, -3, 'none'],
   ['布宜诺斯艾利斯', 'buenos aires', '阿根廷', 'America/Argentina/Buenos_Aires', -34.6037, -58.3816, -3, 'none'],
-  ['圣地亚哥', 'santiago', '智利', 'America/Santiago', -33.4489, -70.6693, -4, 'CL'],
+  ['圣地亚哥', 'santiago', '智利', 'America/Santiago', -33.4489, -70.6693, -4, 'TZ:America/Santiago'],
   ['利马', 'lima', '秘鲁', 'America/Lima', -12.0464, -77.0428, -5, 'none'],
   ['波哥大', 'bogota', '哥伦比亚', 'America/Bogota', 4.7110, -74.0721, -5, 'none'],
   ['基多', 'quito', '厄瓜多尔', 'America/Guayaquil', -0.1807, -78.4678, -5, 'none'],
   ['加拉加斯', 'caracas', '委内瑞拉', 'America/Caracas', 10.4806, -66.9036, -4, 'none'],
   ['蒙得维的亚', 'montevideo', '乌拉圭', 'America/Montevideo', -34.9011, -56.1645, -3, 'none'],
+  ['亚松森', 'asuncion', '巴拉圭', 'America/Asuncion', -25.2637, -57.5759, -4, 'TZ:America/Asuncion'],
   ['拉巴斯', 'la paz', '玻利维亚', 'America/La_Paz', -16.4897, -68.1193, -4, 'none'],
 
   // —— 大洋洲 ——
@@ -548,6 +567,112 @@ export const GEO_CONFLICT_KM = 200;
 export const GEO_MERIDIAN_TOLERANCE_MIN = 180;
 
 /* ============================================================
+   一·六、中国历史时区（1912–1949 五时区）
+   ------------------------------------------------------------
+   1949-10-01 起全国统一 UTC+8，这是现在的官方口径。
+   但 1912–1949 中国**分五时区**（1918 年中央观象台颁行，各地实施有出入）：
+     中原标准时 +8（120°E） 华北/华东/华中/华南/东北西部
+     陇蜀时区   +7（105°E） 四川/云南/贵州/陕西/甘肃东部/青海东部/宁夏
+     新藏时区   +6（90°E）  新疆大部分
+     昆仑时区   +5.5（82.5°E） 新疆西部/西藏西部
+     长白时区   +8.5（127.5°E） 东北东部（吉黑）
+   旧实现一律 +8，实测成都 1930、乌鲁木齐 1940、拉萨 1940 各错一个时辰且
+   warnings 为空（r2_stability.md P0-2）。这里补一张「城市 + 年份」紧凑表，
+   覆盖主要城市，并在命中/未命中时都写 warning——绝不再静默 +8。
+   ============================================================ */
+
+export interface ChinaHistZone {
+  /** 时区名（1912–1949 官方五时区名） */
+  name: string;
+  /** 相对 UTC 的小时偏移 */
+  offset: number;
+}
+
+const ZY: ChinaHistZone = { name: '中原标准时区', offset: 8 };
+const LS: ChinaHistZone = { name: '陇蜀时区', offset: 7 };
+const XZ: ChinaHistZone = { name: '新藏时区', offset: 6 };
+const KL: ChinaHistZone = { name: '昆仑时区', offset: 5.5 };
+const CB: ChinaHistZone = { name: '长白时区', offset: 8.5 };
+
+/** 城市 → 1912–1949 所属时区（按 normKey 归一后的中文名建索引） */
+const CHINA_HIST_TZ: Record<string, ChinaHistZone> = {};
+function assignHist(zone: ChinaHistZone, names: string[]): void {
+  for (const n of names) CHINA_HIST_TZ[normKey(n)] = zone;
+}
+
+// 中原标准时区（+8）：华北、华东、华中、华南、东北西部
+assignHist(ZY, [
+  '北京', '上海', '天津', '重庆', '南京', '广州', '武汉', '杭州', '福州',
+  '长沙', '郑州', '济南', '青岛', '太原', '石家庄', '南昌', '合肥', '南宁',
+  '海口', '沈阳', '大连', '呼和浩特', '宁波', '苏州', '无锡', '厦门', '深圳',
+  '洛阳', '开封', '徐州', '温州', '桂林', '汕头',
+]);
+// 陇蜀时区（+7）：川滇黔陕甘宁青东
+assignHist(LS, [
+  '成都', '昆明', '贵阳', '西安', '兰州', '银川', '西宁', '天水', '宝鸡',
+  '汉中', '绵阳', '宜宾', '泸州', '遵义', '曲靖', '大理', '康定', '延安',
+]);
+// 新藏时区（+6）：新疆大部
+assignHist(XZ, ['乌鲁木齐', '吐鲁番', '库尔勒', '哈密', '伊宁', '阿克苏', '克拉玛依']);
+// 昆仑时区（+5.5）：新疆西部 / 西藏西部
+assignHist(KL, ['喀什', '和田', '拉萨', '日喀则', '阿里', '格尔木']);
+// 长白时区（+8.5）：东北东部
+assignHist(CB, ['长春', '哈尔滨', '吉林', '齐齐哈尔', '牡丹江', '佳木斯', '延吉']);
+
+/** 全国统一东八区的起点（1949-10-01 00:00 地方标准时） */
+export const CHINA_TZ_UNIFIED_DATE = '1949-10-01';
+const CN_TZ_UNIFIED_MS = utcMsOf(1949, 10, 1);
+/** 五时区颁行起点（1912-01-01）。更早年份中国尚无标准时区 */
+const CN_TZ_ZONES_FROM_MS = utcMsOf(1912, 1, 1);
+
+/** 是否「中国境内」城市（历史时区与相关提示只对境内城市生效） */
+export function isChinaCity(c: CityTimeZone | null): boolean {
+  if (!c) return false;
+  return c.country.startsWith('中国') && c.lat >= 18 && c.lat <= 54 && c.lon >= 73 && c.lon <= 136;
+}
+
+/**
+ * 历史时区解析：城市 + 年月日 → 1912–1949 的时区偏移。
+ *
+ * 返回 null 表示「无需/无法使用历史表」（境外、1949-10-01 之后）。
+ * 命中与否都会把口径写进 warnings（调用方负责 push），做到「不静默」。
+ */
+export function resolveChinaHistoricTz(
+  city: CityTimeZone | null,
+  y: number,
+  mo: number,
+  d: number,
+): { offset: number; zone: string | null; warning: string } | null {
+  if (!isChinaCity(city)) return null;
+  const ms = utcMsOf(y, mo, d);
+  if (ms >= CN_TZ_UNIFIED_MS) return null; // 1949-10-01 起统一 +8，走现行表
+  const zone = CHINA_HIST_TZ[normKey(city!.name)] ?? null;
+  if (ms < CN_TZ_ZONES_FROM_MS) {
+    return {
+      offset: zone ? zone.offset : 8,
+      zone: zone ? zone.name : null,
+      warning: `历史时区：${y} 年中国尚未颁行标准时区（1912 年才有五时区），`
+        + `按 ${formatOffsetName(zone ? zone.offset : 8)} 处理；各地实际用地方平太阳时，`
+        + '可能有数十分钟差异，如需精确请手动指定 utcOffsetHours',
+    };
+  }
+  if (!zone) {
+    return {
+      offset: 8,
+      zone: null,
+      warning: `历史时区：「${city!.name}」在 1912–1949 的分区数据缺失，按中原标准时区 ${formatOffsetName(8)} 处理；`
+        + '当时中国分五时区（+5.5/+6/+7/+8/+8.5），可能偏 1–2.5 小时，建议手动指定 utcOffsetHours',
+    };
+  }
+  return {
+    offset: zone.offset,
+    zone: zone.name,
+    warning: `历史时区：${y}-${pad2(mo)}-${pad2(d)} 的「${city!.name}」按 ${zone.name}（${formatOffsetName(zone.offset)}）折算；`
+      + `1949-10-01 起才全国统一 +8，1912–1949 各地实施有出入，如需精确请手动指定 utcOffsetHours`,
+  };
+}
+
+/* ============================================================
    二、夏令时规则
    ============================================================ */
 
@@ -578,7 +703,8 @@ function lastSunday(year: number, month: number): number {
 
 /** 把墙钟分量折成「当 UTC 用」的毫秒（纯比较，不代表绝对时刻） */
 function wallEpoch(y: number, mo: number, d: number, h = 0, mi = 0, s = 0): number {
-  return Date.UTC(y, mo - 1, d, h, mi, s);
+  // 不用 Date.UTC：它把 0–99 年映射成 1900+year（ES 规范历史行为）。
+  return utcMsOf(y, mo, d, h, mi, s);
 }
 
 const HOUR = 3600000;
@@ -590,6 +716,12 @@ const HOUR = 3600000;
  * 南半球（AU/NZ/CL）窗口跨年：[start(年), end(年+1))
  */
 function dstWindowForYear(rule: DstRuleId, stdOffset: number, year: number): { start: number; end: number } | null {
+  // 近年改过规则的国家/地区交给 tz-data.ts 的覆盖表（埃及/摩洛哥/墨西哥/伊朗/
+  // 约旦/叙利亚/巴拉圭/智利/黎巴嫩）。表里没有的年份按表中给出的口径返回。
+  if (rule.startsWith('TZ:')) {
+    const w = tzOverrideWindow(rule.slice(3), year);
+    return w === undefined ? null : w;
+  }
   switch (rule) {
     case 'CN1986': {
       const w = CN_DST_WINDOWS[year];
@@ -698,8 +830,17 @@ export function chinaDstAppliesToCivil(year: number, month: number, day: number,
 
 const OBSERVER_AT_ORIGIN = new Observer(0, 0, 0);
 
+/**
+ * 角度归一到 [0, 360)。
+ *
+ * 旧写法 `((x % 360) + 360) % 360` 对正数会多走一次 +360/−360，双精度下把
+ * x = 3.33 变成 3.3299999999999999（审计实测 2e-14 级偏差）。正数直接取模即可，
+ * 负数才需要补一圈。负零（-0）也归成 +0，避免 Object.is 比较出意外。
+ */
 function mod360(x: number): number {
-  return ((x % 360) + 360) % 360;
+  const r = x % 360;
+  const v = r < 0 ? r + 360 : r;
+  return v === 0 ? 0 : v;
 }
 
 /** 太阳平黄经 L0（Meeus 28.2；精度 0.0003°） */
@@ -752,20 +893,6 @@ export function formatOffsetName(offsetHours: number): string {
    四、主入口
    ============================================================ */
 
-function assertValidCivil(t: CivilTime): void {
-  const { year, month, day, hour, minute, second } = t;
-  if (![year, month, day, hour, minute, second].every((n) => Number.isFinite(n))) {
-    throw new Error('时间入参必须是有限数值（year/month/day/hour…）');
-  }
-  if (month < 1 || month > 12 || day < 1 || day > 31 || hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
-    throw new Error(`时间入参越界：${year}-${month}-${day} ${hour}:${minute}:${second}`);
-  }
-  const probe = new Date(Date.UTC(year, month - 1, day));
-  if (probe.getUTCFullYear() !== year || probe.getUTCMonth() !== month - 1 || probe.getUTCDate() !== day) {
-    throw new Error(`不存在的日期：${year}-${month}-${day}`);
-  }
-}
-
 /**
  * 统一时间解析：本地民用时 + 出生地 → UTC 绝对时刻 / 夏令时 / 真太阳时。
  *
@@ -773,17 +900,27 @@ function assertValidCivil(t: CivilTime): void {
  * 纯函数：同一个入参永远同一结果，不读时钟、不读存储、不碰 DOM。
  */
 export function resolveTime(input: TimeResolveInput): TimeResolution {
+  // 统一校验（validate.ts）：日期越界抛 InvalidDateError（不再静默滚动）、
+  // 小时缺省/脏值抛 InvalidTimeError（strict:false 才回退 0 点并写 warning）、
+  // 小数时间向下取整并写 warning。
+  const v = validateDateTime(input as unknown as Record<string, unknown>, {
+    yearRange: 'calendar',
+    label: '时间',
+  });
   const civil: CivilTime = {
-    year: input.year,
-    month: input.month,
-    day: input.day,
-    hour: input.hour,
-    minute: input.minute ?? 0,
-    second: input.second ?? 0,
+    year: v.year, month: v.month, day: v.day,
+    hour: v.hour, minute: v.minute, second: v.second,
   };
-  assertValidCivil(civil);
 
-  const warnings: string[] = [];
+  // 坐标统一校验：只给一个即抛（不许默认 lon=0 落到几内亚湾），越界即抛（不夹紧）。
+  // 城市查表拿到的坐标另行夹紧，这里只管调用方显式给的。
+  validateGeo(
+    input.lat ?? input.latitude,
+    input.lonEast ?? input.longitude ?? input.lon,
+    { required: false, label: '出生地' },
+  );
+
+  const warnings: string[] = [...v.warnings];
   const lonRaw = input.lon ?? input.lonEast ?? input.longitude;
   const latRaw = input.lat ?? input.latitude;
 
@@ -870,6 +1007,20 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
     warnings.push('未识别出生地时区，已按东八区（UTC+8）兜底——请补选城市或手动指定时区');
   }
 
+  // ---- 1.5) 中国历史时区（1912–1949 五时区）----
+  // 只在「城市 / 最近城市」决定时区时生效；显式 utcOffsetHours 是用户权威，不覆盖
+  // （用户既然手填了偏移，就该按他填的算）。
+  if (tzSource !== 'explicit') {
+    const histCity = cityHit ?? tzCity;
+    const hist = resolveChinaHistoricTz(histCity, civil.year, civil.month, civil.day);
+    if (hist) {
+      if (hist.offset !== baseOffset) {
+        baseOffset = hist.offset;
+      }
+      warnings.push(hist.warning);
+    }
+  }
+
   // 显式时区 + 经纬度互相矛盾（旧地点残留，如「手动选纽约、经纬度还是沈阳」）：
   // 真太阳时按 793 分钟算能把 11:45 推到次日 00:42，必须停用，不能将错就错。
   let trueSolarBlockedByConflict = false;
@@ -910,6 +1061,12 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
     if (rule === 'EU' && y < 1996) warnings.push('EU 夏令时 1996 年才统一为现行起止规则，此年按现行规则近似');
     if (rule === 'US' && y < 2007) warnings.push('北美夏令时 2007 年才改为现行起止规则，此年按现行规则近似');
     if (rule === 'AU' && y < 2008) warnings.push('澳洲夏令时 2008 年才统一为现行起止规则，此年按现行规则近似');
+    // 覆盖表（tz-data.ts）覆盖的时区：无论是否在夏令时，都把「这份数据的口径」说出来，
+    // 不允许出现「用过期规则算出结果却零告警」（r6_compat.md P1-1）。
+    if (rule.startsWith('TZ:')) {
+      const note = tzOverrideNote(rule.slice(3), y);
+      if (note) warnings.push(note);
+    }
   }
 
   // ---- 3) 真太阳时 ----
@@ -995,13 +1152,15 @@ export function formatCivilTime(t: CivilTime, withSeconds = false): string {
   return withSeconds ? `${base}:${pad2(t.second)}` : base;
 }
 
-/** 排盘层统一入口的返回：折算后的钟面时间（年月日时分） */
+/** 排盘层统一入口的返回：折算后的钟面时间（年月日时分秒） */
 export interface PaipanCivil {
   year: number;
   month: number;
   day: number;
   hour: number;
   minute: number;
+  /** 秒：节气交节判定必须要秒（否则 09:13:04 交清明，09:13:59 的盘会晚一柱） */
+  second?: number;
 }
 
 /**
@@ -1026,7 +1185,10 @@ export function applyLateZi(t: PaipanCivil, mode?: LateZiMode): { civil: PaipanC
  *  - 折算可能跨日（如 23:50 → 次日 00:05），四柱/紫微的换日逻辑自然跟着走，不需要另加特判。
  *  - 与 astro 的换算**不叠加**：astro 内部用 resolveTime，本函数只给四柱/紫微这类「吃钟面时分」的模块用。
  */
-export function civilForPaipan(input: TimeResolveInput): {
+export function civilForPaipan(
+  input: TimeResolveInput,
+  opts: { yearRange?: YearRangeId; label?: string } = {},
+): {
   civil: PaipanCivil;
   applied: boolean;
   usedTrueSolar: boolean;
@@ -1036,14 +1198,22 @@ export function civilForPaipan(input: TimeResolveInput): {
   /** 本次生效的换日口径（界面标注用） */
   lateZiMode: LateZiMode;
   resolution: TimeResolution | null;
+  /** 入参校验产生的提示（小数时间取整、strict:false 的 0 点回退等），必须回传给调用方 */
+  warnings: string[];
 } {
-  const num = (v: unknown): boolean => typeof v === 'number' && Number.isFinite(v);
+  // 统一校验（validate.ts）：所有吃钟面时间的排盘入口都从这里过，
+  // 日期越界抛 InvalidDateError、时辰缺省抛 InvalidTimeError、小数时间取整写 warning。
+  const v = validateDateTime(input as unknown as Record<string, unknown>, {
+    yearRange: opts.yearRange ?? 'calendar',
+    label: opts.label ?? '排盘时间',
+  });
+  const num = (v2: unknown): boolean => typeof v2 === 'number' && Number.isFinite(v2);
   const hasTzHint = input.city != null || input.place != null || num(input.utcOffsetHours);
   const hasGeo = num(input.lat) || num(input.latitude) || num(input.lon) || num(input.lonEast) || num(input.longitude);
   const lateZiMode: LateZiMode = input.lateZiMode === '00' ? '00' : '23';
   const raw: PaipanCivil = {
-    year: input.year, month: input.month, day: input.day,
-    hour: input.hour, minute: input.minute ?? 0,
+    year: v.year, month: v.month, day: v.day,
+    hour: v.hour, minute: v.minute, second: v.second,
   };
   if (!hasTzHint && !hasGeo) {
     // 没有任何地点线索：仍按调用方给的钟面时间排，但换日口径照样统一执行
@@ -1051,18 +1221,22 @@ export function civilForPaipan(input: TimeResolveInput): {
     return {
       civil: z.civil, applied: false, usedTrueSolar: false,
       crossedDay: false, lateZiApplied: z.applied, lateZiMode, resolution: null,
+      warnings: v.warnings,
     };
   }
   const r = resolveTime(input);
   const useSolar = !!(r.trueSolar && r.trueSolarTimeEnabled);
   const t = useSolar ? r.trueSolar! : r.standard;
-  const conv: PaipanCivil = { year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute };
+  const conv: PaipanCivil = {
+    year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute, second: t.second,
+  };
   const z = applyLateZi(conv, lateZiMode);
   const civil = z.civil;
   const crossedDay = civil.year !== raw.year || civil.month !== raw.month || civil.day !== raw.day;
   return {
     civil, applied: true, usedTrueSolar: useSolar, crossedDay,
     lateZiApplied: z.applied, lateZiMode, resolution: r,
+    warnings: v.warnings,
   };
 }
 

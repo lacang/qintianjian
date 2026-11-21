@@ -3,6 +3,7 @@
 // 行星由 astronomy-engine（liuyao-core 打包）实时计算；3D 用 three.js r160（MIT，本地内置、离线）。
 // 单指拖拽旋转、滚轮/双指缩放；点天体名出数据卡；顶部时间条/播放可快进，直观看到每颗星在球面上运行。
 import * as THREE from '../vendor/three/three.module.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=133';
 import { getPlace } from './geo.js?v=133';
 import { $, nowDate, pad } from './state.js?v=133';
@@ -484,7 +485,7 @@ function initThree(host) {
 
 // 由时间条 / 首次进入驱动
 let pendingAt = null;
-export function renderGlobe(at) {
+function __renderGlobe(at) {
   const body = $('#globe-body');
   if (!body) return;
   if (!built) { buildUI(body); built = true; }
@@ -520,3 +521,6 @@ export function globeCopyText(at = nowDate()) {
 function momentText(d) {
   return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderGlobe = guard(__renderGlobe, '天球仪渲染失败', '#globe-body');

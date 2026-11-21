@@ -18,6 +18,7 @@ import { chaiBuJuByGanZhi } from './vendor/bigfish-qimen/engines/chaibuquju.js';
 import { shiJiaGenerate } from './vendor/bigfish-qimen/engines/shijia.js';
 import type { QimenChart, QimenPalace } from './vendor/bigfish-qimen/types.js';
 import { civilForPaipan, lateZiLabel, type PaipanCivil, type TimeResolveInput } from './timeContext.js';
+import { mergeWarnings } from './validate.js';
 
 /**
  * 奇门入参 = 统一时间层入参。
@@ -44,6 +45,8 @@ export interface QiMenPan {
   dayBoundary: string;
   /** 时间口径提示（时区估算、经纬度冲突、夏令时…），界面应显示 */
   timeWarnings: string[];
+  /** 入参校验/口径提示（小数时间取整、历史时区、strict:false 的 0 点回退） */
+  warnings: string[];
   _chart: QimenChart;
 }
 
@@ -52,11 +55,13 @@ export interface QiMenPan {
  * 时间统一走 civilForPaipan：给城市/经纬度就算真太阳时与夏令时，与八字、六爻同口径。
  */
 export function paiQiMen(input: QiMenInput): QiMenPan {
-  const eff = civilForPaipan(input);
+  const eff = civilForPaipan(input, { yearRange: 'calendar', label: '起局时间' });
   const { year, month, day, hour } = eff.civil;
   const minute = eff.civil.minute ?? 0;
+  // 秒必须透传：节气交节精确到秒（虽本模块定局按日归属，但四柱 Exact 用得到）
+  const second = eff.civil.second ?? 0;
 
-  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
   const y = lunar.getYearInGanZhiExact();
   const m = lunar.getMonthInGanZhiExact();
   const d = lunar.getDayInGanZhiExact();
@@ -103,6 +108,7 @@ export function paiQiMen(input: QiMenInput): QiMenPan {
     civil: eff.civil,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     _chart: chart,
   };
 }

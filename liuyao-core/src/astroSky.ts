@@ -11,6 +11,7 @@
 import { Engine } from 'caelus';
 import { embeddedData } from 'caelus/data-embedded';
 import { julianDay } from 'caelus';
+import { InvalidDateError } from './validate.js';
 import {
   getMoonPhase,
   findIngresses,
@@ -81,6 +82,10 @@ const HOME_LAT = 41.8057;
 const HOME_LON = 123.4328;
 
 export function shouyeTianxiang(now: Date = new Date(), lookaheadDays = 35): Tianxiang {
+  // 统一校验：NaN / 非 Date 的「当前时刻」会静默算成 1970 年前后，这里直接拒
+  if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw new InvalidDateError('天象时刻无效：需要一个有效 Date');
+  }
   const eng = engine();
   const jd = julianDay(
     now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate(),

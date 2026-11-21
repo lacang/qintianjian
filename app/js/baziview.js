@@ -1,5 +1,6 @@
 // 八字本命视图：指定出生时刻 四柱十神/藏干（本中余气）/纳音/五行分布 + 大运（只排事实，不做断语）
 import { tenGod, baziExtra, liuNianList, liuYueList } from '../vendor/liuyao-core.js?v=133';
+import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { paiBaziZi, ziMode } from './zischool.js?v=133';
 import { judgeBazi, verdictCardHtml } from './verdicts.js?v=133';
 import { birthArgs, cfg, pad } from './state.js?v=133';
@@ -224,7 +225,7 @@ const BZ_GUIDE = {
   note: '盘上只列传统体系里的通行含义与古籍出处，不替你下断语；吉凶倾向一律标为「古籍所载」，供你自己衡量。',
 };
 
-export function renderBazi() {
+function __renderBazi() {
   if (!isCasted('bazi')) return gateHTML('bazi');
   const bz = getBazi();
   const nowYear = new Date().getFullYear();
@@ -285,6 +286,7 @@ export function renderBazi() {
   }).join('');
 
   return stage(`
+    ${renderWarnings(bz)}
     ${guideHTML(BZ_GUIDE)}
     <div class="bazi-head">
       <div class="bz-title">${birthText()} · ${bz.gender}命 · ${birthArgs().place || ''}</div>
@@ -370,3 +372,6 @@ export function baziCode() {
     sub: `${birthText()} · ${bz.gender}命 · 日主${bz.dayMaster}${bz.dayMasterWuXing}`,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderBazi = guard(__renderBazi, '八字排盘失败', '#bazi-body');

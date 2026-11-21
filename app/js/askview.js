@@ -1,3 +1,4 @@
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 // askview.js — 「问问」：先选问题，再推荐用哪个盘
 // 定位：独立入口，与「按术数选盘」并存；首版只做 选问题 → 推荐术数 → 跳转。
 // 纯前端，无外部依赖；跳转通过 qintian:ask-goto 事件交回 main.js。
@@ -102,7 +103,7 @@ function stageR() {
     </div>`;
 }
 
-export function renderAsk() {
+function __renderAsk() {
   const host = document.getElementById('ask-body');
   if (!host) return;
   host.innerHTML = STAGE === 'q' ? stageQ() : STAGE === 'm' ? stageM() : stageR();
@@ -124,3 +125,6 @@ export function bindAsk(root) {
     }
   });
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderAsk = guard(__renderAsk, '问问渲染失败', '#view-ask');

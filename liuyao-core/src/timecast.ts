@@ -24,6 +24,7 @@ import {
   civilForPaipan, lateZiLabel,
   type LateZiMode, type PaipanCivil, type TimeResolveInput,
 } from './timeContext.js';
+import { InvalidDateError, mergeWarnings } from './validate.js';
 
 export interface TimeCastOptions {
   /** 出生地/所在地经度（东经为正）。传入则先做真太阳时校正再排卦。 */
@@ -58,6 +59,8 @@ export interface TimeCastResult {
   dayBoundary?: string;
   /** 时间口径提示（时区估算、冲突、夏令时） */
   timeWarnings?: string[];
+  /** 入参校验/口径提示（小数时间取整、历史时区、strict:false 的 0 点回退） */
+  warnings?: string[];
 }
 
 
@@ -91,6 +94,10 @@ export function toApparentSolarTime(date: Date, longitude: number, standardMerid
 /** 梅花易数·时间起卦。date 为该时刻（默认按北京时间解释；给 longitude 则先做真太阳时校正）。 */
 export function castByTime(dateInput: number | Date, options: TimeCastOptions = {}): TimeCastResult {
   const original = typeof dateInput === 'number' ? new Date(dateInput) : dateInput;
+  // 统一校验：非法时刻（NaN / 非 Date）直接拒，不静默变成 1970 或 Invalid Date 的各字段 NaN
+  if (!(original instanceof Date) || !Number.isFinite(original.getTime())) {
+    throw new InvalidDateError(`起卦时刻无效：收到 ${String(dateInput)}（需要有效的 Date 或毫秒时间戳）`);
+  }
 
   // ---- 新路径：给了城市/经纬度/显式时区 → 整体走统一时间层（含夏令时、时区推算）----
   const hasTzLayer = options.city != null || options.place != null
@@ -115,7 +122,7 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
       trueSolarTime: options.alreadyApparent ? false : undefined,
       tzPolicy: options.tzPolicy,
       lateZiMode: options.lateZiMode,
-    });
+    }, { yearRange: 'calendar', label: '起卦时间' });
     const c = eff.civil;
     const core = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, 0, eff.lateZiMode);
     // 展示用的「真太阳时」：把折算后的墙钟重新装成 Date（仅供界面显示，不参与计算）
@@ -126,6 +133,7 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
       civil: c,
       dayBoundary: lateZiLabel(eff.lateZiMode),
       timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+      warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     };
   }
 

@@ -6,6 +6,7 @@
 //   ④ 学术内容（考据/辨伪/传承）折叠进条目内层，不打断使用
 //   ⑤ 吞服与急病安全提示：页顶红带 + 条目级红标
 import { ZHUYOU_ITEMS } from './zhuyou-data.js?v=133';
+import { guard } from '../errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { JINJING_ITEMS } from './zhuyou-data-jinjing.js?v=133';
 import { SHISANKE_ITEMS } from './zhuyou-data-shisanke.js?v=133';
 import {
@@ -187,7 +188,7 @@ function renderBySituation(items) {
   }).join('');
 }
 
-export function renderZhuyou() {
+function __renderZhuyou() {
   const root = $('#zhuyou-body');
   if (!root) return;
 
@@ -358,3 +359,6 @@ export function zhuyouCode() {
     sub: `原典条目 ${ALL_ITEMS.length} 条 · 文献层查阅`,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderZhuyou = guard(__renderZhuyou, '祝由渲染失败', '#zhuyou-body');

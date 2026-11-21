@@ -116,6 +116,10 @@ export function nowDate() {
  * 让核心扣夏令时、算真太阳时、定境外时区，不再默认按北京时间硬算。
  */
 export function nowGeoArgs() {
+  // 复现码/观测地覆盖优先：码里带的城市时区必须能左右时刻换算，
+  // 否则「同一张奇门盘」换个时区打开，节气与局数会变。
+  const o = panAt.geo || null;
+  if (o && (o.city || o.place || Number.isFinite(o.lonEast) || Number.isFinite(o.lon))) return normalizeGeo(o);
   const p = getPlace();
   return {
     city: p.name,
@@ -123,6 +127,95 @@ export function nowGeoArgs() {
     lat: p.lat, latitude: p.lat,
     lon: p.lon, lonEast: p.lon, longitude: p.lon,
   };
+}
+
+/* ============================ 时区快照（复现码 QT2 用） ============================ */
+
+/**
+ * 钟面 + 时区 + 经纬度的快照：**这就是「这个盘是在哪里、按哪个时区排的」的完整描述**。
+ * QT2 码把它整份写进去，打开方不再依赖本机时区（r6_compat.md P0）。
+ * @param {{y:number,mo:number,d:number,h:number,mi:number}} civil
+ * @param {object} geoArgs birthplace args（city/place/lat/lonEast/…）
+ */
+export function tzSnapshotOfCivil(civil, geoArgs = {}) {
+  const g = geoArgs || {};
+  let r = null;
+  try {
+    r = resolveTime({
+      ...g,
+      year: civil.y, month: civil.mo, day: civil.d, hour: civil.h, minute: civil.mi,
+    });
+  } catch { r = null; }
+  const pick = (...xs) => (xs.find((v) => Number.isFinite(v)) ?? null);
+  const lon = r && Number.isFinite(r.longitude) ? r.longitude : pick(g.lonEast, g.lon, g.longitude);
+  const lat = r && Number.isFinite(r.latitude) ? r.latitude : pick(g.lat, g.latitude);
+  const offsetMinutes = r && Number.isFinite(r.utcOffsetHours) ? Math.round(r.utcOffsetHours * 60) : null;
+  return {
+    civil: { ...civil },
+    city: (r && r.cityName) || g.city || g.place || '',
+    tz: (r && r.sourceTzName) || '',
+    tzOffsetMinutes: offsetMinutes,
+    // 只有在「命中城市表」时才算精确；估算 / 兜底一律标记，界面必须据此告警
+    tzEstimated: !r || r.tzSource !== 'city' || !!r.tzEstimated || !!r.tzFallback,
+    // 该时刻当地是否在夏令时内：写进码里，打开方才知道这盘的钟面是夏令时时钟
+    inDst: !!(r && r.inDst),
+    lon, lat,
+    warnings: r ? (r.warnings || []).slice() : ['无法解析时区'],
+  };
+}
+
+/** 出生盘此刻的快照（写码用） */
+export function birthTzSnapshot() {
+  return tzSnapshotFor(birthDate(), birthArgs());
+}
+
+/** 此刻 / 观测地 的快照（写码用） */
+export function nowTzSnapshot() {
+  return tzSnapshotFor(nowDate(), nowGeoArgs());
+}
+
+/** 本地 Date → 快照 */
+export function tzSnapshotFor(date, geoArgs = {}) {
+  const d = new Date(Number(date) || Date.now());
+  return tzSnapshotOfCivil(
+    { y: d.getFullYear(), mo: d.getMonth() + 1, d: d.getDate(), h: d.getHours(), mi: d.getMinutes() },
+    geoArgs,
+  );
+}
+
+/**
+ * 把「绝对时刻 + 城市」反解成该城市的钟面（旧 QT1 码补时区时用）。
+ * 时区随夏令时变化，所以要迭代到不动点；4 轮足够，边界处取最后一次。
+ * @returns {{civil:object, offsetMinutes:number, tz:string, tzEstimated:boolean, warnings:string[]}|null}
+ */
+export function civilInCity(utcMs, city) {
+  const t0 = Number(utcMs);
+  if (!Number.isFinite(t0)) return null;
+  let offHours = 0;
+  let last = null;
+  for (let i = 0; i < 4; i++) {
+    const t = new Date(t0 + offHours * 3600000);
+    const civil = {
+      y: t.getUTCFullYear(), mo: t.getUTCMonth() + 1, d: t.getUTCDate(),
+      h: t.getUTCHours(), mi: t.getUTCMinutes(),
+    };
+    let r = null;
+    try {
+      r = resolveTime({ city, year: civil.y, month: civil.mo, day: civil.d, hour: civil.h, minute: civil.mi });
+    } catch { return last; }
+    if (!r || !Number.isFinite(r.utcOffsetHours)) return last;
+    last = {
+      civil,
+      offsetMinutes: Math.round(r.utcOffsetHours * 60),
+      tz: r.sourceTzName || '',
+      tzEstimated: r.tzSource !== 'city' || !!r.tzEstimated || !!r.tzFallback,
+      inDst: !!r.inDst,
+      warnings: (r.warnings || []).slice(),
+    };
+    if (Math.abs(r.utcOffsetHours - offHours) < 1e-6) return last;
+    offHours = r.utcOffsetHours;
+  }
+  return last;
 }
 
 export function setPanAt(scope, date) {
@@ -139,6 +232,8 @@ export function clearPanAt() {
 // （NOAA 算法见 solartime.js；只作用于起卦时刻，八字/星盘出生时间仍按钟面时刻，牌面另有口径标注）
 import { toTrueSolar } from './solartime.js?v=133';
 import { getPlace } from './geo.js?v=133';
+// 时区解析（QT2 码要把「这里的时区」写进码里；单机离线，无 Intl 时区库）
+import { resolveTime } from '../vendor/liuyao-core.js?v=133';
 export function resolveCastDate(date = new Date()) {
   const d = new Date(date.getTime());
   // v111：真太阳时按"当前观测地"经度校正（原来写死出生地沈阳）；观测地见 geo.js

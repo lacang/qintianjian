@@ -36,6 +36,7 @@ import {
   exploreEntries, detailLayers, correctionsFor, visibleRelations,
 } from './classic-core.js?v=133';
 import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js?v=133';
+import { guard } from '../errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   loadMarks, setMark, markOf, markStats, keptIds,
   MARK_KEEP, MARK_DOUBT,
@@ -615,7 +616,7 @@ const PANEL_NAMES = { today: '今日', feed: '遇见', explore: '探索', notes:
 
 function panelIds() { return ['today', 'feed', 'explore', 'notes']; }
 
-export function renderClassic() {
+function __renderClassic() {
   const m = meta();
   const ids = panelIds();
   if (!ids.includes(panel)) panel = 'today';
@@ -642,7 +643,7 @@ function renderPanel() {
 
 // ---------------- 详情视图（八层，原样保留） ----------------
 
-export function renderClassicDetail(id, opts = {}) {
+function __renderClassicDetail(id, opts = {}) {
   const node = getNode(id);
   if (!node) return '<div class="cl-hint">未找到该条目。</div>';
 
@@ -1124,3 +1125,7 @@ export function classicAudit() {
     readStep,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderClassic = guard(__renderClassic, '经典列表渲染失败', '#view-classic');
+export const renderClassicDetail = guard(__renderClassicDetail, '经典详情渲染失败', '#view-classic');

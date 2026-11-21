@@ -7,6 +7,7 @@ import {
   listSpreads, getDeck, drawSpread, readingToText,
 } from '../vendor/liuyao-core.js?v=133';
 import { $ } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { guideHTML, T } from './tipview.js?v=133';
 
 function esc(s) {
@@ -466,7 +467,7 @@ function openDetail(i) {
 }
 
 // ---------- 渲染 ----------
-export function renderCards() {
+function __renderCards() {
   const body = $('#cards-body');
   if (!spreads.length) spreads = listSpreads('tarot');
   if (mode === 'library' || !spread) {
@@ -794,3 +795,6 @@ export function restoreCards(spreadIndex, cards) {
   renderCards();
   return true;
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderCards = guard(__renderCards, '卡牌渲染失败', '#cards-body');

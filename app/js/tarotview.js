@@ -4,6 +4,7 @@
 //      画面描述 scene 与牌图严格对应；正/逆位中性牌义 + Waite 1910《Pictorial Key》原判词。
 //      综合倾向由 tarotval_rws 的传统倾向惯例表机械合参，非命定；流派/史实分层，不接 AI。
 import { $, escapeHtml as esc, toast } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { getDeck, listDecks, BUILTIN_SPREADS } from '../vendor/liuyao-core.js?v=133';
 import { rwsVal } from './tarotval_rws.js?v=133';
 import { ensureSolaBusca } from './tarotdeck-sb.js?v=133';
@@ -649,7 +650,7 @@ function galleryHTML() {
 const DECK_R = { rws: '860/1433', sb: '474/877', marseille: '463/880', vieville: '487/880', visconti: '440/880', wirth: '521/880' };
 // v109：塔罗主屏不再是设置页——进视图即落座全屏牌桌；牌组/牌阵/抽法/逆位/提问/图鉴
 // 全部在牌桌顶栏 ☰ 设置抽屉里。主屏文档流只留 #tr-result 承载结果页 / 图鉴页 / 说明页。
-export function renderTarot() {
+function __renderTarot() {
   return `<div class="tr-wrap" style="--card-r:${DECK_R[curDeckId()] || '860/1433'}">
     <div id="tr-result" class="tr-result"></div>
   </div>`;
@@ -1149,3 +1150,6 @@ export function tarotLandForTest(slotIdx) {
 }
 export const tarotSpreads = () => TAROT_SPREADS;
 export { readResult, menuHTML };
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderTarot = guard(__renderTarot, '塔罗抽牌失败', '#tarot-body');

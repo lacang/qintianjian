@@ -4,6 +4,7 @@
 // 全盘中文化：行星/交点用单字，星座环用「羊牛蟹狮…」，不依赖占星专用符号字体。
 // 出生时刻可由「时间条」或复现码覆盖。
 import { paipanXingpan, guDianTuiYun, shouyeTianxiang, listCityTimeZones } from '../vendor/liuyao-core.js?v=133';
+import { guard, showLoading, hideLoading, markRenderError, errorHtml, showError } from './errors.js?v=133'; // 错误边界（P0-2）/长计算遮罩（P1-1）
 import { judgeAstro, verdictCardHtml } from './verdicts.js?v=133';
 import { birthArgs, $, setGeoOverride, getGeoOverride } from './state.js?v=133';
 import { guideHTML, T } from './tipview.js?v=133';
@@ -515,7 +516,31 @@ function calcOuterAspects(chart, outer){
   return out;
 }
 
-export function renderAstro(){
+/* P1-1 日返盘等重盘型：逐日搜太阳回归是十几秒的主线程计算。
+   先画 loading、让出一帧再算 —— 否则用户看到的是「点了没反应」，而且盘型会持久化，
+   下次进来直接冻住（审计 r3 实测主线程冻结后 1+1 探活超时）。 */
+const HEAVY_MODES = ['solar', 'lunar', 'profection'];
+function __renderAstro() {
+  const heavy = HEAVY_MODES.includes(curAstroMode().key);
+  if (heavy && !window.__qtHeavyBusy) {
+    window.__qtHeavyBusy = true;
+    showLoading(curAstroMode().key === 'solar' ? '正在算日返盘…' : '正在算盘…',
+      '要逐日比对太阳回归时刻，通常十几秒；期间页面会卡住，别关');
+    setTimeout(() => {
+      try { __renderAstroNow(); }
+      catch (e) {
+        markRenderError(e);
+        const b = $('#astro-body');
+        if (b) b.innerHTML = errorHtml(e, '星盘计算失败');
+        else showError(e, { title: '星盘计算失败' });
+      } finally { window.__qtHeavyBusy = false; hideLoading(); }
+    }, 60);
+    return;
+  }
+  __renderAstroNow();
+}
+
+function __renderAstroNow(){
   const body=$('#astro-body'); if(!body) return;
   const args=birthArgs();
   let chart, timing;
@@ -723,3 +748,6 @@ export function astroCode(){
     sub: `${birthText()} · ${a.place||''}${chart?` · 命主${chart.chartRulerName}`:''}`,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderAstro = guard(__renderAstro, '星盘计算失败', '#astro-body');

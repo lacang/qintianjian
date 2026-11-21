@@ -15,6 +15,7 @@ import { Solar } from 'lunar-javascript';
 import type { SolarDateInput, TianGan, DiZhi, WuXing } from './types.js';
 import { xunKongOf } from './calendar.js';
 import { civilForPaipan, lateZiLabel, type LateZiMode, type TimeResolveInput } from './timeContext.js';
+import { normalizeGender, mergeWarnings } from './validate.js';
 
 export type Gender = '男' | '女';
 
@@ -77,6 +78,8 @@ export interface BaziResult {
   dayBoundary?: string;
   /** 时间口径提示（时区估算、经纬度冲突、夏令时…） */
   timeWarnings?: string[];
+  /** 入参校验/口径提示（小数时间取整、历史时区、strict:false 的 0 点回退） */
+  warnings: string[];
 }
 
 const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const;
@@ -151,14 +154,22 @@ function buildPillar(ganZhi: string, dayGan: TianGan, naYin: string, isDay: bool
 }
 
 export function paiBazi(input: BaziInput): BaziResult {
+  // 性别：八字与紫微同一口径（缺省即抛，六种写法归一）
+  const gender = normalizeGender(input.gender, { required: true });
   // 时区 / 夏令时 / 真太阳时统一折算：给了城市或时区就用折算后的钟面时间，
   // 没给则原样返回（不传地点的调用与旧实现逐字节一致）。折算可能跨日，换日逻辑自然跟着走。
-  const eff = civilForPaipan(input as unknown as TimeResolveInput);
+  // civilForPaipan 内部先过 validate.ts：日期越界/时辰缺省即抛，小数时间取整写 warning。
+  const eff = civilForPaipan(input as unknown as TimeResolveInput, { yearRange: 'calendar', label: '出生时间' });
   // eff.civil 恒为「已定口径的钟面时间」（无地点时原样返回；'00' 口径会把 23:xx 拨回同日 00:xx）
   const birth = eff.civil;
-  const { year, month, day, hour, gender } = { ...input, ...birth };
+  const year = birth.year;
+  const month = birth.month;
+  const day = birth.day;
+  const hour = birth.hour;
   const minute = birth.minute ?? 0;
-  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  // 秒必须透传：节气交节精确到秒（P1-1），写死 0 会让交节后 0–59 秒内出生的盘晚一柱
+  const second = birth.second ?? 0;
+  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
   // EightChar 必须与本模块日柱同口径：默认 sect=2（00:00 换日）会让 23:00–23:59 出生者的
   // 日纳音/胎息按「当天」算，而上面日柱走 getDayInGanZhiExact（23:00 换日）已进次日，
   // 结果出现「日柱丙寅配乙丑的纳音」这类错配。setSect(1) = 晚子时日柱算次日，
@@ -196,7 +207,9 @@ export function paiBazi(input: BaziInput): BaziResult {
   const forward = gender === '男' ? yearYang : !yearYang;
 
   const yun = ec.getYun(genderCode);
-  const raw = yun.getDaYun(11);
+  // 20 步 × 10 年 = 覆盖 200 年：旧值 11 只到第 10 步（约 107 岁），跨世纪的大运
+  // （如 1900 年生排到 2100 年）会断尾。补到 21（首项为起运前，列表取 20 步）。
+  const raw = yun.getDaYun(21);
   const list: DaYunItem[] = [];
   for (let i = 1; i < raw.length; i++) {
     const d = raw[i];
@@ -234,6 +247,7 @@ export function paiBazi(input: BaziInput): BaziResult {
     wuXingCount: count,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
   };
 }
 

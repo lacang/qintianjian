@@ -2,6 +2,7 @@
 // 恒星黄道 Lahiri · 整宫 Rashi(D1) · 九曜 · 二十七宿 · Panchanga 五要素 · D9/D10/D7 分盘（含 Navamsa Lagna）· Vimshottari 大运 · Graha Drishti · Yoga
 // 只依赖本地 caelus（已打进 vendor），不接任何在线服务。
 import { paipanVedic } from '../vendor/liuyao-core.js?v=133';
+import { guard, renderWarnings , markRenderError } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { birthArgs, $ } from './state.js?v=133';
 import { gateHTML, stage, isCasted } from './ritual.js?v=133';
 
@@ -55,12 +56,12 @@ function ageLabel(y, birthYear){ // 大运岁数 → 大致公历年（用真实
   return Math.round(by + y);
 }
 
-export function renderVedic(){
+function __renderVedic(){
   const body = $('#vedic-body'); if(!body) return;
   if (!isCasted('vedic')) { body.innerHTML = gateHTML('vedic'); return; }
   let chart, args;
   try { ({ chart, args } = buildVedic()); }
-  catch(e){ body.innerHTML = `<div class="empty">印度占星盘计算失败：${escapeHtml(String(e.message||e))}</div>`; return; }
+  catch(e){ markRenderError(e); body.innerHTML = errorHtml(e, '印度占星盘计算失败'); return; }
 
   const G = chart.bodies;
   const age = currentAge(args);
@@ -299,7 +300,7 @@ export function renderVedic(){
     <p class="vd-src">依据：《Brihat Parashara Hora Shastra》《Brihat Jataka》(Varahamihira)《Surya Siddhanta》；岁差用印度官方 Lahiri 标准，星历本地计算，无联网。</p>
   </div>`;
 
-  body.innerHTML = stage(VD_EXTRA_CSS + overview + panchanga + d1 + vargaCard + grahaTable + dasaCard + aspCard + yogaCard + foot, 'vedic');
+  body.innerHTML = stage(renderWarnings(chart) + VD_EXTRA_CSS + overview + panchanga + d1 + vargaCard + grahaTable + dasaCard + aspCard + yogaCard + foot, 'vedic');
 }
 
 function houseTip(h){ return 'hs-'+h; }
@@ -360,3 +361,6 @@ export function vedicCode(){
     sub: `${a.year}-${String(a.month).padStart(2, '0')}-${String(a.day).padStart(2, '0')} ${String(a.hour).padStart(2, '0')}:${String(a.minute).padStart(2, '0')}${a.place ? ' · ' + a.place : ''}`,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderVedic = guard(__renderVedic, '吠陀排盘失败', '#vedic-body');

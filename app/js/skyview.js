@@ -2,6 +2,7 @@
 // 现代星空风：精确 SVG 月相、行星主题色光点、玻璃卡片。全程中文，不依赖任何符号字体。
 // 观测时刻可由「时间条」或复现码覆盖
 import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { $, nowDate, pad, toSec } from './state.js?v=133';
 import { zodiacMapSVG } from './zodiac.js?v=133';
 import { planetaryHour, planetaryHoursOfDay, PLANET_HR } from './solartime.js?v=133';
@@ -72,7 +73,7 @@ export function moonSVG(phase01, size=44){
 }
 
 // 首页紧凑条：月相图 + 月相名% + 日星座 + 逆行星（中文名，点号分隔）—— 首页永远实时
-export function renderHomeSky(now=new Date()){
+function __renderHomeSky(now=new Date()){
   const el=$('#home-sky'); if(!el) return;
   try{
     const t=shouyeTianxiang(now);
@@ -89,7 +90,7 @@ export function renderHomeSky(now=new Date()){
   }catch(e){ el.innerHTML='<span class="hs-err">天象暂不可用</span>'; }
 }
 
-export function renderSky(now=nowDate()){
+function __renderSky(now=nowDate()){
   const body=$('#sky-body'); if(!body) return;
   let t;
   try{ t=shouyeTianxiang(now); }
@@ -287,3 +288,7 @@ function bindPhPick(ref) {
   dEl.addEventListener('change', upd);
   tEl.addEventListener('change', upd);
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderSky = guard(__renderSky, '星空渲染失败', '#sky-body');
+export const renderHomeSky = guard(__renderHomeSky, '首页天象渲染失败', '#home-sky');

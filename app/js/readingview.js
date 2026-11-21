@@ -1,6 +1,7 @@
 // 问事读法视图：按"现代人的问题"分八域，古法用神与典籍原文对照。
 // 吉凶倾向在 verdict.js 的「古法直断」卡里给；这里是逐条依据库。
 import { $, current, copyText } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   listReadingDomains,
   getReadingDomain,
@@ -32,7 +33,7 @@ function loadId() {
  * 渲染问事读法区。
  * @param {object} pan current.pan
  */
-export function renderReading(pan) {
+function __renderReading(pan) {
   const host = $('#reading-body');
   if (!host) return;
   if (!pan || !pan.benGua || !pan.benGua.name) { host.innerHTML = ''; return; }
@@ -321,3 +322,6 @@ async function copyAllMaterials(pan, dom, btn, selected) {
   const text = parts.join('\n');
   await copyText(text, btn);
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderReading = guard(__renderReading, '判词生成失败', '#reading-body');

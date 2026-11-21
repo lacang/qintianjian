@@ -2,6 +2,7 @@
 // 底本：民间通行本《小六壬》（旧题诸葛武侯《马前课》系统，属掌诀，无宋以前官定底本）。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧并列，不合成。
 import { $, nowDate, fmtMoment } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
 import { getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=133';
 import { T } from './tipview.js?v=133';
@@ -170,7 +171,7 @@ function verdictXl(res) {
   return { level, score: s };
 }
 
-export function renderXiaoLiuRen(at = nowDate()) {
+function __renderXiaoLiuRen(at = nowDate()) {
   if (!isCasted('xiaoliuren')) return gateHTML('xiaoliuren');
   const cal = getDayCalendar({
     year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
@@ -345,3 +346,6 @@ export function xiaoLiuRenCode() {
   const at = nowDate();
   return { kind: 'xiaoliuren', data: { at: at.getTime() }, title: '小六壬课', sub: fmtMoment(at) };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderXiaoLiuRen = guard(__renderXiaoLiuRen, '小六壬起课失败', '#xiaoliuren-body');

@@ -23,6 +23,7 @@ import {
   normalizeAstroInput,
   type AstroInput, type Dms,
 } from './astro.js';
+import { utcMsOf, highLatitudeWarnings, mergeWarnings } from './validate.js';
 
 /**
  * 绝对黄经 → 星座内度分（与 astro.ts 同口径）
@@ -313,9 +314,11 @@ export interface VedicChart {
   panchanga: Panchanga;
   /** 日/月合相（Amavasya 判定） */
   isNewMoonConj: boolean;
+  /** 入参校验/口径提示（高纬宫位降级、历史时区、小数时间取整…） */
+  warnings: string[];
 }
 
-const mod360 = (x: number) => ((x % 360) + 360) % 360;
+const mod360 = (x: number) => { const r = x % 360; const v = r < 0 ? r + 360 : r; return v === 0 ? 0 : v; };
 const signOf = (lon: number) => Math.floor(mod360(lon) / 30);
 
 /** 12 星座中文名（白羊=0 … 双鱼=11） */
@@ -589,8 +592,9 @@ const SPECIAL_DRISHTI: Partial<Record<GrahaId, number[]>> = {
 
 export function paipanVedic(rawInput: AstroInput): VedicChart {
   const input = normalizeAstroInput(rawInput);
-  const d = new Date(Date.UTC(input.year, input.month - 1, input.day, input.hour, input.minute, input.second));
-  d.setUTCMinutes(d.getUTCMinutes() - input.utcOffsetHours * 60);
+  // 用 utcMsOf 而不是 Date.UTC：后者把 0–99 年映射成 1900+year（虽已由入口年份区间拦住）
+  const d = new Date(utcMsOf(input.year, input.month, input.day, input.hour, input.minute, input.second)
+    - input.utcOffsetHours * 3600000);
   const y = d.getUTCFullYear(), mo = d.getUTCMonth() + 1, day = d.getUTCDate();
   const h = d.getUTCHours(), mi = d.getUTCMinutes(), s = d.getUTCSeconds();
 
@@ -787,5 +791,6 @@ export function paipanVedic(rawInput: AstroInput): VedicChart {
     saptamsa,
     panchanga,
     isNewMoonConj,
+    warnings: mergeWarnings(input.warnings, highLatitudeWarnings(input.lat)),
   };
 }

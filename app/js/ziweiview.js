@@ -5,6 +5,7 @@
 // M8-b：宫干四化（飞化）路径追踪（起点→化×→星→落宫，自化/飞入区分，独立配色）；
 //        飞入本宫清单；双宫对照台（只列客观事实，不做自然语言解读）。
 import { paiZiwei, ziweiYunXian } from '../vendor/liuyao-core.js?v=133';
+import { guard, renderWarnings, markRenderError, errorHtml } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { judgeZiwei, verdictCardHtml } from './verdicts.js?v=133';
 import { birthArgs, $, copyText } from './state.js?v=133';
 import { guideHTML, T } from './tipview.js?v=133';
@@ -593,17 +594,20 @@ function yearGanZhi(y) {
   return G[(((y - 4) % 10) + 10) % 10] + Z[(((y - 4) % 12) + 12) % 12];
 }
 
-export function renderZiwei() {
+function __renderZiwei() {
   if (!isCasted('ziwei')) { $('#ziwei-body').innerHTML = gateHTML('ziwei'); return; }
   let c;
   try {
     c = paiZiwei(birthArgs());
   } catch (e) {
-    $('#ziwei-body').innerHTML = `<div class="zw-err">紫微排盘失败：${esc(e && e.message)}</div>`;
+    // 标记「这一盘没排出来」：上层据此不弹「已按…排盘」的成功 toast
+    markRenderError(e);
+    $('#ziwei-body').innerHTML = errorHtml(e, '紫微排盘失败');
     return;
   }
   CHART = c; SEL = null; FLY = null; CMP = []; NAV = []; ONLY_KEY = false;
   $('#ziwei-body').innerHTML = stage(`
+    ${renderWarnings(c)}
     ${guideHTML(ZW_GUIDE)}
     <div class="zw-toolbar">
       <button class="zw-tgl" id="zw-only-key" aria-pressed="false">只看重点</button>
@@ -705,3 +709,6 @@ export const __zwTest = {
   lunarYearInfo,
   lunarYearOfText,
 };
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderZiwei = guard(__renderZiwei, '紫微排盘失败', '#ziwei-body');

@@ -31,6 +31,7 @@
  */
 import { astro, data } from 'iztro';
 import { civilForPaipan, lateZiLabel, type LateZiMode, type TimeResolveInput } from './timeContext.js';
+import { normalizeGender, mergeWarnings } from './validate.js';
 
 export type ZiweiGender = '男' | '女';
 
@@ -158,6 +159,8 @@ export interface ZiweiChart {
   dayBoundary?: string;
   /** 时间口径提示（时区估算、经纬度冲突、夏令时…） */
   timeWarnings?: string[];
+  /** 入参校验/口径提示（小数时间取整、历史时区、strict:false 的 0 点回退） */
+  warnings: string[];
   monthGanZhi: string;
   dayGanZhi: string;
   timeGanZhi: string;
@@ -424,9 +427,12 @@ function toPalaces(a: ReturnType<typeof astro.bySolar>): ZwPalace[] {
 
 /** 内部：排一次盘，同时保留 iztro 实例（运限用），避免二次排盘 */
 function buildZiwei(rawInput: ZiweiInput): { chart: ZiweiChart; astrolabe: ReturnType<typeof astro.bySolar> } {
+  // 性别：与八字同一口径（缺省即抛、六种写法归一）。旧实现一个默认女命、一个报错，行为不一致。
+  const gender = normalizeGender(rawInput.gender, { required: true });
   // 时区 / 夏令时 / 真太阳时统一折算：折算后的钟面时间再进 effectiveBirth（23 点折次日），
   // 两者不冲突——真太阳时可能把 23:50 推到次日 00:05，换日自然发生。
-  const eff = civilForPaipan(rawInput as unknown as TimeResolveInput);
+  // 内部先过 validate.ts：紫微星表只覆盖 1900–2100，越界抛 OutOfRangeError 而不是排出空盘。
+  const eff = civilForPaipan(rawInput as unknown as TimeResolveInput, { yearRange: 'ziwei', label: '出生时间' });
   // eff.civil 恒为已定口径的钟面时间：无地点时原样返回；'00' 口径下 23:xx 已成同日 00:xx，
   // effectiveBirth 自然不会再把日期推到次日——日柱/命宫与时柱同一口径。
   const input: ZiweiInput = {
@@ -434,7 +440,7 @@ function buildZiwei(rawInput: ZiweiInput): { chart: ZiweiChart; astrolabe: Retur
     year: eff.civil.year, month: eff.civil.month, day: eff.civil.day,
     hour: eff.civil.hour, minute: eff.civil.minute,
   };
-  const { gender, fixLeap = true } = input;
+  const { fixLeap = true } = input;
   const { solar: effectiveSolarDate, timeIndex, displayTimeIndex, lateZi } = effectiveBirth(input);
   const inputSolar = `${input.year}-${input.month}-${input.day}`;
 
@@ -465,6 +471,7 @@ function buildZiwei(rawInput: ZiweiInput): { chart: ZiweiChart; astrolabe: Retur
       yearGanZhiNote: `年柱：${ygz ?? ''}（农历年，春节为界；四柱另有立春口径）`,
       dayBoundary: lateZiLabel(eff.lateZiMode),
       timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+      warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
       monthGanZhi: mgz ?? '',
       dayGanZhi: dgz ?? '',
       timeGanZhi: tgz ?? '',

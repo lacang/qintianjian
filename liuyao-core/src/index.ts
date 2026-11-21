@@ -27,12 +27,26 @@ export {
   nearestCityByCoords,
   haversineKm,
   CITY_TZ_TABLE,
+  resolveChinaHistoricTz,
+  isChinaCity,
+  CHINA_TZ_UNIFIED_DATE,
 } from './timeContext.js';
 export type {
   CivilTime, CityTimeZone, DstRuleId, TimeResolveInput, TimeResolution,
-  LateZiMode, PaipanCivil, TzEstimate,
+  LateZiMode, PaipanCivil, TzEstimate, ChinaHistZone,
 } from './timeContext.js';
 export { castManual, castCoins, castTianji } from './input.js';
+// 统一入参校验层（内校层）：所有排盘入口共用同一套日期/时间/坐标/性别规则
+export {
+  validateDateTime, validateDate, validateGeo, validateCastNumber, normalizeGender,
+  highLatitudeWarnings, isLeapYear, daysInMonth, utcMsOf, showValue, mergeWarnings,
+  YEAR_RANGES,
+  InputValidationError, InvalidDateError, InvalidTimeError, OutOfRangeError,
+  InvalidGenderError, InvalidNumberError,
+} from './validate.js';
+export type {
+  Gender as InputGender, YearRangeId, ValidatedDateTime, ValidateDateTimeOptions, GeoPoint,
+} from './validate.js';
 export { castByTime, toApparentSolarTime, type TimeCastOptions, type TimeCastResult } from './timecast.js';
 export { paipan, getShouGuaPan, type ShouGuaYao } from './paipan.js';
 export * from './wuxing-rel.js';

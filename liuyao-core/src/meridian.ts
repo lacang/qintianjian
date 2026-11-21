@@ -10,6 +10,7 @@
  *   申 15-17 膀胱 ｜ 酉 17-19 肾 ｜ 戌 19-21 心包 ｜ 亥 21-23 三焦
  */
 import { civilForPaipan, lateZiLabel, type PaipanCivil, type TimeResolveInput } from './timeContext.js';
+import { mergeWarnings } from './validate.js';
 
 export interface MeridianInfo {
   /** 时辰支名 */
@@ -108,6 +109,8 @@ export interface MeridianAtTime extends MeridianInfo {
   dayBoundary: string;
   /** 时区/夏令时/冲突提示 */
   timeWarnings: string[];
+  /** 入参校验/口径提示（小数时间取整、历史时区、strict:false 的 0 点回退） */
+  warnings?: string[];
   /** 是否真的做了时区/地点折算（没给地点时为 false） */
   applied: boolean;
   usedTrueSolar: boolean;
@@ -121,7 +124,7 @@ export interface MeridianAtTime extends MeridianInfo {
  * 这个入口把 city/经纬度/utcOffsetHours 一次性交给 civilForPaipan，与八字、奇门、六爻同口径。
  */
 export function getMeridianByTime(input: TimeResolveInput): MeridianAtTime {
-  const eff = civilForPaipan(input);
+  const eff = civilForPaipan(input, { yearRange: 'calendar', label: '流注时间' });
   const c = eff.civil;
   const info = meridianFromClock(c.hour, c.minute ?? 0);
   return {
@@ -129,6 +132,7 @@ export function getMeridianByTime(input: TimeResolveInput): MeridianAtTime {
     civil: c,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     applied: eff.applied,
     usedTrueSolar: eff.usedTrueSolar,
   };

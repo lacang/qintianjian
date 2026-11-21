@@ -22,6 +22,7 @@
  */
 import { Solar } from 'lunar-javascript';
 import { chinaDstAppliesToCivil, chinaDstWindow } from './timeContext.js';
+import { validateDateTime, validateDate, utcMsOf, InvalidNumberError, showValue } from './validate.js';
 import type { DiZhi, SiZhu, SolarDateInput, TianGan } from './types.js';
 
 const GAN_ORDER = '甲乙丙丁戊己庚辛壬癸';
@@ -69,8 +70,18 @@ export function solarToSiZhu(
   input: SolarDateInput,
   opts: { applyChinaDst?: boolean } = {},
 ): SiZhuWithTime {
-  const { year, month, day, hour } = input;
-  const minute = input.minute ?? 0;
+  // 统一校验：非法日期（2/30、4/31、13 月）抛错，不静默滚动
+  const v = validateDateTime(input as unknown as Record<string, unknown>, {
+    yearRange: 'calendar',
+    label: '起卦时间',
+  });
+  const year = v.year;
+  const month = v.month;
+  const day = v.day;
+  const hour = v.hour;
+  const minute = v.minute;
+  // 秒必须透传：节气交节精确到秒，写死 0 会让交节后 0–59 秒的盘晚一柱（P1-1）
+  const second = v.second;
 
   // 夏令时还原：钟面 -1h（可能跨日，如 1986-05-04 02:30 → 01:30，跨日则连带日柱）
   let dstApplied = false;
@@ -79,17 +90,19 @@ export function solarToSiZhu(
   let stdDay = day;
   let stdHour = hour;
   let stdMinute = minute;
+  let stdSecond = second;
   if (opts.applyChinaDst !== false && chinaDstAppliesToCivil(year, month, day, hour, minute)) {
-    const d = new Date(Date.UTC(year, month - 1, day, hour, minute, 0) - 3600000);
+    const d = new Date(utcMsOf(year, month, day, hour, minute, second) - 3600000);
     stdYear = d.getUTCFullYear();
     stdMonth = d.getUTCMonth() + 1;
     stdDay = d.getUTCDate();
     stdHour = d.getUTCHours();
     stdMinute = d.getUTCMinutes();
+    stdSecond = d.getUTCSeconds();
     dstApplied = true;
   }
 
-  const lunar = Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, 0).getLunar();
+  const lunar = Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, stdSecond).getLunar();
 
   const yearGanZhi = lunar.getYearInGanZhiExact();
   const monthGanZhi = lunar.getMonthInGanZhiExact();
@@ -132,9 +145,15 @@ export interface DayCalendar {
 }
 
 export function getDayCalendar(input: SolarDateInput): DayCalendar {
-  const { year, month, day, hour } = input;
-  const minute = input.minute ?? 0;
-  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  // 统一校验：非法日期抛错（不静默滚动）；小时缺省抛 InvalidTimeError（strict:false 才回退 0 点）
+  const v = validateDateTime(input as unknown as Record<string, unknown>, {
+    yearRange: 'calendar',
+    label: '日历时间',
+  });
+  const { year, month, day, hour } = v;
+  const minute = v.minute;
+  const second = v.second;
+  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
   const prev = lunar.getPrevJieQi();
   const next = lunar.getNextJieQi();
   // lunar-typescript 的 JieQi 类型声明未暴露 getSolar/isJie，运行时可用，做断言
@@ -169,6 +188,11 @@ export interface JieqiItem {
   isToday: boolean;
 }
 export function listJieqiInRange(from: { year: number; month: number; day: number }, days: number): JieqiItem[] {
+  // 统一校验：起点必须是真实公历日；天数必须是 1–366 的整数（旧实现接受任意值，静默算错）
+  validateDate(from.year, from.month, from.day, { label: '节气区间起点' });
+  if (!Number.isInteger(days) || days < 1 || days > 366) {
+    throw new InvalidNumberError(`节气区间的天数必须是 1–366 的整数，收到 ${showValue(days)}`);
+  }
   const fromDate = new Date(from.year, from.month - 1, from.day);
   const toDate = new Date(fromDate.getTime() + days * 86400000);
   const items: JieqiItem[] = [];

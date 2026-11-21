@@ -415,15 +415,15 @@ var require_lunar = __commonJS({
               }
               if (days > 0) {
                 d2 += days;
-                var daysInMonth = SolarUtil.getDaysOfMonth(y2, m2);
-                while (d2 > daysInMonth) {
-                  d2 -= daysInMonth;
+                var daysInMonth2 = SolarUtil.getDaysOfMonth(y2, m2);
+                while (d2 > daysInMonth2) {
+                  d2 -= daysInMonth2;
                   m2++;
                   if (m2 > 12) {
                     m2 = 1;
                     y2++;
                   }
-                  daysInMonth = SolarUtil.getDaysOfMonth(y2, m2);
+                  daysInMonth2 = SolarUtil.getDaysOfMonth(y2, m2);
                 }
               } else if (days < 0) {
                 while (d2 + days <= 0) {
@@ -24423,15 +24423,15 @@ var require_dist = __commonJS({
         }
         if (days > 0) {
           d += days;
-          let daysInMonth = SolarUtil.getDaysOfMonth(y, m);
-          while (d > daysInMonth) {
-            d -= daysInMonth;
+          let daysInMonth2 = SolarUtil.getDaysOfMonth(y, m);
+          while (d > daysInMonth2) {
+            d -= daysInMonth2;
             m++;
             if (m > 12) {
               m = 1;
               y++;
             }
-            daysInMonth = SolarUtil.getDaysOfMonth(y, m);
+            daysInMonth2 = SolarUtil.getDaysOfMonth(y, m);
           }
         } else if (days < 0) {
           while (d + days <= 0) {
@@ -29720,7 +29720,7 @@ var require_validation = __commonJS({
     exports.validateBoolean = exports.validateGender = exports.validateTimeIndex = exports.validateDate = void 0;
     var lunar_typescript_1 = require_dist();
     var i18n_1 = require_i18n();
-    var validateDate = function(date, type, isLeapMonth) {
+    var validateDate2 = function(date, type, isLeapMonth) {
       if (type === void 0) {
         type = "solar";
       }
@@ -29762,7 +29762,7 @@ var require_validation = __commonJS({
           throw new Error("invalid solar date.");
       }
     };
-    exports.validateDate = validateDate;
+    exports.validateDate = validateDate2;
     var validateTimeIndex = function(index) {
       if (!Number.isInteger(index) || index < 0 || index > 12)
         throw new Error("invalid timeIndex: expected an integer from 0 to 12.");
@@ -33277,7 +33277,7 @@ function CalcMoon(time) {
     const m = a.array[x - a.min];
     m.array[y - m.min] = v;
   }
-  let S2, MAX, ARG, FAC, I, J, T2, DGAM, DLAM, N, GAM1C, SINPI, L0, L, LS, F, D, DL0, DL, DLS, DF, DD, DS;
+  let S2, MAX, ARG, FAC, I, J, T2, DGAM, DLAM, N, GAM1C, SINPI, L0, L, LS2, F, D, DL0, DL, DLS, DF, DD, DS;
   let coArray = DeclareArray2(-6, 6, 1, 4);
   let siArray = DeclareArray2(-6, 6, 1, 4);
   function CO(x, y) {
@@ -33318,7 +33318,7 @@ function CalcMoon(time) {
   DGAM = -3332e-9 * Sine(0.59734 - 5.37261 * T) - 539e-9 * Sine(0.35498 - 5.37899 * T) - 64e-9 * Sine(0.39943 - 5.37511 * T);
   L0 = PI2 * Frac(0.60643382 + 1336.85522467 * T - 313e-8 * T2) + DL0 / ARC;
   L = PI2 * Frac(0.37489701 + 1325.55240982 * T + 2565e-8 * T2) + DL / ARC;
-  LS = PI2 * Frac(0.99312619 + 99.99735956 * T - 44e-8 * T2) + DLS / ARC;
+  LS2 = PI2 * Frac(0.99312619 + 99.99735956 * T - 44e-8 * T2) + DLS / ARC;
   F = PI2 * Frac(0.25909118 + 1342.2278298 * T - 892e-8 * T2) + DF / ARC;
   D = PI2 * Frac(0.82736186 + 1236.85308708 * T - 397e-8 * T2) + DD / ARC;
   for (I = 1; I <= 4; ++I) {
@@ -33329,7 +33329,7 @@ function CalcMoon(time) {
         FAC = 1.000002208;
         break;
       case 2:
-        ARG = LS;
+        ARG = LS2;
         MAX = 3;
         FAC = 0.997504612 - 2495388e-9 * T;
         break;
@@ -37493,6 +37493,445 @@ var GravSimEndpoint = class {
   }
 };
 
+// src/validate.ts
+var YEAR_RANGES = {
+  /** 纯历法（八字四柱、六爻、梅花、奇门、建除、节气名）：干支/农历可推到两端 */
+  calendar: { min: 1, max: 9999, label: "0001\u20139999", note: "\u7EAF\u5386\u6CD5\u6362\u7B97" },
+  /** 需要高精度星历（西占、吠陀、推运）：caelus/VSOP87 在此外推可靠 */
+  ephemeris: { min: 1600, max: 2200, label: "1600\u20132200", note: "\u9AD8\u7CBE\u5EA6\u661F\u5386" },
+  /** 紫微：iztro 的星曜数据表只覆盖 1900–2100 */
+  ziwei: { min: 1900, max: 2100, label: "1900\u20132100", note: "iztro \u661F\u8868\u8986\u76D6\u8303\u56F4" }
+};
+function mergeWarnings(...lists) {
+  const out = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const list of lists) {
+    if (!list) continue;
+    for (const w of list) {
+      if (!w || seen.has(w)) continue;
+      seen.add(w);
+      out.push(w);
+    }
+  }
+  return out;
+}
+var InputValidationError = class extends Error {
+  constructor(code, message) {
+    super(message);
+    this.name = new.target.name;
+    this.code = code;
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+};
+var InvalidDateError = class extends InputValidationError {
+  constructor(message) {
+    super("INVALID_DATE", message);
+  }
+};
+var InvalidTimeError = class extends InputValidationError {
+  constructor(message) {
+    super("INVALID_TIME", message);
+  }
+};
+var OutOfRangeError = class extends InputValidationError {
+  constructor(message) {
+    super("OUT_OF_RANGE", message);
+  }
+};
+var InvalidGenderError = class extends InputValidationError {
+  constructor(message) {
+    super("INVALID_GENDER", message);
+  }
+};
+var InvalidNumberError = class extends InputValidationError {
+  constructor(message) {
+    super("INVALID_NUMBER", message);
+  }
+};
+function showValue(v) {
+  if (typeof v === "string") return `"${v}"`;
+  if (v === null) return "null";
+  if (v === void 0) return "undefined";
+  if (typeof v === "number" && Number.isNaN(v)) return "NaN";
+  if (typeof v === "object") return JSON.stringify(v);
+  return String(v);
+}
+var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+function isLeapYear(year) {
+  return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+}
+function daysInMonth(year, month) {
+  if (month === 2) return isLeapYear(year) ? 29 : 28;
+  return DAYS_IN_MONTH[month - 1] ?? 31;
+}
+function utcMsOf(y, mo, d, h = 0, mi = 0, s = 0) {
+  const dt = /* @__PURE__ */ new Date(0);
+  dt.setUTCFullYear(y, mo - 1, d);
+  dt.setUTCHours(h, mi, s, 0);
+  return dt.getTime();
+}
+function requireInt(v, name, label) {
+  if (typeof v !== "number" || !Number.isFinite(v)) {
+    throw new InvalidDateError(`${label}\u7684 ${name} \u5FC5\u987B\u662F\u6570\u503C\uFF0C\u6536\u5230 ${showValue(v)}`);
+  }
+  if (!Number.isInteger(v)) {
+    throw new InvalidDateError(`${label}\u7684 ${name} \u5FC5\u987B\u662F\u6574\u6570\uFF0C\u6536\u5230 ${v}\uFF08\u4E0D\u5141\u8BB8\u5C0F\u65F6\u7EA7\u522B\u7684\u300C\u534A\u5929\u300D\u65E5\u671F\uFF09`);
+  }
+  return v;
+}
+function validateDate(year, month, day, opts = {}) {
+  const label = opts.label ?? "\u65E5\u671F";
+  const rangeId = opts.yearRange ?? "calendar";
+  const range = YEAR_RANGES[rangeId];
+  const y = requireInt(year, "\u5E74\u4EFD", label);
+  const mo = requireInt(month, "\u6708\u4EFD", label);
+  const d = requireInt(day, "\u65E5", label);
+  if (y < range.min || y > range.max) {
+    throw new OutOfRangeError(
+      `${label}\u7684\u5E74\u4EFD ${y} \u8D85\u51FA\u652F\u6301\u533A\u95F4 ${range.label}\uFF08${range.note}\uFF09\uFF1B\u672C\u5165\u53E3\u53EA\u53D7\u7406 ${range.min}\u2013${range.max} \u5E74\uFF0C\u8D85\u51FA\u8BF7\u6539\u7528\u5BF9\u5E94\u7EA7\u522B\u7684\u5165\u53E3`
+    );
+  }
+  if (mo < 1 || mo > 12) {
+    throw new InvalidDateError(`${label}\u7684\u6708\u4EFD ${mo} \u8D8A\u754C\uFF08\u5E94\u4E3A 1\u201312\uFF09\uFF1A${y}-${mo}-${d}`);
+  }
+  const dim = daysInMonth(y, mo);
+  if (d < 1 || d > dim) {
+    throw new InvalidDateError(
+      `${label}\u7684\u65E5 ${d} \u8D8A\u754C\uFF1A\u4E0D\u5B58\u5728\u7684\u65E5\u671F ${y}-${pad2(mo)}-${pad2(d)}\uFF08${y} \u5E74 ${mo} \u6708\u53EA\u6709 ${dim} \u5929\uFF09`
+    );
+  }
+  return { year: y, month: mo, day: d };
+}
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+function isMissingTimeValue(v) {
+  return v === void 0 || v === null || v === "" || v === false;
+}
+function validateTimeField(raw, opts) {
+  const name = opts.name ?? "\u65F6\u95F4";
+  const label = opts.label ?? "";
+  if (isMissingTimeValue(raw)) {
+    if (opts.optional) return opts.fallback;
+    if (!opts.strict) {
+      opts.warnings.push(`\u672A\u63D0\u4F9B${name}\uFF0C\u6309 ${opts.fallback} ${opts.unit ?? "\u70B9"}\u8BA1`);
+      return opts.fallback;
+    }
+    throw new InvalidTimeError(
+      `${label}\u672A\u63D0\u4F9B${name}\uFF1A\u8BF7\u7ED9\u51FA 0\u2013${opts.max} \u7684\u6574\u6570\uFF1B\u82E5\u786E\u9700\u6309 ${opts.fallback} \u8BA1\uFF0C\u8BF7\u663E\u5F0F\u4F20\u503C\u6216\u4F20 strict: false`
+    );
+  }
+  if (typeof raw !== "number" || !Number.isFinite(raw)) {
+    throw new InvalidTimeError(`${label}${name}\u5FC5\u987B\u662F 0\u2013${opts.max} \u7684\u6574\u6570\uFF0C\u6536\u5230 ${showValue(raw)}`);
+  }
+  let v = raw;
+  if (!Number.isInteger(v)) {
+    const floor = Math.floor(v);
+    opts.warnings.push(`${name} ${v} \u4E0D\u662F\u6574\u6570\uFF0C\u5DF2\u5411\u4E0B\u53D6\u6574\u4E3A ${floor}\uFF08\u5C0F\u6570\u65F6\u95F4\u5168\u5E93\u7EDF\u4E00\u5411\u4E0B\u53D6\u6574\uFF09`);
+    v = floor;
+  }
+  if (v < 0 || v > opts.max) {
+    throw new InvalidTimeError(`${label}${name} ${raw} \u8D8A\u754C\uFF08\u5E94\u4E3A 0\u2013${opts.max}\uFF09`);
+  }
+  return v;
+}
+function validateDateTime(input, opts = {}) {
+  const label = opts.label ?? "\u65F6\u95F4";
+  const src = input;
+  const date = validateDate(src.year, src.month, src.day, { yearRange: opts.yearRange, label });
+  const strict = typeof opts.strict === "boolean" ? opts.strict : typeof src.strict === "boolean" ? src.strict : true;
+  const warnings = [];
+  const hourOptional = opts.hour === "optional";
+  const hour = validateTimeField(src.hour, {
+    name: "\u5C0F\u65F6",
+    unit: "\u70B9",
+    label,
+    max: 23,
+    fallback: 0,
+    strict,
+    warnings,
+    optional: hourOptional
+  });
+  const minute = validateTimeField(src.minute, {
+    name: "\u5206\u949F",
+    unit: "\u5206",
+    label,
+    max: 59,
+    fallback: 0,
+    strict,
+    warnings,
+    optional: true
+  });
+  const second = validateTimeField(src.second, {
+    name: "\u79D2",
+    unit: "\u79D2",
+    label,
+    max: 59,
+    fallback: 0,
+    strict,
+    warnings,
+    optional: true
+  });
+  return { ...date, hour, minute, second, warnings };
+}
+function validateGeo(lat, lon, opts = {}) {
+  const label = opts.label ?? "";
+  const latMissing = lat === void 0 || lat === null;
+  const lonMissing = lon === void 0 || lon === null;
+  if (latMissing && lonMissing) {
+    if (opts.required === false) return null;
+    throw new OutOfRangeError(`${label}\u7F3A\u5C11\u7ECF\u7EAC\u5EA6\uFF1A\u8BF7\u540C\u65F6\u7ED9\u51FA lat/latitude \u4E0E lon/lonEast/longitude`);
+  }
+  if (latMissing) {
+    throw new OutOfRangeError(`${label}\u7ECF\u7EAC\u5EA6\u5FC5\u987B\u6210\u5BF9\u7ED9\u51FA\uFF1A\u7F3A\u7EAC\u5EA6 lat/latitude\uFF08\u6536\u5230\u7ECF\u5EA6 ${showValue(lon)}\uFF09`);
+  }
+  if (lonMissing) {
+    throw new OutOfRangeError(`${label}\u7ECF\u7EAC\u5EA6\u5FC5\u987B\u6210\u5BF9\u7ED9\u51FA\uFF1A\u7F3A\u7ECF\u5EA6 lon/lonEast/longitude\uFF08\u6536\u5230\u7EAC\u5EA6 ${showValue(lat)}\uFF09`);
+  }
+  const la = lat;
+  const lo = lon;
+  if (typeof la !== "number" || !Number.isFinite(la)) {
+    throw new OutOfRangeError(`${label}\u7EAC\u5EA6\u5FC5\u987B\u662F\u6570\u503C\uFF0C\u6536\u5230 ${showValue(lat)}`);
+  }
+  if (typeof lo !== "number" || !Number.isFinite(lo)) {
+    throw new OutOfRangeError(`${label}\u7ECF\u5EA6\u5FC5\u987B\u662F\u6570\u503C\uFF0C\u6536\u5230 ${showValue(lon)}`);
+  }
+  if (la < -90 || la > 90) {
+    throw new OutOfRangeError(`${label}\u7EAC\u5EA6 ${la} \u8D85\u51FA [-90, 90]\uFF08\u8D85\u8303\u56F4\u4E00\u5F8B\u62A5\u9519\uFF0C\u4E0D\u505A\u5939\u7D27\uFF09`);
+  }
+  if (lo < -180 || lo > 180) {
+    throw new OutOfRangeError(`${label}\u7ECF\u5EA6 ${lo} \u8D85\u51FA [-180, 180]\uFF08\u8D85\u8303\u56F4\u4E00\u5F8B\u62A5\u9519\uFF0C\u4E0D\u505A\u5939\u7D27\uFF09`);
+  }
+  return { lat: la, lon: lo };
+}
+var POLAR_LATITUDE = 66.5;
+function highLatitudeWarnings(lat) {
+  if (typeof lat !== "number" || !Number.isFinite(lat)) return [];
+  const abs = Math.abs(lat);
+  if (abs <= POLAR_LATITUDE) return [];
+  const out = [
+    `\u51FA\u751F\u5730\u7EAC\u5EA6 ${lat.toFixed(2)}\xB0 \u5DF2\u5728\u6781\u5708\u5185\uFF08|lat| > ${POLAR_LATITUDE}\uFF09\uFF1Awhole_sign \u5BAB\u4F4D\u4ECD\u6709\u5B9A\u4E49\uFF0C\u4F46\u4E0A\u5347\u70B9\u968F\u9EC4\u9053\u5347\u843D\u901F\u7387\u5267\u53D8\u3001\u53EF\u51FA\u73B0 180\xB0 \u8DF3\u53D8\uFF0C\u9AD8\u7EAC\u5BAB\u4F4D\u5DF2\u964D\u7EA7\u4E3A\u300C\u4EC5\u53C2\u8003\u300D\uFF0C\u5224\u8BFB\u8BF7\u8C28\u614E`
+  ];
+  if (abs >= 89) {
+    out.push(`\u7EAC\u5EA6 ${lat.toFixed(2)}\xB0 \u8D34\u8FD1\u6781\u70B9\uFF1A\u4E0A\u5347\u70B9/\u4E2D\u5929\u5728\u6570\u5B66\u4E0A\u65E0\u5B9A\u4E49\uFF0C\u5BAB\u4F4D\u7ED3\u679C\u4E0D\u53EF\u7528`);
+  }
+  return out;
+}
+var GENDER_MAP = {
+  \u7537: "\u7537",
+  \u5973: "\u5973",
+  male: "\u7537",
+  female: "\u5973",
+  m: "\u7537",
+  f: "\u5973"
+};
+function normalizeGender(raw, opts = {}) {
+  const required = opts.required !== false;
+  const missing = raw === void 0 || raw === null || typeof raw === "string" && raw.trim() === "";
+  if (missing) {
+    if (!required) return opts.fallback ?? "\u7537";
+    throw new InvalidGenderError("\u7F3A\u5C11\u6027\u522B\uFF08gender\uFF09\uFF1A\u53EA\u63A5\u53D7 \u7537/\u5973/male/female/m/f");
+  }
+  if (typeof raw !== "string") {
+    throw new InvalidGenderError(`\u6027\u522B\u5FC5\u987B\u662F\u5B57\u7B26\u4E32\uFF0C\u6536\u5230 ${showValue(raw)}\uFF08\u53EA\u63A5\u53D7 \u7537/\u5973/male/female/m/f\uFF09`);
+  }
+  const key = raw.trim().toLowerCase();
+  const hit = GENDER_MAP[key];
+  if (!hit) {
+    throw new InvalidGenderError(`\u6027\u522B\u300C${raw}\u300D\u975E\u6CD5\uFF1A\u53EA\u63A5\u53D7 \u7537/\u5973/male/female/m/f`);
+  }
+  return hit;
+}
+function validateCastNumber(n, label = "\u8D77\u5366\u6570") {
+  if (typeof n !== "number" || !Number.isFinite(n)) {
+    throw new InvalidNumberError(`${label}\u5FC5\u987B\u662F\u6570\u503C\uFF0C\u6536\u5230 ${showValue(n)}`);
+  }
+  if (!Number.isInteger(n)) {
+    throw new InvalidNumberError(`${label}\u5FC5\u987B\u662F\u6574\u6570\uFF0C\u6536\u5230 ${n}`);
+  }
+  if (n < 1 || n > 64) {
+    throw new InvalidNumberError(`${label}\u5FC5\u987B\u662F 1\u201364 \u7684\u6B63\u6574\u6570\uFF0C\u6536\u5230 ${n}`);
+  }
+  return n;
+}
+
+// src/tz-data.ts
+function wallEpoch(y, mo, d, h = 0, mi = 0) {
+  return Date.UTC(y, mo - 1, d, h, mi, 0);
+}
+function nthSunday(year, month, n) {
+  const firstDow = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+  const firstSunday = 1 + (7 - firstDow) % 7;
+  return firstSunday + (n - 1) * 7;
+}
+function lastSunday(year, month) {
+  const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const lastDow = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay();
+  return lastDay - lastDow;
+}
+function lastWeekday(year, month, dow) {
+  const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const lastDow = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay();
+  return lastDay - (lastDow - dow + 7) % 7;
+}
+function egyptWindows(y) {
+  if (y < 2023) return null;
+  return {
+    start: wallEpoch(y, 4, lastWeekday(y, 4, 5), 0, 0),
+    // 4 月最后一个周五 00:00 标准时
+    end: wallEpoch(y, 10, lastWeekday(y, 10, 4), 23, 0)
+    // 10 月最后一个周四 24:00 夏令时 = 23:00 标准时
+  };
+}
+function egyptNote(y) {
+  if (y < 1990) return null;
+  if (y < 2015) return "\u57C3\u53CA 2014 \u5E74\u53CA\u4EE5\u524D\u6709\u590F\u4EE4\u65F6\uFF08\u8D77\u6B62\u65E5\u671F\u5386\u5E74\u4E0D\u540C\uFF09\uFF0C\u672C\u8868\u53EA\u8986\u76D6 2023 \u5E74\u540E\u89C4\u5219\uFF0C\u6B64\u5E74\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6";
+  if (y <= 2022) return null;
+  return "\u57C3\u53CA 2023 \u5E74\u6062\u590D\u590F\u4EE4\u65F6\uFF084 \u6708\u6700\u540E\u4E00\u4E2A\u5468\u4E94\u8D77\u300110 \u6708\u6700\u540E\u4E00\u4E2A\u5468\u56DB\u6B62\uFF09\uFF0C\u5DF2\u6309\u6062\u590D\u540E\u89C4\u5219\u8BA1\u7B97";
+}
+var RAMADAN = {
+  // 年: [起月, 起日, 止月, 止日]
+  2019: [5, 6, 6, 4],
+  2020: [4, 24, 5, 23],
+  2021: [4, 13, 5, 12],
+  2022: [4, 2, 5, 1],
+  2023: [3, 23, 4, 20],
+  2024: [3, 11, 4, 9],
+  2025: [3, 1, 3, 30],
+  2026: [2, 18, 3, 19],
+  2027: [2, 8, 3, 9],
+  2028: [1, 28, 2, 26],
+  2029: [1, 16, 2, 14],
+  2030: [1, 5, 2, 3]
+};
+var RAMADAN_MIN = 2019;
+var RAMADAN_MAX = 2030;
+function moroccoWindows(y) {
+  if (y <= RAMADAN_MIN || y > RAMADAN_MAX) {
+    return null;
+  }
+  const prev = RAMADAN[y - 1];
+  const cur = RAMADAN[y];
+  if (!prev || !cur) return null;
+  return {
+    start: wallEpoch(y - 1, prev[2], prev[3], 2, 0),
+    // 斋月结束回拨到 +1 的那一刻（标准时 02:00）
+    end: wallEpoch(y, cur[0], cur[1], 3, 0)
+    // 斋月开始回拨到 +0 的那一刻（标准时 03:00）
+  };
+}
+function moroccoNote(y) {
+  if (y < RAMADAN_MIN + 1) {
+    return "\u6469\u6D1B\u54E5 2018 \u5E74\u8D77\u4E3A\u300C\u5E38\u5E74 UTC+1\u3001\u658B\u6708\u56DE\u62E8 UTC+0\u300D\uFF1B2018 \u5E74\u524D\u662F UTC+0 \u52A0 3\u201310 \u6708\u590F\u4EE4\u65F6\uFF0C\u6B64\u5E74\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6";
+  }
+  if (y > RAMADAN_MAX) return "\u6469\u6D1B\u54E5\u658B\u6708\u8868\u53EA\u8986\u76D6\u5230 2030 \u5E74\uFF0C\u6B64\u540E\u658B\u6708\u56DE\u62E8\u672A\u7EB3\u5165\uFF0C\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6";
+  return "\u6469\u6D1B\u54E5\u5E38\u5E74 UTC+1\uFF0C\u658B\u6708\u671F\u95F4\u56DE\u62E8 UTC+0\uFF08\u658B\u6708\u8D77\u6B62\u6309\u516C\u5386\u8868\uFF0C\u4E0E\u5B9E\u9645\u516C\u544A\u53EF\u80FD\u5DEE 1 \u5929\uFF09";
+}
+function mexicoWindows(y) {
+  if (y >= 2023) return null;
+  return {
+    start: wallEpoch(y, 4, nthSunday(y, 4, 1), 2, 0),
+    // 4 月第一个周日 02:00 标准时
+    end: wallEpoch(y, 10, lastSunday(y, 10), 1, 0)
+    // 10 月最后一个周日 02:00 夏令时 = 01:00 标准时
+  };
+}
+function mexicoNote(y) {
+  if (y >= 2023) return "\u58A8\u897F\u54E5 2022 \u5E74 10 \u6708\u8D77\u53D6\u6D88\u5168\u56FD\u590F\u4EE4\u65F6\uFF08\u4EC5\u5317\u90E8\u8FB9\u5883\u57CE\u5E02\u4ECD\u968F\u7F8E\u56FD\uFF09";
+  if (y < 1996) return "\u58A8\u897F\u54E5 1996 \u5E74\u524D\u590F\u4EE4\u65F6\u8D77\u6B62\u4E0D\u540C\uFF0C\u672C\u8868\u6309 1996\u20132022 \u89C4\u5219\u8FD1\u4F3C\uFF0C\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6";
+  return "\u58A8\u897F\u54E5 2023 \u5E74\u524D\u6709\u590F\u4EE4\u65F6\uFF084 \u6708\u7B2C\u4E00\u4E2A\u5468\u65E5\u201410 \u6708\u6700\u540E\u4E00\u4E2A\u5468\u65E5\uFF09\uFF0C\u5DF2\u6309\u65E7\u89C4\u5219\u8BA1\u7B97";
+}
+function iranWindows(y) {
+  if (y >= 2022) return null;
+  if (y < 1979) return null;
+  return {
+    start: wallEpoch(y, 3, 21, 0, 0),
+    // 伊朗历 1 月 1 日 ≈ 3/21
+    end: wallEpoch(y, 9, 21, 0, 0)
+    // 伊朗历 6 月末 ≈ 9/21
+  };
+}
+function iranNote(y) {
+  if (y >= 2022) return "\u4F0A\u6717 2022 \u5E74\u8D77\u53D6\u6D88\u590F\u4EE4\u65F6\uFF08\u5168\u5E74 UTC+03:30\uFF09";
+  if (y < 1979) return null;
+  return "\u4F0A\u6717 2022 \u5E74\u524D\u6709\u590F\u4EE4\u65F6\uFF1B\u8D77\u6B62\u968F\u4F0A\u6717\u5386\u6D6E\u52A8\uFF0C\u672C\u8868\u6309 3/21\u20139/21 \u8FD1\u4F3C\uFF08\xB11 \u5929\uFF09";
+}
+function levantWindows(y) {
+  if (y >= 2022) return null;
+  return null;
+}
+function levantNote(place) {
+  return (y) => {
+    if (y >= 2022) return `${place} 2022 \u5E74 10 \u6708\u8D77\u56FA\u5B9A UTC+3\uFF08\u53D6\u6D88\u590F\u4EE4\u65F6\uFF09`;
+    return `${place} 2022 \u5E74\u524D\u4E3A UTC+2 + \u590F\u4EE4\u65F6\uFF0C\u672C\u8868\u672A\u56DE\u6EAF\u8BE5\u89C4\u5219\uFF1A\u6B64\u5E74\u504F\u79FB\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6\uFF0C\u8BF7\u6309\u5F53\u5730\u5386\u53F2\u6CD5\u89C4\u6838\u5BF9`;
+  };
+}
+function paraguayWindows(y) {
+  if (y >= 2025) return { start: wallEpoch(y, 1, 1), end: wallEpoch(y + 1, 1, 1) };
+  if (y === 2024) return { start: wallEpoch(2024, 10, nthSunday(2024, 10, 1), 0), end: wallEpoch(2025, 1, 1) };
+  return {
+    start: wallEpoch(y, 10, nthSunday(y, 10, 1), 0, 0),
+    end: wallEpoch(y + 1, 3, nthSunday(y + 1, 3, 4), 0, 0)
+  };
+}
+function paraguayNote(y) {
+  if (y >= 2025) return "\u5DF4\u62C9\u572D 2024 \u5E74 10 \u6708\u8D77\u6C38\u4E45 UTC-3\uFF08\u4E0D\u518D\u56DE\u62E8\uFF09\uFF0C\u672C\u8868\u6309\u5168\u5E74\u590F\u4EE4\u65F6\u53E3\u5F84\u5904\u7406";
+  if (y < 2013) return "\u5DF4\u62C9\u572D 2013 \u5E74\u524D\u590F\u4EE4\u65F6\u8D77\u6B62\u4E0D\u540C\uFF0C\u672C\u8868\u6309 2013\u20132023 \u89C4\u5219\u8FD1\u4F3C\uFF0C\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6";
+  return "\u5DF4\u62C9\u572D 2023 \u5E74\u524D\u4E3A UTC-4 + \u590F\u4EE4\u65F6\uFF0810 \u6708\u7B2C\u4E00\u4E2A\u5468\u65E5\u2014\u6B21\u5E74 3 \u6708\u7B2C\u56DB\u4E2A\u5468\u65E5\uFF09";
+}
+function chileWindows(y) {
+  return {
+    start: wallEpoch(y, 9, nthSunday(y, 9, 1), 0, 0),
+    // 9 月第一个周六 24:00 = 周日 00:00
+    end: wallEpoch(y + 1, 4, nthSunday(y + 1, 4, 1), 0, 0)
+    // 4 月第一个周六 24:00
+  };
+}
+function chileNote(y) {
+  if (y < 2022) return "\u667A\u5229 2016\u20132021 \u590F\u4EE4\u65F6\u8D77\u6B62\u591A\u6B21\u8C03\u6574\uFF0C\u672C\u8868\u6309 2022 \u5E74\u540E\u89C4\u5219\u8FD1\u4F3C\uFF0C\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6";
+  return "\u667A\u5229\u590F\u4EE4\u65F6\uFF1A9 \u6708\u7B2C\u4E00\u4E2A\u5468\u516D 24:00 \u8D77\u3001\u6B21\u5E74 4 \u6708\u7B2C\u4E00\u4E2A\u5468\u516D 24:00 \u6B62";
+}
+function lebanonWindows(y) {
+  const h = 3;
+  return {
+    start: wallEpoch(y, 3, lastSunday(y, 3), h, 0),
+    end: wallEpoch(y, 10, lastSunday(y, 10), h, 0)
+  };
+}
+function lebanonNote(y) {
+  if (y === 2023) return "\u9ECE\u5DF4\u5AE9 2023 \u5E74 3 \u6708 26\u201329 \u65E5\u66FE\u5355\u65B9\u9762\u63A8\u8FDF\u590F\u4EE4\u65F6\u53C8\u64A4\u9500\uFF0C\u672C\u8868\u6309\u5E38\u89C4\u6B27\u76DF\u89C4\u5219\u5904\u7406\uFF08\u4EC5\u5F71\u54CD\u8FD9 3 \u5929\uFF09";
+  if (y < 1993) return null;
+  return "\u9ECE\u5DF4\u5AE9\u968F\u6B27\u76DF\u590F\u4EE4\u65F6\u89C4\u5219\uFF083 \u6708\u6700\u540E\u4E00\u4E2A\u5468\u65E5\u201410 \u6708\u6700\u540E\u4E00\u4E2A\u5468\u65E5\uFF09";
+}
+var TZ_OVERRIDES = {
+  "Africa/Cairo": { since: 2023, windows: egyptWindows, note: egyptNote },
+  "Africa/Casablanca": { since: 2018, windows: moroccoWindows, note: moroccoNote },
+  "Africa/El_Aaiun": { since: 2018, windows: moroccoWindows, note: moroccoNote },
+  "America/Mexico_City": { since: 1996, windows: mexicoWindows, note: mexicoNote },
+  "America/Monterrey": { since: 1996, windows: mexicoWindows, note: mexicoNote },
+  "Asia/Tehran": { since: 1979, windows: iranWindows, note: iranNote },
+  "Asia/Amman": { since: 2014, windows: levantWindows, note: levantNote("\u7EA6\u65E6") },
+  "Asia/Damascus": { since: 2014, windows: levantWindows, note: levantNote("\u53D9\u5229\u4E9A") },
+  "America/Asuncion": { since: 2013, windows: paraguayWindows, note: paraguayNote },
+  "America/Santiago": { since: 2022, windows: chileWindows, note: chileNote },
+  "Asia/Beirut": { since: 1993, windows: lebanonWindows, note: lebanonNote }
+};
+function tzOverrideWindow(tz, year) {
+  const o = TZ_OVERRIDES[tz];
+  if (!o) return void 0;
+  if (year < o.since) return void 0;
+  return o.windows(year);
+}
+function tzOverrideNote(tz, year) {
+  const o = TZ_OVERRIDES[tz];
+  if (!o) return null;
+  if (year < o.since) {
+    return `${tz} \u5728 ${year} \u5E74\u4E0D\u5728\u590F\u4EE4\u65F6\u8986\u76D6\u8868\u533A\u95F4\uFF08\u672C\u8868\u81EA ${o.since} \u5E74\u8D77\uFF09\uFF0C\u8BE5\u5E74\u590F\u4EE4\u65F6\u672A\u7EB3\u5165\uFF0C\u53EF\u80FD\u5DEE 1 \u5C0F\u65F6`;
+  }
+  if (!o.note) return null;
+  return o.note(year);
+}
+
 // src/timeContext.ts
 function lateZiLabel(mode) {
   return mode === "00" ? "0 \u70B9\uFF08\u5B50\u6B63\uFF09\u6362\u65E5" : "23 \u70B9\uFF08\u5B50\u521D\uFF09\u6362\u65E5";
@@ -37596,15 +38035,19 @@ var CITY_ROWS = [
   ["\u591A\u54C8", "doha", "\u5361\u5854\u5C14", "Asia/Qatar", 25.2854, 51.531, 3, "none"],
   ["\u5229\u96C5\u5F97", "riyadh", "\u6C99\u7279", "Asia/Riyadh", 24.7136, 46.6753, 3, "none"],
   ["\u5409\u8FBE", "jeddah", "\u6C99\u7279", "Asia/Riyadh", 21.4858, 39.1925, 3, "none"],
-  ["\u5FB7\u9ED1\u5170", "tehran", "\u4F0A\u6717", "Asia/Tehran", 35.6892, 51.389, 3.5, "none"],
+  ["\u5FB7\u9ED1\u5170", "tehran", "\u4F0A\u6717", "Asia/Tehran", 35.6892, 51.389, 3.5, "TZ:Asia/Tehran"],
   ["\u7279\u62C9\u7EF4\u592B", "tel aviv", "\u4EE5\u8272\u5217", "Asia/Jerusalem", 32.0853, 34.7818, 2, "IL"],
+  ["\u5B89\u66FC", "amman", "\u7EA6\u65E6", "Asia/Amman", 31.9454, 35.9284, 3, "TZ:Asia/Amman"],
+  ["\u5927\u9A6C\u58EB\u9769", "damascus", "\u53D9\u5229\u4E9A", "Asia/Damascus", 33.5138, 36.2765, 3, "TZ:Asia/Damascus"],
+  ["\u8D1D\u9C81\u7279", "beirut", "\u9ECE\u5DF4\u5AE9", "Asia/Beirut", 33.8938, 35.5018, 2, "TZ:Asia/Beirut"],
   // —— 非洲 ——
-  ["\u5F00\u7F57", "cairo", "\u57C3\u53CA", "Africa/Cairo", 30.0444, 31.2357, 2, "none"],
+  ["\u5F00\u7F57", "cairo", "\u57C3\u53CA", "Africa/Cairo", 30.0444, 31.2357, 2, "TZ:Africa/Cairo"],
   ["\u5185\u7F57\u6BD5", "nairobi", "\u80AF\u5C3C\u4E9A", "Africa/Nairobi", -1.2921, 36.8219, 3, "none"],
   ["\u7EA6\u7FF0\u5185\u65AF\u5821", "johannesburg", "\u5357\u975E", "Africa/Johannesburg", -26.2041, 28.0473, 2, "none"],
   ["\u5F00\u666E\u6566", "cape town", "\u5357\u975E", "Africa/Johannesburg", -33.9249, 18.4241, 2, "none"],
   ["\u62C9\u5404\u65AF", "lagos", "\u5C3C\u65E5\u5229\u4E9A", "Africa/Lagos", 6.5244, 3.3792, 1, "none"],
-  ["\u5361\u8428\u5E03\u5170\u5361", "casablanca", "\u6469\u6D1B\u54E5", "Africa/Casablanca", 33.5731, -7.5898, 1, "none"],
+  ["\u5361\u8428\u5E03\u5170\u5361", "casablanca", "\u6469\u6D1B\u54E5", "Africa/Casablanca", 33.5731, -7.5898, 0, "TZ:Africa/Casablanca"],
+  ["\u62C9\u5DF4\u7279", "rabat", "\u6469\u6D1B\u54E5", "Africa/Casablanca", 34.0209, -6.8416, 0, "TZ:Africa/Casablanca"],
   ["\u4E9A\u7684\u65AF\u4E9A\u8D1D\u5DF4", "addis ababa", "\u57C3\u585E\u4FC4\u6BD4\u4E9A", "Africa/Addis_Ababa", 9.03, 38.74, 3, "none"],
   // —— 欧洲 ——
   ["\u83AB\u65AF\u79D1", "moscow", "\u4FC4\u7F57\u65AF", "Europe/Moscow", 55.7558, 37.6173, 3, "none"],
@@ -37676,19 +38119,20 @@ var CITY_ROWS = [
   ["\u57C3\u5FB7\u8499\u987F", "edmonton", "\u52A0\u62FF\u5927", "America/Edmonton", 53.5461, -113.4938, -7, "US"],
   ["\u6E29\u5C3C\u4F2F", "winnipeg", "\u52A0\u62FF\u5927", "America/Winnipeg", 49.8951, -97.1384, -6, "US"],
   ["\u54C8\u5229\u6CD5\u514B\u65AF", "halifax", "\u52A0\u62FF\u5927", "America/Halifax", 44.6488, -63.5752, -4, "US"],
-  ["\u58A8\u897F\u54E5\u57CE", "mexico city", "\u58A8\u897F\u54E5", "America/Mexico_City", 19.4326, -99.1332, -6, "none"],
-  ["\u74DC\u8FBE\u62C9\u54C8\u62C9", "guadalajara", "\u58A8\u897F\u54E5", "America/Mexico_City", 20.6597, -103.3496, -6, "none"],
+  ["\u58A8\u897F\u54E5\u57CE", "mexico city", "\u58A8\u897F\u54E5", "America/Mexico_City", 19.4326, -99.1332, -6, "TZ:America/Mexico_City"],
+  ["\u74DC\u8FBE\u62C9\u54C8\u62C9", "guadalajara", "\u58A8\u897F\u54E5", "America/Mexico_City", 20.6597, -103.3496, -6, "TZ:America/Mexico_City"],
   ["\u8482\u534E\u7EB3", "tijuana", "\u58A8\u897F\u54E5", "America/Tijuana", 32.5149, -117.0382, -8, "US"],
   // —— 中南美 ——
   ["\u5723\u4FDD\u7F57", "sao paulo", "\u5DF4\u897F", "America/Sao_Paulo", -23.5505, -46.6333, -3, "none"],
   ["\u91CC\u7EA6\u70ED\u5185\u5362", "rio de janeiro", "\u5DF4\u897F", "America/Sao_Paulo", -22.9068, -43.1729, -3, "none"],
   ["\u5E03\u5B9C\u8BFA\u65AF\u827E\u5229\u65AF", "buenos aires", "\u963F\u6839\u5EF7", "America/Argentina/Buenos_Aires", -34.6037, -58.3816, -3, "none"],
-  ["\u5723\u5730\u4E9A\u54E5", "santiago", "\u667A\u5229", "America/Santiago", -33.4489, -70.6693, -4, "CL"],
+  ["\u5723\u5730\u4E9A\u54E5", "santiago", "\u667A\u5229", "America/Santiago", -33.4489, -70.6693, -4, "TZ:America/Santiago"],
   ["\u5229\u9A6C", "lima", "\u79D8\u9C81", "America/Lima", -12.0464, -77.0428, -5, "none"],
   ["\u6CE2\u54E5\u5927", "bogota", "\u54E5\u4F26\u6BD4\u4E9A", "America/Bogota", 4.711, -74.0721, -5, "none"],
   ["\u57FA\u591A", "quito", "\u5384\u74DC\u591A\u5C14", "America/Guayaquil", -0.1807, -78.4678, -5, "none"],
   ["\u52A0\u62C9\u52A0\u65AF", "caracas", "\u59D4\u5185\u745E\u62C9", "America/Caracas", 10.4806, -66.9036, -4, "none"],
   ["\u8499\u5F97\u7EF4\u7684\u4E9A", "montevideo", "\u4E4C\u62C9\u572D", "America/Montevideo", -34.9011, -56.1645, -3, "none"],
+  ["\u4E9A\u677E\u68EE", "asuncion", "\u5DF4\u62C9\u572D", "America/Asuncion", -25.2637, -57.5759, -4, "TZ:America/Asuncion"],
   ["\u62C9\u5DF4\u65AF", "la paz", "\u73BB\u5229\u7EF4\u4E9A", "America/La_Paz", -16.4897, -68.1193, -4, "none"],
   // —— 大洋洲 ——
   ["\u6089\u5C3C", "sydney", "\u6FB3\u5927\u5229\u4E9A", "Australia/Sydney", -33.8688, 151.2093, 10, "AU"],
@@ -37834,6 +38278,105 @@ function estimateTzFromCoords(lat, lon) {
 }
 var GEO_CONFLICT_KM = 200;
 var GEO_MERIDIAN_TOLERANCE_MIN = 180;
+var ZY = { name: "\u4E2D\u539F\u6807\u51C6\u65F6\u533A", offset: 8 };
+var LS = { name: "\u9647\u8700\u65F6\u533A", offset: 7 };
+var XZ = { name: "\u65B0\u85CF\u65F6\u533A", offset: 6 };
+var KL = { name: "\u6606\u4ED1\u65F6\u533A", offset: 5.5 };
+var CB = { name: "\u957F\u767D\u65F6\u533A", offset: 8.5 };
+var CHINA_HIST_TZ = {};
+function assignHist(zone, names) {
+  for (const n of names) CHINA_HIST_TZ[normKey(n)] = zone;
+}
+assignHist(ZY, [
+  "\u5317\u4EAC",
+  "\u4E0A\u6D77",
+  "\u5929\u6D25",
+  "\u91CD\u5E86",
+  "\u5357\u4EAC",
+  "\u5E7F\u5DDE",
+  "\u6B66\u6C49",
+  "\u676D\u5DDE",
+  "\u798F\u5DDE",
+  "\u957F\u6C99",
+  "\u90D1\u5DDE",
+  "\u6D4E\u5357",
+  "\u9752\u5C9B",
+  "\u592A\u539F",
+  "\u77F3\u5BB6\u5E84",
+  "\u5357\u660C",
+  "\u5408\u80A5",
+  "\u5357\u5B81",
+  "\u6D77\u53E3",
+  "\u6C88\u9633",
+  "\u5927\u8FDE",
+  "\u547C\u548C\u6D69\u7279",
+  "\u5B81\u6CE2",
+  "\u82CF\u5DDE",
+  "\u65E0\u9521",
+  "\u53A6\u95E8",
+  "\u6DF1\u5733",
+  "\u6D1B\u9633",
+  "\u5F00\u5C01",
+  "\u5F90\u5DDE",
+  "\u6E29\u5DDE",
+  "\u6842\u6797",
+  "\u6C55\u5934"
+]);
+assignHist(LS, [
+  "\u6210\u90FD",
+  "\u6606\u660E",
+  "\u8D35\u9633",
+  "\u897F\u5B89",
+  "\u5170\u5DDE",
+  "\u94F6\u5DDD",
+  "\u897F\u5B81",
+  "\u5929\u6C34",
+  "\u5B9D\u9E21",
+  "\u6C49\u4E2D",
+  "\u7EF5\u9633",
+  "\u5B9C\u5BBE",
+  "\u6CF8\u5DDE",
+  "\u9075\u4E49",
+  "\u66F2\u9756",
+  "\u5927\u7406",
+  "\u5EB7\u5B9A",
+  "\u5EF6\u5B89"
+]);
+assignHist(XZ, ["\u4E4C\u9C81\u6728\u9F50", "\u5410\u9C81\u756A", "\u5E93\u5C14\u52D2", "\u54C8\u5BC6", "\u4F0A\u5B81", "\u963F\u514B\u82CF", "\u514B\u62C9\u739B\u4F9D"]);
+assignHist(KL, ["\u5580\u4EC0", "\u548C\u7530", "\u62C9\u8428", "\u65E5\u5580\u5219", "\u963F\u91CC", "\u683C\u5C14\u6728"]);
+assignHist(CB, ["\u957F\u6625", "\u54C8\u5C14\u6EE8", "\u5409\u6797", "\u9F50\u9F50\u54C8\u5C14", "\u7261\u4E39\u6C5F", "\u4F73\u6728\u65AF", "\u5EF6\u5409"]);
+var CHINA_TZ_UNIFIED_DATE = "1949-10-01";
+var CN_TZ_UNIFIED_MS = utcMsOf(1949, 10, 1);
+var CN_TZ_ZONES_FROM_MS = utcMsOf(1912, 1, 1);
+function isChinaCity(c) {
+  if (!c) return false;
+  return c.country.startsWith("\u4E2D\u56FD") && c.lat >= 18 && c.lat <= 54 && c.lon >= 73 && c.lon <= 136;
+}
+function resolveChinaHistoricTz(city, y, mo, d) {
+  if (!isChinaCity(city)) return null;
+  const ms = utcMsOf(y, mo, d);
+  if (ms >= CN_TZ_UNIFIED_MS) return null;
+  const zone = CHINA_HIST_TZ[normKey(city.name)] ?? null;
+  if (ms < CN_TZ_ZONES_FROM_MS) {
+    return {
+      offset: zone ? zone.offset : 8,
+      zone: zone ? zone.name : null,
+      warning: `\u5386\u53F2\u65F6\u533A\uFF1A${y} \u5E74\u4E2D\u56FD\u5C1A\u672A\u9881\u884C\u6807\u51C6\u65F6\u533A\uFF081912 \u5E74\u624D\u6709\u4E94\u65F6\u533A\uFF09\uFF0C\u6309 ${formatOffsetName(zone ? zone.offset : 8)} \u5904\u7406\uFF1B\u5404\u5730\u5B9E\u9645\u7528\u5730\u65B9\u5E73\u592A\u9633\u65F6\uFF0C\u53EF\u80FD\u6709\u6570\u5341\u5206\u949F\u5DEE\u5F02\uFF0C\u5982\u9700\u7CBE\u786E\u8BF7\u624B\u52A8\u6307\u5B9A utcOffsetHours`
+    };
+  }
+  if (!zone) {
+    return {
+      offset: 8,
+      zone: null,
+      warning: `\u5386\u53F2\u65F6\u533A\uFF1A\u300C${city.name}\u300D\u5728 1912\u20131949 \u7684\u5206\u533A\u6570\u636E\u7F3A\u5931\uFF0C\u6309\u4E2D\u539F\u6807\u51C6\u65F6\u533A ${formatOffsetName(8)} \u5904\u7406\uFF1B\u5F53\u65F6\u4E2D\u56FD\u5206\u4E94\u65F6\u533A\uFF08+5.5/+6/+7/+8/+8.5\uFF09\uFF0C\u53EF\u80FD\u504F 1\u20132.5 \u5C0F\u65F6\uFF0C\u5EFA\u8BAE\u624B\u52A8\u6307\u5B9A utcOffsetHours`
+    };
+  }
+  return {
+    offset: zone.offset,
+    zone: zone.name,
+    warning: `\u5386\u53F2\u65F6\u533A\uFF1A${y}-${pad22(mo)}-${pad22(d)} \u7684\u300C${city.name}\u300D\u6309 ${zone.name}\uFF08${formatOffsetName(zone.offset)}\uFF09\u6298\u7B97\uFF1B1949-10-01 \u8D77\u624D\u5168\u56FD\u7EDF\u4E00 +8\uFF0C1912\u20131949 \u5404\u5730\u5B9E\u65BD\u6709\u51FA\u5165\uFF0C\u5982\u9700\u7CBE\u786E\u8BF7\u624B\u52A8\u6307\u5B9A utcOffsetHours`
+  };
+}
 var CN_DST_WINDOWS = {
   // 年: [起月, 起日, 止月, 止日]
   1986: [5, 4, 9, 14],
@@ -37843,65 +38386,69 @@ var CN_DST_WINDOWS = {
   1990: [4, 15, 9, 16],
   1991: [4, 14, 9, 15]
 };
-function nthSunday(year, month, n) {
+function nthSunday2(year, month, n) {
   const firstDow = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
   const firstSunday = 1 + (7 - firstDow) % 7;
   return firstSunday + (n - 1) * 7;
 }
-function lastSunday(year, month) {
+function lastSunday2(year, month) {
   const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const lastDow = new Date(Date.UTC(year, month - 1, lastDay)).getUTCDay();
   return lastDay - lastDow;
 }
-function wallEpoch(y, mo, d, h = 0, mi = 0, s = 0) {
-  return Date.UTC(y, mo - 1, d, h, mi, s);
+function wallEpoch2(y, mo, d, h = 0, mi = 0, s = 0) {
+  return utcMsOf(y, mo, d, h, mi, s);
 }
 var HOUR = 36e5;
 function dstWindowForYear(rule, stdOffset, year) {
+  if (rule.startsWith("TZ:")) {
+    const w = tzOverrideWindow(rule.slice(3), year);
+    return w === void 0 ? null : w;
+  }
   switch (rule) {
     case "CN1986": {
       const w = CN_DST_WINDOWS[year];
       if (!w) return null;
       return {
-        start: wallEpoch(year, w[0], w[1], 2, 0, 0),
-        end: wallEpoch(year, w[2], w[3], 1, 0, 0)
+        start: wallEpoch2(year, w[0], w[1], 2, 0, 0),
+        end: wallEpoch2(year, w[2], w[3], 1, 0, 0)
       };
     }
     case "EU": {
       const hStart = 1 + stdOffset;
       return {
-        start: wallEpoch(year, 3, lastSunday(year, 3), hStart, 0, 0),
-        end: wallEpoch(year, 10, lastSunday(year, 10), hStart, 0, 0)
+        start: wallEpoch2(year, 3, lastSunday2(year, 3), hStart, 0, 0),
+        end: wallEpoch2(year, 10, lastSunday2(year, 10), hStart, 0, 0)
       };
     }
     case "US": {
       return {
-        start: wallEpoch(year, 3, nthSunday(year, 3, 2), 2, 0, 0),
-        end: wallEpoch(year, 11, nthSunday(year, 11, 1), 1, 0, 0)
+        start: wallEpoch2(year, 3, nthSunday2(year, 3, 2), 2, 0, 0),
+        end: wallEpoch2(year, 11, nthSunday2(year, 11, 1), 1, 0, 0)
       };
     }
     case "AU": {
       return {
-        start: wallEpoch(year, 10, nthSunday(year, 10, 1), 2, 0, 0),
-        end: wallEpoch(year + 1, 4, nthSunday(year + 1, 4, 1), 2, 0, 0)
+        start: wallEpoch2(year, 10, nthSunday2(year, 10, 1), 2, 0, 0),
+        end: wallEpoch2(year + 1, 4, nthSunday2(year + 1, 4, 1), 2, 0, 0)
       };
     }
     case "NZ": {
       return {
-        start: wallEpoch(year, 9, lastSunday(year, 9), 2, 0, 0),
-        end: wallEpoch(year + 1, 4, nthSunday(year + 1, 4, 1), 2, 0, 0)
+        start: wallEpoch2(year, 9, lastSunday2(year, 9), 2, 0, 0),
+        end: wallEpoch2(year + 1, 4, nthSunday2(year + 1, 4, 1), 2, 0, 0)
       };
     }
     case "CL": {
       return {
-        start: wallEpoch(year, 9, nthSunday(year, 9, 1), 0, 0, 0),
-        end: wallEpoch(year + 1, 4, nthSunday(year + 1, 4, 1), 0, 0, 0)
+        start: wallEpoch2(year, 9, nthSunday2(year, 9, 1), 0, 0, 0),
+        end: wallEpoch2(year + 1, 4, nthSunday2(year + 1, 4, 1), 0, 0, 0)
       };
     }
     case "IL": {
       return {
-        start: wallEpoch(year, 3, lastSunday(year, 3) - 2, 2, 0, 0),
-        end: wallEpoch(year, 10, lastSunday(year, 10), 2, 0, 0)
+        start: wallEpoch2(year, 3, lastSunday2(year, 3) - 2, 2, 0, 0),
+        end: wallEpoch2(year, 10, lastSunday2(year, 10), 2, 0, 0)
       };
     }
     default:
@@ -37924,16 +38471,18 @@ function chinaDstWindow(year) {
   return { startLocal: fmt(w[0], w[1], 2), endLocal: fmt(w[2], w[3], 1) };
 }
 function chinaDstInEffect(year, month, day, hour = 12, minute = 0) {
-  return dstActiveAtStdWall("CN1986", 8, wallEpoch(year, month, day, hour, minute));
+  return dstActiveAtStdWall("CN1986", 8, wallEpoch2(year, month, day, hour, minute));
 }
 function chinaDstAppliesToCivil(year, month, day, hour = 12, minute = 0) {
-  const civilMs = wallEpoch(year, month, day, hour, minute);
+  const civilMs = wallEpoch2(year, month, day, hour, minute);
   if (dstActiveAtStdWall("CN1986", 8, civilMs - HOUR)) return true;
   return dstActiveAtStdWall("CN1986", 8, civilMs);
 }
 var OBSERVER_AT_ORIGIN = new Observer(0, 0, 0);
 function mod360(x) {
-  return (x % 360 + 360) % 360;
+  const r = x % 360;
+  const v = r < 0 ? r + 360 : r;
+  return v === 0 ? 0 : v;
 }
 function meanSolarLongitude(jdUt) {
   const T = (jdUt - 2451545) / 36525;
@@ -37958,7 +38507,7 @@ function partsFromMs(ms) {
     second: d.getUTCSeconds()
   };
 }
-function pad2(n) {
+function pad22(n) {
   return String(n).padStart(2, "0");
 }
 function formatOffsetName(offsetHours) {
@@ -37966,32 +38515,27 @@ function formatOffsetName(offsetHours) {
   const abs = Math.abs(offsetHours);
   const h = Math.floor(abs + 1e-9);
   const m = Math.round((abs - h) * 60);
-  return `UTC${sign}${pad2(h)}:${pad2(m)}`;
-}
-function assertValidCivil(t) {
-  const { year, month, day, hour, minute, second } = t;
-  if (![year, month, day, hour, minute, second].every((n) => Number.isFinite(n))) {
-    throw new Error("\u65F6\u95F4\u5165\u53C2\u5FC5\u987B\u662F\u6709\u9650\u6570\u503C\uFF08year/month/day/hour\u2026\uFF09");
-  }
-  if (month < 1 || month > 12 || day < 1 || day > 31 || hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
-    throw new Error(`\u65F6\u95F4\u5165\u53C2\u8D8A\u754C\uFF1A${year}-${month}-${day} ${hour}:${minute}:${second}`);
-  }
-  const probe = new Date(Date.UTC(year, month - 1, day));
-  if (probe.getUTCFullYear() !== year || probe.getUTCMonth() !== month - 1 || probe.getUTCDate() !== day) {
-    throw new Error(`\u4E0D\u5B58\u5728\u7684\u65E5\u671F\uFF1A${year}-${month}-${day}`);
-  }
+  return `UTC${sign}${pad22(h)}:${pad22(m)}`;
 }
 function resolveTime(input) {
+  const v = validateDateTime(input, {
+    yearRange: "calendar",
+    label: "\u65F6\u95F4"
+  });
   const civil = {
-    year: input.year,
-    month: input.month,
-    day: input.day,
-    hour: input.hour,
-    minute: input.minute ?? 0,
-    second: input.second ?? 0
+    year: v.year,
+    month: v.month,
+    day: v.day,
+    hour: v.hour,
+    minute: v.minute,
+    second: v.second
   };
-  assertValidCivil(civil);
-  const warnings = [];
+  validateGeo(
+    input.lat ?? input.latitude,
+    input.lonEast ?? input.longitude ?? input.lon,
+    { required: false, label: "\u51FA\u751F\u5730" }
+  );
+  const warnings = [...v.warnings];
   const lonRaw = input.lon ?? input.lonEast ?? input.longitude;
   const latRaw = input.lat ?? input.latitude;
   const cityHit = lookupCityTimeZone(input.city) ?? lookupCityTimeZone(input.place);
@@ -38063,6 +38607,16 @@ function resolveTime(input) {
     tzFallback = true;
     warnings.push("\u672A\u8BC6\u522B\u51FA\u751F\u5730\u65F6\u533A\uFF0C\u5DF2\u6309\u4E1C\u516B\u533A\uFF08UTC+8\uFF09\u515C\u5E95\u2014\u2014\u8BF7\u8865\u9009\u57CE\u5E02\u6216\u624B\u52A8\u6307\u5B9A\u65F6\u533A");
   }
+  if (tzSource !== "explicit") {
+    const histCity = cityHit ?? tzCity;
+    const hist = resolveChinaHistoricTz(histCity, civil.year, civil.month, civil.day);
+    if (hist) {
+      if (hist.offset !== baseOffset) {
+        baseOffset = hist.offset;
+      }
+      warnings.push(hist.warning);
+    }
+  }
   let trueSolarBlockedByConflict = false;
   if (tzSource === "explicit" && longitude != null) {
     const lonOffsetMin = 4 * (longitude - baseOffset * 15);
@@ -38074,7 +38628,7 @@ function resolveTime(input) {
       longitude = null;
     }
   }
-  const civilMs = wallEpoch(civil.year, civil.month, civil.day, civil.hour, civil.minute, civil.second);
+  const civilMs = wallEpoch2(civil.year, civil.month, civil.day, civil.hour, civil.minute, civil.second);
   const rule = tzCity ? tzCity.dst : "none";
   let inDst = false;
   if (tzSource !== "explicit" && rule !== "none") {
@@ -38093,6 +38647,10 @@ function resolveTime(input) {
     if (rule === "EU" && y < 1996) warnings.push("EU \u590F\u4EE4\u65F6 1996 \u5E74\u624D\u7EDF\u4E00\u4E3A\u73B0\u884C\u8D77\u6B62\u89C4\u5219\uFF0C\u6B64\u5E74\u6309\u73B0\u884C\u89C4\u5219\u8FD1\u4F3C");
     if (rule === "US" && y < 2007) warnings.push("\u5317\u7F8E\u590F\u4EE4\u65F6 2007 \u5E74\u624D\u6539\u4E3A\u73B0\u884C\u8D77\u6B62\u89C4\u5219\uFF0C\u6B64\u5E74\u6309\u73B0\u884C\u89C4\u5219\u8FD1\u4F3C");
     if (rule === "AU" && y < 2008) warnings.push("\u6FB3\u6D32\u590F\u4EE4\u65F6 2008 \u5E74\u624D\u7EDF\u4E00\u4E3A\u73B0\u884C\u8D77\u6B62\u89C4\u5219\uFF0C\u6B64\u5E74\u6309\u73B0\u884C\u89C4\u5219\u8FD1\u4F3C");
+    if (rule.startsWith("TZ:")) {
+      const note = tzOverrideNote(rule.slice(3), y);
+      if (note) warnings.push(note);
+    }
   }
   const trueSolarTimeEnabled = input.trueSolarTime !== false;
   const stdMeridian = baseOffset * 15;
@@ -38121,7 +38679,7 @@ function resolveTime(input) {
       if (w && standardMs >= w.start && standardMs < w.end) {
         const s = partsFromMs(w.start);
         const e = partsFromMs(w.end);
-        const fmt = (p) => `${p.year}-${pad2(p.month)}-${pad2(p.day)} ${pad2(p.hour)}:${pad2(p.minute)}`;
+        const fmt = (p) => `${p.year}-${pad22(p.month)}-${pad22(p.day)} ${pad22(p.hour)}:${pad22(p.minute)}`;
         dstWindow = { startLocal: fmt(s), endLocal: fmt(e) };
         break;
       }
@@ -38164,24 +38722,29 @@ function utcParts(input) {
   return resolveTime(input).utc;
 }
 function formatCivilTime(t, withSeconds = false) {
-  const base = `${t.year}-${pad2(t.month)}-${pad2(t.day)} ${pad2(t.hour)}:${pad2(t.minute)}`;
-  return withSeconds ? `${base}:${pad2(t.second)}` : base;
+  const base = `${t.year}-${pad22(t.month)}-${pad22(t.day)} ${pad22(t.hour)}:${pad22(t.minute)}`;
+  return withSeconds ? `${base}:${pad22(t.second)}` : base;
 }
 function applyLateZi(t, mode) {
   if (mode !== "00" || t.hour !== 23) return { civil: t, applied: false };
   return { civil: { ...t, hour: 0 }, applied: true };
 }
-function civilForPaipan(input) {
-  const num = (v) => typeof v === "number" && Number.isFinite(v);
+function civilForPaipan(input, opts = {}) {
+  const v = validateDateTime(input, {
+    yearRange: opts.yearRange ?? "calendar",
+    label: opts.label ?? "\u6392\u76D8\u65F6\u95F4"
+  });
+  const num = (v2) => typeof v2 === "number" && Number.isFinite(v2);
   const hasTzHint = input.city != null || input.place != null || num(input.utcOffsetHours);
   const hasGeo = num(input.lat) || num(input.latitude) || num(input.lon) || num(input.lonEast) || num(input.longitude);
   const lateZiMode = input.lateZiMode === "00" ? "00" : "23";
   const raw = {
-    year: input.year,
-    month: input.month,
-    day: input.day,
-    hour: input.hour,
-    minute: input.minute ?? 0
+    year: v.year,
+    month: v.month,
+    day: v.day,
+    hour: v.hour,
+    minute: v.minute,
+    second: v.second
   };
   if (!hasTzHint && !hasGeo) {
     const z2 = applyLateZi(raw, lateZiMode);
@@ -38192,13 +38755,21 @@ function civilForPaipan(input) {
       crossedDay: false,
       lateZiApplied: z2.applied,
       lateZiMode,
-      resolution: null
+      resolution: null,
+      warnings: v.warnings
     };
   }
   const r = resolveTime(input);
   const useSolar = !!(r.trueSolar && r.trueSolarTimeEnabled);
   const t = useSolar ? r.trueSolar : r.standard;
-  const conv = { year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute };
+  const conv = {
+    year: t.year,
+    month: t.month,
+    day: t.day,
+    hour: t.hour,
+    minute: t.minute,
+    second: t.second
+  };
   const z = applyLateZi(conv, lateZiMode);
   const civil = z.civil;
   const crossedDay = civil.year !== raw.year || civil.month !== raw.month || civil.day !== raw.day;
@@ -38209,7 +38780,8 @@ function civilForPaipan(input) {
     crossedDay,
     lateZiApplied: z.applied,
     lateZiMode,
-    resolution: r
+    resolution: r,
+    warnings: v.warnings
   };
 }
 
@@ -38227,24 +38799,34 @@ function xunKongOf(ganZhi) {
   ];
 }
 function solarToSiZhu(input, opts = {}) {
-  const { year, month, day, hour } = input;
-  const minute = input.minute ?? 0;
+  const v = validateDateTime(input, {
+    yearRange: "calendar",
+    label: "\u8D77\u5366\u65F6\u95F4"
+  });
+  const year = v.year;
+  const month = v.month;
+  const day = v.day;
+  const hour = v.hour;
+  const minute = v.minute;
+  const second = v.second;
   let dstApplied = false;
   let stdYear = year;
   let stdMonth = month;
   let stdDay = day;
   let stdHour = hour;
   let stdMinute = minute;
+  let stdSecond = second;
   if (opts.applyChinaDst !== false && chinaDstAppliesToCivil(year, month, day, hour, minute)) {
-    const d = new Date(Date.UTC(year, month - 1, day, hour, minute, 0) - 36e5);
+    const d = new Date(utcMsOf(year, month, day, hour, minute, second) - 36e5);
     stdYear = d.getUTCFullYear();
     stdMonth = d.getUTCMonth() + 1;
     stdDay = d.getUTCDate();
     stdHour = d.getUTCHours();
     stdMinute = d.getUTCMinutes();
+    stdSecond = d.getUTCSeconds();
     dstApplied = true;
   }
-  const lunar = import_lunar_javascript.Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, 0).getLunar();
+  const lunar = import_lunar_javascript.Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, stdSecond).getLunar();
   const yearGanZhi = lunar.getYearInGanZhiExact();
   const monthGanZhi = lunar.getMonthInGanZhiExact();
   const dayGanZhi = lunar.getDayInGanZhiExact();
@@ -38271,9 +38853,14 @@ function solarToSiZhu(input, opts = {}) {
   };
 }
 function getDayCalendar(input) {
-  const { year, month, day, hour } = input;
-  const minute = input.minute ?? 0;
-  const lunar = import_lunar_javascript.Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  const v = validateDateTime(input, {
+    yearRange: "calendar",
+    label: "\u65E5\u5386\u65F6\u95F4"
+  });
+  const { year, month, day, hour } = v;
+  const minute = v.minute;
+  const second = v.second;
+  const lunar = import_lunar_javascript.Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
   const prev = lunar.getPrevJieQi();
   const next = lunar.getNextJieQi();
   const nextAny = next;
@@ -38294,6 +38881,10 @@ function getDayCalendar(input) {
   };
 }
 function listJieqiInRange(from, days) {
+  validateDate(from.year, from.month, from.day, { label: "\u8282\u6C14\u533A\u95F4\u8D77\u70B9" });
+  if (!Number.isInteger(days) || days < 1 || days > 366) {
+    throw new InvalidNumberError(`\u8282\u6C14\u533A\u95F4\u7684\u5929\u6570\u5FC5\u987B\u662F 1\u2013366 \u7684\u6574\u6570\uFF0C\u6536\u5230 ${showValue(days)}`);
+  }
   const fromDate = new Date(from.year, from.month - 1, from.day);
   const toDate = new Date(fromDate.getTime() + days * 864e5);
   const items = [];
@@ -38450,6 +39041,9 @@ function toApparentSolarTime(date, longitude, standardMeridian = 120) {
 }
 function castByTime(dateInput, options = {}) {
   const original = typeof dateInput === "number" ? new Date(dateInput) : dateInput;
+  if (!(original instanceof Date) || !Number.isFinite(original.getTime())) {
+    throw new InvalidDateError(`\u8D77\u5366\u65F6\u523B\u65E0\u6548\uFF1A\u6536\u5230 ${String(dateInput)}\uFF08\u9700\u8981\u6709\u6548\u7684 Date \u6216\u6BEB\u79D2\u65F6\u95F4\u6233\uFF09`);
+  }
   const hasTzLayer = options.city != null || options.place != null || options.utcOffsetHours != null || [options.lat, options.latitude, options.lon, options.lonEast].some((v) => typeof v === "number" && Number.isFinite(v));
   if (hasTzLayer) {
     const eff = civilForPaipan({
@@ -38470,7 +39064,7 @@ function castByTime(dateInput, options = {}) {
       trueSolarTime: options.alreadyApparent ? false : void 0,
       tzPolicy: options.tzPolicy,
       lateZiMode: options.lateZiMode
-    });
+    }, { yearRange: "calendar", label: "\u8D77\u5366\u65F6\u95F4" });
     const c = eff.civil;
     const core2 = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, 0, eff.lateZiMode);
     const shown = new Date(c.year, c.month - 1, c.day, c.hour, c.minute ?? 0, 0);
@@ -38479,7 +39073,8 @@ function castByTime(dateInput, options = {}) {
       apparentSolarTime: shown,
       civil: c,
       dayBoundary: lateZiLabel(eff.lateZiMode),
-      timeWarnings: eff.resolution ? eff.resolution.warnings : []
+      timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+      warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings)
     };
   }
   const apparent = options.longitude !== void 0 && !options.alreadyApparent ? toApparentSolarTime(original, options.longitude) : new Date(original.getTime());
@@ -39018,6 +39613,7 @@ function paipan(input) {
     day: input.day,
     hour: input.hour,
     minute: input.minute,
+    second: input.second,
     city: input.city,
     place: input.place,
     lat: input.lat,
@@ -39028,8 +39624,9 @@ function paipan(input) {
     utcOffsetHours: input.utcOffsetHours,
     trueSolarTime: input.trueSolarTime,
     tzPolicy: input.tzPolicy,
-    lateZiMode: input.lateZiMode
-  });
+    lateZiMode: input.lateZiMode,
+    strict: input.strict
+  }, { yearRange: "calendar", label: "\u8D77\u5366\u65F6\u95F4" });
   const sz = solarToSiZhu(
     { ...input, ...eff.civil },
     // 时区层已经把夏令时扣过一遍了，不能再扣第二次
@@ -39137,6 +39734,7 @@ function paipan(input) {
     civil: eff.civil,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     timeApplied: eff.applied,
     usedTrueSolar: eff.usedTrueSolar
   };
@@ -39914,11 +40512,16 @@ function buildPillar(ganZhi, dayGan, naYin, isDay) {
   };
 }
 function paiBazi(input) {
-  const eff = civilForPaipan(input);
+  const gender = normalizeGender(input.gender, { required: true });
+  const eff = civilForPaipan(input, { yearRange: "calendar", label: "\u51FA\u751F\u65F6\u95F4" });
   const birth = eff.civil;
-  const { year, month, day, hour, gender } = { ...input, ...birth };
+  const year = birth.year;
+  const month = birth.month;
+  const day = birth.day;
+  const hour = birth.hour;
   const minute = birth.minute ?? 0;
-  const lunar = import_lunar_javascript3.Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  const second = birth.second ?? 0;
+  const lunar = import_lunar_javascript3.Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
   const ec = lunar.getEightChar();
   ec.setSect(1);
   const yearGZ = lunar.getYearInGanZhiExact();
@@ -39945,7 +40548,7 @@ function paiBazi(input) {
   const yearYang = GAN_YIN_YANG[yearGan] === "\u9633";
   const forward = gender === "\u7537" ? yearYang : !yearYang;
   const yun = ec.getYun(genderCode);
-  const raw = yun.getDaYun(11);
+  const raw = yun.getDaYun(21);
   const list = [];
   for (let i = 1; i < raw.length; i++) {
     const d = raw[i];
@@ -39981,7 +40584,8 @@ function paiBazi(input) {
     },
     wuXingCount: count,
     dayBoundary: lateZiLabel(eff.lateZiMode),
-    timeWarnings: eff.resolution ? eff.resolution.warnings : []
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings)
   };
 }
 function liuNianGanZhiSequence(fromYear, years) {
@@ -41009,7 +41613,7 @@ function meridianFromClock(hour, minute = 0) {
   };
 }
 function getMeridianByTime(input) {
-  const eff = civilForPaipan(input);
+  const eff = civilForPaipan(input, { yearRange: "calendar", label: "\u6D41\u6CE8\u65F6\u95F4" });
   const c = eff.civil;
   const info = meridianFromClock(c.hour, c.minute ?? 0);
   return {
@@ -41017,6 +41621,7 @@ function getMeridianByTime(input) {
     civil: c,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     applied: eff.applied,
     usedTrueSolar: eff.usedTrueSolar
   };
@@ -41101,11 +41706,13 @@ function meiHuaByTime(dateInput, options = {}) {
   return build(r.upperNumber, r.lowerNumber, r.movingPosition, r);
 }
 function meiHuaByNumbers(a, b) {
+  const av = validateCastNumber(a, "\u4E0A\u5366\u6570");
+  const bv = validateCastNumber(b, "\u4E0B\u5366\u6570");
   const norm8 = (n) => n % 8 === 0 ? 8 : ((n - 1) % 8 + 8) % 8 + 1;
   const norm6 = (n) => n % 6 === 0 ? 6 : ((n - 1) % 6 + 6) % 6 + 1;
-  const upperNum = norm8(a);
-  const lowerNum = norm8(b);
-  const moving = norm6(a + b);
+  const upperNum = norm8(av);
+  const lowerNum = norm8(bv);
+  const moving = norm6(av + bv);
   return build(upperNum, lowerNum, moving, null);
 }
 
@@ -41678,10 +42285,11 @@ function shiJiaGenerate(hourStem, hourBranch, juNumber, dun, fourPillars, solarT
 
 // src/qimen.ts
 function paiQiMen(input) {
-  const eff = civilForPaipan(input);
+  const eff = civilForPaipan(input, { yearRange: "calendar", label: "\u8D77\u5C40\u65F6\u95F4" });
   const { year, month, day, hour } = eff.civil;
   const minute = eff.civil.minute ?? 0;
-  const lunar = import_lunar_javascript5.Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  const second = eff.civil.second ?? 0;
+  const lunar = import_lunar_javascript5.Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
   const y = lunar.getYearInGanZhiExact();
   const m = lunar.getMonthInGanZhiExact();
   const d = lunar.getDayInGanZhiExact();
@@ -41716,6 +42324,7 @@ function paiQiMen(input) {
     civil: eff.civil,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     _chart: chart
   };
 }
@@ -44064,26 +44673,43 @@ function engine() {
   return _engine;
 }
 function toDms(lon) {
-  const norm = (lon % 360 + 360) % 360;
-  const signIndex2 = Math.floor(norm / 30);
+  const norm = mod3602(lon);
+  let signIndex2 = Math.floor(norm / 30);
   const inSign = norm - signIndex2 * 30;
-  const degree = Math.floor(inSign);
-  const minute = Math.round((inSign - degree) * 60);
+  let degree = Math.floor(inSign);
+  let minute = Math.round((inSign - degree) * 60);
   if (minute >= 60) {
-    return { degree: degree + 1 >= 30 ? 0 : degree + 1, minute: 0, lon: norm };
+    minute = 0;
+    degree += 1;
+    if (degree >= 30) {
+      degree = 0;
+      signIndex2 = (signIndex2 + 1) % 12;
+    }
   }
-  return { degree, minute, lon: norm };
+  const rounded = mod3602(signIndex2 * 30 + degree + minute / 60);
+  return { degree, minute, lon: rounded };
+}
+function mod3602(x) {
+  const r = x % 360;
+  const v = r < 0 ? r + 360 : r;
+  return v === 0 ? 0 : v;
 }
 function normalizeAstroInput(input) {
   const latRaw = input.lat ?? input.latitude;
   const lonRaw = input.lonEast ?? input.longitude;
+  const v = validateDateTime(input, {
+    yearRange: "ephemeris",
+    label: "\u51FA\u751F\u65F6\u95F4"
+  });
+  const hasCity = !!(input.city ?? input.place);
+  const geo = validateGeo(latRaw, lonRaw, { required: !hasCity, label: "\u51FA\u751F\u5730" });
   const time = resolveTime({
-    year: input.year,
-    month: input.month,
-    day: input.day,
-    hour: input.hour,
-    minute: input.minute,
-    second: input.second,
+    year: v.year,
+    month: v.month,
+    day: v.day,
+    hour: v.hour,
+    minute: v.minute,
+    second: v.second,
     city: input.city ?? input.place,
     place: input.place,
     lat: latRaw,
@@ -44091,24 +44717,25 @@ function normalizeAstroInput(input) {
     utcOffsetHours: input.utcOffsetHours,
     trueSolarTime: input.trueSolarTime
   });
-  const lat = latRaw ?? time.latitude;
-  const lonEast = lonRaw ?? time.longitude;
+  const lat = geo ? geo.lat : time.latitude;
+  const lonEast = geo ? geo.lon : time.longitude;
   if (lat == null || lonEast == null || !Number.isFinite(lat) || !Number.isFinite(lonEast)) {
     throw new Error("\u5360\u661F\u6392\u76D8\u7F3A\u5C11\u6709\u6548\u7684\u51FA\u751F\u5730\u7EAC\u5EA6/\u7ECF\u5EA6\uFF08lat/latitude\u3001lonEast/longitude\uFF09");
   }
   return {
-    year: input.year,
-    month: input.month,
-    day: input.day,
-    hour: input.hour,
-    minute: input.minute ?? 0,
-    second: input.second ?? 0,
+    year: v.year,
+    month: v.month,
+    day: v.day,
+    hour: v.hour,
+    minute: v.minute,
+    second: v.second,
     lat,
     lonEast,
     // 生效偏移（含夏令时）：vedic 等直接吃这个字段的调用方因此自动拿到正确时区
     utcOffsetHours: time.utcOffsetHours,
     place: input.place ?? "",
-    time
+    time,
+    warnings: v.warnings
   };
 }
 function toUtParts(input) {
@@ -44122,7 +44749,9 @@ function paipanXingpan(rawInput) {
   const jdUt = julianDay(ut.y, ut.mo, ut.day, ut.h, ut.mi, ut.s);
   const chart = eng.chart(ut.y, ut.mo, ut.day, ut.h, ut.mi, ut.s, input.lat, input.lonEast, "whole_sign");
   const day = isDayChart(eng, jdUt, input.lat, input.lonEast);
-  const ascIndex = Math.floor((chart.angles.asc % 360 + 360) % 360 / 30);
+  const ascDms = toDms(chart.angles.asc);
+  const ascIndex = Math.floor(mod3602(ascDms.lon) / 30);
+  const warnings = mergeWarnings(input.warnings, highLatitudeWarnings(input.lat));
   const bodies = {};
   for (const id of PLANET_ORDER) {
     const raw = chart.bodies[id];
@@ -44189,7 +44818,8 @@ function paipanXingpan(rawInput) {
     bodies,
     houses,
     dignities: dignities2,
-    lots: { fortune: toDms(lot2.fortune), spirit: toDms(lot2.spirit) }
+    lots: { fortune: toDms(lot2.fortune), spirit: toDms(lot2.spirit) },
+    warnings
   };
 }
 
@@ -44451,14 +45081,18 @@ var VARA_NAMES = [
   { zh: "\u91D1\u66DC\u65E5", sa: "Shukravara", lord: "venus" },
   { zh: "\u571F\u66DC\u65E5", sa: "Shanivara", lord: "saturn" }
 ];
-var mod3602 = (x) => (x % 360 + 360) % 360;
-var signOf = (lon) => Math.floor(mod3602(lon) / 30);
+var mod3603 = (x) => {
+  const r = x % 360;
+  const v = r < 0 ? r + 360 : r;
+  return v === 0 ? 0 : v;
+};
+var signOf = (lon) => Math.floor(mod3603(lon) / 30);
 var SIGN_ZH2 = ["\u767D\u7F8A", "\u91D1\u725B", "\u53CC\u5B50", "\u5DE8\u87F9", "\u72EE\u5B50", "\u5904\u5973", "\u5929\u79E4", "\u5929\u874E", "\u5C04\u624B", "\u6469\u7FAF", "\u6C34\u74F6", "\u53CC\u9C7C"];
 function navamshaSign(lon) {
-  return Math.floor(mod3602(lon) / (30 / 9)) % 12;
+  return Math.floor(mod3603(lon) / (30 / 9)) % 12;
 }
 function dasamsaSign(lon) {
-  const l = mod3602(lon);
+  const l = mod3603(lon);
   const s = Math.floor(l / 30);
   const into = l - s * 30;
   const k = Math.floor(into / 3);
@@ -44466,7 +45100,7 @@ function dasamsaSign(lon) {
   return (base + k) % 12;
 }
 function saptamsaSign(lon) {
-  const l = mod3602(lon);
+  const l = mod3603(lon);
   const s = Math.floor(l / 30);
   const into = l - s * 30;
   const k = Math.floor(into / (30 / 7));
@@ -44482,14 +45116,14 @@ function dignityOf(g, s) {
 }
 function nakshatraOf(lon) {
   const span = 360 / 27;
-  const into = mod3602(lon) / span;
+  const into = mod3603(lon) / span;
   const index = Math.floor(into) % 27;
   const frac = into - Math.floor(into);
   const info = NAKSHATRAS[index];
   return { index, zh: info.zh, sa: info.sa, lord: info.lord, pada: Math.floor(frac * 4) + 1, elapsed: frac };
 }
 function makeVarga(varga, vargaZh, lagnaLon, partSpan, lagnaSignIndex, signOfBody, present) {
-  const into = mod3602(lagnaLon) % 30;
+  const into = mod3603(lagnaLon) % 30;
   const degInSign = into % partSpan * (30 / partSpan);
   const lagnaDms = toDms2(lagnaSignIndex * 30 + degInSign);
   const houses = Array.from({ length: 12 }, (_, i) => {
@@ -44519,7 +45153,7 @@ function makeVarga(varga, vargaZh, lagnaLon, partSpan, lagnaSignIndex, signOfBod
   };
 }
 function panchangaOf(sunLon, moonLon, clock) {
-  const elong = mod3602(moonLon - sunLon);
+  const elong = mod3603(moonLon - sunLon);
   const tithiNum = Math.floor(elong / 12) + 1;
   const isShukla = tithiNum <= 15;
   const paksha = isShukla ? "shukla" : "krishna";
@@ -44533,7 +45167,7 @@ function panchangaOf(sunLon, moonLon, clock) {
     pakshaZh: isShukla ? "\u767D\u5206\uFF08\u4E0A\u5F26\u534A\u6708\uFF09" : "\u9ED1\u5206\uFF08\u4E0B\u5F26\u534A\u6708\uFF09",
     elapsed: elong % 12 / 12
   };
-  const sum = mod3602(sunLon + moonLon);
+  const sum = mod3603(sunLon + moonLon);
   const yogaSpan = 360 / 27;
   const yogaIndex = Math.floor(sum / yogaSpan) % 27;
   const yoga = {
@@ -44649,8 +45283,7 @@ var SPECIAL_DRISHTI = {
 };
 function paipanVedic(rawInput) {
   const input = normalizeAstroInput(rawInput);
-  const d = new Date(Date.UTC(input.year, input.month - 1, input.day, input.hour, input.minute, input.second));
-  d.setUTCMinutes(d.getUTCMinutes() - input.utcOffsetHours * 60);
+  const d = new Date(utcMsOf(input.year, input.month, input.day, input.hour, input.minute, input.second) - input.utcOffsetHours * 36e5);
   const y = d.getUTCFullYear(), mo = d.getUTCMonth() + 1, day = d.getUTCDate();
   const h = d.getUTCHours(), mi = d.getUTCMinutes(), s = d.getUTCSeconds();
   const eng = engine2();
@@ -44663,23 +45296,23 @@ function paipanVedic(rawInput) {
   try {
     const sunTrop = eng.position("sun", jdUt, { zodiac: "tropical" });
     const sunSid = eng.position("sun", jdUt, { zodiac: "sidereal:lahiri" });
-    ayan = mod3602(sunTrop.lon - sunSid.lon);
+    ayan = mod3603(sunTrop.lon - sunSid.lon);
   } catch {
     ayan = 0;
   }
-  const ascLon = mod3602(chart.angles.asc);
+  const ascLon = mod3603(chart.angles.asc);
   const ascDms = toDms2(ascLon);
   const ascSignIndex = signOf(ascDms.lon);
   const bodies = {};
   const sidLon = {};
   for (const id of ["sun", "moon", "mars", "mercury", "jupiter", "venus", "saturn"]) {
     const p = chart.bodies[id];
-    if (p) sidLon[id] = mod3602(p.lon);
+    if (p) sidLon[id] = mod3603(p.lon);
   }
   const rahuP = chart.bodies["mean_node"];
   if (rahuP) {
-    sidLon.rahu = mod3602(rahuP.lon);
-    sidLon.ketu = mod3602(rahuP.lon + 180);
+    sidLon.rahu = mod3603(rahuP.lon);
+    sidLon.ketu = mod3603(rahuP.lon + 180);
   }
   for (const id of GRAHA_ORDER) {
     const lon = sidLon[id];
@@ -44740,7 +45373,7 @@ function paipanVedic(rawInput) {
   }
   let isNewMoonConj = false;
   if (sidLon.sun != null && sidLon.moon != null) {
-    const elong = mod3602(sidLon.moon - sidLon.sun);
+    const elong = mod3603(sidLon.moon - sidLon.sun);
     const sepFromConj = Math.min(elong, 360 - elong);
     isNewMoonConj = sepFromConj <= 6;
   }
@@ -44871,7 +45504,8 @@ function paipanVedic(rawInput) {
     dasamsa,
     saptamsa,
     panchanga,
-    isNewMoonConj
+    isNewMoonConj,
+    warnings: mergeWarnings(input.warnings, highLatitudeWarnings(input.lat))
   };
 }
 
@@ -44882,29 +45516,55 @@ function engine3() {
   return _engine3;
 }
 function natalJdUt(i) {
-  const d = new Date(Date.UTC(i.year, i.month - 1, i.day, i.hour, i.minute ?? 0, i.second ?? 0));
-  d.setUTCMinutes(d.getUTCMinutes() - i.utcOffsetHours * 60);
+  const d = new Date(utcMsOf(i.year, i.month, i.day, i.hour, i.minute ?? 0, i.second ?? 0) - i.utcOffsetHours * 36e5);
   return julianDay(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds());
 }
 var ZH = (id) => Object.prototype.hasOwnProperty.call(PLANET_ZH, id) ? PLANET_ZH[id] : id;
 function normalizeTiming(input) {
-  if ("birth" in input && input.birth) return input;
-  const f = input;
-  const lat = f.lat ?? f.latitude;
-  const lonEast = f.lonEast ?? f.longitude;
-  return {
-    birth: {
+  let birth;
+  let at;
+  if ("birth" in input && input.birth) {
+    birth = input.birth;
+    at = input.at;
+  } else {
+    const f = input;
+    birth = {
       year: f.year,
       month: f.month,
       day: f.day,
       hour: f.hour,
       minute: f.minute,
       second: f.second,
-      lat,
-      lonEast,
+      lat: f.lat ?? f.latitude,
+      lonEast: f.lonEast ?? f.longitude,
       utcOffsetHours: f.utcOffsetHours ?? 8
+    };
+  }
+  const v = validateDateTime(birth, {
+    yearRange: "ephemeris",
+    label: "\u51FA\u751F\u65F6\u95F4"
+  });
+  const geo = validateGeo(birth.lat, birth.lonEast, { required: true, label: "\u51FA\u751F\u5730" });
+  const off = birth.utcOffsetHours;
+  if (typeof off !== "number" || !Number.isFinite(off) || Math.abs(off) > 14) {
+    throw new OutOfRangeError(`\u65F6\u533A\u504F\u79FB utcOffsetHours \u5FC5\u987B\u662F -14 \u81F3 +14 \u7684\u6570\u503C\uFF0C\u6536\u5230 ${showValue(off)}`);
+  }
+  if (at !== void 0 && (!(at instanceof Date) || !Number.isFinite(at.getTime()))) {
+    throw new InvalidDateError("\u76EE\u6807\u65F6\u523B at \u4E0D\u662F\u6709\u6548 Date");
+  }
+  return {
+    birth: {
+      ...birth,
+      year: v.year,
+      month: v.month,
+      day: v.day,
+      hour: v.hour,
+      minute: v.minute,
+      second: v.second,
+      lat: geo.lat,
+      lonEast: geo.lon
     },
-    at: void 0
+    at
   };
 }
 function guDianTuiYun(rawInput) {
@@ -45435,6 +46095,9 @@ function engine4() {
 var HOME_LAT = 41.8057;
 var HOME_LON = 123.4328;
 function shouyeTianxiang(now = /* @__PURE__ */ new Date(), lookaheadDays = 35) {
+  if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw new InvalidDateError("\u5929\u8C61\u65F6\u523B\u65E0\u6548\uFF1A\u9700\u8981\u4E00\u4E2A\u6709\u6548 Date");
+  }
   const eng = engine4();
   const jd = julianDay(
     now.getUTCFullYear(),
@@ -45846,7 +46509,7 @@ function engine5() {
   return _engine5;
 }
 var DEG2 = Math.PI / 180;
-function mod3603(x) {
+function mod3604(x) {
   return (x % 360 + 360) % 360;
 }
 var DEFAULT_OBS = { lat: 39.9042, lonEast: 116.4074 };
@@ -45861,7 +46524,7 @@ function buildFrame(now, frame) {
   const ordered = MANSIONS.map((meta) => {
     const v = eqjVector(meta.star.ra0, meta.star.dec0);
     const vr = RotateVector(rot, v);
-    const lon = frame === "eqd" ? mod3603(EquatorFromVector(vr).ra * 15) : mod3603(SphereFromVector(vr).lon);
+    const lon = frame === "eqd" ? mod3604(EquatorFromVector(vr).ra * 15) : mod3604(SphereFromVector(vr).lon);
     return { meta, lon };
   });
   ordered.sort((a, b) => a.lon - b.lon);
@@ -45878,13 +46541,16 @@ function locate(frame, lon) {
   const cur = arr[idx];
   const next = arr[(idx + 1) % arr.length];
   const boundaryLon = cur.lon;
-  const span = mod3603(next.lon - cur.lon);
-  let ruDu = mod3603(lon - cur.lon);
+  const span = mod3604(next.lon - cur.lon);
+  let ruDu = mod3604(lon - cur.lon);
   if (ruDu > span) ruDu = span;
   return { meta: cur.meta, ruDu, boundaryLon };
 }
 var INV_NOTE = /* @__PURE__ */ new Set(["\u89DC", "\u53C2"]);
 function mansionSnapshot(now = /* @__PURE__ */ new Date(), frame = "eqd", bodies = SEVEN, observer = DEFAULT_OBS) {
+  if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw new InvalidDateError("\u661F\u5BBF\u5FEB\u7167\u65F6\u523B\u65E0\u6548\uFF1A\u9700\u8981\u4E00\u4E2A\u6709\u6548 Date");
+  }
   const eng = engine5();
   const jd = julianDay(
     now.getUTCFullYear(),
@@ -45900,7 +46566,7 @@ function mansionSnapshot(now = /* @__PURE__ */ new Date(), frame = "eqd", bodies
   for (const id of bodies) {
     const raw = chart.bodies[id];
     if (!raw) continue;
-    const lon = mod3603(frame === "eqd" ? raw.ra : raw.lon);
+    const lon = mod3604(frame === "eqd" ? raw.ra : raw.lon);
     const loc = locate(fr, lon);
     out.push({
       id,
@@ -45918,7 +46584,7 @@ function mansionSnapshot(now = /* @__PURE__ */ new Date(), frame = "eqd", bodies
   const sun = byId.get("sun");
   const moon = byId.get("moon");
   const gastHours = SiderealTime(now);
-  const lmst = mod3603(gastHours * 15 + observer.lonEast);
+  const lmst = mod3604(gastHours * 15 + observer.lonEast);
   const merLon = frame === "eqd" ? lmst : eqToEclApprox(now, lmst, observer);
   const meridian = locate(fr, merLon).meta.name;
   const posInSorted = /* @__PURE__ */ new Map();
@@ -45950,7 +46616,7 @@ function eqToEclApprox(now, lmstDeg, _obs) {
   const eqd = new Vector(Math.cos(a), Math.sin(a), 0, t);
   const back = RotateVector(Rotation_EQD_EQJ(t), eqd);
   const ect = RotateVector(Rotation_EQJ_ECT(t), back);
-  return mod3603(SphereFromVector(ect).lon);
+  return mod3604(SphereFromVector(ect).lon);
 }
 function riChan(now = /* @__PURE__ */ new Date(), frame = "eqd") {
   return mansionSnapshot(now, frame, ["sun"]).bodies[0];
@@ -46399,7 +47065,8 @@ function toPalaces(a) {
   return palaces;
 }
 function buildZiwei(rawInput) {
-  const eff = civilForPaipan(rawInput);
+  const gender = normalizeGender(rawInput.gender, { required: true });
+  const eff = civilForPaipan(rawInput, { yearRange: "ziwei", label: "\u51FA\u751F\u65F6\u95F4" });
   const input = {
     ...rawInput,
     year: eff.civil.year,
@@ -46408,7 +47075,7 @@ function buildZiwei(rawInput) {
     hour: eff.civil.hour,
     minute: eff.civil.minute
   };
-  const { gender, fixLeap = true } = input;
+  const { fixLeap = true } = input;
   const { solar: effectiveSolarDate, timeIndex, displayTimeIndex, lateZi } = effectiveBirth(input);
   const inputSolar = `${input.year}-${input.month}-${input.day}`;
   const a = import_iztro.astro.bySolar(effectiveSolarDate, timeIndex, gender, fixLeap, "zh-CN");
@@ -46434,6 +47101,7 @@ function buildZiwei(rawInput) {
       yearGanZhiNote: `\u5E74\u67F1\uFF1A${ygz ?? ""}\uFF08\u519C\u5386\u5E74\uFF0C\u6625\u8282\u4E3A\u754C\uFF1B\u56DB\u67F1\u53E6\u6709\u7ACB\u6625\u53E3\u5F84\uFF09`,
       dayBoundary: lateZiLabel(eff.lateZiMode),
       timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+      warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
       monthGanZhi: mgz ?? "",
       dayGanZhi: dgz ?? "",
       timeGanZhi: tgz ?? "",
@@ -48015,12 +48683,12 @@ function listSpreads(deckKind) {
   const all = Array.from(SPREAD_REGISTRY.values());
   return deckKind ? all.filter((s) => s.deckKinds.includes(deckKind)) : all;
 }
-function pad22(n) {
+function pad23(n) {
   return String(n).padStart(2, "0");
 }
 function defaultNow() {
   const d = /* @__PURE__ */ new Date();
-  return `${d.getFullYear()}-${pad22(d.getMonth() + 1)}-${pad22(d.getDate())}T${pad22(d.getHours())}:${pad22(d.getMinutes())}`;
+  return `${d.getFullYear()}-${pad23(d.getMonth() + 1)}-${pad23(d.getDate())}T${pad23(d.getHours())}:${pad23(d.getMinutes())}`;
 }
 function drawSpread(deck, spread, opts = {}) {
   if (!spread.deckKinds.includes(deck.kind)) {
@@ -48094,6 +48762,7 @@ export {
   CARDS_DISCLAIMER,
   CARDS_GENERATOR,
   CHANG_SHENG,
+  CHINA_TZ_UNIFIED_DATE,
   CITY_TZ_TABLE,
   DIGNITY_ZH,
   GRAHA_ORDER,
@@ -48101,6 +48770,11 @@ export {
   GRAHA_SHORT,
   GRAHA_ZH,
   GU_DU_ZHOUTIAN,
+  InputValidationError,
+  InvalidDateError,
+  InvalidGenderError,
+  InvalidNumberError,
+  InvalidTimeError,
   LIU_CHONG,
   LIU_HAI,
   LIU_HE,
@@ -48108,6 +48782,7 @@ export {
   MANSION_BY_NAME,
   BAGUA_WUXING2 as MEIHUA_BAGUA_WUXING,
   NAKSHATRAS,
+  OutOfRangeError,
   PILLAR_KEYS,
   PLANET_ORDER,
   PLANET_ZH,
@@ -48122,6 +48797,7 @@ export {
   SISHOU_COLOR,
   WUXING_KE,
   WUXING_SHENG,
+  YEAR_RANGES,
   ZHOUYI_META,
   analyzeNajia,
   applyLateZi,
@@ -48139,6 +48815,7 @@ export {
   chinaDstWindow,
   civilForPaipan,
   computeYuanJiChou,
+  daysInMonth,
   drawCards,
   drawOHPair,
   drawSingle,
@@ -48169,8 +48846,11 @@ export {
   guDianTuiYun,
   guDuToDeg,
   haversineKm,
+  highLatitudeWarnings,
   hourToTimeIndex,
   huaJinTui,
+  isChinaCity,
+  isLeapYear,
   lateZiLabel,
   lingTaiOf,
   listCityTimeZones,
@@ -48191,11 +48871,13 @@ export {
   mansionSnapshot,
   meiHuaByNumbers,
   meiHuaByTime,
+  mergeWarnings,
   meridianFromClock,
   moonPhaseName,
   naYinOf,
   natalUnits,
   nearestCityByCoords,
+  normalizeGender,
   offsetFromLongitude,
   paiBazi,
   paiQiMen,
@@ -48208,18 +48890,25 @@ export {
   registerDeck,
   registerSpread,
   relationOf,
+  resolveChinaHistoricTz,
   resolveGua,
   resolveTime,
   riChan,
   secureRandomInt,
   shichenIndex,
   shouyeTianxiang,
+  showValue,
   shuffle,
   solarToSiZhu,
   tenGod,
   toApparentSolarTime,
   toSimplified,
+  utcMsOf,
   utcParts,
+  validateCastNumber,
+  validateDate,
+  validateDateTime,
+  validateGeo,
   wangShuaiEvidence,
   wuXingToLiuQin,
   yueLi,

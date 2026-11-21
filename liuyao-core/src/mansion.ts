@@ -18,6 +18,7 @@
 import { Engine } from 'caelus';
 import { embeddedData } from 'caelus/data-embedded';
 import { julianDay } from 'caelus';
+import { InvalidDateError } from './validate.js';
 import {
   Vector, MakeTime, RotationMatrix, RotateVector,
   Rotation_EQJ_EQD, Rotation_EQJ_ECT, Rotation_EQD_EQJ,
@@ -159,6 +160,10 @@ export function mansionSnapshot(
   bodies: PlanetId[] = SEVEN,
   observer: MansionObserver = DEFAULT_OBS,
 ): MansionSnapshot {
+  // 统一校验：NaN / 非 Date 的快照时刻会静默算成无效儒略日
+  if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw new InvalidDateError('星宿快照时刻无效：需要一个有效 Date');
+  }
   const eng = engine();
   const jd = julianDay(
     now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate(),

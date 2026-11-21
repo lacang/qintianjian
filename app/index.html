@@ -9,18 +9,175 @@
 <meta name="apple-mobile-web-app-title" content="钦天监" />
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="stylesheet" href="./css/style.css?v=133" />
-<link rel="stylesheet" href="./css/tibet.css?v=133" />
-<link rel="stylesheet" href="./css/tarot.css?v=133" />
-<link rel="stylesheet" href="./css/vedic.css?v=133" />
-<link rel="stylesheet" href="./css/zhuyou.css?v=133" />
 <link rel="stylesheet" href="./css/place.css?v=133" />
 <link rel="stylesheet" href="./css/planet-hour.css?v=133" />
-<link rel="stylesheet" href="./css/yangzhai.css?v=133" />
-<link rel="stylesheet" href="./css/classic.css?v=133" />
+<!-- P0-1：视图专属样式（tibet/tarot/vedic/zhuyou/yangzhai/classic）改为随视图懒加载，
+     首屏少 6 个请求 / 108KB。见 js/main.js 的 VIEW_CSS + loadViewCss()。
+     注：先于 style.css 加载会在少数页面产生一次重排，这里保持 style.css 在最前。 -->
+<!-- P0-1：首屏必需模块预声明（省掉 import 链的瀑布式往返；只声明核心壳，视图模块不预载） -->
+<link rel="modulepreload" href="./js/boot.js?v=133" />
+<link rel="modulepreload" href="./js/errors.js?v=133" />
+<link rel="modulepreload" href="./js/state.js?v=133" />
+<link rel="modulepreload" href="./js/qintian.js?v=133" />
+<link rel="modulepreload" href="./js/cast.js?v=133" />
+<link rel="modulepreload" href="./js/ritual.js?v=133" />
+<link rel="modulepreload" href="./js/homecards.js?v=133" />
+<link rel="modulepreload" href="./vendor/liuyao-core.js?v=133" />
+<link rel="modulepreload" href="./js/skyview.js?v=133" />
+<style id="qt-boot-style">
+/* 错误边界样式（内联：css/style.css 也可能 404，报错面板不能依赖它） */
+body.qt-lock { overflow: hidden; }
+.qt-err { margin: 12px 0; padding: 14px 16px; border-radius: 14px; background: rgba(255, 78, 78, .07);
+  border: 1px solid rgba(255, 96, 96, .38); color: #f2e9e4; font-size: 13px; line-height: 1.66; }
+.qt-err-head { display: flex; align-items: center; gap: 8px; font-size: 14.5px; color: #ff9d9d; margin-bottom: 6px; }
+.qt-err-ico { font-size: 15px; }
+.qt-err-msg { color: #e8ded8; }
+.qt-err-raw { margin-top: 8px; color: #9a8f89; font-size: 11.5px; word-break: break-all; }
+.qt-err-raw code { background: rgba(255,255,255,.06); padding: 1px 5px; border-radius: 4px; font-size: 11px; }
+.qt-err-acts { display: flex; gap: 8px; margin-top: 11px; flex-wrap: wrap; }
+.qt-err-btn { appearance: none; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06);
+  color: #f2e9e4; font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.qt-err-btn:active { background: rgba(255,255,255,.14); }
+.qt-warn { margin: 10px 0 12px; border-radius: 12px; background: rgba(255, 191, 71, .08);
+  border: 1px solid rgba(255, 191, 71, .3); color: #f6e6c8; font-size: 12.5px; }
+.qt-warn-sum { cursor: pointer; padding: 9px 13px; color: #ffc861; font-weight: 600; list-style: none; }
+.qt-warn-sum::-webkit-details-marker { display: none; }
+.qt-warn-ico { margin-right: 5px; }
+.qt-warn-list { margin: 0; padding: 0 16px 11px 30px; line-height: 1.7; }
+.qt-warn-list li { margin: 4px 0; color: #e9dcc2; }
+.qt-warn-raw { display: block; color: #a89a80; font-size: 11px; font-style: normal; margin-top: 2px; }
+.qt-errbar { position: fixed; left: 50%; bottom: 88px; transform: translate(-50%, 14px); z-index: 4200;
+  display: flex; align-items: center; gap: 9px; max-width: min(92vw, 620px); padding: 11px 14px;
+  border-radius: 14px; background: rgba(48, 20, 20, .96); border: 1px solid rgba(255, 110, 110, .45);
+  color: #ffe6e6; font-size: 12.5px; line-height: 1.5; opacity: 0; pointer-events: none;
+  transition: opacity .22s, transform .22s; box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+.qt-errbar.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.qt-errbar-t { font-weight: 700; flex: 0 0 auto; }
+.qt-errbar-m { flex: 1 1 auto; color: #ffd9d9; overflow: hidden; text-overflow: ellipsis; }
+.qt-errbar-x { appearance: none; background: none; border: 0; color: #ffb3b3; font-size: 14px; cursor: pointer; padding: 0 2px; }
+.qt-fatal { position: fixed; inset: 0; z-index: 9000; display: flex; align-items: flex-start; justify-content: center;
+  padding: 22px; background: radial-gradient(circle at 50% 30%, #1a1e22 0%, #0b0d0e 72%); overflow: auto; }
+.qt-fatal-card { margin: auto 0; width: min(94vw, 480px); background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px; padding: 26px 24px 20px; color: #ece4de; text-align: center; }
+.qt-fatal-ico { font-size: 30px; color: #ff9d6b; }
+.qt-fatal-t { margin: 10px 0 8px; font-size: 19px; letter-spacing: .04em; color: #fff; }
+.qt-fatal-d { margin: 0 0 10px; font-size: 13px; line-height: 1.75; color: #d6cbc4; word-break: break-word; }
+.qt-fatal-list { text-align: left; margin: 0 0 14px; padding-left: 20px; font-size: 12px; color: #ffc9a3; }
+.qt-fatal-list code { font-size: 11.5px; }
+.qt-fatal-acts { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 6px 0 14px; }
+.qt-fatal-btn { appearance: none; font: inherit; font-size: 13px; padding: 10px 20px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: #f0e8e2; cursor: pointer; }
+.qt-fatal-btn.primary { background: #b9966a; border-color: #b9966a; color: #17110b; font-weight: 700; }
+.qt-fatal-hint { margin: 0 0 6px; font-size: 11.5px; color: #8d847e; line-height: 1.6; }
+.qt-fatal-v { margin: 0; font-size: 11px; color: #5f5750; letter-spacing: .08em; }
+.qt-loading { position: fixed; inset: 0; z-index: 8000; display: none; align-items: center; justify-content: center;
+  background: rgba(8, 10, 11, .82); backdrop-filter: blur(2px); }
+.qt-loading-card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 26px 30px;
+  border-radius: 18px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+  color: #efe6df; max-width: min(88vw, 360px); text-align: center; }
+.qt-spin { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,.18);
+  border-top-color: #cfa877; animation: qt-spin .9s linear infinite; }
+@keyframes qt-spin { to { transform: rotate(360deg); } }
+.qt-loading-t { font-size: 14px; font-weight: 600; letter-spacing: .03em; }
+.qt-loading-s { font-size: 11.5px; color: #a99e97; line-height: 1.6; }
+.qt-nudge { animation: qt-nudge 1.2s ease; box-shadow: 0 0 0 3px rgba(207, 168, 119, .55); }
+@keyframes qt-nudge { 0%,100% { transform: none; } 30% { transform: scale(1.04); } 60% { transform: scale(.99); } }
+.qt-nojs { margin: 22px; padding: 22px; border-radius: 16px; background: #1b1d1f; border: 1px solid #3a3d40;
+  color: #ede5df; font-size: 14px; line-height: 1.8; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+.qt-nojs b { color: #ffc861; display: block; font-size: 16px; margin-bottom: 8px; }
+
+  /* P1-2 天球仪信息条：原来是无底色的裸文字，直接压在星空标签上，看着像重影叠字。
+     给一层实底药丸 + 层级，保证可读（星图标签仍在其后）。 */
+  .gl-place{position:relative;z-index:5;display:inline-block;padding:4px 12px;
+    border-radius:999px;background:rgba(9,11,16,.86);border:1px solid rgba(255,255,255,.10);
+    color:#e9e4d8;letter-spacing:.2px;line-height:1.5;margin:6px 2px 2px;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  @media (max-width:520px){ .gl-place{font-size:12px;padding:3px 9px} }
+</style>
+<script>
+/* 启动前置兜底：这段不依赖任何模块，模块全挂时它还在。
+   ① 资源 404 / 脚本语法错 → 全屏可读提示（不是白屏）
+   ② 15 秒没进应用 → 把骨架屏换成可读错误
+   ③ 记录失败资源名，供 main.js 的 fatalPanel 复用 */
+(function () {
+  var started = Date.now();
+  var shown = false;
+  function ver() {
+    try {
+      var s = document.querySelector('script[type="module"]');
+      var m = s && /[?&]v=(\d+)/.exec(s.src || '');
+      return m ? 'v' + m[1] : 'v—';
+    } catch (e) { return 'v—'; }
+  }
+  function shortUrl(u) {
+    var s = String(u || ''), m = /([^/]+\/[^/?]+)(\?[^#]*)?$/.exec(s);
+    return m ? m[1] + (m[2] || '') : s;
+  }
+  window.__QT_FAILED_FILES = window.__QT_FAILED_FILES || [];
+  function panel(title, detail, files) {
+    if (shown) return;
+    shown = true;
+    var old = document.getElementById('qt-fatal');
+    if (old) old.remove();
+    var box = document.createElement('div');
+    box.id = 'qt-fatal';
+    box.className = 'qt-fatal';
+    box.setAttribute('role', 'alertdialog');
+    var list = (files && files.length)
+      ? '<ul class="qt-fatal-list">' + files.map(function (f) { return '<li><code>' + f.replace(/[<>&"]/g, '') + '</code></li>'; }).join('') + '</ul>'
+      : '';
+    box.innerHTML = '<div class="qt-fatal-card">'
+      + '<div class="qt-fatal-ico">⚠</div>'
+      + '<h2 class="qt-fatal-t">' + title + '</h2>'
+      + '<p class="qt-fatal-d">' + detail + '</p>' + list
+      + '<div class="qt-fatal-acts"><button type="button" class="qt-fatal-btn primary" onclick="location.reload()">刷新重试</button></div>'
+      + '<p class="qt-fatal-hint">若反复出现：请确认网络正常，或强制刷新（Ctrl/⌘ + Shift + R）清掉旧缓存。</p>'
+      + '<p class="qt-fatal-v">' + ver() + '</p>'
+      + '</div>';
+    document.body.appendChild(box);
+    document.body.classList.add('qt-lock');
+  }
+  window.__qtBootFail = panel;
+
+  /* 资源加载失败：捕获阶段才能拿到 <script>/<link> 的 target */
+  window.addEventListener('error', function (e) {
+    var t = e && e.target;
+    if (!t || t === window || !t.tagName) return;
+    if (!/^(SCRIPT|LINK|IMG)$/.test(t.tagName)) return;
+    var u = shortUrl(t.src || t.href || '');
+    if (u && window.__QT_FAILED_FILES.indexOf(u) < 0) window.__QT_FAILED_FILES.push(u);
+    if (window.__QT_BOOTED) return;           /* 已进应用：交给 main.js 的错误钩子 */
+    panel('程序没能加载', '有一个程序文件没能加载：' + (u || '未知文件') + '。页面因此停在半途。', u ? [u] : []);
+  }, true);
+
+  /* 骨架屏超时：别让「加载中」永远转 */
+  window.setTimeout(function () {
+    if (window.__QT_BOOTED) return;
+    var sk = document.querySelectorAll('.qt-skeleton').length;
+    panel('程序没能加载',
+      sk ? '启动超时（' + Math.round((Date.now() - started) / 1000) + ' 秒）：还有 ' + sk + ' 块内容一直没加载出来。'
+         : '启动超时：程序没有跑起来。',
+      window.__QT_FAILED_FILES);
+  }, 15000);
+})();
+</script>
 <title>钦天监 · 命理星象工作台</title>
 </head>
 <body>
 <div id="app">
+
+  <!-- ============ 时区提示横幅（复现码带来的不确定性，必须常驻可见） ============ -->
+  <div class="tz-warn" id="tz-warn" hidden role="status">
+    <div class="tz-warn-row">
+      <span class="tz-warn-ico">⚠</span>
+      <span class="tz-warn-text" id="tz-warn-text"></span>
+      <button class="tz-warn-x" id="tz-warn-x" type="button" aria-label="关闭提示">✕</button>
+    </div>
+    <div class="tz-warn-form" id="tz-warn-form" style="display:none">
+      <input class="tz-warn-city" id="tz-warn-city" type="text" placeholder="出生城市，如 上海 / 纽约 / 开罗" autocomplete="off" spellcheck="false" />
+      <button class="btn btn-primary" id="tz-warn-go" type="button">按此城市重算</button>
+    </div>
+  </div>
 
   <!-- ============ 钦天监首页（纯展示） ============ -->
   <section class="view active" id="view-home">
@@ -517,7 +674,12 @@
   <section class="view" id="view-history">
     <header class="topbar">
       <div class="brand">案例</div>
-      <div class="top-right"><button class="text-toggle" id="case-clear">清未星标</button></div>
+      <div class="top-right">
+        <button class="text-toggle" id="case-export">导出全部</button>
+        <button class="text-toggle" id="case-import">导入</button>
+        <button class="text-toggle" id="case-clear">清未星标</button>
+      </div>
+      <input type="file" id="case-file" accept="application/json,.json" hidden />
     </header>
     <div class="case-filter" id="case-filter"></div>
     <div class="case-stat" id="case-stat"></div>
@@ -556,7 +718,7 @@
       </div>
       <div class="cs-block">
         <div class="cs-label">粘贴复现码 · 任意起盘页都能打开</div>
-        <input class="cs-input" id="cs-input" type="text" placeholder="粘贴 QT1- 开头的码" autocomplete="off" spellcheck="false" />
+        <input class="cs-input" id="cs-input" type="text" placeholder="粘贴 QT1- / QT2- 开头的码" autocomplete="off" spellcheck="false" />
         <div class="cs-row"><button class="btn" id="cs-open" type="button">打开此盘</button></div>
       </div>
       <p class="cs-hint" id="cs-hint"></p>
@@ -586,6 +748,29 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script type="module" src="./js/main.js?v=133"></script>
+<noscript>
+  <div class="qt-nojs">
+    <b>需要开启 JavaScript</b>
+    钦天监的排盘全部在浏览器里计算，关掉 JavaScript 就只能看到空壳。请在本浏览器的设置里允许本站运行 JavaScript，然后刷新本页。
+  </div>
+</noscript>
+
+<script type="module" src="./js/boot.js?v=133"></script>
+<script nomodule>
+  /* 不支持 ES module 的老浏览器（iOS < 10.3 / 老安卓 WebView / IE）在这里兜底，
+     否则它们既不跑 boot.js 也没有任何提示——就是审计 r4 说的「只剩 44 字白屏」。 */
+  (function () {
+    var d = document.createElement('div');
+    d.className = 'qt-fatal';
+    d.innerHTML = '<div class="qt-fatal-card">'
+      + '<div class="qt-fatal-ico">⚠</div>'
+      + '<h2 class="qt-fatal-t">浏览器太旧</h2>'
+      + '<p class="qt-fatal-d">这个浏览器不支持本页需要的现代 JavaScript 模块（ES Module），所以程序没有启动。</p>'
+      + '<p class="qt-fatal-d">请升级到较新版本的 Safari / Chrome / Edge / 微信内置浏览器（iOS 请升级到 15 以上），或用电脑打开。</p>'
+      + '<div class="qt-fatal-acts"><button type="button" class="qt-fatal-btn primary" onclick="location.reload()">刷新重试</button></div>'
+      + '<p class="qt-fatal-v">v—</p></div>';
+    document.body.appendChild(d);
+  })();
+</script>
 </body>
 </html>

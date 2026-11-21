@@ -2,6 +2,7 @@
 // 底本：《大六壬指南》（明·陈公献）课体与发用取法、《六壬大全》（明）天地盘·天将·神煞布法。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧处并列标注，不合成。
 import { nowDate, BIRTH, fmtMoment } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
 import { shouyeTianxiang, getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=133';
 import { T } from './tipview.js?v=133';
@@ -434,7 +435,7 @@ function verdict(r) {
   return { level, pros, cons, rhythm, score };
 }
 
-export function renderDaLiuRen(at = nowDate()) {
+function __renderDaLiuRen(at = nowDate()) {
   if (!isCasted('daliuren')) return gateHTML('daliuren');
   const r = qiKe(at);
   const td = TI_DUAN[r.ti] || { jue: '', duan: '', src: '' };
@@ -606,3 +607,6 @@ export function daLiuRenCode() {
   const at = nowDate();
   return { kind: 'daliuren', data: { at: at.getTime() }, title: '大六壬课', sub: fmtMoment(at) };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderDaLiuRen = guard(__renderDaLiuRen, '大六壬起课失败', '#daliuren-body');

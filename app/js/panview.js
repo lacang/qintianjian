@@ -1,5 +1,6 @@
 // 排盘视图：本卦 → 变卦 两列（藏爻默认收列，需要时一键展开）
 import { $, $$, cfg, current, toast, flashCopyBtn } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { formatCopyText, getShouGuaPan } from '../vendor/liuyao-core.js?v=133';
 import { renderJingZhuan } from './jingzhuanview.js?v=133';
 import { renderReading, getActiveReadingDomain } from './readingview.js?v=133';
@@ -38,7 +39,7 @@ const SS_LABELS = (ss) => [
   ['日德', ss.riDe], ['天马', ss.tianMa], ['天医', ss.tianYi],
 ];
 
-export function renderPan() {
+function __renderPan() {
   const p = current.pan;
   if (!p) return;
 
@@ -163,3 +164,6 @@ export async function copyCurrent(ev, code) {
   }
   if (ok) flashCopyBtn(btn); else toast('复制失败，请长按选择');
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderPan = guard(__renderPan, '六爻盘渲染失败', '#pan-body');

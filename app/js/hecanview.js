@@ -8,6 +8,7 @@
 //   未接入的盘（六爻需摇卦）明写「未接入」，不进任何一轨的计数。
 // 不调用任何 AI，不请求外部接口：全部本地 liuyao-core + 各盘既有算法。
 import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan } from '../vendor/liuyao-core.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   judgeMeiHua, judgeQiMen, judgeBazi, judgeZiwei, judgeAstro,
   comparePans, natalGradeOf, GRADE_ZH,
@@ -384,7 +385,7 @@ function mergeHtml() {
 }
 
 /** 整页骨架：每次打开视图按「此刻」起一局（所问保留上一次输入），再渲染一次 */
-export function renderHeCan() {
+function __renderHeCan() {
   HC.at = nowDate();
   const r = computeMeiHua(HC.at);
   HC.mh = r.mh;
@@ -484,3 +485,6 @@ export function heCanSnapshot() {
   const pans = panModels();
   return { q: HC.q, at: HC.at ? HC.at.getTime() : null, pans, compare: compare(), falsifiers: falsifiers() };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderHeCan = guard(__renderHeCan, '多盘合参失败', '#hecan-body');

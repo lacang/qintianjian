@@ -9,6 +9,9 @@ import { Engine } from 'caelus';
 import { embeddedData } from 'caelus/data-embedded';
 import { profection, firdariaAt, firdariaSequence, julianDay } from 'caelus';
 import { PLANET_ZH, SIGN_ZH } from './astro-constants.js';
+import {
+  validateDateTime, validateGeo, utcMsOf, InvalidDateError, OutOfRangeError, showValue,
+} from './validate.js';
 
 let _engine: Engine | null = null;
 function engine(): Engine {
@@ -52,8 +55,9 @@ export interface FirdariaInfo {
 
 /** 本地墙钟分量 + UTC 偏移 → UT 儒略日 */
 function natalJdUt(i: TimingInput['birth']): number {
-  const d = new Date(Date.UTC(i.year, i.month - 1, i.day, i.hour, i.minute ?? 0, i.second ?? 0));
-  d.setUTCMinutes(d.getUTCMinutes() - i.utcOffsetHours * 60);
+  // utcMsOf 而非 Date.UTC：后者把 0–99 年当成 1900+year（入口已按星历区间拦住，这里仍统一）
+  const d = new Date(utcMsOf(i.year, i.month, i.day, i.hour, i.minute ?? 0, i.second ?? 0)
+    - i.utcOffsetHours * 3600000);
   return julianDay(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds());
 }
 
@@ -62,18 +66,43 @@ const ZH = (id: string): string =>
 
 /** 兼容扁平入参（直接传出生字段，等同 BIRTH）与 {birth, at} 嵌套入参 */
 function normalizeTiming(input: TimingInput | FlatBirth): { birth: TimingInput['birth']; at?: Date } {
-  if ('birth' in input && input.birth) return input as TimingInput;
-  const f = input as FlatBirth;
-  const lat = f.lat ?? f.latitude;
-  const lonEast = f.lonEast ?? f.longitude;
-  return {
-    birth: {
+  let birth: TimingInput['birth'];
+  let at: Date | undefined;
+  if ('birth' in input && input.birth) {
+    birth = input.birth;
+    at = input.at;
+  } else {
+    const f = input as FlatBirth;
+    birth = {
       year: f.year, month: f.month, day: f.day, hour: f.hour,
       minute: f.minute, second: f.second,
-      lat: lat as number, lonEast: lonEast as number,
+      lat: (f.lat ?? f.latitude) as number,
+      lonEast: (f.lonEast ?? f.longitude) as number,
       utcOffsetHours: f.utcOffsetHours ?? 8,
+    };
+  }
+  // 统一校验：推运要吃星历，年份限 1600–2200；坐标必须成对给出（旧实现把缺省 lat 当 0，
+  // 等于把盘算在赤道上）；偏移必须在 ±14 小时内。
+  const v = validateDateTime(birth as unknown as Record<string, unknown>, {
+    yearRange: 'ephemeris',
+    label: '出生时间',
+  });
+  const geo = validateGeo(birth.lat, birth.lonEast, { required: true, label: '出生地' })!;
+  const off = birth.utcOffsetHours;
+  if (typeof off !== 'number' || !Number.isFinite(off) || Math.abs(off) > 14) {
+    throw new OutOfRangeError(`时区偏移 utcOffsetHours 必须是 -14 至 +14 的数值，收到 ${showValue(off)}`);
+  }
+  if (at !== undefined && (!(at instanceof Date) || !Number.isFinite(at.getTime()))) {
+    throw new InvalidDateError('目标时刻 at 不是有效 Date');
+  }
+  return {
+    birth: {
+      ...birth,
+      year: v.year, month: v.month, day: v.day,
+      hour: v.hour, minute: v.minute, second: v.second,
+      lat: geo.lat, lonEast: geo.lon,
     },
-    at: undefined,
+    at,
   };
 }
 

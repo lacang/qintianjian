@@ -2486,3 +2486,131 @@ body:has(#view-cards.cd-fullscreen){overflow:hidden}
 @media (prefers-reduced-motion: reduce){
   .hr-btn.busy svg{animation:none}
 }
+
+/* ============================================================================
+   r4 · 性能与视觉修复（audit3/r5_perf.md · r6_compat.md · r3_interaction.md）
+   ========================================================================== */
+
+/* ---- P0-1 懒加载占位：点开视图到模块到达之间的极短空窗，别让用户以为没反应 ---- */
+.view-loading{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:56px 16px;color:var(--ink-faint);font-size:13px;letter-spacing:2px;
+}
+.view-loading::before{
+  content:'';width:12px;height:12px;border-radius:50%;
+  border:1.5px solid rgba(200,163,92,.35);border-top-color:var(--gold);
+  animation:vl-spin .9s linear infinite;
+}
+@keyframes vl-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.view-loading::before{animation:none}}
+
+/* ---- P1-1 星盘可读性：行星符号 / 度数标注 ----
+   旧实现把行星符号颜色写死在 astroview.js（P_COLOR，深底用的浅色），
+   切到浅底皮肤（羊皮卷 #e9dcc3 / 素绢 #f4f0e6 / 现代派 #fff）就近乎看不见（1.38–1.87:1）。
+   改法：符号改用**每套皮肤自己定义过、与自己底色配对的** --cw-center 墨色
+   （SVG 的 fill="…" 表现属性优先级低于任何 CSS 规则，所以这里用 CSS 覆盖即可，
+   不动 astroview.js）。色点（.cw-dot）保留 P_COLOR，仍可一眼分辨行星。
+   度数标注 8.5px→10px，并改用可读的中灰。 */
+:root{ --ink-muted:#8b949c; }
+
+.cw-wrap .cw-pglyph,
+.cw-wrap .cw-oglyph{ fill:var(--cw-center,var(--ink)); }
+.cw-wrap .cw-pdeg{
+  font-size:10px;
+  fill:var(--cw-pdeg,var(--cw-center,var(--ink-muted)));
+  opacity:.92;
+}
+.cw-wrap .cw-planet.is-ruler .cw-pglyph,
+.cw-wrap .cw-planet.hl .cw-pglyph{ fill:var(--cw-houseF,var(--gold)); }
+/* 双轮外圈星也走同一套墨色（原来同样是写死的 P_COLOR） */
+.cw-wrap .cw-oglyph{ font-size:10px; }
+/* 旧版星盘组件（.aw-*）同样处理，避免只在部分入口修好 */
+.aw-pglyph{ fill:var(--ink); }
+.aw-pdeg{ fill:var(--ink-muted); font-size:10px; }
+
+/* ---- P0-4 / P1-2 窄屏（320–360px）----
+   r6 实测 320px：紫微单宫 66px，宫名 flex:1 塌成 0px（12 宫宫名全消失），
+   干支与大限各折两行；顶栏 4 字标题被挤成竖排（80→134px）。
+   处理：宫名独占一行并给 min-width（flex:1 在负空间里会让位到 0），字号降一档；
+        标题 nowrap + 降字号；复制/码按钮收窄；时间输入独占一行不截断。 */
+@media (max-width:360px){
+  /* 顶栏 */
+  .topbar{gap:6px;padding:calc(10px + env(safe-area-inset-top)) 10px 8px}
+  .brand{font-size:15px;letter-spacing:1px;white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .top-right{gap:5px;flex:0 0 auto}
+  .icon-btn{font-size:23px;min-width:22px;padding:0 2px}
+  .code-btn{padding:5px 9px;font-size:10.5px;letter-spacing:0;white-space:nowrap}
+  .copy-btn{padding:5px 9px;font-size:10.5px;letter-spacing:0;white-space:nowrap}
+  .copy-btn.sm{padding:4px 8px;font-size:10px}
+
+  /* 时间条：输入独占一行，按钮并排在第二行，绝不出现 04:3 这种截断 */
+  .time-bar{margin:0 8px 8px;padding:8px 9px;gap:6px}
+  .tb-label{font-size:11px;letter-spacing:0}
+  .tb-input{flex:1 1 100%;min-width:0;font-size:12px;padding:6px 8px}
+  .tb-btn{flex:1 1 0;min-width:0;font-size:11px;letter-spacing:0;padding:6px 4px}
+
+  /* 子视图内容区：两侧各让 6px 给盘面 */
+  .subview-body{padding:10px 10px 44px}
+
+  /* 紫微宫格 */
+  .zw-board{grid-auto-rows:minmax(92px,1fr);gap:3px;padding:4px}
+  .zw-cell{min-height:92px;padding:4px 4px 5px}
+  .zw-cell-hd{flex-wrap:wrap;gap:0 3px;font-size:9px;padding-bottom:2px;margin-bottom:3px}
+  .zw-gname{flex:1 1 100%;order:-1;min-width:3em;font-size:10px;line-height:1.25}
+  .zw-gz{font-size:9px;letter-spacing:0}
+  .zw-decadal{font-size:8.5px}
+  .zw-star{font-size:10.5px}
+  .zw-star.major{font-size:11px}
+  .zw-star.minor{font-size:9px}
+  .zw-majors,.zw-minors{gap:1px 3px}
+  .zw-adj{font-size:8.5px;line-height:1.35}
+  .zw-center{padding:6px 5px;gap:3px}
+  .zw-c-title{font-size:11px;letter-spacing:1px}
+  .zw-c-row{font-size:9.5px;line-height:1.4}
+  .zw-c-row b{font-size:9px}
+  .zw-legend{gap:6px 9px;font-size:10px}
+}
+
+/* ---- P1-2 390px 顶栏挤压（r3 D7）：「奇门遁甲」折行 / 「复制」折两列 / 时间被截 ---- */
+@media (min-width:361px) and (max-width:430px){
+  .topbar{gap:8px;padding:calc(12px + env(safe-area-inset-top)) 12px 10px}
+  .brand{font-size:17px;letter-spacing:2px;white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .top-right{gap:6px;flex:0 0 auto}
+  .code-btn,.copy-btn{padding:6px 11px;font-size:11.5px;letter-spacing:1px;white-space:nowrap}
+  .time-bar{margin:0 12px 10px;padding:9px 10px;gap:7px}
+  .tb-label{font-size:11.5px;letter-spacing:0}
+  .tb-input{flex:1 1 100%;min-width:0;font-size:12.5px}
+  .tb-btn{flex:1 1 0;min-width:0;font-size:11.5px;letter-spacing:0}
+}
+
+/* ---- 复现码时区提示横幅（P0：旧码无时区 / 估算时区必须常驻可见） ---- */
+.tz-warn{position:sticky;top:0;z-index:40;margin:0;padding:9px 12px;background:rgba(192,69,47,.14);
+  border-bottom:1px solid rgba(192,69,47,.42);backdrop-filter:blur(6px);font-size:12px;line-height:1.65;color:#f0d9cf}
+.tz-warn[hidden]{display:none}
+.tz-warn-row{display:flex;align-items:flex-start;gap:8px}
+.tz-warn-ico{color:var(--gold);flex:0 0 auto;line-height:1.5}
+.tz-warn-text{flex:1;min-width:0;word-break:break-word}
+.tz-warn-x{flex:0 0 auto;background:none;border:0;color:var(--ink-faint);font-size:13px;padding:0 2px;cursor:pointer}
+.tz-warn-form{display:flex;gap:6px;margin-top:7px}
+.tz-warn-city{flex:1;min-width:0;background:var(--bg-3);border:1px solid var(--line);border-radius:8px;
+  color:var(--ink);font-size:12.5px;padding:7px 9px;outline:none}
+.tz-warn-city:focus{border-color:var(--gold)}
+
+/* ---- P1-2 天球仪底部控件被裁（audit3/r3_interaction.md D6-4）----
+   实测 390×844：.gl-wrap 高 748px 但起点在 y=177，整块底边 925 > 视口 844，
+   于是 .gl-ctl（播放/时/日/旬/此刻）被下缘吃掉 47px。原因是
+   .gl-wrap{height:calc(100vh - 96px)} 里那个 96px 是按旧顶栏高度写的，
+   现在顶栏 + 子视图标题一共 177px。
+   改成「整屏 flex 列、wrap 吃剩余高度」，不再依赖任何硬编码高度。 */
+#view-globe{position:fixed;inset:0;height:100dvh;overflow:hidden;padding-top:0}
+/* 注意：#view-globe 的 id 权重会压过 .view{display:none}，必须显式写回隐藏态，
+   否则天球仪页会一直浮在其它视图之上 */
+#view-globe:not(.active){display:none}
+#view-globe.active{display:flex;flex-direction:column}
+#globe-body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+#globe-body .gl-wrap{flex:1 1 auto;height:auto;min-height:0}
+/* 手机浏览器底部手势区：按钮再抬一点，别贴着安全区边缘 */
+@supports (padding: env(safe-area-inset-bottom)) {
+  #view-globe .gl-ctl{bottom:calc(34px + env(safe-area-inset-bottom))}
+  #view-globe .gl-hint{bottom:calc(9px + env(safe-area-inset-bottom))}
+}

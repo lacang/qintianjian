@@ -22,6 +22,7 @@ import {
 import type { BaGua as MpBaGua2 } from 'mingpan/dist/services/liuyao/index.js';
 import { solarToSiZhu } from './calendar.js';
 import { civilForPaipan, lateZiLabel, type PaipanCivil, type TimeResolveInput } from './timeContext.js';
+import { mergeWarnings } from './validate.js';
 import { BAGUA_BITS, NAJIA_GAN, toSimplified } from './constants.js';
 import { getFullNajia, getGuaMeta, getShouGuaName, getTrigramsFromValues, type RawGuaMeta } from './guaTable.js';
 import { calcShenSha } from './shensha.js';
@@ -73,6 +74,8 @@ export interface PanWithTime extends Pan {
   dayBoundary?: string;
   /** 时间口径提示（时区估算、经纬度冲突、夏令时…） */
   timeWarnings?: string[];
+  /** 入参校验/口径提示（小数时间取整、历史时区、strict:false 的 0 点回退） */
+  warnings?: string[];
   /** 是否真做了时区/地点折算 */
   timeApplied?: boolean;
   usedTrueSolar?: boolean;
@@ -99,7 +102,7 @@ export function paipan(input: PaipanInputWithTime): PanWithTime {
   //    老行为（不给地点）逐字节不变：civilForPaipan 直接原样返回，applyChinaDst 仍是 true。
   const eff = civilForPaipan({
     year: input.year, month: input.month, day: input.day,
-    hour: input.hour, minute: input.minute,
+    hour: input.hour, minute: input.minute, second: input.second,
     city: input.city, place: input.place,
     lat: input.lat, latitude: input.latitude,
     lon: input.lon, lonEast: input.lonEast, longitude: input.longitude,
@@ -107,7 +110,8 @@ export function paipan(input: PaipanInputWithTime): PanWithTime {
     trueSolarTime: input.trueSolarTime,
     tzPolicy: input.tzPolicy,
     lateZiMode: input.lateZiMode,
-  });
+    strict: input.strict,
+  }, { yearRange: 'calendar', label: '起卦时间' });
   const sz = solarToSiZhu(
     { ...input, ...eff.civil },
     // 时区层已经把夏令时扣过一遍了，不能再扣第二次
@@ -232,6 +236,7 @@ export function paipan(input: PaipanInputWithTime): PanWithTime {
     civil: eff.civil,
     dayBoundary: lateZiLabel(eff.lateZiMode),
     timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    warnings: mergeWarnings(eff.warnings, eff.resolution?.warnings),
     timeApplied: eff.applied,
     usedTrueSolar: eff.usedTrueSolar,
   };

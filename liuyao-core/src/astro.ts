@@ -32,6 +32,7 @@ import {
   type PlanetId,
 } from './astro-constants.js';
 import { resolveTime, type TimeResolution } from './timeContext.js';
+import { validateDateTime, validateGeo, highLatitudeWarnings, mergeWarnings } from './validate.js';
 
 // 模块级单例（与中式引擎一致），embeddedData 内联、约 378KB，随 bundle 永久离线。
 let _engine: Engine | null = null;
@@ -119,19 +120,37 @@ export interface NatalChart {
   dignities: Partial<Record<PlanetId, Dignity>>;
   /** 福点 Fortuna / 精神点 Spirit（绝对黄经） */
   lots: { fortune: Dms; spirit: Dms };
+  /** 入参校验/口径提示（小数时间取整、高纬宫位降级、历史时区…），界面应显示 */
+  warnings: string[];
 }
 
-function toDms(lon: number): Dms {
-  const norm = ((lon % 360) + 360) % 360;
-  const signIndex = Math.floor(norm / 30);
+/**
+ * 绝对黄经 → 星座内度分。
+ *
+ * 进位规则与 vedic.ts 的 toDms 完全一致（P1-2）：分钟四舍五入到 60 时进整度；
+ * 度进到 30 时必须**连星座一起进位**，并把返回的 lon 同步成「按分取整后的绝对黄经」，
+ * 否则会出现「巨蟹 0°00′」实为巨蟹 29°59′57″ 的错位。
+ */
+export function toDms(lon: number): Dms {
+  const norm = mod360(lon);
+  let signIndex = Math.floor(norm / 30);
   const inSign = norm - signIndex * 30;
-  const degree = Math.floor(inSign);
-  const minute = Math.round((inSign - degree) * 60);
-  // 处理 59.9' 进位到整度
+  let degree = Math.floor(inSign);
+  let minute = Math.round((inSign - degree) * 60);
   if (minute >= 60) {
-    return { degree: degree + 1 >= 30 ? 0 : degree + 1, minute: 0, lon: norm };
+    minute = 0;
+    degree += 1;
+    if (degree >= 30) { degree = 0; signIndex = (signIndex + 1) % 12; }
   }
-  return { degree, minute, lon: norm };
+  const rounded = mod360(signIndex * 30 + degree + minute / 60);
+  return { degree, minute, lon: rounded };
+}
+
+/** 角度归一到 [0, 360)：正数直接取模，避免 ((x%360)+360)%360 的 2e-14 级精度损失 */
+function mod360(x: number): number {
+  const r = x % 360;
+  const v = r < 0 ? r + 360 : r;
+  return v === 0 ? 0 : v;
 }
 
 const SIGN_ORDER = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'] as const;
@@ -143,9 +162,17 @@ const SIGN_ORDER = ['aries','taurus','gemini','cancer','leo','virgo','libra','sc
 export function normalizeAstroInput(input: AstroInput) {
   const latRaw = input.lat ?? input.latitude;
   const lonRaw = input.lonEast ?? input.longitude;
+  // 统一校验（validate.ts）：西占用高精度星历，年份限 1600–2200（公元 1 年被 0–99→1900+
+  // 的老坑误判，这里改由 validateDate 直接按区间拒，消息写明区间）；坐标成对、不夹紧。
+  const v = validateDateTime(input as unknown as Record<string, unknown>, {
+    yearRange: 'ephemeris',
+    label: '出生时间',
+  });
+  const hasCity = !!(input.city ?? input.place);
+  const geo = validateGeo(latRaw, lonRaw, { required: !hasCity, label: '出生地' });
   const time = resolveTime({
-    year: input.year, month: input.month, day: input.day,
-    hour: input.hour, minute: input.minute, second: input.second,
+    year: v.year, month: v.month, day: v.day,
+    hour: v.hour, minute: v.minute, second: v.second,
     city: input.city ?? input.place,
     place: input.place,
     lat: latRaw,
@@ -153,19 +180,20 @@ export function normalizeAstroInput(input: AstroInput) {
     utcOffsetHours: input.utcOffsetHours,
     trueSolarTime: input.trueSolarTime,
   });
-  const lat = latRaw ?? time.latitude;
-  const lonEast = lonRaw ?? time.longitude;
+  const lat = geo ? geo.lat : time.latitude;
+  const lonEast = geo ? geo.lon : time.longitude;
   if (lat == null || lonEast == null || !Number.isFinite(lat) || !Number.isFinite(lonEast)) {
     throw new Error('占星排盘缺少有效的出生地纬度/经度（lat/latitude、lonEast/longitude）');
   }
   return {
-    year: input.year, month: input.month, day: input.day,
-    hour: input.hour, minute: input.minute ?? 0, second: input.second ?? 0,
+    year: v.year, month: v.month, day: v.day,
+    hour: v.hour, minute: v.minute, second: v.second,
     lat, lonEast,
     // 生效偏移（含夏令时）：vedic 等直接吃这个字段的调用方因此自动拿到正确时区
     utcOffsetHours: time.utcOffsetHours,
     place: input.place ?? '',
     time,
+    warnings: v.warnings,
   };
 }
 
@@ -185,7 +213,12 @@ export function paipanXingpan(rawInput: AstroInput): NatalChart {
   const chart = eng.chart(ut.y, ut.mo, ut.day, ut.h, ut.mi, ut.s, input.lat, input.lonEast, 'whole_sign');
 
   const day = isDayChart(eng, jdUt, input.lat, input.lonEast);
-  const ascIndex = Math.floor(((chart.angles.asc % 360) + 360) % 360 / 30);
+  // 上升星座一律按「四舍五入后的度分」反推，避免 asc=29°59′57″ 时星座下标仍停在旧星座
+  const ascDms = toDms(chart.angles.asc);
+  const ascIndex = Math.floor(mod360(ascDms.lon) / 30);
+  // 高纬提示：|lat| > 66.5° 时上升点速率剧变（实测 66.5°N 达 16°/10s、66.6°N 起 180° 跳变），
+  // whole_sign 宫位仍有定义，但必须在 warnings 里降级标注（P1-3）。
+  const warnings = mergeWarnings(input.warnings, highLatitudeWarnings(input.lat));
 
   // 星体
   const bodies = {} as Record<PlanetId, AstroBody>;
@@ -263,6 +296,7 @@ export function paipanXingpan(rawInput: AstroInput): NatalChart {
     houses,
     dignities,
     lots: { fortune: toDms(lot.fortune), spirit: toDms(lot.spirit) },
+    warnings,
   };
 }
 

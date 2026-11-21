@@ -1,45 +1,249 @@
-import {
-  $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt,
-  birthDate, nowDate, resolveCastDate, copyText, toast, pad,
-  parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
-} from './state.js?v=133';
-import { paipanZi } from './zischool.js?v=133';
-import { updateHome, currentTimeGua, homeCopyText } from './qintian.js?v=133';
-import { renderPan, copyCurrent } from './panview.js?v=133';
-import { renderBazi, baziCopyText, baziCode } from './baziview.js?v=133';
-import { renderMeiHua, meiHuaCopyText, meiHuaCode } from './meihuaview.js?v=133';
-import { renderHeCan, initHeCan } from './hecanview.js?v=133';
-import { renderQiMen, qiMenCopyText, qiMenCode } from './qimenview.js?v=133';
-import { renderAstro, astroCopyText, astroCode, setAstroStyle } from './astroview.js?v=133';
-import { ASTRO_MODE_KEY, B2_KEY, RESET_KEY } from './astromodes.js?v=133';
-import { renderVedic, vedicCopyText, vedicCode } from './vedicview.js?v=133';
-import { renderZhuyou, zhuyouCopyText, zhuyouCode } from './zhuyou/zhuyouview.js?v=133';
-import { renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai } from './yangzhai/yangzhaiview.js?v=133';
-import { renderZiwei, ziweiCopyText, ziweiCode } from './ziweiview.js?v=133';
-import { initInteract } from './interact.js?v=133';
-import { renderCards, cardsCopyText, cardsCode, restoreCards } from './cardsview.js?v=133';
-import { renderSky, renderHomeSky, skyCopyText, skyCode } from './skyview.js?v=133';
-import { renderGlobe, globeCopyText } from './globe.js?v=133';
-import { renderMansion, initMansionInteract, mansionCopyText, mansionCode } from './mansionview.js?v=133';
-import { initCast, resetCast } from './cast.js?v=133';
-import { encodeCode, decodeCode, RULE_VERSION } from './sharecode.js?v=133';
-import { initForceRefresh, shouldSkipAutoReload } from './force-refresh.js?v=133';
-import { initTips, initGuides } from './tipview.js?v=133';
-import {
-  loadCases, loadCase, saveCase, updateCase, togglePin, removeCase,
-  clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP,
-} from './cases.js?v=133';
-import { renderAsk, bindAsk } from './askview.js?v=133';
-import { renderClassic, bindClassic, renderClassicDetail, bindClassicDetail } from './classic/classicview.js?v=133';
-import { mountPlaceBars, bindPlaceChip } from './placeui.js?v=133';
-import { onPlaceChange } from './geo.js?v=133';
-import { initRitual, castDone, RITUAL_PAGES } from './ritual.js?v=133';
-import { renderMoreCards } from './homecards.js?v=133';
-import { renderDaLiuRen, daLiuRenCopyText, daLiuRenCode } from './daliurenview.js?v=133';
-import { renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode } from './xiaoliurenview.js?v=133';
-import { renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy } from './geomancyview.js?v=133';
-import { renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan } from './tibetview.js?v=133';
-import { renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot } from './tarotview.js?v=133';
+/* ============================================================================
+   钦天监 · 应用主体
+   ----------------------------------------------------------------------------
+   审计 r4 · R1–R3：旧版这里是一大排静态 import，任意叶子模块 404 会让整个模块图
+   解析失败，main.js 一行都不执行 → 首页空壳、骨架屏永转、零提示。
+   现在：顶层零静态依赖（只动态装错误钩子），全部模块在 boot() 里用 import() 逐个
+   加载并收齐失败清单；真正断链的文件由 probeBroken() 顺着 import 图找出来
+   （报 /vendor/liuyao-core.js，而不是被牵连的 20 个 view）。
+   ========================================================================== */
+
+/* P0-3 全局错误捕获：模块一执行就装，早于任何视图渲染 */
+import('./errors.js?v=133').then((m) => m.installGlobalErrorHooks()).catch(() => { /* boot.js 兜底 */ });
+
+/** 视图模块清单：键名用于 boot() 里解构，值是可被 tools/check-modules.mjs 校验的字面量 */
+const SPECS = {
+  'state.js': './state.js?v=133',
+  'zischool.js': './zischool.js?v=133',
+  'qintian.js': './qintian.js?v=133',
+  'panview.js': './panview.js?v=133',
+  'baziview.js': './baziview.js?v=133',
+  'meihuaview.js': './meihuaview.js?v=133',
+  'hecanview.js': './hecanview.js?v=133',
+  'qimenview.js': './qimenview.js?v=133',
+  'astroview.js': './astroview.js?v=133',
+  'astromodes.js': './astromodes.js?v=133',
+  'vedicview.js': './vedicview.js?v=133',
+  'zhuyou/zhuyouview.js': './zhuyou/zhuyouview.js?v=133',
+  'yangzhai/yangzhaiview.js': './yangzhai/yangzhaiview.js?v=133',
+  'ziweiview.js': './ziweiview.js?v=133',
+  'interact.js': './interact.js?v=133',
+  'cardsview.js': './cardsview.js?v=133',
+  'skyview.js': './skyview.js?v=133',
+  'globe.js': './globe.js?v=133',
+  'mansionview.js': './mansionview.js?v=133',
+  'cast.js': './cast.js?v=133',
+  'sharecode.js': './sharecode.js?v=133',
+  'force-refresh.js': './force-refresh.js?v=133',
+  'tipview.js': './tipview.js?v=133',
+  'cases.js': './cases.js?v=133',
+  'askview.js': './askview.js?v=133',
+  'classic/classicview.js': './classic/classicview.js?v=133',
+  'placeui.js': './placeui.js?v=133',
+  'geo.js': './geo.js?v=133',
+  'ritual.js': './ritual.js?v=133',
+  'homecards.js': './homecards.js?v=133',
+  'daliurenview.js': './daliurenview.js?v=133',
+  'xiaoliurenview.js': './xiaoliurenview.js?v=133',
+  'geomancyview.js': './geomancyview.js?v=133',
+  'tibetview.js': './tibetview.js?v=133',
+  'tarotview.js': './tarotview.js?v=133',
+};
+
+/**
+ * 顺着失败的模块往下 find「真正 404 的那个文件」。
+ * 动态 import 的报错只会说「你让我加载的 X 失败了」，而 X 往往只是受害人：
+ * 真正断链的可能是它 import 的 ../vendor/liuyao-core.js。这里把失败模块的源码取回来，
+ * 逐条 import 路径 probe 两跳，把 HTTP 非 2xx 的文件名捞出来 —— 报错才有指向性。
+ */
+async function probeBroken(specs, depth = 2) {
+  const seen = new Set();
+  const broken = [];
+  // SPECS 里的 './x.js' 是相对 main.js 所在目录（/js/）的，不能当成相对页面路径
+  const abs = (u) => { const x = new URL(u, import.meta.url); return x.pathname + x.search; };
+  let queue = specs.map(abs);
+  for (let d = 0; d < depth && queue.length; d += 1) {
+    const next = [];
+    await Promise.all(queue.map(async (spec) => {
+      if (seen.has(spec)) return;
+      seen.add(spec);
+      try {
+        const res = await fetch(spec, { cache: 'no-store' });
+        if (!res.ok) { broken.push(`${spec.replace(/\?v=\d+$/, '')}（HTTP ${res.status}）`); return; }
+        const txt = await res.text();
+        const re = /(?:\bfrom\s*|\bimport\s*\(\s*)['"]([^'"]+)['"]/g;
+        let m;
+        while ((m = re.exec(txt))) {
+          const rel = m[1];
+          if (!rel || !/^\.{1,2}\//.test(rel)) continue; // 只跟相对路径
+          try { const u = new URL(rel, new URL(spec, location.href)); next.push(u.pathname + u.search); } catch { /* ignore */ }
+        }
+      } catch { /* fetch 本身失败（离线/被拦）就不深究，退回原清单 */ }
+    }));
+    queue = next;
+  }
+  return [...new Set(broken)];
+}
+
+/**
+ * ============================ 懒加载（P0-1 首屏瘦身）============================
+ * SPECS 仍是**全量清单**（tools/check-modules.mjs 用它校验每个模块文件都在），
+ * 但 boot() 只装 CORE_KEYS 里的核心壳，其余 18 个视图模块等用户点开那页时才 import。
+ *
+ * 依据（audit3/r5_perf.md）：首屏 93 请求 / 6.09MB，其中 12 个单一视图专属文件
+ * 共 2.06MB（482KB gzip）占 25.8%，而用户一次可能一个都不点。
+ */
+const CORE_KEYS = new Set([
+  'state.js', 'zischool.js', 'qintian.js', 'panview.js', 'interact.js', 'cast.js',
+  'sharecode.js', 'force-refresh.js', 'tipview.js', 'cases.js', 'askview.js',
+  'placeui.js', 'geo.js', 'ritual.js', 'homecards.js', 'classical.js', 'reading.js',
+  // 首页天象条：skyview 必须随首屏装（zodiac / solartime 随之而来）
+  'skyview.js', 'zodiac.js',
+]);
+
+/** 视图名 → SPECS 键（懒加载的入口表；一个视图只多拉它自己那一坨） */
+const VIEW_KEY = {
+  bazi: 'baziview.js', meihua: 'meihuaview.js', hecan: 'hecanview.js', qimen: 'qimenview.js',
+  astro: 'astroview.js', vedic: 'vedicview.js', zhuyou: 'zhuyou/zhuyouview.js',
+  yangzhai: 'yangzhai/yangzhaiview.js', ziwei: 'ziweiview.js', cards: 'cardsview.js',
+  globe: 'globe.js', mansion: 'mansionview.js', daliuren: 'daliurenview.js',
+  xiaoliuren: 'xiaoliurenview.js', geomancy: 'geomancyview.js', tibetan: 'tibetview.js',
+  tarot: 'tarotview.js', classic: 'classic/classicview.js',
+};
+
+/** 视图专属样式：跟模块一起懒装（首屏只留 style.css + place.css + planet-hour.css） */
+const VIEW_CSS = {
+  classic: './css/classic.css?v=133', tarot: './css/tarot.css?v=133',
+  tibet: './css/tibet.css?v=133', vedic: './css/vedic.css?v=133',
+  zhuyou: './css/zhuyou.css?v=133', yangzhai: './css/yangzhai.css?v=133',
+};
+
+/** 已装视图模块：视图名 → 模块命名空间 */
+const VM = {};
+/** 正在装的视图：视图名 → Promise（连点两下只装一次；失败清掉可重试） */
+const VPENDING = {};
+/** 视图级一次性初始化：容器级事件委托，装一次就够（原来是 bind() 里无条件调一遍） */
+const VIEW_INIT = {
+  mansion: (m) => m.initMansionInteract(),
+  geomancy: (m) => m.initGeomancy(),
+  tibetan: (m) => m.initTibetan(),
+  tarot: (m) => m.initTarot(),
+  classic: (m) => { m.bindClassic(); m.bindClassicDetail(); },
+};
+/** 视图 → 渲染。参数是模块命名空间，避免顶层引用尚未安装的导出 */
+const RENDER = {
+  bazi: (m) => { const b = $('#bazi-body'); if (b) b.innerHTML = m.renderBazi(); },
+  meihua: (m) => { const b = $('#meihua-body'); if (b) b.innerHTML = m.renderMeiHua(); },
+  qimen: (m) => { const b = $('#qimen-body'); if (b) b.innerHTML = m.renderQiMen(); },
+  hecan: (m) => { const b = $('#hecan-body'); if (b) { b.innerHTML = m.renderHeCan(); m.initHeCan(b); } },
+  astro: (m) => m.renderAstro(),
+  vedic: (m) => m.renderVedic(),
+  zhuyou: (m) => m.renderZhuyou(),
+  yangzhai: (m) => { const b = $('#yangzhai-body'); if (b) { b.innerHTML = m.renderYangzhai(); m.initYangzhai(); } },
+  ziwei: (m) => m.renderZiwei(),
+  cards: (m) => m.renderCards(),
+  sky: (m) => m.renderSky(),
+  globe: (m) => m.renderGlobe(nowDate()),
+  mansion: (m) => m.renderMansion(),
+  daliuren: (m) => { const b = $('#daliuren-body'); if (b) b.innerHTML = m.renderDaLiuRen(nowDate()); },
+  xiaoliuren: (m) => { const b = $('#xiaoliuren-body'); if (b) b.innerHTML = m.renderXiaoLiuRen(nowDate()); },
+  geomancy: (m) => { const b = $('#geomancy-body'); if (b) b.innerHTML = m.renderGeomancy(); },
+  tibetan: (m) => { const b = $('#tibetan-body'); if (b) b.innerHTML = m.renderTibetan(); },
+  tarot: (m) => { const b = $('#tarot-body'); if (b) { b.innerHTML = m.renderTarot(); m.mountTarot(); } },
+};
+/** 视图 → 复现码导出的名字（在已装模块上取，未装返回 null，不炸） */
+const CODE_NAME = {
+  bazi: 'baziCode', meihua: 'meiHuaCode', qimen: 'qiMenCode', astro: 'astroCode',
+  vedic: 'vedicCode', zhuyou: 'zhuyouCode', yangzhai: 'yangzhaiCode', ziwei: 'ziweiCode',
+  cards: 'cardsCode', sky: 'skyCode', mansion: 'mansionCode', daliuren: 'daLiuRenCode',
+  xiaoliuren: 'xiaoLiuRenCode', geomancy: 'geomancyCode', tibetan: 'tibetanCode',
+  tarot: 'tarotCodeInfo', globe: null,
+};
+
+const CSS_LOADED = new Set();
+/** 视图专属样式只插一次（插失败不拦渲染，最差是少点装饰） */
+function loadViewCss(name) {
+  const href = VIEW_CSS[name];
+  if (!href || CSS_LOADED.has(name)) return Promise.resolve();
+  CSS_LOADED.add(name);
+  return new Promise((res) => {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = href;
+    l.onload = () => res();
+    l.onerror = () => { CSS_LOADED.delete(name); res(); };
+    document.head.appendChild(l);
+  });
+}
+
+/** 懒装一个视图：模块 + 专属样式 + 一次性容器级绑定 */
+function loadView(name) {
+  if (VM[name]) return Promise.resolve(VM[name]);
+  // sky 不是视图模块而是首屏就装好的天象组件（首页天象条要用）
+  if (name === 'sky') return VM.sky ? Promise.resolve(VM.sky) : Promise.reject(new Error('天象模块未就绪'));
+  const key = VIEW_KEY[name];
+  if (!key) return Promise.reject(new Error(`未知视图：${name}`));
+  if (!VPENDING[name]) {
+    VPENDING[name] = Promise.all([loadViewCss(name), import(SPECS[key])])
+      .then(([, m]) => {
+        VM[name] = m;
+        try { if (VIEW_INIT[name]) VIEW_INIT[name](m); }
+        catch (e) { console.warn('[qintian] 视图初始化失败', name, e); }
+        return m;
+      })
+      .catch((e) => { delete VPENDING[name]; throw e; });
+  }
+  return VPENDING[name];
+}
+
+/** astromodes（36 盘型键 / 本命2 / 重置城市）只在占星页用得到，跟着 astro 一起懒装 */
+let _astroMods = null;
+function astroMods() {
+  if (!_astroMods) _astroMods = import('./astromodes.js?v=133');
+  return _astroMods;
+}
+
+/** 重排当前视图（时间条 / 复现码 / 地点变更都走这里；模块没装完就先装） */
+async function rerender(name) {
+  try {
+    const m = await loadView(name);
+    const fn = RENDER[name];
+    if (!fn) return;
+    try { fn(m); } catch (e) {
+      console.warn('[qintian] 视图渲染失败', name, e);
+      showError(e, { title: `${PANE_LABEL[name] || '这一页'}没能渲染出来`, container: paneBody(name) });
+    }
+  } catch (e) {
+    console.warn('[qintian] 视图模块加载失败', name, e);
+    showError(e, { title: `${PANE_LABEL[name] || '这一页'}没能加载出来`, container: paneBody(name) });
+  }
+}
+
+/** 逐个动态加载：失败不收摊，全部收齐后一次性报出失败文件清单 */
+async function loadModules() {
+  const out = {};
+  const fails = [];
+  await Promise.all(Object.entries(SPECS).filter(([k]) => CORE_KEYS.has(k)).map(async ([k, spec]) => {
+    try { out[k] = await import(spec); }
+    catch (e) { fails.push({ spec, e }); }
+  }));
+  if (fails.length) {
+    const err = new Error(fails.map((f) => `${f.spec}: ${(f.e && f.e.message) || f.e}`).join(' | '));
+    // 追究根因：真 404 的那个文件比「被牵连的 20 个视图」有用得多
+    let root = [];
+    try { root = await probeBroken(fails.map((f) => f.spec)); } catch { /* ignore */ }
+    err.files = root.length ? root : fails.map((f) => f.spec.replace(/\?v=\d+$/, ''));
+    throw err;
+  }
+  return out;
+}
+
+/* 模块导出在这里先声明、boot() 里赋值：顶层函数都闭包引用它们，boot 之前不会被调用 */
+let civilDate, civilFromAt, tzSnapshotFor, tzSnapshotOfCivil, civilInCity, birthArgs, nowGeoArgs, buildCode, LEGACY_NOTICE, exportCaseBundle, importCaseBundle, exportFileName,
+  $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt, birthDate, nowDate, resolveCastDate, copyText, toast, pad, parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec, paipanZi, updateHome, currentTimeGua, homeCopyText, renderPan, copyCurrent, renderBazi, baziCopyText, baziCode, renderMeiHua, meiHuaCopyText, meiHuaCode, renderHeCan, initHeCan, renderQiMen, qiMenCopyText, qiMenCode, renderAstro, astroCopyText, astroCode, setAstroStyle, ASTRO_MODE_KEY, B2_KEY, RESET_KEY, renderVedic, vedicCopyText, vedicCode, renderZhuyou, zhuyouCopyText, zhuyouCode, renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai, renderZiwei, ziweiCopyText, ziweiCode, initInteract, renderCards, cardsCopyText, cardsCode, restoreCards, renderSky, renderHomeSky, skyCopyText, skyCode, renderGlobe, globeCopyText, renderMansion, initMansionInteract, mansionCopyText, mansionCode, initCast, resetCast, encodeCode, decodeCode, RULE_VERSION, initForceRefresh, shouldSkipAutoReload, initTips, initGuides, loadCases, loadCase, saveCase, updateCase, togglePin, removeCase, clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP, renderAsk, bindAsk, renderClassic, bindClassic, renderClassicDetail, bindClassicDetail, mountPlaceBars, bindPlaceChip, onPlaceChange, initRitual, isCasted, castDone, resetGate, RITUAL_PAGES, renderMoreCards, renderDaLiuRen, daLiuRenCopyText, daLiuRenCode, renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode, renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy, renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan, renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot;
+let PANES = null;
+/* 错误边界（js/errors.js）：与视图模块一起在 boot() 里装入 */
+let showError, errorHtml, renderWarnings, esc, showLoading, hideLoading, refreshScrollLock, clearRenderError, takeRenderError;
 
 const SRC_LABEL = { coins: '摇铜钱', tianji: '天机', manual: '手录', time: '天时' };
 const NO_Q = '未填写所占之事';
@@ -49,27 +253,23 @@ const TAB_VIEWS = ['home', 'classic', 'ask', 'cast', 'history'];
 let lastTab = 'home';
 let caseFilter = 'all';
 let sheetKind = null;
+let currentCodeWarns = [];
+/* 案例满额顶掉的条数：等「已按码复现」那条 toast 播完再一起说，
+   否则刚弹出来就被下一句 toast 顶掉，用户永远看不到（r6_compat.md P1-2） */
+let pendingEvicted = 0;
+/**
+ * toast 出口统一拼尾巴：不管下一步弹的是「已按码复现」还是「已还原牌局」，
+ * 只要这一轮顶掉过旧案例，就必须在同一句里说出来，不能被下一句 toast 冲掉。
+ */
+function wrapToast(fn) {
+  return (msg) => {
+    const tail = pendingEvicted ? ` · 案例已满，已删除最旧 ${pendingEvicted} 条（星标不删）` : '';
+    pendingEvicted = 0;
+    return fn(tail ? `${msg}${tail}` : msg);
+  };
+}
 
 // 各盘：码数据提供者 + 重渲染（时间条 / 复现码统一走这里）
-const PANES = {
-  bazi:   { code: baziCode,   render: () => { const b = $('#bazi-body'); if (b) b.innerHTML = renderBazi(); } },
-  meihua: { code: meiHuaCode, render: () => { const b = $('#meihua-body'); if (b) b.innerHTML = renderMeiHua(); } },
-  qimen:  { code: qiMenCode,  render: () => { const b = $('#qimen-body'); if (b) b.innerHTML = renderQiMen(); } },
-  astro:  { code: astroCode,  render: () => renderAstro() },
-  vedic:  { code: vedicCode,  render: () => renderVedic() },
-  zhuyou: { code: zhuyouCode, render: () => renderZhuyou() },
-  yangzhai: { code: yangzhaiCode, render: () => { const b = $('#yangzhai-body'); if (b) b.innerHTML = renderYangzhai(); initYangzhai(); } },
-  ziwei:  { code: ziweiCode,  render: () => renderZiwei() },
-  cards:  { code: cardsCode,  render: () => renderCards() },
-  sky:    { code: null,      render: () => renderSky() },
-  globe:  { code: null,      render: () => renderGlobe(nowDate()) },
-  mansion:{ code: mansionCode,render: () => renderMansion() },
-  daliuren:  { code: daLiuRenCode,  render: () => { const b = $('#daliuren-body');   if (b) b.innerHTML = renderDaLiuRen(nowDate()); } },
-  xiaoliuren:{ code: xiaoLiuRenCode,render: () => { const b = $('#xiaoliuren-body'); if (b) b.innerHTML = renderXiaoLiuRen(nowDate()); } },
-  geomancy: { code: geomancyCode, render: () => { const b = $('#geomancy-body'); if (b) b.innerHTML = renderGeomancy(); } },
-  tibetan: { code: tibetanCode, render: () => { const b = $('#tibetan-body'); if (b) b.innerHTML = renderTibetan(); } },
-  tarot: { code: tarotCodeInfo, render: () => { const b = $('#tarot-body'); if (b) { b.innerHTML = renderTarot(); mountTarot(); } } },
-};
 
 /* ============================ 视图切换 ============================ */
 function switchView(name) {
@@ -91,33 +291,64 @@ function switchView(name) {
   if (name === 'ask') renderAsk();
   if (name === 'classic') {
     const b = $('#classic-body');
-    if (b) { b.innerHTML = renderClassic(); bindClassic(); }
+    if (VM.classic) { if (b) b.innerHTML = VM.classic.renderClassic(); }
+    else if (b && !b.innerHTML.trim()) b.innerHTML = '<div class="view-loading">正在打开</div>';
+    if (!VM.classic) loadView('classic').then((m) => { if (b) b.innerHTML = m.renderClassic(); }).catch((e) => {
+      console.warn('[qintian] 观心模块加载失败', e);
+      showError(e, { title: '观心没能加载出来', container: b });
+    });
   }
 }
 
-function openSubview(name) {
+const PANE_LABEL = {
+  bazi: '八字', meihua: '梅花', qimen: '奇门', hecan: '多盘合参', astro: '星盘', vedic: '印度占星',
+  zhuyou: '祝由', yangzhai: '阳宅', ziwei: '紫微', cards: '卡牌', sky: '星空', globe: '天球仪',
+  mansion: '星官', daliuren: '大六壬', xiaoliuren: '小六壬', geomancy: '地占', tibetan: '藏占',
+  tarot: '塔罗', pan: '六爻', liuyao: '六爻', history: '案例', ask: '问问', classic: '观心', cast: '起卦',
+};
+
+/** 这一页是不是还停在「起盘门」上（没动手就没结果，别留档） */
+function atGate(name) {
+  if (!RITUAL_PAGES.includes(name)) return false;
+  try { if (isCasted(name)) return false; } catch { return false; }
+  return true;
+}
+
+/** 该页的结果容器（错误贴回各自的盘面区，而不是全屏盖掉） */
+function paneBody(name) {
+  return document.getElementById(`${name}-body`) || null;
+}
+
+/**
+ * 打开子视图（P0-1 懒加载）：先切页给出反馈，再装模块、渲染。
+ * 只有被点开的那个视图才会 import 它自己的模块与专属样式。
+ */
+async function openSubview(name, opts = {}) {
   syncTimeBars();
-  if (name === 'bazi') $('#bazi-body').innerHTML = renderBazi();
-  if (name === 'meihua') $('#meihua-body').innerHTML = renderMeiHua();
-  if (name === 'qimen') $('#qimen-body').innerHTML = renderQiMen();
-  // 多盘合参：三格盘位 + 机械三态对照（本阶段只接梅花）
-  if (name === 'hecan') { const b = $('#hecan-body'); if (b) { b.innerHTML = renderHeCan(); initHeCan(b); } }
-  if (name === 'astro') renderAstro();
-  if (name === 'vedic') renderVedic();
-  if (name === 'zhuyou') renderZhuyou();
-  if (name === 'yangzhai') { const b = $('#yangzhai-body'); if (b) b.innerHTML = renderYangzhai(); initYangzhai(); }
-  if (name === 'ziwei') renderZiwei();
-  if (name === 'cards') renderCards();
-  if (name === 'sky') renderSky();
-  if (name === 'globe') renderGlobe(nowDate());
-  if (name === 'mansion') renderMansion();
-  if (name === 'daliuren') { const b = $('#daliuren-body'); if (b) b.innerHTML = renderDaLiuRen(nowDate()); }
-  if (name === 'xiaoliuren') { const b = $('#xiaoliuren-body'); if (b) b.innerHTML = renderXiaoLiuRen(nowDate()); }
-  if (name === 'geomancy') { const b = $('#geomancy-body'); if (b) b.innerHTML = renderGeomancy(); }
-  if (name === 'tibetan') { const b = $('#tibetan-body'); if (b) b.innerHTML = renderTibetan(); }
-  if (name === 'tarot') { const b = $('#tarot-body'); if (b) { b.innerHTML = renderTarot(); mountTarot(); } }
-  switchView(name);
-  if (name !== 'cards') autoSave(name); // 每排一盘即自动留档
+  let m = null;
+  try {
+    m = await loadView(name);
+  } catch (e) {
+    // 模块没到：贴回该盘面区，别白屏
+    console.warn('[qintian] 视图模块加载失败', name, e);
+    try { switchView(name); } catch { /* ignore */ }
+    showError(e, { title: `${PANE_LABEL[name] || '这一页'}没能加载出来`, container: paneBody(name) });
+    return;
+  }
+  try {
+    RENDER[name](m);
+  } catch (e) {
+    // P0-2：视图抛错不得白屏、不得把这次点击整个吞掉——贴回该盘面区，再切过去
+    console.warn('[qintian] 视图渲染失败', name, e);
+    showError(e, { title: `${PANE_LABEL[name] || '这一页'}没能渲染出来`, container: paneBody(name) });
+  }
+  try { switchView(name); } catch (e) {
+    showError(e, { title: '页面切换失败', container: paneBody(name) });
+    $$('.view').forEach((v) => v.classList.toggle('active', v.id === `view-${name}`));
+  }
+  // P1-2：只在真正排到结果时才留档；停在起盘门 / 渲染出错都不写案例
+  const renderFailed = takeRenderError();
+  if (name !== 'cards' && opts.save !== false && !atGate(name) && !renderFailed) autoSave(name); // 每排一盘即自动留档
 }
 
 function getActiveView() {
@@ -149,23 +380,52 @@ function bindTimeBars() {
     const pane = PANES[name];
     if (!pane || !input) return;
 
-    bar.querySelector('[data-act="reset"]').addEventListener('click', () => {
+    /** 排一次盘并归类：noCast（还在起盘门）/ failed / ok */
+    const render = async () => {
+      if (atGate(name)) {
+        toast('这一盘还没起——请点页面中间的「起盘」按钮');
+        const g = document.querySelector(`#${name}-body [data-rt-start]`);
+        if (g) { g.classList.add('qt-nudge'); setTimeout(() => g.classList.remove('qt-nudge'), 1600); try { g.focus(); } catch { /* ignore */ } }
+        return 'noCast';
+      }
+      clearRenderError();
+      try {
+        // await：视图是懒加载的，渲染在 promise 里跑；不等它，下面的 takeRenderError 一定读不到
+        await pane.render();
+      } catch (e) {
+        showError(e, { title: `${PANE_LABEL[name] || '这一盘'}没能排出来`, container: paneBody(name) });
+        return 'failed';
+      }
+      // 视图内部自带 try/catch 的（紫微/星盘/吠陀）在这里留下标记
+      if (takeRenderError()) return 'failed';
+      return 'ok';
+    };
+
+    bar.querySelector('[data-act="reset"]').addEventListener('click', async () => {
+      clearTzWarn();
       resetPanAt(scope);
       if (scope === 'birth') panAt.geo = null;
       syncTimeBars();
-      pane.render();
-      autoSave(name);
-      toast(scope === 'birth' ? '已回到默认出生时刻' : '已回到此刻');
+      if ((await render()) === 'ok') {
+        autoSave(name);
+        toast(scope === 'birth' ? '已回到默认出生时刻' : '已回到此刻');
+      }
     });
 
-    bar.querySelector('[data-act="go"]').addEventListener('click', () => {
+    bar.querySelector('[data-act="go"]').addEventListener('click', async () => {
       const d = parseLocalDateTime(input.value);
       if (!d) { toast('时间无效，请重新选择'); input.focus(); return; }
+      clearTzWarn();
       setPanAt(scope, d);
       if (scope === 'birth') panAt.geo = null; // 手动改时刻即放弃码里带的经纬度
-      pane.render();
-      autoSave(name);
-      toast(`已按 ${fmtMoment(d)} 排盘`);
+      const st = await render();
+      // P1-2：失败时不弹「已按…排盘」的成功 toast（紫微非法日期曾红字 + 成功提示并存）
+      if (st === 'ok') {
+        autoSave(name);
+        toast(`已按 ${fmtMoment(d)} 排盘`);
+      } else if (st === 'failed') {
+        toast('这个时刻排不出来，看盘面上的红色说明');
+      }
     });
   });
 }
@@ -194,6 +454,57 @@ function applyCodeCfg(d) {
   if (d.geo) panAt.geo = { longitude: d.geo.lon, latitude: d.geo.lat, place: `${d.geo.lon.toFixed(2)}°E ${d.geo.lat.toFixed(2)}°N` };
 }
 
+const BIRTH_KINDS = new Set(['bazi', 'ziwei', 'astro', 'vedic']);
+
+/**
+ * 把「这次排盘用的城市 / 时区 / 经纬度」整份补进码里。
+ * 只存绝对秒的 v2 码换台机器打开就是另一个盘（r6_compat.md P0），
+ * 所以钟面分量 + 城市 + 时区 + 偏移 + 经纬度一项都不能少。
+ * 视图自己算出的经纬度优先，这里只补空缺。
+ */
+function withTzSnapshot(info, kind) {
+  const d = info && info.data;
+  if (!d) return info;
+  const birth = BIRTH_KINDS.has(kind);
+  const atSec = Number.isFinite(d.at) ? (d.at < 1e11 ? d.at : Math.round(d.at / 1000)) : null;
+  // 出生盘：钟面就是排盘实际吃进去的年月日时分——它跨时区也不能变，
+  // 所以绝不能用 new Date(at) 在本机时区里反推（这正是旧码的病根）。
+  const geo = birth ? birthArgs() : nowGeoArgs();
+  let civil = null;
+  if (birth && geo && Number.isInteger(geo.year)) {
+    civil = { y: geo.year, mo: geo.month, d: geo.day, h: geo.hour, mi: geo.minute };
+  } else if (atSec != null) {
+    civil = civilFromAt(atSec);
+  }
+  const snap = civil ? tzSnapshotOfCivil(civil, geo || {}) : null;
+  if (civil && d.civil == null) d.civil = civil;
+  if (snap) {
+    if (d.city == null) d.city = snap.city;
+    if (d.tz == null) d.tz = snap.tz;
+    if (d.tzOffsetMinutes == null) d.tzOffsetMinutes = snap.tzOffsetMinutes;
+    if (d.tzEstimated == null) d.tzEstimated = snap.tzEstimated;
+    if (d.inDst == null) d.inDst = !!snap.inDst;
+    if (d.lon == null && Number.isFinite(snap.lon) && Number.isFinite(snap.lat)) { d.lon = snap.lon; d.lat = snap.lat; }
+    info.tzWarnings = snap.warnings || [];
+  }
+  return info;
+}
+
+/** 码里的地理/时区 → panAt.geo（birthArgs/nowGeoArgs 会原样交给核心） */
+function codeGeo(d) {
+  if (!d) return null;
+  const hasLL = Number.isFinite(d.lon) && Number.isFinite(d.lat);
+  if (!d.city && !hasLL) return null;
+  const g = {
+    city: d.city || undefined,
+    place: d.city || (hasLL ? `${d.lon.toFixed(2)}°E ${d.lat.toFixed(2)}°N` : undefined),
+    // 用码里记下的生效偏移，不再按城市重新查一遍（查表可能和当年规则不一致）
+    utcOffsetHours: Number.isFinite(d.tzOffsetMinutes) ? d.tzOffsetMinutes / 60 : undefined,
+  };
+  if (hasLL) { g.lat = d.lat; g.latitude = d.lat; g.lon = d.lon; g.lonEast = d.lon; g.longitude = d.lon; }
+  return g;
+}
+
 function codeInfo(kind) {
   const src = kind === 'liuyao' ? liuyaoCode : (PANES[kind] && PANES[kind].code);
   if (!src) return null;
@@ -207,6 +518,7 @@ function codeInfo(kind) {
         info.data.lon = panAt.geo.longitude;
         info.data.lat = panAt.geo.latitude;
       }
+      withTzSnapshot(info, kind);
     }
     return info;
   } catch (e) { console.warn('[qintian] 生成码失败', kind, e); return null; }
@@ -221,6 +533,8 @@ function autoSave(kind) {
     const c = saveCase({ kind: info.kind, code, title: info.title, sub: info.sub, castAt: info.data.at });
     current.caseId = c.id;
     updatePinBtn();
+    // 不再静默淘汰：案例满额顶掉最旧一条时必须说一声（r6_compat.md P1-2）
+    if (c.evicted) pendingEvicted += c.evicted;
     return c;
   } catch (e) { console.warn('[qintian] 自动留档失败', kind, e); return null; }
 }
@@ -234,8 +548,17 @@ function openSheet(kind) {
   if (kind && kind !== 'input') {
     const info = codeInfo(kind);
     let code = '—';
-    if (info) { try { code = encodeCode(info.kind, info.data); } catch { code = '—'; } }
+    let warns = [];
+    if (info) {
+      try {
+        const b = buildCode(info.kind, info.data);
+        code = b.code;
+        warns = b.warnings.concat(info.tzWarnings || []);
+      } catch { code = '—'; }
+    }
+    currentCodeWarns = warns;
     $('#cs-cur').textContent = code;
+    setHint(warns.length ? warns.join('；') : '', false);
     $('#cs-title').textContent = `${KIND_LABEL[kind] || '盘'} · 复现码`;
     curBlock.style.display = '';
     $('#cs-pin').style.display = code === '—' ? 'none' : '';
@@ -254,6 +577,71 @@ function setHint(msg, isErr = false) {
   const h = $('#cs-hint');
   h.textContent = msg || '';
   h.classList.toggle('err', !!isErr);
+}
+
+/* ============================ 时区提示横幅 ============================ */
+// 旧码（QT1）没有时区信息、码里的时区是估算值、经纬度是兜底值……
+// 这些都必须「写在页面上」，不能只弹一个转头就没的 toast（r6_compat.md P0/P1-1）。
+let tzWarnRetz = null;
+
+function setTzWarn(msg, retz = null) {
+  const box = $('#tz-warn');
+  if (!box) return;
+  $('#tz-warn-text').textContent = msg || '';
+  tzWarnRetz = retz;
+  const form = $('#tz-warn-form');
+  if (form) form.style.display = retz ? '' : 'none';
+  box.hidden = !msg;
+  box.classList.toggle('on', !!msg);
+}
+
+function clearTzWarn() {
+  tzWarnRetz = null;
+  const box = $('#tz-warn');
+  if (!box) return;
+  box.hidden = true;
+  box.classList.remove('on');
+  const t = $('#tz-warn-text');
+  if (t) t.textContent = '';
+}
+
+/** 旧码带上城市后重算：解出该城市的钟面 → 生成 QT2 码 → 走正常打开流程 */
+async function retzLegacy() {
+  const d = tzWarnRetz;
+  if (!d) return;
+  const city = (($('#tz-warn-city') && $('#tz-warn-city').value) || '').trim();
+  if (!city) { toast('先填一个城市，如 上海 / 纽约 / 开罗'); return; }
+  // 旧码只知道「绝对秒」，先按城市解出这一刻的钟面
+  const r = civilInCity(d.utcMs, city);
+  if (!r) { toast(`查不到「${city}」的时区，换个写法试试`); return; }
+  // 时区、偏移、经纬度一起补：只补时区的话，真太阳时/上升点仍会按本机默认地算
+  const snap = tzSnapshotOfCivil(r.civil, { ...(d.extra || {}), city });
+  let code;
+  try {
+    code = buildCode(d.kind, {
+      ...d.extra,
+      civil: snap.civil,
+      city: snap.city || city,
+      tz: snap.tz,
+      tzOffsetMinutes: snap.tzOffsetMinutes,
+      tzEstimated: snap.tzEstimated,
+      inDst: snap.inDst,
+      lon: snap.lon ?? undefined,
+      lat: snap.lat ?? undefined,
+    }).code;
+  } catch (e) { toast(`重算失败：${e.message || e}`); return; }
+  await openByCode(code);
+  toast(`已按 ${snap.city || city} ${snap.tz} 重算为 QT2 码`);
+}
+
+/** 旧码里能带到新码的字段（性别/经纬度/卦象…） */
+function legacyExtra(d) {
+  const keys = ['gender', 'lon', 'lat', 'geoFallback', 'source', 'yaoValues', 'question',
+    'deckId', 'spreadIndex', 'cards', 'mothers', 'qHouse', 'mode', 'coin', 'dice',
+    'facingDeg', 'rooms', 'built', 'personY', 'personG', 'shapes', 'lateZi', 'apparentSolarTime'];
+  const out = {};
+  for (const k of keys) if (d[k] != null) out[k] = d[k];
+  return out;
 }
 
 /* ============================ 星标备注弹窗 ============================ */
@@ -291,14 +679,22 @@ function confirmNote() {
   if (c0.kind === 'liuyao') {
     try {
       const d = decodeCode(c0.code);
-      const at = new Date(d.at);
+      // 钟面以码为准（QT1 老码没有钟面，才退回本机时区）
+      const at = civilDate(d.civil) || new Date(d.at);
       const pan = paipanZi({
         yaoValues: d.yaoValues,
         year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
         hour: at.getHours(), minute: at.getMinutes(),
         gender: cfg.gender, question: v,
       });
-      const code = encodeCode('liuyao', { at: d.at, source: d.source, yaoValues: d.yaoValues, question: v });
+      // 重排后必须仍是 QT2 码：钟面 + 时区一起带上，别把复现码打回「只存绝对秒」
+      const code = buildCode('liuyao', {
+        at: d.at, source: d.source, yaoValues: d.yaoValues, question: v,
+        civil: d.civil || undefined,
+        city: d.city || undefined, tz: d.tz || undefined,
+        tzOffsetMinutes: Number.isFinite(d.tzOffsetMinutes) ? d.tzOffsetMinutes : undefined,
+        tzEstimated: d.tzEstimated, inDst: d.inDst,
+      }).code;
       updateCase(noteTargetId, {
         note: v, question: v, pinned: true, code,
         title: `${pan.benGua.name}${pan.bianGua ? ` 之 ${pan.bianGua.name}` : ''}`,
@@ -321,13 +717,24 @@ function confirmNote() {
 }
 
 /** 粘贴一个码，还原对应的整盘 */
-function openByCode(raw) {
+/** 按复现码还原（P0-1 懒加载后改为 async：先装对应视图模块再还原） */
+async function openByCode(raw) {
   let d;
   try { d = decodeCode(raw); }
   catch (e) { setHint(e.message || '码无法识别', true); return; }
-  const at = new Date(d.at);
-  applyCodeCfg(d); // v121：码里的计算配置（晚子时/真太阳时/观测地）先落地再排盘
+  // QT2 码自带钟面：一律按码里的年月日时分复现，与本机时区无关。
+  // QT1 码只有绝对秒，只能按本机时区还原（钟面会跟着设备时区变），必须挂横幅。
+  const at = civilDate(d.civil) || new Date(d.at);
+  clearTzWarn();
+  applyCodeCfg(d); // 码里的计算配置（晚子时/真太阳时/观测地/时区）先落地再排盘
   const staleNote = d.ruleStale ? `（此码规则 v${d.ruleVersion}，当前 v${RULE_VERSION}，结果或有差异）` : '';
+  if (d.warnings && d.warnings.length) {
+    const needCity = d.legacy && BIRTH_KINDS.has(d.kind);
+    setTzWarn(
+      d.warnings.join('；') + (needCity ? '。补一个出生城市可精确重算：' : ''),
+      needCity ? { utcMs: d.at, kind: d.kind, extra: legacyExtra(d) } : null,
+    );
+  }
 
   if (d.kind === 'liuyao') {
     if (!d.yaoValues) { setHint('码里没有六爻数据', true); return; }
@@ -349,60 +756,71 @@ function openByCode(raw) {
     return;
   }
 
-  if (d.kind === 'bazi' || d.kind === 'ziwei' || d.kind === 'astro' || d.kind === 'vedic') {
+  if (BIRTH_KINDS.has(d.kind)) {
     setPanAt('birth', at);
     panAt.geo = null;
     if (d.gender) { cfg.gender = d.gender; saveCfg(); }
-    if (d.lon != null && d.lat != null) {
-      panAt.geo = { longitude: d.lon, latitude: d.lat, place: `${d.lon.toFixed(2)}°E ${d.lat.toFixed(2)}°N` };
-    }
-  } else if (d.kind === 'meihua' || d.kind === 'qimen' || d.kind === 'daliuren' || d.kind === 'xiaoliuren') {
+    // 城市 + 时区 + 经纬度一起写回，八字/紫微/星盘/吠陀才按原盘算（缺时区就会各算各的）
+    const geo = codeGeo(d);
+    if (geo) panAt.geo = geo;
+  } else if (d.kind === 'meihua' || d.kind === 'qimen' || d.kind === 'daliuren' || d.kind === 'xiaoliuren' || d.kind === 'sky') {
+    // 时刻类：钟面按码还原；观测地/时区也照码，否则节气与时辰会按本机算
     setPanAt('now', at);
-  } else if (d.kind === 'sky') {
-    // sky 码只含时刻；还原到二十八宿实时躔次（天象旧页的时间语义一致）
-    setPanAt('now', at);
+    const geo = codeGeo(d);
+    if (geo) panAt.geo = geo;
   }
 
   closeSheet();
   if (d.kind === 'cards') {
     // v121 双轨：带 deckId 的是新塔罗牌局 → 塔罗视图；否则按旧卡牌视图还原
-    if (d.deckId && isTarotDeck(d.deckId)) {
-      if (!restoreTarot(d.spreadIndex, d.cards || [], d.deckId)) { toast('牌局还原失败'); return; }
-      openSubview('tarot');
-      autoSave('cards');
-      toast('已还原牌局' + staleNote);
-      return;
+    if (d.deckId) {
+      // P0-1 懒加载：先装 tarot 模块再判牌组（isTarotDeck / restoreTarot 都在它里面）
+      const tm = await loadView('tarot').catch(() => null);
+      if (!tm) { toast('塔罗模块没能加载，稍后再试'); return; }
+      if (tm.isTarotDeck(d.deckId)) {
+        if (!tm.restoreTarot(d.spreadIndex, d.cards || [], d.deckId)) { toast('牌局还原失败'); return; }
+        await openSubview('tarot');
+        autoSave('cards');
+        toast('已还原牌局' + staleNote);
+        return;
+      }
     }
-    openSubview('cards');
-    const ok = restoreCards(d.spreadIndex, d.cards || []);
+    await openSubview('cards');
+    const ok = VM.cards && VM.cards.restoreCards(d.spreadIndex, d.cards || []);
     if (!ok) { toast('牌局还原失败'); return; }
     autoSave('cards');
     toast('已还原牌局' + staleNote);
     return;
   }
   if (d.kind === 'geomancy') {
-    if (!restoreGeomancy(d.mothers, d.qHouse, d.question)) { toast('地占还原失败'); return; }
-    openSubview('geomancy');
+    const gm = await loadView('geomancy').catch(() => null);
+    if (!gm) { toast('地占模块没能加载，稍后再试'); return; }
+    if (!gm.restoreGeomancy(d.mothers, d.qHouse, d.question)) { toast('地占还原失败'); return; }
+    await openSubview('geomancy');
     autoSave('geomancy');
     toast('已还原地占盘' + staleNote);
     return;
   }
   if (d.kind === 'tibetan') {
-    if (!restoreTibetan(d.mode, d.dice, d.coin, d.question)) { toast('藏占还原失败'); return; }
-    openSubview('tibetan');
+    const tb = await loadView('tibetan').catch(() => null);
+    if (!tb) { toast('藏占模块没能加载，稍后再试'); return; }
+    if (!tb.restoreTibetan(d.mode, d.dice, d.coin, d.question)) { toast('藏占还原失败'); return; }
+    await openSubview('tibetan');
     autoSave('tibetan');
     toast('已还原藏占' + staleNote);
     return;
   }
   if (d.kind === 'yangzhai') {
-    if (!restoreYangzhai(d)) { toast('宅盘还原失败'); return; }
-    openSubview('yangzhai');
+    const yz = await loadView('yangzhai').catch(() => null);
+    if (!yz) { toast('阳宅模块没能加载，稍后再试'); return; }
+    if (!yz.restoreYangzhai(d)) { toast('宅盘还原失败'); return; }
+    await openSubview('yangzhai');
     autoSave('yangzhai');
     toast('已还原宅盘' + staleNote);
     return;
   }
   if (RITUAL_PAGES.includes(d.kind)) castDone(d.kind); // 复现码直入，不走起盘门
-  openSubview(d.kind === 'sky' ? 'mansion' : d.kind);
+  await openSubview(d.kind === 'sky' ? 'mansion' : d.kind);
   toast('已按码复现' + staleNote);
 }
 
@@ -508,6 +926,27 @@ function updatePinBtn() {
 
 /* ============================ 绑定 ============================ */
 function bind() {
+  // P1-2 统一 ESC：复现码面板 / 星标备注 / 地点弹层，一个键全关（此前只有观测地弹层能关）
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' && e.key !== 'Esc') return;
+    let handled = false;
+    const sheet = document.querySelector('#code-sheet.open');
+    if (sheet) { closeSheet(); handled = true; }
+    const note = document.querySelector('#note-sheet.open');
+    if (note) { note.classList.remove('open'); handled = true; }
+    const pm = document.querySelector('.place-modal');
+    if (pm) {
+      const x = pm.querySelector('.pm-x, [data-pm-close]');
+      if (x) x.click(); else pm.remove();
+      handled = true;
+    }
+    refreshScrollLock();
+    if (handled) e.preventDefault();
+  });
+  // 弹层打开时锁背景滚动（sheet/弹层增删后同步一次；计算遮罩由 showLoading 自己锁）
+  document.addEventListener('click', () => setTimeout(refreshScrollLock, 0), true);
+  refreshScrollLock();
+
   $$('.tabbar .tab').forEach((t) => t.addEventListener('click', () => switchView(t.dataset.view)));
   $('#pan-back').addEventListener('click', () => switchView(lastTab || 'cast'));
   // v115 全局右下角返回：主 tab 页回首页（隐藏不显示），子视图回上次主 tab
@@ -520,48 +959,96 @@ function bind() {
   // 「问问」：选问题 → 推荐术数 → 跳到对应盘（不自动留档）
   bindAsk($('#view-ask'));
   // 经典板块（《论语》）：主视图与详情视图各自绑定一次，内部用事件委托
-  bindClassic();
-  bindClassicDetail();
+  // P0-1 懒加载：bindClassic/bindClassicDetail 随 classic 模块一起装（VIEW_INIT）
   document.addEventListener('qintian:classic-goto', (e) => {
     const v = e.detail && e.detail.view;
     if (v) switchView(v);
   });
   // 三幕式排盘：点「起盘」后进入盘面（再起一盘时重走门）
-  initRitual((key) => {
+  initRitual(async (key) => {
     // 再起一盘：ritual 已清标记，render 回到起盘门；正常起盘：直接渲染盘面
-    if (PANES[key] && PANES[key].render) PANES[key].render();
+    if (!PANES[key] || !PANES[key].render) return;
+    clearRenderError();
+    try {
+      await PANES[key].render();
+    } catch (e) {
+      showError(e, { title: `${PANE_LABEL[key] || '这一盘'}没能排出来`, container: paneBody(key) });
+      toast('这个时刻排不出来，看盘面上的红色说明');
+      return;
+    }
+    // P0-2：视图内部兜住的错误（1582 这类越界年份）也要给一句提示，别让人以为排成功了
+    if (takeRenderError()) {
+      try { resetGate(key); } catch { /* ignore */ }
+      toast('这个时刻排不出来，看盘面上的红色说明');
+      return;
+    }
+    autoSave(key);
   });
   // 占星盘面样式切换（12 风格，document 级委托防 innerHTML 冲掉）
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-astyle]');
-    if (btn) setAstroStyle(btn.dataset.astyle);
+    if (btn) loadView('astro').then((m) => m.setAstroStyle(btn.dataset.astyle)).catch((err) => {
+      showError(err, { title: '星盘样式没能切换', container: paneBody('astro') });
+    });
   });
   // 占星盘面模式（36 种）/ 本命2 / 重置城市
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', async (e) => {
     const mb = e.target.closest('[data-amode]');
-    if (mb) { try{ localStorage.setItem(ASTRO_MODE_KEY, mb.dataset.amode); }catch{} renderAstro(); return; }
+    if (mb) {
+      const mode = mb.dataset.amode;
+      const { ASTRO_MODE_KEY } = await astroMods();
+      try { localStorage.setItem(ASTRO_MODE_KEY, mode); } catch { /* 隐私模式 */ }
+      // P1-1：日返盘要逐日比对太阳回归，十几秒的主线程计算。先画 loading 再让出一帧去算，
+      // 否则用户看到的是「点了没反应」（审计 r3 实测 6.2s 后 1+1 探活超时）。
+      const heavy = mode === 'solar' || mode === 'lunar' || mode === 'profection';
+      if (heavy) {
+        mb.classList.add('is-busy');
+        showLoading(mode === 'solar' ? '正在算日返盘…' : '正在算盘…', '日返要逐日比对太阳回归时刻，通常十几秒，别关页面');
+        setTimeout(() => {
+          rerender('astro').finally(() => { hideLoading(); mb.classList.remove('is-busy'); });
+        }, 60);
+      } else {
+        rerender('astro');
+      }
+      return;
+    }
     const rs = e.target.closest('[data-areloc]');
-    if (rs) { try{ localStorage.setItem(RESET_KEY, JSON.stringify({ city: rs.dataset.areloc })); }catch{} renderAstro(); return; }
+    if (rs) {
+      const { RESET_KEY } = await astroMods();
+      try { localStorage.setItem(RESET_KEY, JSON.stringify({ city: rs.dataset.areloc })); } catch { /* ignore */ }
+      if (rs.dataset.areloc !== '重置') {
+        showLoading('正在按新地点重算…', '');
+        setTimeout(() => { rerender('astro').finally(() => hideLoading()); }, 40);
+      } else {
+        rerender('astro');
+      }
+      return;
+    }
     const sv = e.target.closest('[data-b2save]');
     if (sv) {
       const data = {};
       document.querySelectorAll('[data-b2k]').forEach((el) => { data[el.dataset.b2k] = el.value; });
+      const { B2_KEY } = await astroMods();
       try{ localStorage.setItem(B2_KEY, JSON.stringify(data)); }catch{}
-      renderAstro();
+      rerender('astro');
     }
   });
 
   // 占星"重置城市"下拉（v111 起为全量城市选择）
-  document.addEventListener('change', (e) => {
+  document.addEventListener('change', async (e) => {
     const rc = e.target.closest('#reloc-city');
-    if (rc) { try { localStorage.setItem(RESET_KEY, JSON.stringify({ city: rc.value })); } catch {} renderAstro(); }
+    if (rc) {
+      const { RESET_KEY } = await astroMods();
+      try { localStorage.setItem(RESET_KEY, JSON.stringify({ city: rc.value })); } catch {}
+      rerender('astro');
+    }
   });
 
   document.addEventListener('qintian:ask-goto', (e) => {
     const v = e.detail && e.detail.view;
     if (!v) return;
     if (TAB_VIEWS.includes(v)) { switchView(v); return; }
-    if (PANES[v]) { syncTimeBars(); PANES[v].render(); switchView(v); }
+    if (PANES[v]) openSubview(v, { save: false });
   });
 
   // 首页 / 各子视图入口与返回
@@ -576,38 +1063,42 @@ function bind() {
   $$('[data-back]').forEach((b) => b.addEventListener('click', () => switchView(lastTab || 'home')));
 
   // 各页一键复制（成功在按钮上即时反馈）；复制文本强制带复现码，
-  // 顺手粘给 AI 后随时能在系统内还原这一盘
-  const copyBind = (id, fn, codeFn) => {
+  // 顺手粘给 AI 后随时能在系统内还原这一盘。
+  // P0-1 懒加载后这些函数不该在 bind() 时被解构（模块还没装），
+  // 改为点击那一刻从 VM 里取——点「复制」时必然已经打开过那页。
+  const copyBind = (id, view, textName, codeName) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('click', () => {
-      let text = fn();
-      if (codeFn) {
+      const m = VM[view];
+      if (!m || typeof m[textName] !== 'function') { toast('这一页还没打开，先点开再复制'); return; }
+      let text = m[textName]();
+      if (codeName && m[codeName]) {
         try {
-          const info = codeFn();
+          const info = m[codeName]();
           if (info) text += `\n复现码：${encodeCode(info.kind, info.data)}\n`;
         } catch { /* 码不可用则忽略 */ }
       }
       copyText(text, el);
     });
   };
-  copyBind('copy-bazi', baziCopyText, baziCode);
-  copyBind('copy-meihua', meiHuaCopyText, meiHuaCode);
-  copyBind('copy-qimen', qiMenCopyText, qiMenCode);
-  copyBind('copy-astro', astroCopyText, astroCode);
-  copyBind('copy-vedic', vedicCopyText, vedicCode);
-  copyBind('copy-zhuyou', zhuyouCopyText, zhuyouCode);
-  copyBind('copy-yangzhai', yangzhaiCopyText, null);
-  copyBind('copy-ziwei', ziweiCopyText, ziweiCode);
-  copyBind('copy-cards', cardsCopyText, cardsCode);
-  copyBind('copy-sky', skyCopyText, skyCode);
-  copyBind('copy-globe', globeCopyText, null);
-  copyBind('copy-mansion', mansionCopyText, mansionCode);
-  copyBind('copy-daliuren', daLiuRenCopyText, daLiuRenCode);
-  copyBind('copy-xiaoliuren', xiaoLiuRenCopyText, xiaoLiuRenCode);
-  copyBind('copy-geomancy', geomancyCopyText, null);
-  copyBind('copy-tibetan', tibetanCopyText, null);
-  copyBind('copy-tarot', tarotCopyText, null);
+  copyBind('copy-bazi', 'bazi', 'baziCopyText', 'baziCode');
+  copyBind('copy-meihua', 'meihua', 'meiHuaCopyText', 'meiHuaCode');
+  copyBind('copy-qimen', 'qimen', 'qiMenCopyText', 'qiMenCode');
+  copyBind('copy-astro', 'astro', 'astroCopyText', 'astroCode');
+  copyBind('copy-vedic', 'vedic', 'vedicCopyText', 'vedicCode');
+  copyBind('copy-zhuyou', 'zhuyou', 'zhuyouCopyText', 'zhuyouCode');
+  copyBind('copy-yangzhai', 'yangzhai', 'yangzhaiCopyText', null);
+  copyBind('copy-ziwei', 'ziwei', 'ziweiCopyText', 'ziweiCode');
+  copyBind('copy-cards', 'cards', 'cardsCopyText', 'cardsCode');
+  copyBind('copy-sky', 'sky', 'skyCopyText', 'skyCode');
+  copyBind('copy-globe', 'globe', 'globeCopyText', null);
+  copyBind('copy-mansion', 'mansion', 'mansionCopyText', 'mansionCode');
+  copyBind('copy-daliuren', 'daliuren', 'daLiuRenCopyText', 'daLiuRenCode');
+  copyBind('copy-xiaoliuren', 'xiaoliuren', 'xiaoLiuRenCopyText', 'xiaoLiuRenCode');
+  copyBind('copy-geomancy', 'geomancy', 'geomancyCopyText', null);
+  copyBind('copy-tibetan', 'tibetan', 'tibetanCopyText', null);
+  copyBind('copy-tarot', 'tarot', 'tarotCopyText', null);
   const hc = document.getElementById('copy-home');
   if (hc) hc.addEventListener('click', () => copyText(homeCopyText(), hc));
 
@@ -633,6 +1124,64 @@ function bind() {
   // 案例库
   $('#history-list').addEventListener('click', onHistoryClick);
   $('#case-filter').addEventListener('click', onHistoryClick);
+  // 导出全部（JSON 下载，含版本号与生成时间）
+  $('#case-export').addEventListener('click', () => {
+    const bundle = exportCaseBundle();
+    if (!bundle.count) { toast('还没有案例可导出'); return; }
+    try {
+      const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = exportFileName();
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      toast(`已导出 ${bundle.count} 条案例`);
+    } catch (e) {
+      toast(`导出失败：${e.message || e}`);
+    }
+  });
+
+  // 导入（去重合并，同码/同 id 以导入的为准）
+  $('#case-import').addEventListener('click', () => {
+    const f = $('#case-file');
+    if (f) { f.value = ''; f.click(); }
+  });
+  const fileInput = $('#case-file');
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      const fr = new FileReader();
+      fr.onload = () => {
+        let bundle;
+        try { bundle = JSON.parse(String(fr.result || '')); }
+        catch (e) { toast('这个文件不是有效的 JSON'); return; }
+        try {
+          const r = importCaseBundle(bundle);
+          renderHistory();
+          const bits = [`新增 ${r.added} 条`];
+          if (r.updated) bits.push(`覆盖 ${r.updated} 条`);
+          if (r.skipped) bits.push(`跳过 ${r.skipped} 条（格式不对）`);
+          if (r.evicted) bits.push(`已满额删除最旧 ${r.evicted} 条`);
+          toast(`导入完成：${bits.join('，')}`);
+        } catch (e) {
+          toast(`导入失败：${e.message || e}`);
+        }
+      };
+      fr.readAsText(file);
+    });
+  }
+
+  // 时区提示横幅
+  $('#tz-warn-x').addEventListener('click', () => clearTzWarn());
+  const retzBtn = $('#tz-warn-go');
+  if (retzBtn) retzBtn.addEventListener('click', () => retzLegacy());
+  const retzInput = $('#tz-warn-city');
+  if (retzInput) retzInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') retzLegacy(); });
+
   $('#case-clear').addEventListener('click', () => {
     const st = caseStats();
     const n = st.total - st.pinned;
@@ -731,12 +1280,8 @@ function bind() {
 
   // 容器级手势/点选交互（八字/梅花/奇门），重渲染后监听不丢
   safe('interact', initInteract);
-  // 二十八宿宿盘：赤道/黄道切换（容器级，绑定一次）
-  safe('mansion', initMansionInteract);
-  // 阿拉伯地占：撒点/选宫/点符详情（容器级委托，绑定一次）
-  safe('geomancy', initGeomancy);
-  safe('tibetan', initTibetan);
-  safe('tarot', initTarot);
+  // 二十八宿 / 地占 / 藏占 / 塔罗的容器级绑定随各自模块懒装（VIEW_INIT），
+  // 不再在 bind() 里无条件调一遍——否则未装模块时这里必然 TypeError。
   // 点读笔 + 解盘思路：全局「点哪解释哪」与引导块折叠（document 级，绑定一次）
   safe('tips', initTips);
   safe('guides', initGuides);
@@ -747,61 +1292,123 @@ function setGender(g) {
   if (current.pan) { current.pan.gender = g; renderPan(); }
 }
 
-if ('serviceWorker' in navigator) {
-  // 新 SW 接管（skipWaiting+claim）后自动刷新一次，确保打开即最新，无需手动强刷
-  let reloaded = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    // 用户刚按过「强制刷新」：这次重载已经是新资源，再刷一次只会让页面连闪两下。
-    if (shouldSkipAutoReload()) return;
-    if (!reloaded) { reloaded = true; window.location.reload(); }
+/* ============================ 启动 ============================ */
+/**
+ * 由 js/boot.js 调用：所有视图模块在这一步才真正加载。
+ * 任一模块失败 → boot.js 渲染全屏「哪个文件失败」面板，而不是白屏。
+ */
+export async function boot() {
+  const M = await loadModules();
+  const E = await import('./errors.js?v=133');
+  ({ showError, errorHtml, renderWarnings, esc, showLoading, hideLoading, refreshScrollLock, clearRenderError, takeRenderError } = E);
+
+  ({ $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt, birthDate, nowDate, resolveCastDate, copyText, toast, pad, parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
+    civilInCity, tzSnapshotFor, tzSnapshotOfCivil, birthArgs, nowGeoArgs } = M['state.js']);
+  toast = wrapToast(toast); // 案例满额要跟成功提示合并成一句（见 wrapToast）
+  ({ paipanZi } = M['zischool.js']);
+  ({ updateHome, currentTimeGua, homeCopyText } = M['qintian.js']);
+  ({ renderPan, copyCurrent } = M['panview.js']);
+  ({ initInteract } = M['interact.js']);
+  // P0-1：视图模块不再在这里解构——它们由 loadView() 按需装，
+  // 渲染/复制/取码一律从 VM[视图名] 上取，未装的模块不会被误用。
+  VM.sky = M['skyview.js'];
+  ({ renderSky, renderHomeSky, skyCopyText, skyCode } = M['skyview.js']);
+  ({ initCast, resetCast } = M['cast.js']);
+  ({ encodeCode, decodeCode, buildCode, civilDate, civilFromAt, LEGACY_NOTICE, RULE_VERSION } = M['sharecode.js']);
+  ({ initForceRefresh, shouldSkipAutoReload } = M['force-refresh.js']);
+  ({ initTips, initGuides } = M['tipview.js']);
+  ({ loadCases, loadCase, saveCase, updateCase, togglePin, removeCase, clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP,
+    exportCaseBundle, importCaseBundle, exportFileName } = M['cases.js']);
+  ({ renderAsk, bindAsk } = M['askview.js']);
+  ({ mountPlaceBars, bindPlaceChip } = M['placeui.js']);
+  ({ onPlaceChange } = M['geo.js']);
+  ({ initRitual, castDone, resetGate, RITUAL_PAGES } = M['ritual.js']);
+  ({ renderMoreCards } = M['homecards.js']);
+  ({ isCasted } = M['ritual.js']);
+
+  // PANES 仍是「视图名 → 渲染 / 取码」的统一入口（时间条、起盘回调、复现码都查它），
+  // 只是 render 变成「没装先装再渲染」，code 变成点击时才去 VM 里取函数。
+  PANES = {};
+  for (const name of Object.keys(VIEW_KEY)) {
+    PANES[name] = {
+      render: () => rerender(name), // 返回 promise：时间条 / 起盘回调要等它算完才知道成没成
+      code: CODE_NAME[name] ? () => {
+        const m = VM[name];
+        const fn = m && CODE_NAME[name] ? m[CODE_NAME[name]] : null;
+        return fn ? fn() : null;
+      } : null,
+    };
+  }
+  PANES.sky = { render: () => { try { renderSky(); } catch (e) { console.warn('[sky] 渲染失败', e); } }, code: null };
+
+  if ('serviceWorker' in navigator) {
+    // 新 SW 接管（skipWaiting+claim）后自动刷新一次，确保打开即最新，无需手动强刷
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      // 用户刚按过「强制刷新」：这次重载已经是新资源，再刷一次只会让页面连闪两下。
+      if (shouldSkipAutoReload()) return;
+      if (!reloaded) { reloaded = true; window.location.reload(); }
+    });
+    // updateViaCache:'none' 强制每次注册都绕过 HTTP 缓存去检查 sw.js：
+    // 托管侧不发 Cache-Control，微信/浏览器会启发式缓存旧 SW，导致新版长期下不去
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+        .then((reg) => { try { reg.update(); } catch { /* ignore */ } })
+        .catch(() => {});
+    });
+  }
+
+  // 全局轻触反馈：全盘可点元素按下即轻微震动一下（iOS Safari 不支持 vibrate，用视觉反馈兜底）
+  function initHaptics() {
+    const SEL = 'button,a,.btn,.tab,.chip,[data-tip],[data-act],[data-sel-body],[data-sel-mansion],.pl-row,.tc-chip,.zm-jump,.zs-const,.zm-pl,input,select,label';
+    document.addEventListener('pointerdown', (e) => {
+      const t = e.target;
+      const el = t && t.closest ? t.closest(SEL) : null;
+      if (!el) return;
+      try { if (navigator.vibrate) navigator.vibrate(8); } catch (_) {}
+      el.classList.add('tap-on');
+      setTimeout(() => el.classList.remove('tap-on'), 110);
+    }, { passive: true });
+  }
+
+  // 每帧独立容错：渲染或星历单次抛错不应中断整秒定时器，也不应拖死点击
+  function safeHome() { try { updateHome(); } catch (e) { console.warn('[home] 刷新失败', e); } }
+  function safeSky() { try { refreshHomeSky(); } catch (e) { console.warn('[sky] 天象条失败', e); } }
+  function safeBars() { try { syncTimeBars(); } catch (e) { console.warn('[timebars] 同步失败', e); } }
+
+  initHaptics();
+  bind();
+  mountPlaceBars();   // v111：各盘面页顶栏注入"观测地"胶囊（定位 / 拼音搜城市）
+  bindPlaceChip();
+  // 观测地变更 → 重算"当下/天象"类视图；排盘按起卦当时的地点定，不回溯改盘
+  onPlaceChange(() => {
+    try {
+      const v = getActiveView();
+      if (v === 'sky') renderSky();
+      else if (v === 'globe') rerender('globe');
+      else if (v === 'mansion') rerender('mansion');
+      else if (v === 'home') { updateHome(); refreshHomeSky(); }
+      syncTimeBars();
+    } catch (e) { console.warn('[place] 重算失败', e); }
   });
-  // updateViaCache:'none' 强制每次注册都绕过 HTTP 缓存去检查 sw.js：
-  // 托管侧不发 Cache-Control，微信/浏览器会启发式缓存旧 SW，导致新版长期下不去
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
-      .then((reg) => { try { reg.update(); } catch { /* ignore */ } })
-      .catch(() => {});
-  });
+  // 首页右下角的版本号与强制刷新。异步读版本，不阻塞首屏。
+  try { initForceRefresh(); } catch (e) { console.warn('[refresh] 初始化失败', e); }
+
+  safeHome();
+  setTimeout(safeSky, 0); // 星历较重，延迟到首帧之后，不阻塞首屏与点击
+  safeBars();
+  setInterval(safeHome, 1000);
+  setInterval(safeSky, 5 * 60 * 1000);
+
+  // P0-3：首屏画完后的空闲时间里，把最常点的两张盘（紫微 / 西占）的模块先装掉。
+  // 好处：点开时不再付模块解析的钱（实测紫微 25ms / 西占 14ms 落在点击这一拍里），
+  // 用户也不会先看到 200ms 空白。省流量模式下不预热，避免动用户的流量。
+  const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
+  idle(() => {
+    const conn = navigator.connection || {};
+    if (conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || '')) return;
+    loadView('ziwei').catch(() => {});
+    loadView('astro').catch(() => {});
+  }, { timeout: 3000 });
+
 }
-
-// 全局轻触反馈：全盘可点元素按下即轻微震动一下（iOS Safari 不支持 vibrate，用视觉反馈兜底）
-function initHaptics() {
-  const SEL = 'button,a,.btn,.tab,.chip,[data-tip],[data-act],[data-sel-body],[data-sel-mansion],.pl-row,.tc-chip,.zm-jump,.zs-const,.zm-pl,input,select,label';
-  document.addEventListener('pointerdown', (e) => {
-    const t = e.target;
-    const el = t && t.closest ? t.closest(SEL) : null;
-    if (!el) return;
-    try { if (navigator.vibrate) navigator.vibrate(8); } catch (_) {}
-    el.classList.add('tap-on');
-    setTimeout(() => el.classList.remove('tap-on'), 110);
-  }, { passive: true });
-}
-
-// 每帧独立容错：渲染或星历单次抛错不应中断整秒定时器，也不应拖死点击
-function safeHome() { try { updateHome(); } catch (e) { console.warn('[home] 刷新失败', e); } }
-function safeSky() { try { refreshHomeSky(); } catch (e) { console.warn('[sky] 天象条失败', e); } }
-function safeBars() { try { syncTimeBars(); } catch (e) { console.warn('[timebars] 同步失败', e); } }
-
-initHaptics();
-bind();
-mountPlaceBars();   // v111：各盘面页顶栏注入"观测地"胶囊（定位 / 拼音搜城市）
-bindPlaceChip();
-// 观测地变更 → 重算"当下/天象"类视图；排盘按起卦当时的地点定，不回溯改盘
-onPlaceChange(() => {
-  try {
-    const v = getActiveView();
-    if (v === 'sky') renderSky();
-    else if (v === 'globe') renderGlobe(nowDate());
-    else if (v === 'mansion') renderMansion();
-    else if (v === 'home') { updateHome(); refreshHomeSky(); }
-    syncTimeBars();
-  } catch (e) { console.warn('[place] 重算失败', e); }
-});
-// 首页右下角的版本号与强制刷新。异步读版本，不阻塞首屏。
-try { initForceRefresh(); } catch (e) { console.warn('[refresh] 初始化失败', e); }
-
-safeHome();
-setTimeout(safeSky, 0); // 星历较重，延迟到首帧之后，不阻塞首屏与点击
-safeBars();
-setInterval(safeHome, 1000);
-setInterval(safeSky, 5 * 60 * 1000);

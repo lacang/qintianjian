@@ -4,6 +4,7 @@
  * 纯本地：vendor/bazhai-core.js 翻卦 + yangzhai-judge.js 直断，不接 AI、不联网。
  */
 import { $, $$, cfg, birthDate, escapeHtml } from '../state.js?v=133';
+import { guard } from '../errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   DIR8_LIST, MOUNTAINS_24, dir8At, mountainsAt, lifeGua, GROUP_NAME, chartFor,
 } from '../../vendor/bazhai-core.js?v=133';
@@ -33,7 +34,7 @@ function freshState() {
 let S = freshState();
 
 /* ============================ 骨架 ============================ */
-export function renderYangzhai() {
+function __renderYangzhai() {
   return `
   <div class="yz-wrap">
     <div class="yz-hero">
@@ -626,3 +627,6 @@ export function restoreYangzhai(d) {
   S.step = 5;
   return true;
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderYangzhai = guard(__renderYangzhai, '阳宅排盘失败', '#yangzhai-body');

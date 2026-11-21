@@ -6,6 +6,7 @@
 // 繇辞据 OTDO 公开古藏文转写自译，参考英译理解、陈践/格桑央京中译校读，不照抄单一译本；
 // 原卷残缺处如实标「手稿不载/残」，绝不臆补。
 import { $, escapeHtml, toast } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { DICE_ORACLES, DICE_MISSING, DICE_SOURCE, diceGod } from './tibetdata_dice.js?v=133';
 import { COIN_MARKS, COIN_RULE, COIN_SOURCE, coinTonePair } from './tibetdata_coin.js?v=133';
 
@@ -198,7 +199,7 @@ function renderCoin() {
 }
 
 /* ============================ 顶层渲染 ============================ */
-export function renderTibetan() {
+function __renderTibetan() {
   return `
   <div class="tb-wrap">
     <div class="tb-tabs">
@@ -349,3 +350,6 @@ export function tibetanCopyText() {
   L.push('—— 底本 OTDO 古藏文转写自译；敦煌藏经洞，约9–10世纪。机器机械演卦，只给方向、不是命定。');
   return L.join('\n');
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderTibetan = guard(__renderTibetan, '藏占排盘失败', '#tibetan-body');

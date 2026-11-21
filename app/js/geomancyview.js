@@ -11,6 +11,7 @@
 //  - 象征义属地占公有领域传统（Agrippa 1533 / Cattan 1591 Turner 英译本 / Ibn Khaldun 1377），
 //    现代整理本仅作编排参考。不拿现代流行网站规则冒充古原典。
 import { $, escapeHtml, toast } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 
 /* ============================ 16 符数据 ============================
  * rows = [火, 风, 水, 土]，自上而下；1=单点(奇/阳)，2=双点(偶/阴)。
@@ -226,7 +227,7 @@ let qHouse = 1;     // 当前所问宫
 let question = '';  // 默念之问题（仅记录展示，不参与随机）
 let inited = false;
 
-export function renderGeomancy() {
+function __renderGeomancy() {
   if (!cur) cur = castGeomancy();
   const dir = judgeDirection(cur, qHouse);
   const qh = HOUSES[qHouse - 1];
@@ -482,3 +483,6 @@ export function restoreGeomancy(bits, house, q) {
   question = q || '';
   return true;
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderGeomancy = guard(__renderGeomancy, '地占排盘失败', '#geomancy-body');

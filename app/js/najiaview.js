@@ -6,6 +6,7 @@
 // 红线：只陈列盘面事实，绝不下吉凶/成败/应期断语；多现、不上卦只罗列，
 //       取舍与判断交给占者（配合问事读法的典籍原文与自问清单）。
 import { $, current } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { analyzeNajia } from '../vendor/liuyao-core.js?v=133';
 
 const POS = ['初', '二', '三', '四', '五', '上'];
@@ -65,7 +66,7 @@ function occHtml(o) {
  * @param {object} pan current.pan
  * @param {string} readingDomainId 当前问事读法域 id
  */
-export function renderNajia(pan, readingDomainId) {
+function __renderNajia(pan, readingDomainId) {
   const host = $('#najia-body');
   if (!host) return;
   if (!pan || !pan.benGua || !pan.benGua.name) { host.innerHTML = ''; return; }
@@ -165,3 +166,5 @@ document.addEventListener('qintian:reading-domain', (e) => {
   if (current.pan) renderNajia(current.pan, e.detail);
 });
 
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderNajia = guard(__renderNajia, '纳甲排盘失败', '#najia-body');

@@ -7,6 +7,7 @@ import {
   paiBazi,
 } from '../vendor/liuyao-core.js?v=133';
 import { $, cfg } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 
 const PLANET_COLOR = {
   sun: 'var(--cinnabar)', moon: 'var(--ink)',
@@ -20,7 +21,7 @@ function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;'
 // 渲染节律轴。birth: {year, month, day, hour, minute, lat, lonEast}
 // ascSignIndex: 占星 ASC 宫位 index (0=Aries)
 // day: 占星昼/夜盘
-export function renderRhythm(birth, ascSignIndex, day){
+function __renderRhythm(birth, ascSignIndex, day){
   const host = $('#rhythm-body');
   if (!host) return;
   const now = new Date();
@@ -159,3 +160,6 @@ export function renderRhythm(birth, ascSignIndex, day){
     });
   }
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderRhythm = guard(__renderRhythm, '节律盘渲染失败', '#rhythm-body');

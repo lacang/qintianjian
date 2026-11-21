@@ -2,6 +2,7 @@
 // 统一北京时间；时刻可由「时间条」或复现码覆盖。
 // v55：九宫按卦五行分层底色、加方位标注、值符值使/空亡马星强化、补图例与典籍依据。
 import { paiQiMen } from '../vendor/liuyao-core.js?v=133';
+import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=133';
 import { resolveCastDate, nowDate, nowGeoArgs, pad, toSec } from './state.js?v=133';
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
@@ -181,7 +182,7 @@ const QM_GUIDE = {
   note: '盘上只列传统体系里的通行含义与古籍出处，不替你下断语；吉凶倾向一律标为「古籍所载」，供你自己衡量。',
 };
 
-export function renderQiMen(date = nowDate()) {
+function __renderQiMen(date = nowDate()) {
   if (!isCasted('qimen')) return gateHTML('qimen');
   const { q, castDate } = currentQiMen(date);
   // 换日口径必须亮出来：同一时刻按 23 点 / 0 点换日会差一整天的日柱
@@ -189,6 +190,7 @@ export function renderQiMen(date = nowDate()) {
   const byNum = Object.fromEntries(q.palaces.map((p) => [p.palaceNumber, p]));
 
   const html = `
+  ${renderWarnings(q)}
   ${guideHTML(QM_GUIDE)}
   <div class="qm-head">
     <div class="qm-title">${q.dun}${q.ju}局 · ${q.yuan} · ${q.jieQi}</div>
@@ -263,3 +265,6 @@ export function qiMenCode(date = nowDate()) {
     sub: `${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · ${q.yuan}`,
   };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderQiMen = guard(__renderQiMen, '奇门起局失败', '#qimen-body');

@@ -3,6 +3,9 @@
 // 做法：往各盘面页顶栏注入一枚地点胶囊，点开弹层；选完写回 geo.js 中心并广播，页面按需重渲染。
 import { getPlace, setPlace, resetPlace, searchCity, locate, fmtCoord, onPlaceChange } from './geo.js?v=133';
 import { toast } from './state.js?v=133';
+// P0-5：地点名来自 localStorage['qintian.place.v1']（可被同源脚本/控制台写入），
+// 直接拼 innerHTML 就是可执行 XSS（审计 r1 已实测 <img onerror> 执行）。
+import { esc, refreshScrollLock } from './errors.js?v=133';
 
 // 需要地址的页面（抽牌/历史等与地点无关，不挂）
 const VIEWS_WITH_PLACE = [
@@ -14,7 +17,7 @@ const VIEWS_WITH_PLACE = [
 function chipHTML() {
   const p = getPlace();
   const tag = p.src === 'locate' ? '定位' : (p.src === 'default' ? '未设置' : '手选');
-  return `<span class="pc-dot"></span><span class="pc-name">${p.name}</span><span class="pc-tag">${tag}</span>`;
+  return `<span class="pc-dot"></span><span class="pc-name">${esc(p.name)}</span><span class="pc-tag">${esc(tag)}</span>`;
 }
 
 function refreshChips() {
@@ -65,7 +68,7 @@ export function openPlacePicker() {
       <div class="pm-mask"></div>
       <div class="pm-panel" role="dialog" aria-label="选择观测地">
         <div class="pm-head"><b>选择观测地</b><button class="pm-x" type="button" aria-label="关闭">✕</button></div>
-        <div class="pm-cur">当前：${p0.name} · ${fmtCoord(p0)}</div>
+        <div class="pm-cur">当前：${esc(p0.name)} · ${esc(fmtCoord(p0))}</div>
         <div class="pm-actions">
           <button class="btn btn-primary" id="pm-locate" type="button">用当前位置定位</button>
           <button class="btn ghost" id="pm-reset" type="button">恢复默认（沈阳）</button>
@@ -77,20 +80,24 @@ export function openPlacePicker() {
         <div class="pm-note">定位需你授权（https 下才可用）；不授权也能手选城市，城市库离线，不联网。</div>
       </div>`;
     document.body.appendChild(m);
+    refreshScrollLock(); // 弹层开着时背景不许滚
 
     const list = m.querySelector('#pm-list');
     const input = m.querySelector('#pm-q');
-    const close = (val) => { m.remove(); resolve(val); };
+    const close = (val) => { m.remove(); document.removeEventListener('keydown', onKey); refreshScrollLock(); resolve(val); };
+    // 弹层自己的 ESC（主人报过：观测地能关、星标关不掉，统一后这里也留着兜底）
+    function onKey(e) { if (e.key === 'Escape') { e.preventDefault(); close(null); } }
+    document.addEventListener('keydown', onKey);
 
     function renderList(q) {
       const res = q ? searchCity(q, 40) : [];
       if (!q) { list.innerHTML = '<div class="pm-empty">输入城市名或拼音即可检索（如 shenyang / 沈阳 / sy / hangzhou）</div>'; return; }
       if (!res.length) { list.innerHTML = '<div class="pm-empty">没找到这个城市，换个写法试试</div>'; return; }
       list.innerHTML = res.map(c => `
-        <button type="button" class="pm-item" data-lat="${c.lat}" data-lon="${c.lon}" data-n="${c.n}" data-p="${c.prov || ''}">
-          <span class="pmi-name">${c.n}</span>
-          <span class="pmi-prov">${c.prov || ''}</span>
-          <span class="pmi-coord">${fmtCoord(c)}</span>
+        <button type="button" class="pm-item" data-lat="${c.lat}" data-lon="${c.lon}" data-n="${esc(c.n)}" data-p="${esc(c.prov || '')}">
+          <span class="pmi-name">${esc(c.n)}</span>
+          <span class="pmi-prov">${esc(c.prov || '')}</span>
+          <span class="pmi-coord">${esc(fmtCoord(c))}</span>
         </button>`).join('');
     }
     renderList('');

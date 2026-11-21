@@ -5,6 +5,7 @@ import {
   mansionSnapshot, zhiSu, MANSIONS, MANSION_BY_NAME, SISHOU_COLOR, GU_DU_ZHOUTIAN,
 } from '../vendor/liuyao-core.js?v=133';
 import { $, nowDate, pad, escapeHtml, toSec } from './state.js?v=133';
+import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { siyuLongitudes, solarParams } from './solartime.js?v=133';
 import { initMansion3D } from './mansion3d.js?v=133';
 import { getPlace } from './geo.js?v=133';
@@ -260,7 +261,7 @@ function detailHTML(snap, snapOther, z, now) {
 }
 
 /* ============================ 主渲染 ============================ */
-export function renderMansion(now = nowDate()) {
+function __renderMansion(now = nowDate()) {
   lastNow = now;
   const body = $('#mansion-body');
   if (!body) return;
@@ -373,3 +374,6 @@ export function mansionCode(now = nowDate()) {
   } catch { /* */ }
   return { kind: 'sky', data: { at: toSec(now.getTime()) }, title, sub };
 }
+
+/* P0-2 错误边界：以上渲染入口统一兜底（audit3 · r1/r4 实测这些文件 catch 数为 0） */
+export const renderMansion = guard(__renderMansion, '星官渲染失败', '#mansion-body');

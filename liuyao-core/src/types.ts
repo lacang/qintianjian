@@ -44,6 +44,8 @@ export interface SolarDateInput {
   day: number;
   hour: number;
   minute?: number;
+  /** 秒：节气交节精确到秒，分以下也要透传（缺省 0） */
+  second?: number;
 }
 
 /** 四柱 + 旬空（solarToSiZhu 的返回） */

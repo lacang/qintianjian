@@ -14,6 +14,7 @@
 import type { BaGua, WuXing } from './types.js';
 import { getGuaMeta } from './guaTable.js';
 import { castByTime, toApparentSolarTime, type TimeCastOptions, type TimeCastResult } from './timecast.js';
+import { validateCastNumber } from './validate.js';
 import type { YaoValue } from './types.js';
 
 const NUM_BAGUA: BaGua[] = ['乾', '兑', '离', '震', '巽', '坎', '艮', '坤']; // 先天数 1..8
@@ -143,11 +144,14 @@ export function meiHuaByTime(dateInput: number | Date, options: TimeCastOptions 
  * 单数/字数起卦需结合当时时辰序数，请直接用 meiHuaByTime。
  */
 export function meiHuaByNumbers(a: number, b: number): MeiHuaResult {
+  // 统一校验：必须是 1–64 的正整数（旧实现对 0/负数/小数/1e9 都静默取模，结果看似正常实则无据）
+  const av = validateCastNumber(a, '上卦数');
+  const bv = validateCastNumber(b, '下卦数');
   const norm8 = (n: number) => (n % 8 === 0 ? 8 : ((n - 1) % 8 + 8) % 8 + 1);
   const norm6 = (n: number) => (n % 6 === 0 ? 6 : ((n - 1) % 6 + 6) % 6 + 1);
-  const upperNum = norm8(a);
-  const lowerNum = norm8(b);
-  const moving = norm6(a + b);
+  const upperNum = norm8(av);
+  const lowerNum = norm8(bv);
+  const moving = norm6(av + bv);
   return build(upperNum, lowerNum, moving, null);
 }
 
