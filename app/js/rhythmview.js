@@ -5,9 +5,9 @@ import {
   listFirdariaPeriods,
   listProfectionYears,
   paiBazi,
-} from '../vendor/liuyao-core.js?v=133';
-import { $, cfg } from './state.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+} from '../vendor/liuyao-core.js?v=136';
+import { $, cfg } from './state.js?v=136';
+import { guard } from './errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
 
 const PLANET_COLOR = {
   sun: 'var(--cinnabar)', moon: 'var(--ink)',

@@ -1,11 +1,11 @@
 // 经传视图（M5）：在排盘下方展示《周易》经传原文事实，不做吉凶解释。
 // 内容全部来自 liuyao-core 的白文查表层（getGuaAnnotation / getMovingLineAnnotation）。
-import { $ } from './state.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { $ } from './state.js?v=136';
+import { guard } from './errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   getGuaAnnotation,
   getMovingLineAnnotation,
-} from '../vendor/liuyao-core.js?v=133';
+} from '../vendor/liuyao-core.js?v=136';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"]/g, (c) => (

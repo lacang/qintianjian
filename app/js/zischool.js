@@ -3,8 +3,8 @@
 // 日柱自然落在当天、时柱自然是当日日干所遁之子（五鼠遁），一次调用全对齐，不做字段拼合。
 // 边界注：若节气恰在当日 22:00-24:00 之间交节，月柱按同日 0 点口径取（极小概率，
 // 流派内亦有分歧，不自动裁定，详见盘面 SOURCE_NOTE）。
-import { paipan, solarToSiZhu, paiBazi } from '../vendor/liuyao-core.js?v=133';
-import { cfg } from './state.js?v=133';
+import { paipan, solarToSiZhu, paiBazi } from '../vendor/liuyao-core.js?v=136';
+import { cfg } from './state.js?v=136';
 
 export function ziMode() { return cfg.lateZi === '00' ? '00' : '23'; }
 

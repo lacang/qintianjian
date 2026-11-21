@@ -7,17 +7,17 @@
 //   每盘的可比维度一律取自该盘自己的结论卡（judgeXxx），不另造分数、不伪造强度。
 //   未接入的盘（六爻需摇卦）明写「未接入」，不进任何一轨的计数。
 // 不调用任何 AI，不请求外部接口：全部本地 liuyao-core + 各盘既有算法。
-import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
-import { timeBasis } from './timebasis.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan, resolvePaipanTime } from '../vendor/liuyao-core.js?v=136';
+import { timeBasis } from './timebasis.js?v=136';
+import { guard } from './errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   judgeMeiHua, judgeQiMen, judgeBazi, judgeZiwei, judgeAstro,
   comparePans, natalGradeOf, GRADE_ZH,
-} from './verdicts.js?v=133';
-import { paiBaziZi } from './zischool.js?v=133';
+} from './verdicts.js?v=136';
+import { paiBaziZi } from './zischool.js?v=136';
 import {
   nowDate, nowGeoArgs, panTimeArgs, pad, escapeHtml, toLocalInputValue, parseLocalDateTime, birthArgs,
-} from './state.js?v=133';
+} from './state.js?v=136';
 
 // 盘位固定：顺序即页面显示顺序。track=null 表示本阶段未接入。
 const PAN_KEYS = ['meihua', 'qimen', 'bazi', 'ziwei', 'astro', 'liuyao'];

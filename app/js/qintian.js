@@ -1,16 +1,16 @@
 // 钦天监首页：干支信息条 + 天时卦钟（纯钟面）+ 独立卦画卡
 // 时间口径（audit4 · fix_r4）：首页四柱/时辰/天时卦一律取内核 resolvePaipanTime，与八字、大六壬、
 // 奇门、小六壬同一行代码；不再用「钟面小时÷2」推时辰，也不再对钟面直接 solarToSiZhu。
-import { castByTime, getMeridian, paipanXingpan, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import { castByTime, getMeridian, paipanXingpan, resolvePaipanTime } from '../vendor/liuyao-core.js?v=136';
 // 新 API 走命名空间取值：bundle 还没重建时 getMeridianByTime 是 undefined，
 // 用命名导入会直接链接失败（整个首页白屏），命名空间取值则能优雅退回旧接口。
-import * as CORE from '../vendor/liuyao-core.js?v=133';
-import { paipanZi } from './zischool.js?v=133';
-import { $, pad, cfg, BIRTH, nowGeoArgs, panTimeArgs } from './state.js?v=133';
-import { timeBasis } from './timebasis.js?v=133';
-import { renderTodayCard } from './todaycard.js?v=133';
-import { renderRhythm } from './rhythmview.js?v=133';
-import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=133';
+import * as CORE from '../vendor/liuyao-core.js?v=136';
+import { paipanZi } from './zischool.js?v=136';
+import { $, pad, cfg, BIRTH, nowGeoArgs, panTimeArgs } from './state.js?v=136';
+import { timeBasis } from './timebasis.js?v=136';
+import { renderTodayCard } from './todaycard.js?v=136';
+import { renderRhythm } from './rhythmview.js?v=136';
+import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=136';
 
 const ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const ZHI_RANGE = ['23-1','1-3','3-5','5-7','7-9','9-11','11-13','13-15','15-17','17-19','19-21','21-23'];

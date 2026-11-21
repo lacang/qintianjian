@@ -34,15 +34,15 @@ import {
   FEEDBACK, feedbackEffect, topicsOf, poolNodes,
   debateList, getDebate, debateFor, stanceOf, debateAfterword,
   exploreEntries, detailLayers, correctionsFor, visibleRelations,
-} from './classic-core.js?v=133';
-import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js?v=133';
-import { guard } from '../errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+} from './classic-core.js?v=136';
+import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js?v=136';
+import { guard } from '../errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   loadMarks, setMark, markOf, markStats, keptIds,
   MARK_KEEP, MARK_DOUBT,
-} from './feed-state.js?v=133';
-import { renderFeedPanel, bindFeedGesture, doFeedAction, startNextRound } from './feed.js?v=133';
-import { $, $$, toast } from '../state.js?v=133';
+} from './feed-state.js?v=136';
+import { renderFeedPanel, bindFeedGesture, doFeedAction, startNextRound } from './feed.js?v=136';
+import { $, $$, toast } from '../state.js?v=136';
 
 const NOTE_KEY = 'qintian.classic.journal';   // 思想手记：{ nodeId: [{ text, at, fb }] }
 

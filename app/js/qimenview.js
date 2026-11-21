@@ -4,18 +4,18 @@
 // 时间口径（audit4 · fix_r4）：与八字/大六壬同一行代码——真太阳时、历史时区、夏令时全交内核。
 // 改前这里传 `trueSolarTime: false` 且自己用前端 toTrueSolar 校正，口径开关只认 `cfg.apparentSolarTime`；
 // 于是拉萨 23:30 在奇门页得辛酉戊子、在八字/大六壬页得庚申丁亥，同刻两盘互相打架还没提示。
-import { paiQiMen } from '../vendor/liuyao-core.js?v=133';
-import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
-import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=133';
-import { nowDate, nowGeoArgs, panTimeArgs, pad, toSec } from './state.js?v=133';
-import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
-import { timeBasis } from './timebasis.js?v=133';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
-import { QM_PALACE_DIR, wxKey } from './classical.js?v=133';
-import { guideHTML, T } from './tipview.js?v=133';
+import { paiQiMen } from '../vendor/liuyao-core.js?v=136';
+import { guard, renderWarnings } from './errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=136';
+import { nowDate, nowGeoArgs, panTimeArgs, pad, toSec } from './state.js?v=136';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=136';
+import { timeBasis } from './timebasis.js?v=136';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=136';
+import { QM_PALACE_DIR, wxKey } from './classical.js?v=136';
+import { guideHTML, T } from './tipview.js?v=136';
 import {
   qmFuFan, qmFind, QM_STEPS, QM_YONGSHEN, QM_FUFAN_QUOTE,
-} from './reading.js?v=133';
+} from './reading.js?v=136';
 
 /**
  * 起局：时刻 + 观测地 → 局。

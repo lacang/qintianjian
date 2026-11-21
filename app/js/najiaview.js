@@ -5,9 +5,9 @@
 // 化进化退/伏吟反吟，以及类神与世应的生克冲合。
 // 红线：只陈列盘面事实，绝不下吉凶/成败/应期断语；多现、不上卦只罗列，
 //       取舍与判断交给占者（配合问事读法的典籍原文与自问清单）。
-import { $, current } from './state.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
-import { analyzeNajia } from '../vendor/liuyao-core.js?v=133';
+import { $, current } from './state.js?v=136';
+import { guard } from './errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { analyzeNajia } from '../vendor/liuyao-core.js?v=136';
 
 const POS = ['初', '二', '三', '四', '五', '上'];
 

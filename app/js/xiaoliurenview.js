@@ -7,12 +7,12 @@
 //   · 真太阳时、历史时区（1912–1949 五时区）、夏令时 → 内核 timeContext；
 //   · 时支 = 时柱地支（不再「钟面小时 ÷ 2」）；
 //   · 农历月/日 = 与日柱同一天（23:00 子初换日时跟着进次日，`ts.pillarCalendar`）。
-import { $, nowDate, fmtMoment, nowGeoArgs, panTimeArgs } from './state.js?v=133';
-import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
-import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
-import { timeBasis } from './timebasis.js?v=133';
-import { T } from './tipview.js?v=133';
+import { $, nowDate, fmtMoment, nowGeoArgs, panTimeArgs } from './state.js?v=136';
+import { guard, renderWarnings } from './errors.js?v=136'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=136';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=136';
+import { timeBasis } from './timebasis.js?v=136';
+import { T } from './tipview.js?v=136';
 
 const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 

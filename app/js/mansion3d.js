@@ -2,10 +2,10 @@
 // 真实亮星 177 颗（含中文名）+ 二十八宿距星链 + 北斗/三垣星官连线 + 宿界弧带
 // + 七政四余实时位置与入宿度。three.js r160（MIT，本地内置）。
 // 只报天文事实（躔次/入宿度），不作吉凶断语。
-import * as THREE from '../vendor/three/three.module.js?v=133';
-import { shouyeTianxiang, MANSIONS } from '../vendor/liuyao-core.js?v=133';
-import { siyuLongitudes, solarParams } from './solartime.js?v=133';
-import { STARS3 } from './stars.js?v=133';
+import * as THREE from '../vendor/three/three.module.js?v=136';
+import { shouyeTianxiang, MANSIONS } from '../vendor/liuyao-core.js?v=136';
+import { siyuLongitudes, solarParams } from './solartime.js?v=136';
+import { STARS3 } from './stars.js?v=136';
 
 const R = 10;
 const D2R = Math.PI / 180;

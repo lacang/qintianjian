@@ -1,20 +1,20 @@
 // 梅花易数视图：指定时刻 本卦/互卦/变卦 + 体用（五行生克只列事实，不下吉凶）
 // 时间口径统一走内核 resolvePaipanTime（真太阳时/历史时区/夏令时），时刻可由「时间条」或复现码覆盖。
 // v56：本/互/变三卦可点按、可左右滑动切换；经传面板随卦切换；体用生克图示 + 五行配色 + 动爻高亮。
-import { meiHuaByTime, getGuaAnnotation, ZHOUYI_META } from '../vendor/liuyao-core.js?v=133';
-import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）/ warnings 透传（P2-6）
-import { judgeMeiHua, verdictCardHtml } from './verdicts.js?v=133';
-import { nowDate, nowGeoArgs, panTimeArgs, pad, toSec } from './state.js?v=133';
-import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
-import { timeBasis } from './timebasis.js?v=133';
-import { wxKey } from './classical.js?v=133';
-import { guideHTML, T } from './tipview.js?v=133';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
+import { meiHuaByTime, getGuaAnnotation, ZHOUYI_META } from '../vendor/liuyao-core.js?v=136';
+import { guard, renderWarnings } from './errors.js?v=136'; // 错误边界（P0-2）/ warnings 透传（P2-6）
+import { judgeMeiHua, verdictCardHtml } from './verdicts.js?v=136';
+import { nowDate, nowGeoArgs, panTimeArgs, pad, toSec } from './state.js?v=136';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=136';
+import { timeBasis } from './timebasis.js?v=136';
+import { wxKey } from './classical.js?v=136';
+import { guideHTML, T } from './tipview.js?v=136';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=136';
 const isCastedMeiHua = () => isCasted('meihua');
 import {
   mhRelation, mhGuaQi, MH_STEPS, MH_TIMELINE, MH_REL_QUOTE, MH_REL_SOURCE,
   MH_GUAQI_QUOTE, MH_GUAQI_SOURCE, MH_PARTY_QUOTE, MH_PARTY_SOURCE, MH_SOURCE_NOTE,
-} from './reading.js?v=133';
+} from './reading.js?v=136';
 
 // 八卦→三爻（上中下，自上而下显示）
 const TRIGRAM_LINES = {

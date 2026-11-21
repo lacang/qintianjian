@@ -1,11 +1,11 @@
 // 地点条 + 选点弹层：全盘面共用的地址入口（定位优先 / 拼音手选）
 // 主人 v111 要求："所有命盘里边都是可以去选地址的"、"定位最方便，手动选择用拼音的方式"
 // 做法：往各盘面页顶栏注入一枚地点胶囊，点开弹层；选完写回 geo.js 中心并广播，页面按需重渲染。
-import { getPlace, setPlace, resetPlace, searchCity, locate, fmtCoord, onPlaceChange } from './geo.js?v=133';
-import { toast } from './state.js?v=133';
+import { getPlace, setPlace, resetPlace, searchCity, locate, fmtCoord, onPlaceChange } from './geo.js?v=136';
+import { toast } from './state.js?v=136';
 // P0-5：地点名来自 localStorage['qintian.place.v1']（可被同源脚本/控制台写入），
 // 直接拼 innerHTML 就是可执行 XSS（审计 r1 已实测 <img onerror> 执行）。
-import { esc, refreshScrollLock } from './errors.js?v=133';
+import { esc, refreshScrollLock } from './errors.js?v=136';
 
 // 需要地址的页面（抽牌/历史等与地点无关，不挂）
 const VIEWS_WITH_PLACE = [

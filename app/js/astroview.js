@@ -3,13 +3,13 @@
 //      / 中央五大主相位弦线；点星体或相位联动高亮；相位清单、元素·模式分布。
 // 全盘中文化：行星/交点用单字，星座环用「羊牛蟹狮…」，不依赖占星专用符号字体。
 // 出生时刻可由「时间条」或复现码覆盖。
-import { paipanXingpan, guDianTuiYun, shouyeTianxiang, listCityTimeZones } from '../vendor/liuyao-core.js?v=133';
-import { guard, showLoading, hideLoading, markRenderError, errorHtml, showError, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）/长计算遮罩（P1-1）
-import { judgeAstro, verdictCardHtml } from './verdicts.js?v=133';
-import { birthArgs, $, setGeoOverride, getGeoOverride } from './state.js?v=133';
-import { guideHTML, T } from './tipview.js?v=133';
-import { foldVerdict } from './ritual.js?v=133';
-import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=133';
+import { paipanXingpan, guDianTuiYun, shouyeTianxiang, listCityTimeZones } from '../vendor/liuyao-core.js?v=136';
+import { guard, showLoading, hideLoading, markRenderError, errorHtml, showError, renderWarnings } from './errors.js?v=136'; // 错误边界（P0-2）/长计算遮罩（P1-1）
+import { judgeAstro, verdictCardHtml } from './verdicts.js?v=136';
+import { birthArgs, $, setGeoOverride, getGeoOverride } from './state.js?v=136';
+import { guideHTML, T } from './tipview.js?v=136';
+import { foldVerdict } from './ritual.js?v=136';
+import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=136';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 

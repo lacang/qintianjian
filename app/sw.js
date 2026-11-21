@@ -9,45 +9,45 @@
 // 共约 3.3MB；牌图/月球贴图等大件改走 fetch 的 cacheFirst（访问到才缓存，离线仍可用
 // ——前提是那个页面此前打开过一次）。
 // 旧版本的图片缓存会在 activate 时随整库删除，不会在磁盘上堆到几十 MB。
-const CACHE = 'qintian-v134';
+const CACHE = 'qintian-v136';
 
 /** 核心壳：能画出首页 + 起一卦 + 打开案例库 + 天象条所必需的文件 */
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './css/style.css?v=133',
-  './css/place.css?v=133',
-  './css/planet-hour.css?v=133',
-  './js/boot.js?v=133',
-  './js/main.js?v=133',
-  './js/errors.js?v=133',
-  './js/state.js?v=133',
-  './js/qintian.js?v=133',
-  './js/zischool.js?v=133',
-  './js/panview.js?v=133',
-  './js/interact.js?v=133',
-  './js/cast.js?v=133',
-  './js/sharecode.js?v=133',
-  './js/force-refresh.js?v=133',
-  './js/tipview.js?v=133',
-  './js/cases.js?v=133',
-  './js/askview.js?v=133',
-  './js/placeui.js?v=133',
-  './js/geo.js?v=133',
-  './js/citydata.js?v=133',
-  './js/ritual.js?v=133',
-  './js/homecards.js?v=133',
-  './js/skyview.js?v=133',
-  './js/zodiac.js?v=133',
-  './js/solartime.js?v=133',
-  './js/timebasis.js?v=133', // 时间口径文案（cast.js 静态依赖，首屏必用，必须预缓存）
-  './js/glossary.js?v=133',
-  './js/meaning.js?v=133',
-  './js/verdict.js?v=133',
-  './js/astromodes.js?v=133',
+  './css/style.css?v=136',
+  './css/place.css?v=136',
+  './css/planet-hour.css?v=136',
+  './js/boot.js?v=136',
+  './js/main.js?v=136',
+  './js/errors.js?v=136',
+  './js/state.js?v=136',
+  './js/qintian.js?v=136',
+  './js/zischool.js?v=136',
+  './js/panview.js?v=136',
+  './js/interact.js?v=136',
+  './js/cast.js?v=136',
+  './js/sharecode.js?v=136',
+  './js/force-refresh.js?v=136',
+  './js/tipview.js?v=136',
+  './js/cases.js?v=136',
+  './js/askview.js?v=136',
+  './js/placeui.js?v=136',
+  './js/geo.js?v=136',
+  './js/citydata.js?v=136',
+  './js/ritual.js?v=136',
+  './js/homecards.js?v=136',
+  './js/skyview.js?v=136',
+  './js/zodiac.js?v=136',
+  './js/solartime.js?v=136',
+  './js/timebasis.js?v=136', // 时间口径文案（cast.js 静态依赖，首屏必用，必须预缓存）
+  './js/glossary.js?v=136',
+  './js/meaning.js?v=136',
+  './js/verdict.js?v=136',
+  './js/astromodes.js?v=136',
   // 起卦与六爻装配的引擎（cast.js 静态依赖，首屏必用）
-  './vendor/liuyao-core.js?v=133',
+  './vendor/liuyao-core.js?v=136',
   './icons/icon-192.png',
   './icons/icon-512.png',
   // 下面这些是**视图模块**与牌图，删掉了预缓存，改由运行时 cacheFirst 缓存：
@@ -113,7 +113,7 @@ self.addEventListener('fetch', (e) => {
     path.endsWith('.js') ||
     path.endsWith('.css') ||
     path.endsWith('.webmanifest') ||
-    path.endsWith('sw.js?v=133') ||
+    path.endsWith('sw.js?v=136') ||
     path === '/' || path.endsWith('/');
   e.respondWith(isAppCode ? networkFirst(e) : cacheFirst(e));
 });

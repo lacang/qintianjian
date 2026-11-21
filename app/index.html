@@ -8,22 +8,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="钦天监" />
 <link rel="manifest" href="./manifest.webmanifest" />
-<link rel="stylesheet" href="./css/style.css?v=133" />
-<link rel="stylesheet" href="./css/place.css?v=133" />
-<link rel="stylesheet" href="./css/planet-hour.css?v=133" />
+<link rel="stylesheet" href="./css/style.css?v=136" />
+<link rel="stylesheet" href="./css/place.css?v=136" />
+<link rel="stylesheet" href="./css/planet-hour.css?v=136" />
 <!-- P0-1：视图专属样式（tibet/tarot/vedic/zhuyou/yangzhai/classic）改为随视图懒加载，
      首屏少 6 个请求 / 108KB。见 js/main.js 的 VIEW_CSS + loadViewCss()。
      注：先于 style.css 加载会在少数页面产生一次重排，这里保持 style.css 在最前。 -->
 <!-- P0-1：首屏必需模块预声明（省掉 import 链的瀑布式往返；只声明核心壳，视图模块不预载） -->
-<link rel="modulepreload" href="./js/boot.js?v=133" />
-<link rel="modulepreload" href="./js/errors.js?v=133" />
-<link rel="modulepreload" href="./js/state.js?v=133" />
-<link rel="modulepreload" href="./js/qintian.js?v=133" />
-<link rel="modulepreload" href="./js/cast.js?v=133" />
-<link rel="modulepreload" href="./js/ritual.js?v=133" />
-<link rel="modulepreload" href="./js/homecards.js?v=133" />
-<link rel="modulepreload" href="./vendor/liuyao-core.js?v=133" />
-<link rel="modulepreload" href="./js/skyview.js?v=133" />
+<link rel="modulepreload" href="./js/boot.js?v=136" />
+<link rel="modulepreload" href="./js/errors.js?v=136" />
+<link rel="modulepreload" href="./js/state.js?v=136" />
+<link rel="modulepreload" href="./js/qintian.js?v=136" />
+<link rel="modulepreload" href="./js/cast.js?v=136" />
+<link rel="modulepreload" href="./js/ritual.js?v=136" />
+<link rel="modulepreload" href="./js/homecards.js?v=136" />
+<link rel="modulepreload" href="./vendor/liuyao-core.js?v=136" />
+<link rel="modulepreload" href="./js/skyview.js?v=136" />
 <style id="qt-boot-style">
 /* 错误边界样式（内联：css/style.css 也可能 404，报错面板不能依赖它） */
 body.qt-lock { overflow: hidden; }
@@ -755,7 +755,7 @@ body.qt-lock { overflow: hidden; }
   </div>
 </noscript>
 
-<script type="module" src="./js/boot.js?v=133"></script>
+<script type="module" src="./js/boot.js?v=136"></script>
 <script nomodule>
   /* 不支持 ES module 的老浏览器（iOS < 10.3 / 老安卓 WebView / IE）在这里兜底，
      否则它们既不跑 boot.js 也没有任何提示——就是审计 r4 说的「只剩 44 字白屏」。 */

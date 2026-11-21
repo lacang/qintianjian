@@ -230,10 +230,10 @@ export function clearPanAt() {
 
 // 排盘所用时刻：默认全应用统一北京时间；开「真太阳时」后，起卦/起盘时刻按均时差+经度差校正
 // （NOAA 算法见 solartime.js；只作用于起卦时刻，八字/星盘出生时间仍按钟面时刻，牌面另有口径标注）
-import { toTrueSolar } from './solartime.js?v=133';
-import { getPlace } from './geo.js?v=133';
+import { toTrueSolar } from './solartime.js?v=136';
+import { getPlace } from './geo.js?v=136';
 // 时区解析（QT2 码要把「这里的时区」写进码里；单机离线，无 Intl 时区库）
-import { resolveTime } from '../vendor/liuyao-core.js?v=133';
+import { resolveTime } from '../vendor/liuyao-core.js?v=136';
 export function resolveCastDate(date = new Date()) {
   const d = new Date(date.getTime());
   // v111：真太阳时按"当前观测地"经度校正（原来写死出生地沈阳）；观测地见 geo.js

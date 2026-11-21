@@ -15,13 +15,13 @@
 //   4. 不改写任何原典、注疏、现代解读文本，只做排列与标注。
 //   5. 不把「现代解读」和「原典」放在同一个视觉层级里——卡片上必须分得开。
 
-import { drawFeed, feedOrder, feedCapacity } from './classic-core.js?v=133';
-import { readingOf } from './reading.js?v=133';
+import { drawFeed, feedOrder, feedCapacity } from './classic-core.js?v=136';
+import { readingOf } from './reading.js?v=136';
 import {
   loadFeed, advanceFeed, nextFeedRound, setMark, markOf,
   MARK_KEEP, MARK_DOUBT, markStats,
-} from './feed-state.js?v=133';
-import { toast } from '../state.js?v=133';
+} from './feed-state.js?v=136';
+import { toast } from '../state.js?v=136';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({

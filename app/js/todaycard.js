@@ -2,9 +2,9 @@
 // 合成一张可读的"日课"卡，一键复制给外部 AI 或存档。
 // 红线：只报事实与典籍口径的中性描述，不给"今日宜/忌""吉凶"判断。
 // 时间口径（audit4 · fix_r4）：四柱/农历与首页、八字同源（resolvePaipanTime），不再各自对钟面排。
-import { getMeridian, shouyeTianxiang, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
-import * as CORE from '../vendor/liuyao-core.js?v=133'; // 新 API 命名空间取值，旧 bundle 时优雅退回
-import { $, panTimeArgs } from './state.js?v=133';
+import { getMeridian, shouyeTianxiang, resolvePaipanTime } from '../vendor/liuyao-core.js?v=136';
+import * as CORE from '../vendor/liuyao-core.js?v=136'; // 新 API 命名空间取值，旧 bundle 时优雅退回
+import { $, panTimeArgs } from './state.js?v=136';
 
 const P_CN = { sun:'太阳', moon:'月亮', mercury:'水星', venus:'金星', mars:'火星',
   jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星' };

@@ -9,45 +9,45 @@
    ========================================================================== */
 
 /* P0-3 全局错误捕获：模块一执行就装，早于任何视图渲染 */
-import('./errors.js?v=133').then((m) => m.installGlobalErrorHooks()).catch(() => { /* boot.js 兜底 */ });
+import('./errors.js?v=136').then((m) => m.installGlobalErrorHooks()).catch(() => { /* boot.js 兜底 */ });
 
 /** 视图模块清单：键名用于 boot() 里解构，值是可被 tools/check-modules.mjs 校验的字面量 */
 const SPECS = {
-  'state.js': './state.js?v=133',
-  'zischool.js': './zischool.js?v=133',
-  'qintian.js': './qintian.js?v=133',
-  'panview.js': './panview.js?v=133',
-  'baziview.js': './baziview.js?v=133',
-  'meihuaview.js': './meihuaview.js?v=133',
-  'hecanview.js': './hecanview.js?v=133',
-  'qimenview.js': './qimenview.js?v=133',
-  'astroview.js': './astroview.js?v=133',
-  'astromodes.js': './astromodes.js?v=133',
-  'vedicview.js': './vedicview.js?v=133',
-  'zhuyou/zhuyouview.js': './zhuyou/zhuyouview.js?v=133',
-  'yangzhai/yangzhaiview.js': './yangzhai/yangzhaiview.js?v=133',
-  'ziweiview.js': './ziweiview.js?v=133',
-  'interact.js': './interact.js?v=133',
-  'cardsview.js': './cardsview.js?v=133',
-  'skyview.js': './skyview.js?v=133',
-  'globe.js': './globe.js?v=133',
-  'mansionview.js': './mansionview.js?v=133',
-  'cast.js': './cast.js?v=133',
-  'sharecode.js': './sharecode.js?v=133',
-  'force-refresh.js': './force-refresh.js?v=133',
-  'tipview.js': './tipview.js?v=133',
-  'cases.js': './cases.js?v=133',
-  'askview.js': './askview.js?v=133',
-  'classic/classicview.js': './classic/classicview.js?v=133',
-  'placeui.js': './placeui.js?v=133',
-  'geo.js': './geo.js?v=133',
-  'ritual.js': './ritual.js?v=133',
-  'homecards.js': './homecards.js?v=133',
-  'daliurenview.js': './daliurenview.js?v=133',
-  'xiaoliurenview.js': './xiaoliurenview.js?v=133',
-  'geomancyview.js': './geomancyview.js?v=133',
-  'tibetview.js': './tibetview.js?v=133',
-  'tarotview.js': './tarotview.js?v=133',
+  'state.js': './state.js?v=136',
+  'zischool.js': './zischool.js?v=136',
+  'qintian.js': './qintian.js?v=136',
+  'panview.js': './panview.js?v=136',
+  'baziview.js': './baziview.js?v=136',
+  'meihuaview.js': './meihuaview.js?v=136',
+  'hecanview.js': './hecanview.js?v=136',
+  'qimenview.js': './qimenview.js?v=136',
+  'astroview.js': './astroview.js?v=136',
+  'astromodes.js': './astromodes.js?v=136',
+  'vedicview.js': './vedicview.js?v=136',
+  'zhuyou/zhuyouview.js': './zhuyou/zhuyouview.js?v=136',
+  'yangzhai/yangzhaiview.js': './yangzhai/yangzhaiview.js?v=136',
+  'ziweiview.js': './ziweiview.js?v=136',
+  'interact.js': './interact.js?v=136',
+  'cardsview.js': './cardsview.js?v=136',
+  'skyview.js': './skyview.js?v=136',
+  'globe.js': './globe.js?v=136',
+  'mansionview.js': './mansionview.js?v=136',
+  'cast.js': './cast.js?v=136',
+  'sharecode.js': './sharecode.js?v=136',
+  'force-refresh.js': './force-refresh.js?v=136',
+  'tipview.js': './tipview.js?v=136',
+  'cases.js': './cases.js?v=136',
+  'askview.js': './askview.js?v=136',
+  'classic/classicview.js': './classic/classicview.js?v=136',
+  'placeui.js': './placeui.js?v=136',
+  'geo.js': './geo.js?v=136',
+  'ritual.js': './ritual.js?v=136',
+  'homecards.js': './homecards.js?v=136',
+  'daliurenview.js': './daliurenview.js?v=136',
+  'xiaoliurenview.js': './xiaoliurenview.js?v=136',
+  'geomancyview.js': './geomancyview.js?v=136',
+  'tibetview.js': './tibetview.js?v=136',
+  'tarotview.js': './tarotview.js?v=136',
 };
 
 /**
@@ -113,9 +113,9 @@ const VIEW_KEY = {
 
 /** 视图专属样式：跟模块一起懒装（首屏只留 style.css + place.css + planet-hour.css） */
 const VIEW_CSS = {
-  classic: './css/classic.css?v=133', tarot: './css/tarot.css?v=133',
-  tibet: './css/tibet.css?v=133', vedic: './css/vedic.css?v=133',
-  zhuyou: './css/zhuyou.css?v=133', yangzhai: './css/yangzhai.css?v=133',
+  classic: './css/classic.css?v=136', tarot: './css/tarot.css?v=136',
+  tibet: './css/tibet.css?v=136', vedic: './css/vedic.css?v=136',
+  zhuyou: './css/zhuyou.css?v=136', yangzhai: './css/yangzhai.css?v=136',
 };
 
 /** 已装视图模块：视图名 → 模块命名空间 */
@@ -199,7 +199,7 @@ function loadView(name) {
 /** astromodes（36 盘型键 / 本命2 / 重置城市）只在占星页用得到，跟着 astro 一起懒装 */
 let _astroMods = null;
 function astroMods() {
-  if (!_astroMods) _astroMods = import('./astromodes.js?v=133');
+  if (!_astroMods) _astroMods = import('./astromodes.js?v=136');
   return _astroMods;
 }
 
@@ -1299,7 +1299,7 @@ function setGender(g) {
  */
 export async function boot() {
   const M = await loadModules();
-  const E = await import('./errors.js?v=133');
+  const E = await import('./errors.js?v=136');
   ({ showError, errorHtml, renderWarnings, esc, showLoading, hideLoading, refreshScrollLock, clearRenderError, takeRenderError } = E);
 
   ({ $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt, birthDate, nowDate, resolveCastDate, copyText, toast, pad, parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,

@@ -10,7 +10,7 @@
    现在：入口只依赖零依赖的 errors.js；用动态 import() 启 main.js，失败时把
    「哪个文件失败」全屏告诉用户，并给「刷新重试」。
    ========================================================================== */
-import { installGlobalErrorHooks, fatalPanel } from './errors.js?v=133';
+import { installGlobalErrorHooks, fatalPanel } from './errors.js?v=136';
 
 installGlobalErrorHooks();
 
@@ -38,7 +38,7 @@ const watchdog = setTimeout(() => {
   );
 }, WATCHDOG_MS);
 
-import('./main.js?v=133')
+import('./main.js?v=136')
   .then((m) => (typeof m.boot === 'function' ? m.boot() : null))
   .then(() => {
     window.__QT_BOOTED = true;
