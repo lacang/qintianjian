@@ -193,7 +193,9 @@ export function normalizeAstroInput(input: AstroInput) {
     utcOffsetHours: time.utcOffsetHours,
     place: input.place ?? '',
     time,
-    warnings: v.warnings,
+    // 时间层的提示（时区估算/历史时区/夏令时近似…）必须并进来：
+    // 只带 validate 的 warnings 会让西占/印度盘在「只给经纬度不给城市」时一声不响（审计 P2-6）。
+    warnings: mergeWarnings(v.warnings, time.warnings),
   };
 }
 
@@ -225,16 +227,21 @@ export function paipanXingpan(rawInput: AstroInput): NatalChart {
   for (const id of PLANET_ORDER) {
     const raw = chart.bodies[id];
     if (!raw) continue;
-    const signIndex = Math.floor(((raw.lon % 360) + 360) % 360 / 30);
+    // 星座与显示度分必须同口径：先按「分取整」得到 dms，再由 dms.lon 反推星座。
+    // 旧写法用 raw.lon 反推星座、另用 toDms 显示度分，119.998°（月亮）就输出
+    // 「巨蟹 0°00′」——星座是狮子（分进位到 30° 已跨宫），同一行自相矛盾（审计 P3-8）。
+    const dms = toDms(raw.lon);
+    const signIndex = Math.floor(mod360(dms.lon) / 30);
     bodies[id] = {
       id,
       name: PLANET_ZH[id],
       signIndex,
       signName: SIGN_ZH[signIndex],
-      dms: toDms(raw.lon),
+      dms,
       retrograde: !!raw.retrograde,
       speed: raw.speed,
-      house: raw.house,
+      // 整宫宫位也跟着进位后的星座走，否则会出现「狮子座 0° 落巨蟹宫」
+      house: ((signIndex - ascIndex + 12) % 12) + 1,
     };
   }
 

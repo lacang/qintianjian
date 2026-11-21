@@ -170,15 +170,27 @@ export function paiBazi(input: BaziInput): BaziResult {
   // 秒必须透传：节气交节精确到秒（P1-1），写死 0 会让交节后 0–59 秒内出生的盘晚一柱
   const second = birth.second ?? 0;
   const lunar = Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
+  // 年柱/月柱另起一个「绝对时刻」钟面（eff.switchCivil）：节气是物理瞬间，
+  // 全国同时换月柱。若拿真太阳时去比节气，月柱切点会随经度平移（漠河 vs 乌鲁木齐差 139 分）。
+  // 日柱/时柱仍用上面的真太阳时 lunar（传统日晷口径），两者分工见 timeContext.civilForPaipan。
+  const sw = eff.switchCivil;
+  const sameBasis = sw.year === year && sw.month === month && sw.day === day
+    && sw.hour === hour && sw.minute === minute && (sw.second ?? 0) === second;
+  const lunarJq = sameBasis
+    ? lunar
+    : Solar.fromYmdHms(sw.year, sw.month, sw.day, sw.hour, sw.minute, sw.second ?? 0).getLunar();
   // EightChar 必须与本模块日柱同口径：默认 sect=2（00:00 换日）会让 23:00–23:59 出生者的
   // 日纳音/胎息按「当天」算，而上面日柱走 getDayInGanZhiExact（23:00 换日）已进次日，
   // 结果出现「日柱丙寅配乙丑的纳音」这类错配。setSect(1) = 晚子时日柱算次日，
   // 与 getDayInGanZhiExact 完全同源（已扫描 2026 全年各时刻验证年/月/日/时四柱逐一相等）。
   const ec = lunar.getEightChar();
   ec.setSect(1);
+  // 年/月纳音必须跟着年/月柱走（交节前后两个钟面分属不同年柱时，纳音不能错配）
+  const ecJq = sameBasis ? ec : lunarJq.getEightChar();
+  if (!sameBasis) ecJq.setSect(1);
 
-  const yearGZ = lunar.getYearInGanZhiExact();
-  const monthGZ = lunar.getMonthInGanZhiExact();
+  const yearGZ = lunarJq.getYearInGanZhiExact();
+  const monthGZ = lunarJq.getMonthInGanZhiExact();
   const dayGZ = lunar.getDayInGanZhiExact();
   const timeGZ = lunar.getTimeInGanZhi();
   const dayGan = dayGZ.charAt(0) as TianGan;
@@ -186,8 +198,8 @@ export function paiBazi(input: BaziInput): BaziResult {
   const xunKong = xunKongOf(dayGZ);
 
   const pillars = {
-    year: buildPillar(yearGZ, dayGan, ec.getYearNaYin(), false),
-    month: buildPillar(monthGZ, dayGan, ec.getMonthNaYin(), false),
+    year: buildPillar(yearGZ, dayGan, ecJq.getYearNaYin(), false),
+    month: buildPillar(monthGZ, dayGan, ecJq.getMonthNaYin(), false),
     day: buildPillar(dayGZ, dayGan, ec.getDayNaYin(), true),
     time: buildPillar(timeGZ, dayGan, ec.getTimeNaYin(), false),
   };

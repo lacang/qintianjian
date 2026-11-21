@@ -1,10 +1,12 @@
 // 梅花易数视图：指定时刻 本卦/互卦/变卦 + 体用（五行生克只列事实，不下吉凶）
-// 统一北京时间；时刻可由「时间条」或复现码覆盖。
+// 时间口径统一走内核 resolvePaipanTime（真太阳时/历史时区/夏令时），时刻可由「时间条」或复现码覆盖。
 // v56：本/互/变三卦可点按、可左右滑动切换；经传面板随卦切换；体用生克图示 + 五行配色 + 动爻高亮。
 import { meiHuaByTime, getGuaAnnotation, ZHOUYI_META } from '../vendor/liuyao-core.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）/ warnings 透传（P2-6）
 import { judgeMeiHua, verdictCardHtml } from './verdicts.js?v=133';
-import { resolveCastDate, nowDate, pad, toSec } from './state.js?v=133';
+import { nowDate, nowGeoArgs, panTimeArgs, pad, toSec } from './state.js?v=133';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { wxKey } from './classical.js?v=133';
 import { guideHTML, T } from './tipview.js?v=133';
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
@@ -19,9 +21,26 @@ const TRIGRAM_LINES = {
   乾: [1, 1, 1], 兑: [1, 1, 0], 离: [1, 0, 1], 震: [1, 0, 0],
   巽: [0, 1, 1], 坎: [0, 1, 0], 艮: [0, 0, 1], 坤: [0, 0, 0],
 };
-export function currentMeiHua(date = nowDate()) {
-  const castDate = resolveCastDate(date); // 北京时间
-  return { result: meiHuaByTime(castDate, { longitude: undefined, alreadyApparent: false }), castDate };
+/**
+ * 梅花时间起卦：时刻 + 观测地 → 卦。
+ *
+ * 改前：`resolveCastDate`（前端按 NOAA 近似折真太阳时）→ `meiHuaByTime` 走旧分支（写死 UTC+8 墙钟，
+ * 不认历史时区、不认夏令时）。现在整份入参交内核 `civilForPaipan`：真太阳时、五时区、夏令时、
+ * 23 点换日（农历月日整体进次日，castFromClock 里已有）全部与八字同源。
+ */
+export function currentMeiHua(date = nowDate(), geo = nowGeoArgs()) {
+  const clock = new Date(date.getTime()); // 录入钟面：标题与分享码用
+  const args = panTimeArgs(clock, geo);
+  const ts = resolvePaipanTime(args); // 时间口径行 + 告警
+  const { year, month, day, hour, minute, second, trueSolarTime, lateZiMode, ...geoOnly } = args;
+  const result = meiHuaByTime(clock.getTime(), {
+    ...geoOnly,
+    lateZiMode,
+    // 真太阳时关掉时告诉内核「别再折」；开着就让内核自己按经纬度/城市折一次
+    alreadyApparent: !trueSolarTime,
+  });
+  const effDate = new Date(ts.civil.year, ts.civil.month - 1, ts.civil.day, ts.civil.hour, ts.civil.minute || 0);
+  return { result, ts, effDate, castDate: clock };
 }
 
 const POS_NAME = ['初', '二', '三', '四', '五', '上'];
@@ -203,16 +222,18 @@ const MH_GUIDE = {
   note: '体用生克是梅花判断的地基；这张盘目前先给事实，综合直断即将接入。',
 };
 
-function __renderMeiHua(date = nowDate()) {
+function __renderMeiHua(date = nowDate(), geo = nowGeoArgs()) {
   if (!isCastedMeiHua()) return gateHTML('meihua');
-  const { result: mh, castDate } = currentMeiHua(date);
+  const { result: mh, ts, effDate, castDate } = currentMeiHua(date, geo);
   const ti = mh.ti, yong = mh.yong;
   const rel = relOf(ti, yong);
 
-  const hh = `${castDate.getFullYear()}年${castDate.getMonth() + 1}月${castDate.getDate()}日 ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · 北京时间`;
+  // 钟面给对照，时辰/月建一律按真太阳时说清（奇门页与这里必须同一个口径）
+  const hh = `${castDate.getFullYear()}年${castDate.getMonth() + 1}月${castDate.getDate()}日 ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · 时间口径 ${timeBasis(ts)}`;
 
   const html = `
     ${guideHTML(MH_GUIDE)}
+    ${renderWarnings({ warnings: [...(mh.warnings || []), ...(ts.warnings || [])], timeWarnings: mh.timeWarnings })}
     <div class="mh-wrap">
     <div class="mh-meta">${hh} · 第${mh.movingPosition}爻动（${mh.movingSide === 'upper' ? '上卦' : '下卦'}）</div>
 
@@ -251,7 +272,7 @@ function __renderMeiHua(date = nowDate()) {
       <p class="mh-tl-quote">「体卦为主，用卦为事；互卦为事之中间，刻应变卦为事之终。」<cite>《梅花易数·体用总诀》</cite></p>
     </div>
 
-    ${methodBlock(mh, castDate, rel)}
+    ${methodBlock(mh, effDate, rel)}
 
     <div class="mh-classic">
       <div class="mh-classic-h">《周易》经传原文 <span class="mh-hint">点上方卦卡或左右滑动切换</span></div>
@@ -267,12 +288,13 @@ function __renderMeiHua(date = nowDate()) {
 
 
 // 一键复制（始终含本卦经传）
-export function meiHuaCopyText(date = nowDate()) {
-  const { result: mh, castDate } = currentMeiHua(date);
+export function meiHuaCopyText(date = nowDate(), geo = nowGeoArgs()) {
+  const { result: mh, ts, castDate } = currentMeiHua(date, geo);
   const fmt = (h) => `${h.gua}${h.wuXing}`;
   const L = [
     '【梅花易数 · 时间起卦】',
-    `北京时间 ${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}`,
+    `钟面 ${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}`,
+    `时间口径 ${timeBasis(ts)}`,
     `第${mh.movingPosition}爻动（${mh.movingSide === 'upper' ? '上卦' : '下卦'}）`,
     `本卦：${mh.benGua.name}（上${fmt(mh.benGua.upper)} 下${fmt(mh.benGua.lower)}）`,
     `互卦：${mh.huGua.name}（上${fmt(mh.huGua.upper)} 下${fmt(mh.huGua.lower)}）`,
@@ -299,8 +321,8 @@ export function meiHuaCopyText(date = nowDate()) {
 }
 
 // 复现码数据 + 案例标题（时刻即全部，码极短）
-export function meiHuaCode(date = nowDate()) {
-  const { result: mh, castDate } = currentMeiHua(date);
+export function meiHuaCode(date = nowDate(), geo = nowGeoArgs()) {
+  const { result: mh, castDate } = currentMeiHua(date, geo);
   return {
     kind: 'meihua',
     data: { at: toSec(castDate.getTime()) },

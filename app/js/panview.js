@@ -1,6 +1,6 @@
 // 排盘视图：本卦 → 变卦 两列（藏爻默认收列，需要时一键展开）
 import { $, $$, cfg, current, toast, flashCopyBtn } from './state.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）/ warnings 透传（P2-6）
 import { formatCopyText, getShouGuaPan } from '../vendor/liuyao-core.js?v=133';
 import { renderJingZhuan } from './jingzhuanview.js?v=133';
 import { renderReading, getActiveReadingDomain } from './readingview.js?v=133';
@@ -121,7 +121,9 @@ function __renderPan() {
   }
 
   const rowCls = ['pan-grid', showCang ? 'has-cang' : '', hasBian ? 'has-bian' : ''].filter(Boolean).join(' ');
-  $('#pan-body').innerHTML = guideHTML(PAN_GUIDE) + head + `<div class="pan-rows ${rowCls}">${cols}${rows}</div>`;
+  // 时间层/校验期的 warnings（时区估算、真太阳时未校正…）此前在六爻盘上完全看不到（审计 P2-6）
+  const warnHtml = renderWarnings(p);
+  $('#pan-body').innerHTML = guideHTML(PAN_GUIDE) + warnHtml + head + `<div class="pan-rows ${rowCls}">${cols}${rows}</div>`;
   // 古法直断结论卡（v69）：排完盘第一张给方向的卡
   renderVerdict(p, getActiveReadingDomain());
 

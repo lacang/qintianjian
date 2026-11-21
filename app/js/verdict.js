@@ -94,6 +94,11 @@ const RULES = {
   zisunjieyou:{ book:'《增删卜易·趋避章》', gu:'凡一切忧疑惊恐、防灾防患者，皆宜子孙持世，或福神动于卦中。但得子孙乘旺动，飞殃横祸化为尘。', hua:'子孙是解忧、化灾、医药之神。占防患、占病，子孙持世或旺动，古法认为横祸都能化解。' },
   guihui:{ book:'《增删卜易·趋避章》', gu:'凡占防患，克世者皆不为吉，独鬼爻克世更凶。', hua:'占防患，凡有爻来克世都不算好，其中尤其以官鬼（忧患、盗贼、疾病）克世最凶——所防的实患会真的冲自己来。' },
   shiyingke:{ book:'《增删卜易·出行章》', gu:'世伤应位，不拘远近相宜；应克世，公私皆主不利。我去克他，所向通达；应来刑冲克世，不可行之。', hua:'出行/合作看世应：世爻去克应（我占主动、压得住局面）反而通达；应爻来克世，则无论公事私事都主不利，不宜前往。' },
+  // 以下三条为 2026-11-21 内容审计补录：原断语挂的书名没有对应规则（或映射到别的篇），
+  // 逐字原文暂不能核实，按本文件既有底线用「要旨」标注，不冒充原文。
+  liuchong:{ book:'《增删卜易·六冲章》', gu:'（要旨）六冲之卦，主散、主速、主不成久；占婚主易散易吵，占行人主往来不定，占求谋主成而复散。须看用神旺衰与日月合冲为转机。', hua:'六冲是六个爻两两正冲的卦（八纯卦加天雷无妄、雷天大壮）。古法认为六冲主「散」，但只是单一卦象信号，须并用神旺衰、日月合冲参看，不是一见六冲就断凶。' },
+  shenming:{ book:'《卜筮正宗·身命》', gu:'（要旨）占身命以世爻为本人，看六亲旺衰定一生大势：财旺主财禄厚薄、官旺主功名责任、子孙旺主福寿自在，逢空破则此一路有缺。', hua:'看一辈子的大势，以世爻代表本人，再看妻财、官鬼、子孙这些「线」旺不旺、空不空——旺的那条线是这一生的长处，空破的那条是缺口。' },
+  chuxinggui:{ book:'《增删卜易·出行章》', gu:'（要旨）出行以世应、官鬼、子孙并看：子孙旺动则途中有解，官鬼旺动则途中有阻，宜缓行、宜先查实。', hua:'出行、办事这类事，子孙（解忧之神）旺动是路上有人帮、能化解；官鬼旺动是路上有阻碍、是非或意外，古法主张缓行、把情况查清再动。' },
 };
 
 // 旧的「书名标签」→ 规则库默认条目（让绝大多数信号零改动即获得原文+白话）
@@ -101,15 +106,16 @@ const S2R = {
   '《增删卜易·月破章》':'yuepo',
   '《增删卜易·旬空章》':'xunkong',
   '《增删卜易·四时旺相章》':'wangxiang',
-  '《增删卜易·生旺墓绝章》':'wangxiang',
+  // 「生旺墓绝章」不再统一映射四时旺相（曾是张冠李戴：标长生墓绝、实渲染四时旺相）。
+  // 该篇有四条规则，由调用处按信号逐条传 qk（changsheng/diwang/mu/jue）。
   '《增删卜易·六合章》':'liuhe',
   '《增删卜易·六冲章》':'liuchong',
   '《增删卜易·暗动章》':'andong',
   '《增删卜易·日辰章》':'ribo',
   '《增删卜易·动变章》':'dongbian',
-  '《增删卜易·进退章》':'jintui',
-  '《增删卜易·反伏章》':'fanfu',
-  '《增删卜易·元神忌神章》':'yuanji',
+  '《增删卜易·进化退神章》':'jintui',
+  '《增删卜易·反伏吟章》':'fanfu',
+  '《增删卜易·原神忌神章》':'yuanji',
   '《增删卜易·世应章》':'shiying',
   '《增删卜易·求财章》':'qiucai',
   '《卜筮正宗·求名章》':'qiuming',
@@ -117,15 +123,17 @@ const S2R = {
   '《增删卜易·趋避章》':'qubi',
   '《增删卜易·疾病章》':'jibing',
   '《增删卜易·延医章》':'yanyi',
-  '《增删卜易·出行章》':'qubi',
+  '《增删卜易·出行章》':'shiyingke',
   '《增删卜易·行人章》':'xingren',
   '《卜筮正宗·黄金策·失脱》':'shituo',
   '《增删卜易·飞伏神章》':'feifu',
   '《增删卜易·用神章》':'yongshenbuxian',
   '《卜筮正宗·诸爻持世诀》':'chishi',
-  '《卜筮正宗·身命》':'chishi',
-  '《增删卜易·学业章》':'qiuming',
-  '《增删卜易·终身功名有无章》':'qiuming',
+  '《卜筮正宗·身命》':'shenming',
+  // 增删卜易无「学业章」：学业（考试文书）归 卜筮正宗·求名章（父母为文章）。
+  // 标签与规则同名，渲染书名一律取自规则 book —— v134 修 P1-1
+  '《卜筮正宗·求名章》':'qiuming',
+  '《增删卜易·终身功名有无章》':'guanfu',
 };
 // 把一条信号解析成规则对象：显式 qk 优先，其次书名映射
 function resolveRule(ruleId, srcLabel) {
@@ -149,8 +157,13 @@ export function judgeNajia(pan, domainId) {
   const signals = [];
   const quoteKeys = new Set();
   let score = 0;
-  // 每条加减都强制挂一条古法规则（原文+篇目+白话）；解析不到规则就只留书名字签，不硬编
-  const add = (w, text, src, qk) => { signals.push({ w, text, src, rule: resolveRule(qk, src) }); score += w; if (qk) quoteKeys.add(qk); };
+  // 每条加减都强制挂一条古法规则（原文+篇目+白话）；解析不到规则就只留书名字签，不硬编。
+  // 书名一律取自所解析规则自身的 book 字段——标签与规则永不分离（v134 修 P1-1：曾 9/28 不符）。
+  const add = (w, text, src, qk) => {
+    const rule = resolveRule(qk, src);
+    signals.push({ w, text, src: rule ? rule.book : src, rule });
+    score += w; if (qk) quoteKeys.add(qk);
+  };
 
   // 这几个域不走"用神本体旺衰"的通用加减：
   // health/decision/life 用神是世爻或反用神（鬼=病、子=药），全部由专项块统算；
@@ -202,20 +215,20 @@ export function judgeNajia(pan, domainId) {
     if (WANG.has(y.state.lingTai)) add(2, `${who}得月令之气（${y.state.lingTai}于月），这是断卦最要紧的一条：用神旺，事情本身有底气、撑得住。`, '《增删卜易·四时旺相章》');
     else if (y.state.lingTai==='休') add(-1, `${who}月令休态，气不足，事能成也要多费周折。`, '《增删卜易·四时旺相章》');
     else if (SHUAI.has(y.state.lingTai)) add(-2, `${who}被月令${y.state.lingTai==='死'?'克（死于月）':'制（囚于月）'}——用神衰弱，事多力不从心。`, '《增删卜易·四时旺相章》');
-    if (y.state.diWang) add(1, `${who}临帝旺，气最盛。`, '《增删卜易·生旺墓绝章》');
-    if (y.state.changSheng) add(1, `${who}逢长生，事情像刚发芽，有后劲。`, '《增删卜易·生旺墓绝章》');
-    if (y.state.ruMu) add(-1, `${who}逢入墓——如人进了屋，力量施展不开，冲墓之月日才有动静。`, '《增删卜易·生旺墓绝章》');
-    if (y.state.fengJue) add(-1, `${who}逢绝地，气走到头了。`, '《增删卜易·生旺墓绝章》');
+    if (y.state.diWang) add(1, `${who}临帝旺，气最盛。`, '《增删卜易·生旺墓绝章》', 'diwang');
+    if (y.state.changSheng) add(1, `${who}逢长生，事情像刚发芽，有后劲。`, '《增删卜易·生旺墓绝章》', 'changsheng');
+    if (y.state.ruMu) add(-1, `${who}逢入墓——如人进了屋，力量施展不开，冲墓之月日才有动静。`, '《增删卜易·生旺墓绝章》', 'mu');
+    if (y.state.fengJue) add(-1, `${who}逢绝地，气走到头了。`, '《增删卜易·生旺墓绝章》', 'jue');
     if (y.state.yueHe || y.state.riHe) add(1, `${who}得${y.state.yueHe?'月建':''}${y.state.yueHe&&y.state.riHe?'、':''}${y.state.riHe?'日辰':''}来合，有外力拉一把、促成它。`, '《增删卜易·六合章》');
     if (y.state.anDong) add(1, `${who}是静爻被日辰冲、自身又旺，叫「暗动」——表面没动静，底下已经在变，事会自己起变化。`, '《增删卜易·暗动章》');
     if (y.state.riPo) add(-1, `${who}被日辰冲又衰，是「日破」，近期被冲散。`, '《增删卜易·日辰章》');
     if (y.moving) {
       if (y.state.huaTouSheng) add(2, `${who}发动，变出之爻反过来生它（回头生）——动中有人帮、越变越好。`, '《增删卜易·动变章》');
       if (y.state.huaTouKe) add(-2, `${who}发动却被变爻回头克——事情一动就出岔子、自己坏自己，动不如静。`, '《增删卜易·动变章》');
-      if (y.state.huaJin) add(1, `${who}动化进神——势头往前奔，事在必行。`, '《增删卜易·进退章》');
-      if (y.state.huaTui) add(-1, `${who}动化退神——看着要成，势头却在往后退。`, '《增删卜易·进退章》');
-      if (y.state.fanYin) add(-1, `${who}动化反吟——反反复复、去而又来，事情折腾。`, '《增删卜易·反伏章》');
-      if (y.state.fuYin) add(-1, `${who}动化伏吟——原地呻吟、停滞不动，有愁苦之象。`, '《增删卜易·反伏章》');
+      if (y.state.huaJin) add(1, `${who}动化进神——势头往前奔，事在必行。`, '《增删卜易·进化退神章》');
+      if (y.state.huaTui) add(-1, `${who}动化退神——看着要成，势头却在往后退。`, '《增删卜易·进化退神章》');
+      if (y.state.fanYin) add(-1, `${who}动化反吟——反反复复、去而又来，事情折腾。`, '《增删卜易·反伏吟章》');
+      if (y.state.fuYin) add(-1, `${who}动化伏吟——原地呻吟、停滞不动，有愁苦之象。`, '《增删卜易·反伏吟章》');
     }
   }
 
@@ -253,9 +266,9 @@ export function judgeNajia(pan, domainId) {
     const htDup = yongIsShi && y.moving;
     if (!htDup && st.huaTouKe) add(-2, `世爻动化回头克——自己的动作反伤自己，最近别做大决策。`, '《增删卜易·动变章》');
     if (!htDup && st.huaTouSheng) add(1, `世爻动化回头生，行动有人帮、越动越顺。`, '《增删卜易·动变章》');
-    if (st.huaJin) add(1, `世动化进神，你正处在往上走的势头。`, '《增删卜易·进退章》');
-    if (st.huaTui) add(-1, `世动化退神，你自己正在打退堂鼓。`, '《增删卜易·进退章》');
-    if (st.fanYin) add(-1, `世动化反吟，你这边反复摇摆。`, '《增删卜易·反伏章》');
+    if (st.huaJin) add(1, `世动化进神，你正处在往上走的势头。`, '《增删卜易·进化退神章》');
+    if (st.huaTui) add(-1, `世动化退神，你自己正在打退堂鼓。`, '《增删卜易·进化退神章》');
+    if (st.fanYin) add(-1, `世动化反吟，你这边反复摇摆。`, '《增删卜易·反伏吟章》');
     if (st.ruMu) add(-1, `世爻入墓，人被困住、施展不开。`, '《增删卜易·生旺墓绝章》', 'mu');
   }
 
@@ -263,11 +276,11 @@ export function judgeNajia(pan, domainId) {
   if (!ys.useYing && ys.yuanShen && ys.jiShen && yongOccs.length
       && !['career','health','decision','life','love'].includes(domainId)) {
     const yuanDong=movingList(an,ys.yuanShen), jiDong=movingList(an,ys.jiShen), chouDong=ys.chouShen?movingList(an,ys.chouShen):[];
-    if (wangDong(yuanDong).length) add(2, `原神${ys.yuanShen}旺动来生用神——事情有源源不断的助力。`, '《增删卜易·元神忌神章》');
-    else if (yuanDong.length) add(0, `原神${ys.yuanShen}虽动，但自身不旺或逢空破，助力使不全。`, '《增删卜易·元神忌神章》');
-    if (wangDong(jiDong).length) add(-2, `忌神${ys.jiShen}旺动来克用神——阻力是真实而有力的，这是盘里最该防的一条。`, '《增删卜易·元神忌神章》');
-    else if (jiDong.length) add(-1, `忌神${ys.jiShen}发动但不旺，有阻力但撑不久。`, '《增删卜易·元神忌神章》');
-    if (wangDong(chouDong).length) add(-1, `仇神${ys.chouShen}又旺动去生忌神——阻力后面还跟着撑腰的，麻烦会连环。`, '《增删卜易·元神忌神章》');
+    if (wangDong(yuanDong).length) add(2, `原神${ys.yuanShen}旺动来生用神——事情有源源不断的助力。`, '《增删卜易·原神忌神章》');
+    else if (yuanDong.length) add(0, `原神${ys.yuanShen}虽动，但自身不旺或逢空破，助力使不全。`, '《增删卜易·原神忌神章》');
+    if (wangDong(jiDong).length) add(-2, `忌神${ys.jiShen}旺动来克用神——阻力是真实而有力的，这是盘里最该防的一条。`, '《增删卜易·原神忌神章》');
+    else if (jiDong.length) add(-1, `忌神${ys.jiShen}发动但不旺，有阻力但撑不久。`, '《增删卜易·原神忌神章》');
+    if (wangDong(chouDong).length) add(-1, `仇神${ys.chouShen}又旺动去生忌神——阻力后面还跟着撑腰的，麻烦会连环。`, '《增删卜易·原神忌神章》');
     if (jiDong.some((o)=>o.state.huaTouKe||o.state.huaTui||o.state.fanYin||o.state.yuePo)) add(1, `好在忌神${ys.jiShen}动而化坏（回头克/化退/月破）——阻力自己出问题，挡不久。`, '《增删卜易·动变章》');
     if (yuanDong.some((o)=>o.state.huaTouKe||o.state.huaTui)) add(-1, `原神${ys.yuanShen}动而化坏——帮手使不上劲或中途退场。`, '《增删卜易·动变章》');
   }
@@ -294,7 +307,7 @@ export function judgeNajia(pan, domainId) {
     const yst=an.ying.occ.state;
     if (yst.xunKong) add(-1, `应爻逢旬空——对方那边还没定、心里没底或人不实在，事情悬着。`, '《增删卜易·旬空章》');
     if (yst.yuePo) add(-1, `应爻月破——对方/地头的根基有亏。`, '《增删卜易·月破章》');
-    if (yst.huaTui) add(-1, `应爻动化退神——对方在往后缩、要变卦。`, '《增删卜易·进退章》');
+    if (yst.huaTui) add(-1, `应爻动化退神——对方在往后缩、要变卦。`, '《增删卜易·进化退神章》');
   }
 
   const zisunDong=movingList(an,'子孙'), xiongdiDong=movingList(an,'兄弟'),
@@ -317,10 +330,10 @@ export function judgeNajia(pan, domainId) {
     const guanHao=wangDong(guanguiDong).length, fuHao=wangDong(fumuDong).length;
     if (guanHao && fuHao) add(2, `官星（职位）与父母（文书/考卷/合同）双双旺动相生——功名的正路格局：有名额、有文书、有靠山，古法主成名。`, '《增删卜易·终身功名有无章》','guanfu');
     else if (guanHao) add(1, `官星旺动——职位、上级、考核的能量在动，偏有机会（再看父母文书是否跟得上）。`, '《增删卜易·终身功名有无章》');
-    else if (fuHao && !guanHao) add(0, `父母旺而官星不动——文书、考试、准备是足的，但职位/结果这一环还没动，像是"备好了等机会"。`, '《增删卜易·学业章》');
+    else if (fuHao && !guanHao) add(0, `父母旺而官星不动——文书、考试、准备是足的，但职位/结果这一环还没动，像是"备好了等机会"。`, '《卜筮正宗·求名章》');
     // 考试特重父母爻（成绩文章）
     const fumuAll = an.byLiuQin['父母']||[];
-    if (fumuAll.some((o)=>o.state.xunKong||o.state.yuePo)) add(-1, `父母爻（考卷、成绩、通知）逢空破——文书环节容易出问题：漏通知、材料出错、成绩延迟。`, '《增删卜易·学业章》');
+    if (fumuAll.some((o)=>o.state.xunKong||o.state.yuePo)) add(-1, `父母爻（考卷、成绩、通知）逢空破——文书环节容易出问题：漏通知、材料出错、成绩延迟。`, '《卜筮正宗·求名章》');
   }
 
   if (domainId==='love') {
@@ -354,8 +367,8 @@ export function judgeNajia(pan, domainId) {
     else if (wangDong(guiDong).length) add(-2, `官鬼旺动——病症正在发作、势头重（鬼为病）；再看有没有子孙来制。`, '《增删卜易·疾病章》');
     else if (guiAll.some((o)=>o.state.xunKong||o.state.yuePo) || (!guiDong.length && guiAll.every((o)=>SHUAI.has(o.state.lingTai))))
       add(1, `官鬼安静或空破——病势没力气，多为虚惊、小病。`, '《增删卜易·疾病章》');
-    if (an.shi && an.shi.occ.liuQin==='子孙') add(2, `子孙持世——药与解忧之神在你身上，古法主不拘新久，服药即安。`, '《增删卜易·疾病章》','zisunjieyou');
-    else if (wangDong(ziDong).length) add(2, `子孙旺动——药/医生有力，能制住病，古法"但得子孙乘旺动，飞殃横祸化为尘"。`, '《增删卜易·延医章》','zisunjieyou');
+    if (an.shi && an.shi.occ.liuQin==='子孙') add(2, `子孙持世——药与解忧之神在你身上，古法主不拘新久，服药即安。`, '《增删卜易·趋避章》','zisunjieyou');
+    else if (wangDong(ziDong).length) add(2, `子孙旺动——药/医生有力，能制住病（古法：子孙为福神，旺动则祸不近身）。`, '《增删卜易·趋避章》','zisunjieyou');
     else if (ziDong.some((o)=>o.state.huaTouKe||o.state.huaTui)) add(-1, `子孙动而化坏——药不对路、治疗反复或医生使不上劲。`, '《增删卜易·延医章》');
     if (an.ying) {
       const yst=an.ying.occ.state;
@@ -367,9 +380,9 @@ export function judgeNajia(pan, domainId) {
 
   if (domainId==='decision') {
     // 抉择/出行/合作/防患：世旺宜行、子动消灾、鬼动有患、应空落空
-    if (wangDong(zisunDong).length) add(2, `子孙旺动——百祸潜消的信号，出行、合作、动手都逢凶有化。`, '《增删卜易·出行章》','zisunjieyou');
+    if (wangDong(zisunDong).length) add(2, `子孙旺动——百祸潜消的信号，出行、合作、动手都逢凶有化。`, '《增删卜易·趋避章》','zisunjieyou');
     if (wangDong(guanguiDong).length) {
-      add(-2, `官鬼旺动——主盗贼、风波、疾病、是非一类的实患，行程宜缓、合作宜查、这事宜避。`, '《增删卜易·出行章》');
+      add(-2, `官鬼旺动——主盗贼、风波、疾病、是非一类的实患，行程宜缓、合作宜查、这事宜避。`, '《增删卜易·出行章》', 'chuxinggui');
       if (an.shi) {
         const guiKeShi=guanguiDong.some((o)=>KE[o.state.wuXing]===an.shi.occ.state.wuXing);
         if (guiKeShi) add(-1, `而且这官鬼正冲克世爻——所防的事会真的冲你来，必须主动趋避（古法趋避的价值就在这里）。`, '《增删卜易·趋避章》','guihui');

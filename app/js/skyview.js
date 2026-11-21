@@ -3,7 +3,8 @@
 // 观测时刻可由「时间条」或复现码覆盖
 import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=133';
 import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
-import { $, nowDate, pad, toSec } from './state.js?v=133';
+import { $, nowDate, pad, toSec, panTimeArgs } from './state.js?v=133';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
 import { zodiacMapSVG } from './zodiac.js?v=133';
 import { planetaryHour, planetaryHoursOfDay, PLANET_HR } from './solartime.js?v=133';
 
@@ -236,7 +237,10 @@ const PH_CID_MAP = { '土星': 'saturn', '木星': 'jupiter', '火星': 'mars', 
 let phDay = '', phTime = '';
 function localDayStr(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
 function localTimeStr(d) { return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function shichenIdx(d) { return Math.floor(((d.getHours() + 1) % 24) / 2) % 12; }
+// 十二时辰标签与四柱同源（不再钟面小时÷2）：西方行星时表里顺带标的这个时辰，也要对得上八字
+function shichenIdx(d) {
+  try { return resolvePaipanTime(panTimeArgs(d)).timeZhiIndex; } catch { return Math.floor(((d.getHours() + 1) % 24) / 2) % 12; }
+}
 
 function phPanelHTML(ref) {
   const real = new Date();

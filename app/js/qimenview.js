@@ -1,10 +1,15 @@
 // 奇门遁甲视图：指定时刻 时家·转盘·拆补 局（只排事实，不做格局吉凶）
-// 统一北京时间；时刻可由「时间条」或复现码覆盖。
+// 时刻可由「时间条」或复现码覆盖。
 // v55：九宫按卦五行分层底色、加方位标注、值符值使/空亡马星强化、补图例与典籍依据。
+// 时间口径（audit4 · fix_r4）：与八字/大六壬同一行代码——真太阳时、历史时区、夏令时全交内核。
+// 改前这里传 `trueSolarTime: false` 且自己用前端 toTrueSolar 校正，口径开关只认 `cfg.apparentSolarTime`；
+// 于是拉萨 23:30 在奇门页得辛酉戊子、在八字/大六壬页得庚申丁亥，同刻两盘互相打架还没提示。
 import { paiQiMen } from '../vendor/liuyao-core.js?v=133';
 import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=133';
-import { resolveCastDate, nowDate, nowGeoArgs, pad, toSec } from './state.js?v=133';
+import { nowDate, nowGeoArgs, panTimeArgs, pad, toSec } from './state.js?v=133';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
 import { QM_PALACE_DIR, wxKey } from './classical.js?v=133';
 import { guideHTML, T } from './tipview.js?v=133';
@@ -12,13 +17,19 @@ import {
   qmFuFan, qmFind, QM_STEPS, QM_YONGSHEN, QM_FUFAN_QUOTE,
 } from './reading.js?v=133';
 
-export function currentQiMen(date = nowDate()) {
-  const d = resolveCastDate(date); // 已按观测地做过真太阳时校正，核心只需扣时区/夏令时
-  const q = paiQiMen({
-    year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(), hour: d.getHours(), minute: d.getMinutes(),
-    ...nowGeoArgs(), trueSolarTime: false, // 经纬度已用于上面的真太阳时校正，别二次校正
-  });
-  return { q, castDate: d };
+/**
+ * 起局：时刻 + 观测地 → 局。
+ *
+ * `args` 一份、算两遍（时间层 + 排局层），两者都走内核同一条 `civilForPaipan`，
+ * 所以 `ts` 与 `q.siZhu` 必然同源；测试里对每个验收点都断言这一点。
+ * 绝不把已折过的钟面再喂回内核（那会二次折真太阳时／二次扣夏令时）。
+ */
+export function currentQiMen(date = nowDate(), geo = nowGeoArgs()) {
+  const d = new Date(date.getTime()); // 录入钟面：给分享码与标题用，不参与排盘
+  const args = panTimeArgs(d, geo);
+  const ts = resolvePaipanTime(args); // 只为「时间口径」那行与告警，排局仍由 paiQiMen 自己算
+  const q = paiQiMen(args);
+  return { q, ts, castDate: d };
 }
 
 // 洛书九宫在 3×3 网格中的位置：4 9 2 / 3 5 7 / 8 1 6
@@ -184,18 +195,19 @@ const QM_GUIDE = {
 
 function __renderQiMen(date = nowDate()) {
   if (!isCasted('qimen')) return gateHTML('qimen');
-  const { q, castDate } = currentQiMen(date);
+  const { q, ts, castDate } = currentQiMen(date);
   // 换日口径必须亮出来：同一时刻按 23 点 / 0 点换日会差一整天的日柱
   const hh = `${castDate.getFullYear()}年${pad(castDate.getMonth() + 1)}月${pad(castDate.getDate())}日 ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · ${q.dayBoundary || '23 点（子初）换日'}`;
   const byNum = Object.fromEntries(q.palaces.map((p) => [p.palaceNumber, p]));
 
   const html = `
-  ${renderWarnings(q)}
+  ${renderWarnings({ warnings: [...(q.warnings || []), ...(ts.warnings || [])], timeWarnings: q.timeWarnings })}
   ${guideHTML(QM_GUIDE)}
   <div class="qm-head">
     <div class="qm-title">${q.dun}${q.ju}局 · ${q.yuan} · ${q.jieQi}</div>
     <div class="qm-sizhu">${q.siZhu.year} ${q.siZhu.month} ${q.siZhu.day} ${q.siZhu.time} · 旬空${q.timeKongWang.join('')}</div>
     <div class="qm-sub">${hh}</div>
+    <div class="qm-sub dim">时间口径 ${timeBasis(ts)}</div>
     <div class="qm-zs">值符 ${q.zhiFu.star}（${byNum[q.zhiFu.palace].palaceName}${q.zhiFu.palace}宫） · 值使 ${q.zhiShi.door}（${byNum[q.zhiShi.palace].palaceName}${q.zhiShi.palace}宫）</div>
   </div>
   <div class="qm-grid">
@@ -230,12 +242,13 @@ function __renderQiMen(date = nowDate()) {
 }
 
 // 一键复制：按洛书九宫逐格列事实（AI 易读，格式宽松）
-export function qiMenCopyText(date = nowDate()) {
-  const { q, castDate } = currentQiMen(date);
+export function qiMenCopyText(date = nowDate(), geo = nowGeoArgs()) {
+  const { q, ts, castDate } = currentQiMen(date, geo);
   const byNum = Object.fromEntries(q.palaces.map((p) => [p.palaceNumber, p]));
   const lines = [
     '【奇门遁甲 · 时辰局】',
     `${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}（${q.dayBoundary || '23 点换日'}）`,
+    `时间口径 ${timeBasis(ts)}`,
     `${q.dun}${q.ju}局 · ${q.yuan} · ${q.jieQi}`,
     `四柱 ${q.siZhu.year} ${q.siZhu.month} ${q.siZhu.day} ${q.siZhu.time} · 旬空${q.timeKongWang.join('')}`,
     `值符 ${q.zhiFu.star}（${byNum[q.zhiFu.palace].palaceName}${q.zhiFu.palace}宫） · 值使 ${q.zhiShi.door}（${byNum[q.zhiShi.palace].palaceName}${q.zhiShi.palace}宫）`,

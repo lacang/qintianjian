@@ -1190,6 +1190,18 @@ export function civilForPaipan(
   opts: { yearRange?: YearRangeId; label?: string } = {},
 ): {
   civil: PaipanCivil;
+  /**
+   * 年柱/月柱（节气）判定专用钟面：**绝对时刻**换算到东八区，绝不折真太阳时。
+   *
+   * 节气（立春、惊蛰…）是一个物理瞬间，全国（乃至全球）在同一 UTC 时刻交节。
+   * 真太阳时是「同一瞬间在不同经度上的日晷读数」，只能用来定日柱/时柱，
+   * 拿它去比节气时刻会让月柱切点随经度平移 —— 实测漠河/乌鲁木齐差 139 分钟。
+   * 所以这里的口径是混合的（这是正确做法，不是降级，故不进 warnings）：
+   *   年柱、月柱 → switchCivil（钟面＝东八区，与节气的绝对时刻同口径）
+   *   日柱、时柱 → civil（真太阳时，传统日晷口径）
+   * 无地点线索时没有绝对时刻可言，switchCivil 退化为原样输入的钟面时间。
+   */
+  switchCivil: PaipanCivil;
   applied: boolean;
   usedTrueSolar: boolean;
   crossedDay: boolean;
@@ -1219,7 +1231,7 @@ export function civilForPaipan(
     // 没有任何地点线索：仍按调用方给的钟面时间排，但换日口径照样统一执行
     const z = applyLateZi(raw, lateZiMode);
     return {
-      civil: z.civil, applied: false, usedTrueSolar: false,
+      civil: z.civil, switchCivil: raw, applied: false, usedTrueSolar: false,
       crossedDay: false, lateZiApplied: z.applied, lateZiMode, resolution: null,
       warnings: v.warnings,
     };
@@ -1233,8 +1245,15 @@ export function civilForPaipan(
   const z = applyLateZi(conv, lateZiMode);
   const civil = z.civil;
   const crossedDay = civil.year !== raw.year || civil.month !== raw.month || civil.day !== raw.day;
+  // 节气判定用的绝对时刻钟面：UTC 瞬时 + 8h（东八区），与 lunar-javascript 的节气表同口径。
+  // 不折真太阳时、不做晚子时拨动 —— 交节是物理瞬间，23:00 换日那条规则不参与。
+  const bjMs = r.utcMs + 8 * 3600_000;
+  const jq = partsFromMs(bjMs);
+  const switchCivil: PaipanCivil = {
+    year: jq.year, month: jq.month, day: jq.day, hour: jq.hour, minute: jq.minute, second: jq.second,
+  };
   return {
-    civil, applied: true, usedTrueSolar: useSolar, crossedDay,
+    civil, switchCivil, applied: true, usedTrueSolar: useSolar, crossedDay,
     lateZiApplied: z.applied, lateZiMode, resolution: r,
     warnings: v.warnings,
   };

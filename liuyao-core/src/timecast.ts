@@ -124,7 +124,7 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
       lateZiMode: options.lateZiMode,
     }, { yearRange: 'calendar', label: '起卦时间' });
     const c = eff.civil;
-    const core = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, 0, eff.lateZiMode);
+    const core = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, c.second ?? 0, eff.lateZiMode, eff.switchCivil);
     // 展示用的「真太阳时」：把折算后的墙钟重新装成 Date（仅供界面显示，不参与计算）
     const shown = new Date(c.year, c.month - 1, c.day, c.hour, c.minute ?? 0, 0);
     return {
@@ -157,6 +157,8 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
 function castFromClock(
   y: number, mo: number, d: number, hh: number, mm: number, ss: number,
   lateZiMode?: LateZiMode,
+  /** 年支判定用的绝对时刻钟面（东八区）。传了就按它取年支（不随经度平移、不做 23 点进位） */
+  jqClock?: PaipanCivil,
 ): Omit<TimeCastResult, 'apparentSolarTime' | 'civil' | 'dayBoundary' | 'timeWarnings'> {
   const solar = Solar.fromYmdHms(y, mo, d, hh, mm, ss);
   const lunar = solar.getLunar();
@@ -171,7 +173,11 @@ function castFromClock(
   const lunarBase = rollDay
     ? Solar.fromYmdHms(y, mo, d, 0, 0, 0).next(1).getLunar()
     : lunar;
-  const yearZhi = lunarBase.getYearInGanZhiExact().charAt(1);
+  // 年支（立春为界）是节气量：给了绝对时刻钟面就按它判，否则退回旧的本机钟面口径
+  const yearZhi = jqClock
+    ? Solar.fromYmdHms(jqClock.year, jqClock.month, jqClock.day, jqClock.hour,
+        jqClock.minute ?? 0, jqClock.second ?? 0).getLunar().getYearInGanZhiExact().charAt(1)
+    : lunarBase.getYearInGanZhiExact().charAt(1);
   const hourZhi = lunar.getTimeInGanZhi().charAt(1);
 
   const yearBranchOrder = ZHI_ORDER[yearZhi];

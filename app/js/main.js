@@ -239,7 +239,7 @@ async function loadModules() {
 }
 
 /* 模块导出在这里先声明、boot() 里赋值：顶层函数都闭包引用它们，boot 之前不会被调用 */
-let civilDate, civilFromAt, tzSnapshotFor, tzSnapshotOfCivil, civilInCity, birthArgs, nowGeoArgs, buildCode, LEGACY_NOTICE, exportCaseBundle, importCaseBundle, exportFileName,
+let civilDate, civilFromAt, tzSnapshotFor, tzSnapshotOfCivil, civilInCity, birthArgs, nowGeoArgs, panTimeArgs, buildCode, LEGACY_NOTICE, exportCaseBundle, importCaseBundle, exportFileName,
   $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt, birthDate, nowDate, resolveCastDate, copyText, toast, pad, parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec, paipanZi, updateHome, currentTimeGua, homeCopyText, renderPan, copyCurrent, renderBazi, baziCopyText, baziCode, renderMeiHua, meiHuaCopyText, meiHuaCode, renderHeCan, initHeCan, renderQiMen, qiMenCopyText, qiMenCode, renderAstro, astroCopyText, astroCode, setAstroStyle, ASTRO_MODE_KEY, B2_KEY, RESET_KEY, renderVedic, vedicCopyText, vedicCode, renderZhuyou, zhuyouCopyText, zhuyouCode, renderYangzhai, initYangzhai, yangzhaiCopyText, yangzhaiCode, restoreYangzhai, renderZiwei, ziweiCopyText, ziweiCode, initInteract, renderCards, cardsCopyText, cardsCode, restoreCards, renderSky, renderHomeSky, skyCopyText, skyCode, renderGlobe, globeCopyText, renderMansion, initMansionInteract, mansionCopyText, mansionCode, initCast, resetCast, encodeCode, decodeCode, RULE_VERSION, initForceRefresh, shouldSkipAutoReload, initTips, initGuides, loadCases, loadCase, saveCase, updateCase, togglePin, removeCase, clearUnpinned, caseStats, fmtAt, KINDS, KIND_LABEL, KIND_MARK, AUTO_KEEP, renderAsk, bindAsk, renderClassic, bindClassic, renderClassicDetail, bindClassicDetail, mountPlaceBars, bindPlaceChip, onPlaceChange, initRitual, isCasted, castDone, resetGate, RITUAL_PAGES, renderMoreCards, renderDaLiuRen, daLiuRenCopyText, daLiuRenCode, renderXiaoLiuRen, xiaoLiuRenCopyText, xiaoLiuRenCode, renderGeomancy, geomancyCopyText, initGeomancy, geomancyCode, restoreGeomancy, renderTibetan, tibetanCopyText, initTibetan, tibetanCode, restoreTibetan, renderTarot, tarotCopyText, tarotCodeInfo, restoreTarot, isTarotDeck, initTarot, mountTarot;
 let PANES = null;
 /* 错误边界（js/errors.js）：与视图模块一起在 boot() 里装入 */
@@ -683,8 +683,7 @@ function confirmNote() {
       const at = civilDate(d.civil) || new Date(d.at);
       const pan = paipanZi({
         yaoValues: d.yaoValues,
-        year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
-        hour: at.getHours(), minute: at.getMinutes(),
+        ...panTimeArgs(at), // 复现码的钟面 + 码里观测地（applyCodeCfg 已落地）→ 与当初同盘
         gender: cfg.gender, question: v,
       });
       // 重排后必须仍是 QT2 码：钟面 + 时区一起带上，别把复现码打回「只存绝对秒」
@@ -740,8 +739,7 @@ async function openByCode(raw) {
     if (!d.yaoValues) { setHint('码里没有六爻数据', true); return; }
     const pan = paipanZi({
       yaoValues: d.yaoValues,
-      year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
-      hour: at.getHours(), minute: at.getMinutes(),
+      ...panTimeArgs(at), // 同上：钟面 + 码里观测地 → 与当初同盘（改前只给钟面，天文时异地的盘会漂）
       gender: cfg.gender, question: d.question || NO_Q,
     });
     current.pan = pan;
@@ -897,13 +895,15 @@ function onHistoryClick(e) {
 }
 
 /* ============================ 排盘 ============================ */
-// cast = 引擎 CastResult {yaoValues,...}；source 标识入口；castDate=排盘所用时刻（全北京时）
+// cast = 引擎 CastResult {yaoValues,...}；source 标识入口；castDate=录入钟面（折算交内核）
 function goPan(cast, source, castDate) {
-  const d = castDate || resolveCastDate(new Date());
+  // 六爻的时间入口（audit4 · fix_r4）：castDate 是**录入钟面**，
+  // 真太阳时/历史时区/夏令时/23 点换日一律由 panTimeArgs → 内核 civilForPaipan 折算一次。
+  // 改前这里只传钟面分量、不给观测地，六爻的日月建与八字/大六壬/奇门各说各话。
+  const d = new Date((castDate || new Date()).getTime());
   const pan = paipanZi({
     yaoValues: cast.yaoValues,
-    year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(),
-    hour: d.getHours(), minute: d.getMinutes(),
+    ...panTimeArgs(d),
     gender: cfg.gender, question: NO_Q,
   });
   current.pan = pan;
@@ -1303,7 +1303,7 @@ export async function boot() {
   ({ showError, errorHtml, renderWarnings, esc, showLoading, hideLoading, refreshScrollLock, clearRenderError, takeRenderError } = E);
 
   ({ $, $$, cfg, saveCfg, current, panAt, setPanAt, resetPanAt, birthDate, nowDate, resolveCastDate, copyText, toast, pad, parseLocalDateTime, toLocalInputValue, fmtMoment, escapeHtml, toSec,
-    civilInCity, tzSnapshotFor, tzSnapshotOfCivil, birthArgs, nowGeoArgs } = M['state.js']);
+    civilInCity, tzSnapshotFor, tzSnapshotOfCivil, birthArgs, nowGeoArgs, panTimeArgs } = M['state.js']);
   toast = wrapToast(toast); // 案例满额要跟成功提示合并成一句（见 wrapToast）
   ({ paipanZi } = M['zischool.js']);
   ({ updateHome, currentTimeGua, homeCopyText } = M['qintian.js']);

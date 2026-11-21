@@ -1,11 +1,13 @@
 // 钦天监首页：干支信息条 + 天时卦钟（纯钟面）+ 独立卦画卡
-// 全应用统一北京时间（八字牌另走自身口径）。只排事实，不做断语。
-import { castByTime, getDayCalendar, getMeridian, paipanXingpan } from '../vendor/liuyao-core.js?v=133';
+// 时间口径（audit4 · fix_r4）：首页四柱/时辰/天时卦一律取内核 resolvePaipanTime，与八字、大六壬、
+// 奇门、小六壬同一行代码；不再用「钟面小时÷2」推时辰，也不再对钟面直接 solarToSiZhu。
+import { castByTime, getMeridian, paipanXingpan, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
 // 新 API 走命名空间取值：bundle 还没重建时 getMeridianByTime 是 undefined，
 // 用命名导入会直接链接失败（整个首页白屏），命名空间取值则能优雅退回旧接口。
 import * as CORE from '../vendor/liuyao-core.js?v=133';
-import { paipanZi, siZhuZi } from './zischool.js?v=133';
-import { $, pad, cfg, BIRTH, nowGeoArgs } from './state.js?v=133';
+import { paipanZi } from './zischool.js?v=133';
+import { $, pad, cfg, BIRTH, nowGeoArgs, panTimeArgs } from './state.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { renderTodayCard } from './todaycard.js?v=133';
 import { renderRhythm } from './rhythmview.js?v=133';
 import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=133';
@@ -82,9 +84,11 @@ function scheduleHeavy(castDate) {
   });
 }
 
-function shichenIndex(hour) {
-  if (hour === 23 || hour === 0) return 0;
-  return Math.floor((hour + 1) / 2);
+// 时辰序号一律取 ts.timeZhiIndex（内核时柱地支）；钟面小时÷2 的算法已删。
+// 折算后的钟面（真太阳时）重装成 Date，只用于「距换时」倒计时这类展示。
+function effClock(ts) {
+  const c = ts.civil;
+  return new Date(c.year, c.month - 1, c.day, c.hour, c.minute || 0, c.second || 0);
 }
 
 function nextBoundary(date) {
@@ -116,21 +120,21 @@ function meridianAt(castDate, r) {
 function compute(now) {
   const castDate = new Date(now.getTime()); // 观测地钟面时间
   // 时区 / 夏令时 / 真太阳时统一交给核心（按观测地）；境外不再默认按北京时间硬算
-  const r = castByTime(castDate, { ...nowGeoArgs() });
-  return { r, castDate };
+  const args = panTimeArgs(castDate);
+  const ts = resolvePaipanTime(args); // 四柱 / 时辰 / 农历 / 换日 的唯一来源
+  const r = castByTime(castDate, args); // 天时卦同一份入参（内核同一条 civilForPaipan）
+  return { r, ts, castDate };
 }
 
 export function updateHome() {
   const now = new Date();
-  const { r, castDate } = compute(now);
-  const shIdx = shichenIndex(castDate.getHours());
+  const { r, ts, castDate } = compute(now);
+  const shIdx = ts.timeZhiIndex;
 
   if (shIdx !== lastShichen) {
     lastShichen = shIdx;
-    const cy = castDate.getFullYear(), cm = castDate.getMonth() + 1, cd = castDate.getDate();
-    const ch = castDate.getHours(), cmi = castDate.getMinutes();
-    const sz = siZhuZi({ year: cy, month: cm, day: cd, hour: ch, minute: cmi });
-    const cal = getDayCalendar({ year: cy, month: cm, day: cd, hour: ch, minute: cmi });
+    const sz = ts;
+    const cal = ts.pillarCalendar; // 农历与日柱同一天（23 点换日时跟着进次日）
     $('#home-sizhu').textContent = `${sz.yearGanZhi}年 ${sz.monthGanZhi}月 ${sz.dayGanZhi}日 ${sz.timeGanZhi}时`;
     $('#home-nongli').textContent = cal.nongli;
     $('#home-jianchu').textContent = `建除·${cal.jianchu}`;
@@ -150,16 +154,15 @@ export function updateHome() {
   const md = meridianAt(castDate, r);
   $('#home-meridian').innerHTML = meridianBand(md, shIdx);
 
-  const nb = nextBoundary(castDate);
-  const secs = Math.max(0, Math.round((nb - castDate) / 1000));
+  const nb = nextBoundary(effClock(ts));
+  const secs = Math.max(0, Math.round((nb - effClock(ts)) / 1000));
   $('#now-gua-countdown').textContent = `距${ZHI[(shIdx + 1) % 12]}时换卦 ${pad(Math.floor(secs / 60))}:${pad(secs % 60)}`;
 }
 
 function renderGua(r, castDate) {
   const p = paipanZi({
     yaoValues: r.cast.yaoValues,
-    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
-    hour: castDate.getHours(), minute: castDate.getMinutes(),
+    ...panTimeArgs(castDate),
   });
   lastR = { r, castDate, p };
   $('#now-gua-title').textContent =
@@ -191,21 +194,11 @@ function hexHtml(yaoValues) {
 /* ---------------- 首页一键复制文本（AI 易读，不追求排版严谨） ---------------- */
 export function homeCopyText() {
   const now = new Date();
-  const { r, castDate } = compute(now);
-  const shIdx = shichenIndex(castDate.getHours());
-  const sz = siZhuZi({
-    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
-    hour: castDate.getHours(), minute: castDate.getMinutes(),
-  });
-  const cal = getDayCalendar({
-    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
-    hour: castDate.getHours(), minute: castDate.getMinutes(),
-  });
-  const p = paipanZi({
-    yaoValues: r.cast.yaoValues,
-    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
-    hour: castDate.getHours(), minute: castDate.getMinutes(),
-  });
+  const { r, ts, castDate } = compute(now);
+  const shIdx = ts.timeZhiIndex;
+  const sz = ts;
+  const cal = ts.pillarCalendar;
+  const p = paipanZi({ yaoValues: r.cast.yaoValues, ...panTimeArgs(castDate) });
   const md = meridianAt(castDate, r);
   const yaoTxt = r.cast.yaoValues.map((v, i) => {
     const yy = (v === 7 || v === 9) ? '阳' : '阴';
@@ -214,8 +207,9 @@ export function homeCopyText() {
   }).reverse().join('，');
   return [
     '【钦天监 · 此刻天时】',
-    `北京时间 ${castDate.getFullYear()}-${pad(castDate.getMonth()+1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}（${ZHI[shIdx]}时 ${ZHI_RANGE[shIdx]}）`,
+    `录入钟面 ${castDate.getFullYear()}-${pad(castDate.getMonth()+1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}（真太阳 ${ZHI[shIdx]}时 ${ZHI_RANGE[shIdx]}）`,
     `干支：${sz.yearGanZhi}年 ${sz.monthGanZhi}月 ${sz.dayGanZhi}日 ${sz.timeGanZhi}时`,
+    `时间口径：${timeBasis(ts)}`,
     `农历：${cal.nongli}；建除·${cal.jianchu}；${cal.daysToNextJieqi > 0 ? `距${cal.nextJieqi} ${cal.daysToNextJieqi} 天（${cal.nextJieqiDate}）` : `今日交节·${cal.nextJieqi}`}`,
     `当令经络：${md.meridian}（表里 ${md.paired}）`,
     `本时辰天时卦：${p.benGua.name}${p.bianGua ? ' 之 ' + p.bianGua.name : ''}（${TRI[r.upperNumber]}上${TRI[r.lowerNumber]}下，第${r.movingPosition}爻动）`,
@@ -225,12 +219,7 @@ export function homeCopyText() {
 
 export function currentTimeGua() {
   const now = new Date();
-  const { r, castDate } = compute(now);
-  const pan = paipanZi({
-    yaoValues: r.cast.yaoValues,
-    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
-    hour: castDate.getHours(), minute: castDate.getMinutes(),
-    gender: cfg.gender,
-  });
-  return { pan, cast: r, castDate, source: 'time' };
+  const { r, ts, castDate } = compute(now);
+  const pan = paipanZi({ yaoValues: r.cast.yaoValues, ...panTimeArgs(castDate), gender: cfg.gender });
+  return { pan, cast: r, ts, castDate, source: 'time' };
 }

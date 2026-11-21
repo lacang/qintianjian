@@ -114,8 +114,12 @@ export function paipan(input: PaipanInputWithTime): PanWithTime {
   }, { yearRange: 'calendar', label: '起卦时间' });
   const sz = solarToSiZhu(
     { ...input, ...eff.civil },
-    // 时区层已经把夏令时扣过一遍了，不能再扣第二次
-    { applyChinaDst: !eff.applied },
+    {
+      // 时区层已经把夏令时扣过一遍了，不能再扣第二次
+      applyChinaDst: !eff.applied,
+      // 年柱/月柱用绝对时刻钟面（节气不随经度平移）；日柱/时柱仍用真太阳时
+      jieqiBasis: eff.switchCivil,
+    },
   );
 
   // 2. 本卦

@@ -14,7 +14,7 @@
 import type { BaGua, WuXing } from './types.js';
 import { getGuaMeta } from './guaTable.js';
 import { castByTime, toApparentSolarTime, type TimeCastOptions, type TimeCastResult } from './timecast.js';
-import { validateCastNumber } from './validate.js';
+import { validateCastNumber, mergeWarnings } from './validate.js';
 import type { YaoValue } from './types.js';
 
 const NUM_BAGUA: BaGua[] = ['乾', '兑', '离', '震', '巽', '坎', '艮', '坤']; // 先天数 1..8
@@ -63,6 +63,10 @@ export interface MeiHuaResult {
   movingSide: 'upper' | 'lower';
   /** 时间起卦的原始分解（数字起卦时缺省为 null） */
   timeDetail: TimeCastResult | null;
+  /** 时区/夏令时/真太阳时口径提示（时间起卦时透传自时间层；数字起卦为空） */
+  timeWarnings: string[];
+  /** 入参校验 + 时间层口径提示（统一字段，与八字/六爻/奇门同形状） */
+  warnings: string[];
 }
 
 function numToTrigram(n: number): Trigram {
@@ -118,6 +122,10 @@ function build(upperNum: number, lowerNum: number, moving: number, timeDetail: T
     yaoValues,
     movingSide,
     timeDetail,
+    // 时间层提示透传：梅花此前的返回体根本没有 warnings 字段，
+    // 于是「只给经纬度不给城市 → 时区估算」这类提示在梅花盘上彻底消失（审计 P2-6）。
+    timeWarnings: timeDetail ? timeDetail.timeWarnings ?? [] : [],
+    warnings: timeDetail ? mergeWarnings(timeDetail.warnings) : [],
   };
 }
 

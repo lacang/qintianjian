@@ -1,15 +1,15 @@
 // 起卦：摇铜钱 / 天机（梅花易数时间起卦）/ 手录。完成后产出 yaoValues 交 main 排盘。
-import { $, $$, cfg, saveCfg, toast, parseLocalDateTime, toLocalInputValue, nowGeoArgs } from './state.js?v=133';
-import { castCoins, castByTime, castManual } from '../vendor/liuyao-core.js?v=133';
+import { $, $$, cfg, saveCfg, toast, parseLocalDateTime, toLocalInputValue, panTimeArgs } from './state.js?v=133';
+import { castCoins, castByTime, castManual, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
 import { toTrueSolar, trueSolarOffsetMin } from './solartime.js?v=133';
-import { siZhuZi, ziMode } from './zischool.js?v=133';
+import { ziMode } from './zischool.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { getPlace, isPlaceSet, refreshLocatedPlace } from './geo.js?v=133';
 import { openPlacePicker } from './placeui.js?v=133';
 
 let coinTosses = []; // 6 轮
 let manualYaos = defaultManual();
 
-const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 const TRI = ['', '乾', '兑', '离', '震', '巽', '坎', '艮', '坤']; // 先天卦序
 
 function defaultManual() {
@@ -78,10 +78,11 @@ export function initCast(onCast) {
       d = new Date();
       if (tjInput) { tjInput.value = toLocalInputValue(d); syncTianjiTime(); }
     }
-    const dt = await applyTstAt(d);            // 起卦当时取一次定位，再按真太阳时校正
-    // dt 已按观测地做过真太阳时校正；这里只补时区/夏令时，不二次校正
-    const r = castByTime(dt.getTime(), { ...nowGeoArgs(), alreadyApparent: true });
-    setTimeout(() => onCast(r.cast, 'tianji', dt), 350);
+    await applyTstAt(d); // 只为「起卦当时取一次定位」；折算一律交内核，别把折过的钟面再喂回去
+    // 时间口径（audit4 · fix_r4）：与八字/大六壬/奇门/梅花同一条入口 panTimeArgs → civilForPaipan，
+    // 真太阳时、历史时区、夏令时、23 点换日全由内核做一次；起卦与随之排出的四柱因此必然同源。
+    const r = castByTime(d.getTime(), panTimeArgs(d));
+    setTimeout(() => onCast(r.cast, 'tianji', d), 350);
   });
 
   // ---------- 手录：复现旧卦用 ----------
@@ -158,8 +159,8 @@ export function initCast(onCast) {
     let d = parseLocalDateTime(raw);
     if (!d && raw) { toast('起卦时间无效，请重新选择'); if (tInput) tInput.focus(); return; }
     if (!d) d = new Date(); // 留空 = 此刻
-    const dt = await applyTstAt(d);
-    onCast(castManual(manualYaos), 'manual', dt);
+    await applyTstAt(d); // 同上：只取定位，时间折算交内核（goPan 里 panTimeArgs）
+    onCast(castManual(manualYaos), 'manual', d);
   });
 
   renderCoinStage();
@@ -179,29 +180,18 @@ function applyTst(d) {
   return cfg.apparentSolarTime ? toTrueSolar(d) : d;
 }
 
-// 真太阳时换算标注：北京时间 → 真太阳时
-function tstNote(d) {
-  if (!cfg.apparentSolarTime) return '';
-  const off = trueSolarOffsetMin(d);
-  const t = toTrueSolar(d);
-  const s = off >= 0 ? '+' : '−';
-  return ` · <span class="mt-sub">真太阳时 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（${s}${Math.abs(Math.round(off))}分）</span>`;
-}
 
 // 四柱 + 时辰 + 晚子时提示（天机与手录共用）
 function siZhuEcho(d) {
-  const hour = d.getHours();
-  const sz = siZhuZi({
-    year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(),
-    hour, minute: d.getMinutes(),
-  });
-  const shichen = ZHI[Math.floor(((hour + 1) % 24) / 2)];
-  const tail = hour === 23
-    ? (ziMode() === '00'
+  // 回显的四柱/时辰必须就是排盘用的那份：同一入口 resolvePaipanTime（真太阳时/时区/夏令时/换日）
+  const ts = resolvePaipanTime(panTimeArgs(d));
+  const tail = ts.dayAdvanced
+    ? ' · <span class="mt-sub">晚子时：按 23 点换日，日柱已进次日</span>'
+    : ts.lateZiApplied
       ? ' · <span class="mt-sub">晚子时：按 0 点换日（子正），日柱留在当日</span>'
-      : ' · <span class="mt-sub">晚子时：按 23 点换日，日柱已进次日</span>')
-    : '';
-  return `${sz.yearGanZhi}年 ${sz.monthGanZhi}月 ${sz.dayGanZhi}日 ${sz.timeGanZhi}时 · ${shichen}时${tail}`;
+      : '';
+  return `${ts.yearGanZhi}年 ${ts.monthGanZhi}月 ${ts.dayGanZhi}日 ${ts.timeGanZhi}时 · ${ts.timeZhi}时${tail}`
+    + `<br><span class="mt-sub">时间口径 ${timeBasis(ts)}</span>`;
 }
 
 function resetManualTime() {
@@ -218,7 +208,7 @@ function syncManualTime() {
   if (!input || !echo) return;
   const d = parseLocalDateTime(input.value);
   if (!d) { echo.innerHTML = '<span class="mt-bad">时间无效，请重新选择</span>'; return; }
-  echo.innerHTML = `${siZhuEcho(applyTst(d))}${tstNote(d)}`;
+  echo.innerHTML = siZhuEcho(d);
 }
 
 function resetTianjiTime() {
@@ -235,9 +225,8 @@ function syncTianjiTime() {
   if (!input || !echo) return;
   const d = parseLocalDateTime(input.value);
   if (!d) { echo.innerHTML = '<span class="mt-bad">时间无效，请重新选择</span>'; return; }
-  const dT = applyTst(d);
-  const r = castByTime(dT.getTime(), { ...nowGeoArgs(), alreadyApparent: true });
-  echo.innerHTML = `${siZhuEcho(dT)} · 上${TRI[r.upperNumber]}下${TRI[r.lowerNumber]} · 动${r.movingPosition}爻${tstNote(d)}`;
+  const r = castByTime(d.getTime(), panTimeArgs(d));
+  echo.innerHTML = `${siZhuEcho(d)} · 上${TRI[r.upperNumber]}下${TRI[r.lowerNumber]} · 动${r.movingPosition}爻`;
 }
 
 // ---------- 摇铜钱 ----------

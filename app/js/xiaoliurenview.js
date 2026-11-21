@@ -1,10 +1,17 @@
 // 小六壬 · 掐指课：以农历月、日、时辰三数顺数六宫，取落宫断吉凶。
 // 底本：民间通行本《小六壬》（旧题诸葛武侯《马前课》系统，属掌诀，无宋以前官定底本）。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧并列，不合成。
-import { $, nowDate, fmtMoment } from './state.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+// 时间口径（audit4 · fix_r4）：**不在本文件里算时间**。
+// 起课只用「农历月 + 农历日 + 时支」三数，但这三数一律取自内核 `resolvePaipanTime`
+// （liuyao-core/src/timeSync.ts），与本项目所有中国盘同一行代码：
+//   · 真太阳时、历史时区（1912–1949 五时区）、夏令时 → 内核 timeContext；
+//   · 时支 = 时柱地支（不再「钟面小时 ÷ 2」）；
+//   · 农历月/日 = 与日柱同一天（23:00 子初换日时跟着进次日，`ts.pillarCalendar`）。
+import { $, nowDate, fmtMoment, nowGeoArgs, panTimeArgs } from './state.js?v=133';
+import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
-import { getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=133';
+import { resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { T } from './tipview.js?v=133';
 
 const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -107,7 +114,7 @@ function cnDay(t) {
   return CN_NUM[t[0]] || 1;
 }
 
-function shichenIdx(h) { return Math.floor(((h + 1) % 24) / 2); }
+// 时辰序号不再由钟面小时推：一律取内核时柱地支的序号（`ts.timeZhiIndex`）。
 
 // 起课：大安起月，月落宫起日，日落宫起时；三数顺数，末落之宫即课。
 function cast(month, day, hIdx) {
@@ -171,21 +178,39 @@ function verdictXl(res) {
   return { level, score: s };
 }
 
-function __renderXiaoLiuRen(at = nowDate()) {
-  if (!isCasted('xiaoliuren')) return gateHTML('xiaoliuren');
-  const cal = getDayCalendar({
-    year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
-    hour: at.getHours(), minute: at.getMinutes(),
-  });
-  const sz = solarToSiZhu({
-    year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
-    hour: at.getHours(), minute: at.getMinutes(),
-  });
-  const { month, day } = parseNongli(cal.nongli);
-  const hIdx = shichenIdx(at.getHours());
+/**
+ * 起课的全部输入：时刻 + 观测地 → 内核时间层算出的三数 + 落宫。
+ *
+ * 时间一行都不在这里算：`panTimeArgs` 只把「浏览器钟面 + 观测地 + 口径开关」装进内核入参，
+ * 折算由 `resolvePaipanTime` 完成。导出它是为了让回归测试直接断言产品入口
+ * （`liuyao-core/test/time-sync-all.test.ts`）——视图若再自算时间，测试立刻红。
+ */
+export function xiaoLiuRenPan(at = nowDate(), geo = nowGeoArgs()) {
+  const ts = resolvePaipanTime(panTimeArgs(at, geo));
+  // 农历月/日取「与日柱同一天」的那份：23:00 子初换日时，日柱已进次日，日数也要跟着进，
+  // 否则三数里的「日」与四柱里的「日柱」差一天（八字同刻已是次日的日柱）。
+  const { month, day } = parseNongli(ts.pillarCalendar.nongli);
+  const hIdx = ts.timeZhiIndex; // 时支：直接取时柱地支（钟面小时÷2 的算法已删）
   const res = cast(month, day, hIdx);
+  return {
+    at, ts, month, day, hIdx, res,
+    cal: ts.pillarCalendar, // 页面上显示的农历 = 起课用的那份
+    sz: {
+      yearGanZhi: ts.yearGanZhi, monthGanZhi: ts.monthGanZhi,
+      dayGanZhi: ts.dayGanZhi, timeGanZhi: ts.timeGanZhi,
+    },
+  };
+}
+
+function __renderXiaoLiuRen(at = nowDate(), geo = nowGeoArgs()) {
+  if (!isCasted('xiaoliuren')) return gateHTML('xiaoliuren');
+  const p = xiaoLiuRenPan(at, geo);
+  const { ts, month, day, hIdx, res, cal, sz } = p;
   const g = GONG[res.c];
   const vd = verdictXl(res);
+  const solarHm = ts.usedTrueSolar && ts.trueSolar
+    ? `${String(ts.trueSolar.hour).padStart(2, '0')}:${String(ts.trueSolar.minute).padStart(2, '0')}`
+    : `${String(ts.civil.hour).padStart(2, '0')}:${String(ts.civil.minute).padStart(2, '0')}`;
 
   const steps = [
     { k: '起月', v: `正月起大安，顺数至${month}月`, land: GONG[res.a], n: res.a },
@@ -234,11 +259,15 @@ function __renderXiaoLiuRen(at = nowDate()) {
       <div class="xl-meta">
         <span>农历 <b>${cal.nongli}</b></span>
         <span class="dot">·</span>
-        <span>${ZHI[hIdx]}时（${String(at.getHours()).padStart(2, '0')}:${String(at.getMinutes()).padStart(2, '0')}）</span>
+        <span>${ZHI[hIdx]}时（${solarHm}）</span>
       </div>
       <div class="xl-meta dim">
         <span>四柱 ${sz.yearGanZhi} ${sz.monthGanZhi} ${sz.dayGanZhi} ${sz.timeGanZhi}</span>
       </div>
+      <div class="xl-meta dim">
+        <span>时间口径 ${timeBasis(ts)}</span>
+      </div>
+      ${renderWarnings({ warnings: ts.warnings })}
     </div>
 
     <div class="xl-ring-card glass-card">
@@ -313,19 +342,16 @@ function fmt(d) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-export function xiaoLiuRenCopyText(at = nowDate()) {
-  const cal = getDayCalendar({
-    year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
-    hour: at.getHours(), minute: at.getMinutes(),
-  });
-  const { month, day } = parseNongli(cal.nongli);
-  const hIdx = shichenIdx(at.getHours());
-  const res = cast(month, day, hIdx);
+export function xiaoLiuRenCopyText(at = nowDate(), geo = nowGeoArgs()) {
+  const p = xiaoLiuRenPan(at, geo);
+  const { ts, month, day, hIdx, res, cal } = p;
   const g = GONG[res.c];
   const vd = verdictXl(res);
   return [
     `【小六壬 · 掐指课】${fmt(at)}`,
     `农历：${cal.nongli} · ${ZHI[hIdx]}时`,
+    `时间口径：${timeBasis(ts)}`,
+    `四柱：${ts.yearGanZhi} ${ts.monthGanZhi} ${ts.dayGanZhi} ${ts.timeGanZhi}`,
     `起课：${month}月落${GONG[res.a].name} → ${day}日落${GONG[res.b].name} → ${ZHI[hIdx]}时落${GONG[res.c].name}`,
     `方向：${vd.level.k} —— ${vd.level.d}`,
     `落宫：${g.name}（${g.wuxing}·${g.shen}·${g.luck}·${g.fang}）`,

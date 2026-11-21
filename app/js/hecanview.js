@@ -7,7 +7,8 @@
 //   每盘的可比维度一律取自该盘自己的结论卡（judgeXxx），不另造分数、不伪造强度。
 //   未接入的盘（六爻需摇卦）明写「未接入」，不进任何一轨的计数。
 // 不调用任何 AI，不请求外部接口：全部本地 liuyao-core + 各盘既有算法。
-import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan } from '../vendor/liuyao-core.js?v=133';
+import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import {
   judgeMeiHua, judgeQiMen, judgeBazi, judgeZiwei, judgeAstro,
@@ -15,7 +16,7 @@ import {
 } from './verdicts.js?v=133';
 import { paiBaziZi } from './zischool.js?v=133';
 import {
-  resolveCastDate, nowDate, pad, escapeHtml, toLocalInputValue, parseLocalDateTime, birthArgs,
+  nowDate, nowGeoArgs, panTimeArgs, pad, escapeHtml, toLocalInputValue, parseLocalDateTime, birthArgs,
 } from './state.js?v=133';
 
 // 盘位固定：顺序即页面显示顺序。track=null 表示本阶段未接入。
@@ -35,7 +36,7 @@ const MIN_Q = 4;
 const Q_MAX = 40;
 
 /* 本页状态：只存所问、起局时刻与各盘结果，不碰其它视图的全局状态 */
-const HC = { q: '', at: null, castDate: null, mh: null, qimen: null, bazi: null, ziwei: null, astro: null };
+const HC = { q: '', at: null, castDate: null, ts: null, mh: null, qimen: null, bazi: null, ziwei: null, astro: null };
 
 /* ============================ 盘面计算 ============================ */
 
@@ -51,19 +52,19 @@ function relOf(ti, yong) {
   return `体克用（${ti.wuXing}→${yong.wuXing}）`;
 }
 
-// 时间卦：与 meihuaview.currentMeiHua 同口径（先过真太阳时开关，再按年月日时起卦）
-function computeMeiHua(at) {
-  const castDate = resolveCastDate(at);
-  const mh = meiHuaByTime(castDate, { longitude: undefined, alreadyApparent: false });
-  return { castDate, mh };
+// 时间卦：与 meihuaview.currentMeiHua 同一条入口（panTimeArgs → 内核 civilForPaipan）
+function computeMeiHua(at, geo = nowGeoArgs()) {
+  const castDate = new Date(at.getTime());
+  const args = panTimeArgs(castDate, geo);
+  const ts = resolvePaipanTime(args);
+  const { year, month, day, hour, minute, second, trueSolarTime, lateZiMode, ...geoOnly } = args;
+  const mh = meiHuaByTime(castDate.getTime(), { ...geoOnly, lateZiMode, alreadyApparent: !trueSolarTime });
+  return { castDate, ts, mh };
 }
 
-// 奇门：与 qimenview 同口径，同一时刻出局，才能与梅花同轨比较
-function computeQiMen(castDate) {
-  return paiQiMen({
-    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
-    hour: castDate.getHours(), minute: castDate.getMinutes(),
-  });
+// 奇门：与 qimenview.currentQiMen 同一条入口，同一时刻出局，才能与梅花同轨比较
+function computeQiMen(castDate, geo = nowGeoArgs()) {
+  return paiQiMen(panTimeArgs(new Date(castDate.getTime()), geo));
 }
 
 // 本命三盘用同一个出生参数（birthArgs 已含时刻/经纬度覆盖）
@@ -257,7 +258,7 @@ function dimRows(key) {
   if (key === 'meihua' && HC.mh) {
     const { mh, castDate } = HC;
     return [
-      ['起卦时刻', `${fmtDT(castDate)} · 北京时间`],
+      ['起卦时刻', `${fmtDT(castDate)} · 时间口径 ${timeBasis(HC.ts)}`],
       ['本卦', `${mh.benGua.name}（上${trig(mh.benGua.upper)} / 下${trig(mh.benGua.lower)}）`],
       ['互卦', `${mh.huGua.name}（上${trig(mh.huGua.upper)} / 下${trig(mh.huGua.lower)}）`],
       ['变卦', `${mh.bianGua.name}（上${trig(mh.bianGua.upper)} / 下${trig(mh.bianGua.lower)}）`],
@@ -390,6 +391,7 @@ function __renderHeCan() {
   const r = computeMeiHua(HC.at);
   HC.mh = r.mh;
   HC.castDate = r.castDate;
+  HC.ts = r.ts;
   try { HC.qimen = computeQiMen(r.castDate); } catch { HC.qimen = null; }
   const n = computeNatal();
   HC.bazi = n.bazi; HC.ziwei = n.ziwei; HC.astro = n.astro;
@@ -447,6 +449,7 @@ function cast(host) {
   const r = computeMeiHua(d);
   HC.mh = r.mh;
   HC.castDate = r.castDate;
+  HC.ts = r.ts;
   try { HC.qimen = computeQiMen(r.castDate); } catch { HC.qimen = null; }
   const n = computeNatal();
   HC.bazi = n.bazi; HC.ziwei = n.ziwei; HC.astro = n.astro;

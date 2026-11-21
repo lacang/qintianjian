@@ -13,7 +13,9 @@
  * 距星则用 astronomy-engine 的 Rotation_EQJ_EQD / Rotation_EQJ_ECT 自行旋转，
  * 保证恒星与行星处在完全同一「当日真」坐标架内，分区无系统偏差。
  *
- * 觜参现代逆序由实测坐标自然产生，结果以 inverted 标记，不做人为调换。
+ * 觜参现代逆序由实测坐标自然产生；但**段落的宿名归属**按传统宿度（觜窄参宽）纠正：
+ * 升序里「参紧接觜」的逆序相邻对，其两段名称互换（详见 mansionLabels），
+ * 否则 3.2% 的黄道位置会把觜/参叫反（审计 P2-5）。距星本身的元数据不改。
  */
 import { Engine } from 'caelus';
 import { embeddedData } from 'caelus/data-embedded';
@@ -60,6 +62,8 @@ export interface MansionFrame {
   frame: 'eqd' | 'ect';
   /** 28 宿按本坐标架内经度【升序】排列后的西界经度（度，0..360） */
   ordered: Array<{ meta: MansionMeta; lon: number }>;
+  /** 与 ordered 平行的「该段归属宿名」：觜参逆序对已互换，其余与 meta.name 相同 */
+  labels: string[];
 }
 
 export interface BodyInMansion {
@@ -95,7 +99,7 @@ export interface MansionSnapshot {
   /** 南中天真经度（赤经或黄经，随 frame，度），供绘制中星指针 */
   meridianLon: number;
   /** 28 宿此刻各距星经度（随所选 frame），供绘图 */
-  boundaries: Array<{ name: string; lon: number; sishou: SiShou }>;
+  boundaries: Array<{ name: string; lon: number; sishou: SiShou; label?: string }>;
   /** 现代赤经升序是否与传统序相反的宿（觜参标记） */
   invertedPairs: string[];
   observer: MansionObserver;
@@ -106,6 +110,38 @@ function eqjVector(ra0: number, dec0: number): Vector {
   const a = ra0 * DEG;
   const d = dec0 * DEG;
   return new Vector(Math.cos(d) * Math.cos(a), Math.cos(d) * Math.sin(a), Math.sin(d), MakeTime(new Date(0)));
+}
+
+const META_BY_NAME = new Map<string, MansionMeta>(MANSIONS.map((m) => [m.name, m]));
+
+/**
+ * 觜/参 名实归属（岁差造成的距星逆序，不是数据笔误）
+ *
+ * 二十八宿的传统次序是「…毕、觜、参、井…」，且觜宿极窄、参宿很宽：
+ * 《授时历》宿度觜 0.05 古度、参 10.28 古度（本模块 mansions-data 同此值），
+ * 现代实测觜宿距星 λ Ori 赤经约 0.9°、黄经约 1.4° 的窄缝。
+ *
+ * 但约 13 世纪后觜宿距星 λ Ori 的赤经反超参宿距星 δ Ori，于是「按实测经度升序」
+ * 排出来的相邻段变成 [δ Ori, λ Ori) 与 [λ Ori, 井)，若照「东界归本距星」直接命名，
+ * 会把 0.9° 的窄缝判给参、把 11.5° 的宽带判给觜 —— 两者名实互换（审计 P2-5 实测）：
+ * 黄道上约 3.2%（11.5°/360）的位置宿名错。
+ *
+ * 修法（只动这一对，不换整套宿度表）：段落的西界距星仍按实测升序排，
+ * 但升序中「参紧接觜」这种逆序相邻对的两段名称互换，即
+ *   窄缝 [δ Ori, λ Ori) → 觜；宽带 [λ Ori, 井) → 参。
+ * 与 mansions-data 的宿度文献值、模块自注（觜 赤道约 0.9°、黄道约 1.4°）一致。
+ * 若某历元两星尚未逆序（参前觜后的升序不成立），不做任何互换。
+ */
+function mansionLabels(ordered: Array<{ meta: MansionMeta; lon: number }>): string[] {
+  const labels = ordered.map((o) => o.meta.name);
+  for (let i = 0; i < ordered.length; i++) {
+    const j = (i + 1) % ordered.length;
+    if (ordered[i].meta.name === '参' && ordered[j].meta.name === '觜') {
+      labels[i] = '觜';
+      labels[j] = '参';
+    }
+  }
+  return labels;
 }
 
 /** 计算指定时刻、指定坐标架下，28 距星的经度并按升序排好（圆周分区间表） */
@@ -121,7 +157,7 @@ function buildFrame(now: Date, frame: 'eqd' | 'ect'): MansionFrame {
     return { meta, lon };
   });
   ordered.sort((a, b) => a.lon - b.lon);
-  return { frame, ordered };
+  return { frame, ordered, labels: mansionLabels(ordered) };
 }
 
 /** 在已排序的圆周界表上，定位某经度所居宿及入宿度 */
@@ -129,20 +165,27 @@ function locate(frame: MansionFrame, lon: number): {
   meta: MansionMeta; ruDu: number; boundaryLon: number;
 } {
   const arr = frame.ordered;
-  // 找最后一个 boundaryLon <= lon 的距星（跨 0° 时回绕）
+  const labels = frame.labels ?? arr.map((o) => o.meta.name);
+  // 找最后一个 boundaryLon <= lon 的距星（跨 0° 时回绕）。
+  // 容差 1e-4°（0.36″）：距星自身必须落在本宿 0 入宿度，而「星位→黄经」两次浮点运算
+  // 会有 1e-5° 量级的抖动（如 μ Gem 与井宿距星实测差 0.04″），1e-9 的容差会把它判给前一宿。
   let idx = -1;
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].lon <= lon + 1e-9) idx = i;
+    if (arr[i].lon <= lon + 1e-4) idx = i;
     else break;
   }
   if (idx === -1) idx = arr.length - 1; // lon 在 0° 与最西界之间，归最后一宿（回绕）
   const cur = arr[idx];
   const next = arr[(idx + 1) % arr.length];
+  // 段名取 labels（觜参已按名实归属纠正），入宿度仍自本段西界距星起算
+  const meta = META_BY_NAME.get(labels[idx]) ?? cur.meta;
   const boundaryLon = cur.lon;
   const span = mod360(next.lon - cur.lon);
-  let ruDu = mod360(lon - cur.lon);
+  // 入宿度自本段西界距星起算；容差内（距星自身）按 0 计，否则按圆周差再取模
+  let ruDu = lon - cur.lon;
+  if (ruDu < 0) ruDu = ruDu > -1e-4 ? 0 : mod360(ruDu);
   if (ruDu > span) ruDu = span; // 数值保护
-  return { meta: cur.meta, ruDu, boundaryLon };
+  return { meta, ruDu, boundaryLon };
 }
 
 const INV_NOTE = new Set(['觜', '参']);
@@ -222,7 +265,7 @@ export function mansionSnapshot(
     moonMansion: moon?.mansion ?? '',
     meridianMansion: meridian,
     meridianLon: merLon,
-    boundaries: fr.ordered.map((o) => ({ name: o.meta.name, lon: o.lon, sishou: o.meta.sishou })),
+    boundaries: fr.ordered.map((o, i) => ({ name: o.meta.name, lon: o.lon, sishou: o.meta.sishou, label: fr.labels[i] })),
     invertedPairs,
     observer,
   };
@@ -243,6 +286,20 @@ function eqToEclApprox(now: Date, lmstDeg: number, _obs: MansionObserver): numbe
   const back = RotateVector(Rotation_EQD_EQJ(t), eqd);
   const ect = RotateVector(Rotation_EQJ_ECT(t), back);
   return mod360(SphereFromVector(ect).lon);
+}
+
+/** 便捷：指定经度落在哪一宿（供测试与「点黄道看宿名」用；口径同 mansionSnapshot 的 boundaries） */
+export function mansionAtLon(
+  now: Date, frame: 'eqd' | 'ect', lon: number,
+): { name: string; ruDu: number; boundaryLon: number; boundaryStar: string } {
+  const fr = buildFrame(now, frame);
+  const loc = locate(fr, mod360(lon));
+  return {
+    name: loc.meta.name,
+    ruDu: loc.ruDu,
+    boundaryLon: loc.boundaryLon,
+    boundaryStar: loc.meta.star.western,
+  };
 }
 
 /** 便捷：日躔宿 + 入宿度 */

@@ -68,7 +68,14 @@ export interface SiZhuWithTime extends SiZhu {
  */
 export function solarToSiZhu(
   input: SolarDateInput,
-  opts: { applyChinaDst?: boolean } = {},
+  opts: {
+    applyChinaDst?: boolean;
+    /**
+     * 年柱/月柱判定专用钟面（东八区绝对时刻，见 timeContext.civilForPaipan.switchCivil）。
+     * 传了就只用它算年/月柱；日柱/时柱仍用 input（真太阳时钟面）。不传则两者同源，行为不变。
+     */
+    jieqiBasis?: { year: number; month: number; day: number; hour: number; minute?: number; second?: number };
+  } = {},
 ): SiZhuWithTime {
   // 统一校验：非法日期（2/30、4/31、13 月）抛错，不静默滚动
   const v = validateDateTime(input as unknown as Record<string, unknown>, {
@@ -104,8 +111,20 @@ export function solarToSiZhu(
 
   const lunar = Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, stdSecond).getLunar();
 
-  const yearGanZhi = lunar.getYearInGanZhiExact();
-  const monthGanZhi = lunar.getMonthInGanZhiExact();
+  // 年柱/月柱：节气是绝对瞬间，用 jieqiBasis（东八区钟面）判，不随经度平移。
+  // 日柱/时柱：仍按传入钟面（调用方可能已折真太阳时）判，传统日晷口径不动。
+  let yearGanZhi: string;
+  let monthGanZhi: string;
+  const jq = opts.jieqiBasis;
+  if (jq && !(jq.year === stdYear && jq.month === stdMonth && jq.day === stdDay
+    && jq.hour === stdHour && (jq.minute ?? 0) === stdMinute && (jq.second ?? 0) === stdSecond)) {
+    const lj = Solar.fromYmdHms(jq.year, jq.month, jq.day, jq.hour, jq.minute ?? 0, jq.second ?? 0).getLunar();
+    yearGanZhi = lj.getYearInGanZhiExact();
+    monthGanZhi = lj.getMonthInGanZhiExact();
+  } else {
+    yearGanZhi = lunar.getYearInGanZhiExact();
+    monthGanZhi = lunar.getMonthInGanZhiExact();
+  }
   const dayGanZhi = lunar.getDayInGanZhiExact();
   const timeGanZhi = lunar.getTimeInGanZhi();
   const xunKong = xunKongOf(dayGanZhi);

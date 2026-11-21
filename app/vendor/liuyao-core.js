@@ -38750,6 +38750,7 @@ function civilForPaipan(input, opts = {}) {
     const z2 = applyLateZi(raw, lateZiMode);
     return {
       civil: z2.civil,
+      switchCivil: raw,
       applied: false,
       usedTrueSolar: false,
       crossedDay: false,
@@ -38773,8 +38774,19 @@ function civilForPaipan(input, opts = {}) {
   const z = applyLateZi(conv, lateZiMode);
   const civil = z.civil;
   const crossedDay = civil.year !== raw.year || civil.month !== raw.month || civil.day !== raw.day;
+  const bjMs = r.utcMs + 8 * 36e5;
+  const jq = partsFromMs(bjMs);
+  const switchCivil = {
+    year: jq.year,
+    month: jq.month,
+    day: jq.day,
+    hour: jq.hour,
+    minute: jq.minute,
+    second: jq.second
+  };
   return {
     civil,
+    switchCivil,
     applied: true,
     usedTrueSolar: useSolar,
     crossedDay,
@@ -38827,8 +38839,17 @@ function solarToSiZhu(input, opts = {}) {
     dstApplied = true;
   }
   const lunar = import_lunar_javascript.Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, stdSecond).getLunar();
-  const yearGanZhi = lunar.getYearInGanZhiExact();
-  const monthGanZhi = lunar.getMonthInGanZhiExact();
+  let yearGanZhi;
+  let monthGanZhi;
+  const jq = opts.jieqiBasis;
+  if (jq && !(jq.year === stdYear && jq.month === stdMonth && jq.day === stdDay && jq.hour === stdHour && (jq.minute ?? 0) === stdMinute && (jq.second ?? 0) === stdSecond)) {
+    const lj = import_lunar_javascript.Solar.fromYmdHms(jq.year, jq.month, jq.day, jq.hour, jq.minute ?? 0, jq.second ?? 0).getLunar();
+    yearGanZhi = lj.getYearInGanZhiExact();
+    monthGanZhi = lj.getMonthInGanZhiExact();
+  } else {
+    yearGanZhi = lunar.getYearInGanZhiExact();
+    monthGanZhi = lunar.getMonthInGanZhiExact();
+  }
   const dayGanZhi = lunar.getDayInGanZhiExact();
   const timeGanZhi = lunar.getTimeInGanZhi();
   const xunKong = xunKongOf(dayGanZhi);
@@ -38927,6 +38948,86 @@ function listJieqiInRange(from, days) {
     curDay = nd.getDate();
   }
   return items;
+}
+
+// src/timeSync.ts
+var ZHI = ["\u5B50", "\u4E11", "\u5BC5", "\u536F", "\u8FB0", "\u5DF3", "\u5348", "\u672A", "\u7533", "\u9149", "\u620C", "\u4EA5"];
+function resolvePaipanTime(input) {
+  const eff = civilForPaipan(input, { yearRange: "calendar", label: "\u6392\u76D8\u65F6\u95F4" });
+  const civil = eff.civil;
+  const sz = solarToSiZhu(civil, { applyChinaDst: false });
+  let dayAdvanced = false;
+  if (civil.hour >= 23) {
+    try {
+      const base = solarToSiZhu({
+        year: civil.year,
+        month: civil.month,
+        day: civil.day,
+        hour: 12,
+        minute: 0,
+        second: 0
+      }, { applyChinaDst: false });
+      dayAdvanced = base.dayGanZhi !== sz.dayGanZhi;
+    } catch {
+      dayAdvanced = false;
+    }
+  }
+  const cal = getDayCalendar({
+    year: civil.year,
+    month: civil.month,
+    day: civil.day,
+    hour: civil.hour,
+    minute: civil.minute ?? 0,
+    second: civil.second ?? 0
+  });
+  let pillarCal = cal;
+  if (dayAdvanced) {
+    const n = new Date(Date.UTC(civil.year, civil.month - 1, civil.day) + 864e5);
+    pillarCal = getDayCalendar({
+      year: n.getUTCFullYear(),
+      month: n.getUTCMonth() + 1,
+      day: n.getUTCDate(),
+      hour: 12,
+      minute: 0,
+      second: 0
+    });
+  }
+  const r = eff.resolution;
+  const clock = {
+    year: Number(input.year),
+    month: Number(input.month),
+    day: Number(input.day),
+    hour: Number(input.hour),
+    minute: Number.isFinite(input.minute) ? input.minute : 0,
+    second: Number.isFinite(input.second) ? input.second : 0
+  };
+  return {
+    clock,
+    civil,
+    standard: r ? r.standard : null,
+    trueSolar: r ? r.trueSolar : null,
+    utc: r ? r.utc : null,
+    utcMs: r ? r.utcMs : null,
+    utcOffsetHours: r ? r.utcOffsetHours : null,
+    inDst: !!(r && r.inDst),
+    usedTrueSolar: !!eff.usedTrueSolar,
+    crossedDay: eff.crossedDay,
+    dayAdvanced,
+    lateZiApplied: eff.lateZiApplied,
+    lateZiMode: eff.lateZiMode,
+    yearGanZhi: sz.yearGanZhi,
+    monthGanZhi: sz.monthGanZhi,
+    dayGanZhi: sz.dayGanZhi,
+    timeGanZhi: sz.timeGanZhi,
+    dayGan: sz.dayGanZhi.charAt(0),
+    dayZhi: sz.dayGanZhi.charAt(1),
+    timeZhi: sz.timeGanZhi.charAt(1),
+    timeZhiIndex: ZHI.indexOf(sz.timeGanZhi.charAt(1)),
+    calendar: cal,
+    pillarCalendar: pillarCal,
+    warnings: mergeWarnings(eff.warnings, r ? r.warnings : []),
+    resolution: r
+  };
 }
 
 // src/input.ts
@@ -39066,7 +39167,7 @@ function castByTime(dateInput, options = {}) {
       lateZiMode: options.lateZiMode
     }, { yearRange: "calendar", label: "\u8D77\u5366\u65F6\u95F4" });
     const c = eff.civil;
-    const core2 = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, 0, eff.lateZiMode);
+    const core2 = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, c.second ?? 0, eff.lateZiMode, eff.switchCivil);
     const shown = new Date(c.year, c.month - 1, c.day, c.hour, c.minute ?? 0, 0);
     return {
       ...core2,
@@ -39090,12 +39191,19 @@ function castByTime(dateInput, options = {}) {
   );
   return { ...core, apparentSolarTime: apparent };
 }
-function castFromClock(y, mo, d, hh, mm, ss, lateZiMode) {
+function castFromClock(y, mo, d, hh, mm, ss, lateZiMode, jqClock) {
   const solar = import_lunar_javascript2.Solar.fromYmdHms(y, mo, d, hh, mm, ss);
   const lunar = solar.getLunar();
   const rollDay = hh === 23 && lateZiMode !== "00";
   const lunarBase = rollDay ? import_lunar_javascript2.Solar.fromYmdHms(y, mo, d, 0, 0, 0).next(1).getLunar() : lunar;
-  const yearZhi = lunarBase.getYearInGanZhiExact().charAt(1);
+  const yearZhi = jqClock ? import_lunar_javascript2.Solar.fromYmdHms(
+    jqClock.year,
+    jqClock.month,
+    jqClock.day,
+    jqClock.hour,
+    jqClock.minute ?? 0,
+    jqClock.second ?? 0
+  ).getLunar().getYearInGanZhiExact().charAt(1) : lunarBase.getYearInGanZhiExact().charAt(1);
   const hourZhi = lunar.getTimeInGanZhi().charAt(1);
   const yearBranchOrder = ZHI_ORDER2[yearZhi];
   const lunarMonth = Math.abs(lunarBase.getMonth());
@@ -39629,8 +39737,12 @@ function paipan(input) {
   }, { yearRange: "calendar", label: "\u8D77\u5366\u65F6\u95F4" });
   const sz = solarToSiZhu(
     { ...input, ...eff.civil },
-    // 时区层已经把夏令时扣过一遍了，不能再扣第二次
-    { applyChinaDst: !eff.applied }
+    {
+      // 时区层已经把夏令时扣过一遍了，不能再扣第二次
+      applyChinaDst: !eff.applied,
+      // 年柱/月柱用绝对时刻钟面（节气不随经度平移）；日柱/时柱仍用真太阳时
+      jieqiBasis: eff.switchCivil
+    }
   );
   const { upper, lower } = getTrigramsFromValues(yaoValues);
   const benMeta = withShouGua(getGuaMeta(upper, lower));
@@ -40522,17 +40634,22 @@ function paiBazi(input) {
   const minute = birth.minute ?? 0;
   const second = birth.second ?? 0;
   const lunar = import_lunar_javascript3.Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
+  const sw = eff.switchCivil;
+  const sameBasis = sw.year === year && sw.month === month && sw.day === day && sw.hour === hour && sw.minute === minute && (sw.second ?? 0) === second;
+  const lunarJq = sameBasis ? lunar : import_lunar_javascript3.Solar.fromYmdHms(sw.year, sw.month, sw.day, sw.hour, sw.minute, sw.second ?? 0).getLunar();
   const ec = lunar.getEightChar();
   ec.setSect(1);
-  const yearGZ = lunar.getYearInGanZhiExact();
-  const monthGZ = lunar.getMonthInGanZhiExact();
+  const ecJq = sameBasis ? ec : lunarJq.getEightChar();
+  if (!sameBasis) ecJq.setSect(1);
+  const yearGZ = lunarJq.getYearInGanZhiExact();
+  const monthGZ = lunarJq.getMonthInGanZhiExact();
   const dayGZ = lunar.getDayInGanZhiExact();
   const timeGZ = lunar.getTimeInGanZhi();
   const dayGan = dayGZ.charAt(0);
   const xunKong = xunKongOf(dayGZ);
   const pillars = {
-    year: buildPillar(yearGZ, dayGan, ec.getYearNaYin(), false),
-    month: buildPillar(monthGZ, dayGan, ec.getMonthNaYin(), false),
+    year: buildPillar(yearGZ, dayGan, ecJq.getYearNaYin(), false),
+    month: buildPillar(monthGZ, dayGan, ecJq.getMonthNaYin(), false),
     day: buildPillar(dayGZ, dayGan, ec.getDayNaYin(), true),
     time: buildPillar(timeGZ, dayGan, ec.getTimeNaYin(), false)
   };
@@ -40603,7 +40720,7 @@ function liuNianGanZhiSequence(fromYear, years) {
 // src/bazi-extra.ts
 var import_lunar_javascript4 = __toESM(require_lunar_javascript(), 1);
 var GAN = ["\u7532", "\u4E59", "\u4E19", "\u4E01", "\u620A", "\u5DF1", "\u5E9A", "\u8F9B", "\u58EC", "\u7678"];
-var ZHI = ["\u5B50", "\u4E11", "\u5BC5", "\u536F", "\u8FB0", "\u5DF3", "\u5348", "\u672A", "\u7533", "\u9149", "\u620C", "\u4EA5"];
+var ZHI2 = ["\u5B50", "\u4E11", "\u5BC5", "\u536F", "\u8FB0", "\u5DF3", "\u5348", "\u672A", "\u7533", "\u9149", "\u620C", "\u4EA5"];
 var ZHI_WX2 = {
   \u5B50: "\u6C34",
   \u4E11: "\u571F",
@@ -40943,9 +41060,9 @@ function targetsOf(name, refValue, refKind) {
     case "\u5BE1\u5BBF":
       return refKind === "\u652F" ? [GUA_SU[key]] : [];
     case "\u4E27\u95E8":
-      return refKind === "\u652F" ? [ZHI[(ZHI.indexOf(key) + 2) % 12]] : [];
+      return refKind === "\u652F" ? [ZHI2[(ZHI2.indexOf(key) + 2) % 12]] : [];
     case "\u540A\u5BA2":
-      return refKind === "\u652F" ? [ZHI[(ZHI.indexOf(key) + 10) % 12]] : [];
+      return refKind === "\u652F" ? [ZHI2[(ZHI2.indexOf(key) + 10) % 12]] : [];
     case "\u5929\u5FB7":
       return refKind === "\u652F" ? [TIAN_DE[key]] : [];
     case "\u6708\u5FB7":
@@ -41266,7 +41383,7 @@ var NA_YIN_60 = [
 ];
 function jiaZiIndex(ganZhi) {
   const g = GAN.indexOf(ganZhi.charAt(0));
-  const z = ZHI.indexOf(ganZhi.charAt(1));
+  const z = ZHI2.indexOf(ganZhi.charAt(1));
   if (g < 0 || z < 0) throw new Error(`\u975E\u6CD5\u5E72\u652F: ${ganZhi}`);
   for (let i = 0; i < 60; i++) {
     if (i % 10 === g && i % 12 === z) return i;
@@ -41342,8 +41459,8 @@ function liuNian(bz, year) {
       text: kind.length ? `\u6D41\u5E74\u592A\u5C81${zhi}\u4E0E\u751F\u5E74${bz.year.zhi}\uFF1A${kind.join("\u3001")}` : `\u6D41\u5E74\u592A\u5C81${zhi}\u4E0E\u751F\u5E74${bz.year.zhi}\u65E0\u503C\u3001\u51B2\u3001\u5211\u3001\u5BB3\u3001\u7834\u3001\u5408`
     },
     shenSha: {
-      sangMen: ZHI[(ZHI.indexOf(zhi) + 2) % 12],
-      diaoKe: ZHI[(ZHI.indexOf(zhi) + 10) % 12]
+      sangMen: ZHI2[(ZHI2.indexOf(zhi) + 2) % 12],
+      diaoKe: ZHI2[(ZHI2.indexOf(zhi) + 10) % 12]
     },
     daYun: daYunRef,
     suiYunBingLin: !!daYun && daYun.ganZhi === ganZhi,
@@ -41389,7 +41506,7 @@ function liuYueList(bz, year) {
   const firstIdx = GAN.indexOf(firstGan);
   const out = [];
   for (let i = 0; i < 12; i++) {
-    const zhi = ZHI[(2 + i) % 12];
+    const zhi = ZHI2[(2 + i) % 12];
     const gan = GAN[(firstIdx + i) % 10];
     const ganZhi = `${gan}${zhi}`;
     const jieYear = i === 11 ? year + 1 : year;
@@ -41562,7 +41679,7 @@ function baziExtra(bz) {
 }
 
 // src/meridian.ts
-var ZHI2 = ["\u5B50", "\u4E11", "\u5BC5", "\u536F", "\u8FB0", "\u5DF3", "\u5348", "\u672A", "\u7533", "\u9149", "\u620C", "\u4EA5"];
+var ZHI3 = ["\u5B50", "\u4E11", "\u5BC5", "\u536F", "\u8FB0", "\u5DF3", "\u5348", "\u672A", "\u7533", "\u9149", "\u620C", "\u4EA5"];
 var RANGE = ["23-1", "1-3", "3-5", "5-7", "7-9", "9-11", "11-13", "13-15", "15-17", "17-19", "19-21", "21-23"];
 var TABLE = [
   { jing: "\u80C6", meridian: "\u8DB3\u5C11\u9633\u80C6\u7ECF", organ: "\u80C6\uFF08\u8151\uFF09", wuXing: "\u6728", paired: "\u8DB3\u53A5\u9634\u809D\u7ECF" },
@@ -41600,7 +41717,7 @@ function meridianFromClock(hour, minute = 0) {
   let minutesToNext = endTotal - curTotal;
   if (minutesToNext < 0) minutesToNext += 24 * 60;
   return {
-    zhi: ZHI2[idx],
+    zhi: ZHI3[idx],
     zhiIndex: idx,
     range: RANGE[idx].replace("-", ":00\u2013") + ":00",
     jing: row.jing,
@@ -41608,7 +41725,7 @@ function meridianFromClock(hour, minute = 0) {
     organ: row.organ,
     wuXing: row.wuXing,
     paired: row.paired,
-    nextZhi: ZHI2[(idx + 1) % 12],
+    nextZhi: ZHI3[(idx + 1) % 12],
     minutesToNext
   };
 }
@@ -41690,7 +41807,11 @@ function build(upperNum, lowerNum, moving, timeDetail) {
     movingPosition: moving,
     yaoValues,
     movingSide,
-    timeDetail
+    timeDetail,
+    // 时间层提示透传：梅花此前的返回体根本没有 warnings 字段，
+    // 于是「只给经纬度不给城市 → 时区估算」这类提示在梅花盘上彻底消失（审计 P2-6）。
+    timeWarnings: timeDetail ? timeDetail.timeWarnings ?? [] : [],
+    warnings: timeDetail ? mergeWarnings(timeDetail.warnings) : []
   };
 }
 function valuesFrom(upperNum, lowerNum, moving) {
@@ -42290,8 +42411,11 @@ function paiQiMen(input) {
   const minute = eff.civil.minute ?? 0;
   const second = eff.civil.second ?? 0;
   const lunar = import_lunar_javascript5.Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
-  const y = lunar.getYearInGanZhiExact();
-  const m = lunar.getMonthInGanZhiExact();
+  const sw = eff.switchCivil;
+  const sameBasis = sw.year === year && sw.month === month && sw.day === day && sw.hour === hour && sw.minute === minute && (sw.second ?? 0) === second;
+  const lunarJq = sameBasis ? lunar : import_lunar_javascript5.Solar.fromYmdHms(sw.year, sw.month, sw.day, sw.hour, sw.minute, sw.second ?? 0).getLunar();
+  const y = lunarJq.getYearInGanZhiExact();
+  const m = lunarJq.getMonthInGanZhiExact();
   const d = lunar.getDayInGanZhiExact();
   const t = lunar.getTimeInGanZhi();
   const jieQi = lunar.getPrevJieQi().getName();
@@ -44735,7 +44859,9 @@ function normalizeAstroInput(input) {
     utcOffsetHours: time.utcOffsetHours,
     place: input.place ?? "",
     time,
-    warnings: v.warnings
+    // 时间层的提示（时区估算/历史时区/夏令时近似…）必须并进来：
+    // 只带 validate 的 warnings 会让西占/印度盘在「只给经纬度不给城市」时一声不响（审计 P2-6）。
+    warnings: mergeWarnings(v.warnings, time.warnings)
   };
 }
 function toUtParts(input) {
@@ -44756,16 +44882,18 @@ function paipanXingpan(rawInput) {
   for (const id of PLANET_ORDER) {
     const raw = chart.bodies[id];
     if (!raw) continue;
-    const signIndex2 = Math.floor((raw.lon % 360 + 360) % 360 / 30);
+    const dms = toDms(raw.lon);
+    const signIndex2 = Math.floor(mod3602(dms.lon) / 30);
     bodies[id] = {
       id,
       name: PLANET_ZH[id],
       signIndex: signIndex2,
       signName: SIGN_ZH[signIndex2],
-      dms: toDms(raw.lon),
+      dms,
       retrograde: !!raw.retrograde,
       speed: raw.speed,
-      house: raw.house
+      // 整宫宫位也跟着进位后的星座走，否则会出现「狮子座 0° 落巨蟹宫」
+      house: (signIndex2 - ascIndex + 12) % 12 + 1
     };
   }
   const houses = Array.from({ length: 12 }, (_, i) => {
@@ -46518,6 +46646,18 @@ function eqjVector(ra0, dec0) {
   const d = dec0 * DEG2;
   return new Vector(Math.cos(d) * Math.cos(a), Math.cos(d) * Math.sin(a), Math.sin(d), MakeTime(/* @__PURE__ */ new Date(0)));
 }
+var META_BY_NAME = new Map(MANSIONS.map((m) => [m.name, m]));
+function mansionLabels(ordered) {
+  const labels = ordered.map((o) => o.meta.name);
+  for (let i = 0; i < ordered.length; i++) {
+    const j = (i + 1) % ordered.length;
+    if (ordered[i].meta.name === "\u53C2" && ordered[j].meta.name === "\u89DC") {
+      labels[i] = "\u89DC";
+      labels[j] = "\u53C2";
+    }
+  }
+  return labels;
+}
 function buildFrame(now, frame) {
   const t = MakeTime(now);
   const rot = frame === "eqd" ? Rotation_EQJ_EQD(t) : Rotation_EQJ_ECT(t);
@@ -46528,23 +46668,26 @@ function buildFrame(now, frame) {
     return { meta, lon };
   });
   ordered.sort((a, b) => a.lon - b.lon);
-  return { frame, ordered };
+  return { frame, ordered, labels: mansionLabels(ordered) };
 }
 function locate(frame, lon) {
   const arr = frame.ordered;
+  const labels = frame.labels ?? arr.map((o) => o.meta.name);
   let idx = -1;
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].lon <= lon + 1e-9) idx = i;
+    if (arr[i].lon <= lon + 1e-4) idx = i;
     else break;
   }
   if (idx === -1) idx = arr.length - 1;
   const cur = arr[idx];
   const next = arr[(idx + 1) % arr.length];
+  const meta = META_BY_NAME.get(labels[idx]) ?? cur.meta;
   const boundaryLon = cur.lon;
   const span = mod3604(next.lon - cur.lon);
-  let ruDu = mod3604(lon - cur.lon);
+  let ruDu = lon - cur.lon;
+  if (ruDu < 0) ruDu = ruDu > -1e-4 ? 0 : mod3604(ruDu);
   if (ruDu > span) ruDu = span;
-  return { meta: cur.meta, ruDu, boundaryLon };
+  return { meta, ruDu, boundaryLon };
 }
 var INV_NOTE = /* @__PURE__ */ new Set(["\u89DC", "\u53C2"]);
 function mansionSnapshot(now = /* @__PURE__ */ new Date(), frame = "eqd", bodies = SEVEN, observer = DEFAULT_OBS) {
@@ -46605,7 +46748,7 @@ function mansionSnapshot(now = /* @__PURE__ */ new Date(), frame = "eqd", bodies
     moonMansion: moon?.mansion ?? "",
     meridianMansion: meridian,
     meridianLon: merLon,
-    boundaries: fr.ordered.map((o) => ({ name: o.meta.name, lon: o.lon, sishou: o.meta.sishou })),
+    boundaries: fr.ordered.map((o, i) => ({ name: o.meta.name, lon: o.lon, sishou: o.meta.sishou, label: fr.labels[i] })),
     invertedPairs,
     observer
   };
@@ -46617,6 +46760,16 @@ function eqToEclApprox(now, lmstDeg, _obs) {
   const back = RotateVector(Rotation_EQD_EQJ(t), eqd);
   const ect = RotateVector(Rotation_EQJ_ECT(t), back);
   return mod3604(SphereFromVector(ect).lon);
+}
+function mansionAtLon(now, frame, lon) {
+  const fr = buildFrame(now, frame);
+  const loc = locate(fr, mod3604(lon));
+  return {
+    name: loc.meta.name,
+    ruDu: loc.ruDu,
+    boundaryLon: loc.boundaryLon,
+    boundaryStar: loc.meta.star.western
+  };
 }
 function riChan(now = /* @__PURE__ */ new Date(), frame = "eqd") {
   return mansionSnapshot(now, frame, ["sun"]).bodies[0];
@@ -48867,6 +49020,7 @@ export {
   liuQinToWuXing,
   liuYueList,
   lookupCityTimeZone,
+  mansionAtLon,
   mansionIndex,
   mansionSnapshot,
   meiHuaByNumbers,
@@ -48892,6 +49046,7 @@ export {
   relationOf,
   resolveChinaHistoricTz,
   resolveGua,
+  resolvePaipanTime,
   resolveTime,
   riChan,
   secureRandomInt,

@@ -1,10 +1,17 @@
 // 大六壬 · 完整起课：月将加时 → 天地盘 → 四课 → 九宗门取三传 → 十二天将 → 旬空遁干神煞 → 课体与方向。
 // 底本：《大六壬指南》（明·陈公献）课体与发用取法、《六壬大全》（明）天地盘·天将·神煞布法。
 // 红线：只用课法本身推导，不掺现代心理话术；流派分歧处并列标注，不合成。
-import { nowDate, BIRTH, fmtMoment } from './state.js?v=133';
-import { guard } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
+//
+// 时间口径（audit4 · r2_crosspan P0-1/2/3）：**不在本文件里算时间**。
+// 时区 / 1912–1949 历史时区 / 1986–1991 中国夏令时 / 真太阳时 / 23:00 换日，
+// 一律交给内核 `resolvePaipanTime`（liuyao-core/src/timeSync.ts），与本项目其它盘同一行代码：
+//   · 日柱、时柱、占时支三者同源 —— 占时支直接取「时柱的地支」，不再由小时数除 2 得来；
+//   · 真正用于起课的瞬时取 `utcMs`（太阳黄经/月将也吃它），不依赖浏览器本机时区。
+import { nowDate, nowGeoArgs, cfg, BIRTH, fmtMoment } from './state.js?v=133';
+import { guard, renderWarnings } from './errors.js?v=133'; // 错误边界（P0-2）：渲染抛错不再白屏
 import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
-import { shouyeTianxiang, getDayCalendar, solarToSiZhu } from '../vendor/liuyao-core.js?v=133';
+import { shouyeTianxiang, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import { timeBasis } from './timebasis.js?v=133';
 import { T } from './tipview.js?v=133';
 
 const ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -32,14 +39,23 @@ const SS_JIE = [5, 11, 2, 8];     // 劫煞
 const LU = { 甲: 2, 乙: 3, 丙: 5, 丁: 6, 戊: 5, 己: 6, 庚: 8, 辛: 9, 壬: 11, 癸: 0 };
 
 const isKe = (a, b) => KE[ZHI_WX[a]] === ZHI_WX[b]; // a 克 b
-const zhiIdx = (gz) => ZHI.indexOf(gz[1]);
-
-function shichenIdx(h) { return Math.floor(((h + 1) % 24) / 2); }
 
 // 月将：太阳所在星次（十二次），每 30° 一换，随中气过宫
 function yueJiangOf(sunLon) {
   const l = ((sunLon % 360) + 360) % 360;
   return (((1 - Math.floor(((l - 270 + 360) % 360) / 30)) % 12) + 12) % 12;
+}
+
+// 月将换将点＝**中气**（太阳每过 30° 交界：冬至 270° 起、大寒 300°、雨水 330°、春分 0°…），
+// 与 yueJiangOf 的分段完全一致（270/300/330/0/30… 全是中气），不是立春那类「节」。
+// 天文引擎不可用时的兜底：按「月建支 −2（中气前）/ −3（中气后）」近似，误差最多一将，
+// 且必定在 warnings 里说清——宁可标注，不静默给个错将。
+const ZHONG_QI = new Set(['雨水', '春分', '谷雨', '小满', '夏至', '大暑', '处暑', '秋分', '霜降', '小雪', '冬至', '大寒']);
+function yueJiangFallback(monthGanZhi, prevJieqi) {
+  const m = ZHI.indexOf(String(monthGanZhi || '').charAt(1));
+  if (m < 0) return 0;
+  const after = ZHONG_QI.has(prevJieqi || '');
+  return (((m - (after ? 3 : 2)) % 12) + 12) % 12;
 }
 
 function sanHeIdx(z) { return SANHE.findIndex((g) => g.includes(z)); }
@@ -106,20 +122,41 @@ const FA_YONG = {
 };
 
 // ---------------- 起课核心 ----------------
-export function qiKe(at = nowDate()) {
-  const y = at.getFullYear(), mo = at.getMonth() + 1, d = at.getDate(), h = at.getHours(), mi = at.getMinutes();
-  const sz = solarToSiZhu({ year: y, month: mo, day: d, hour: h, minute: mi });
-  const cal = getDayCalendar({ year: y, month: mo, day: d, hour: h, minute: mi });
-  const gan = sz.dayGanZhi[0], dz = zhiIdx(sz.dayGanZhi);
-  const t = shichenIdx(h);
+/**
+ * 起课。
+ * @param {Date} at 用户看到的钟面时刻（浏览器的本地分量即「当地民用钟面」）
+ * @param {object} geo 出生/观测地（city/place/lat/lonEast/utcOffsetHours…），默认取当前观测地
+ */
+export function qiKe(at = nowDate(), geo = nowGeoArgs()) {
+  // 时间层唯一入口：钟面 + 地点 → 折算钟面 / UTC / 真太阳时 / 四柱 / 占时支
+  const ts = resolvePaipanTime({
+    // 口径开关与八字同一个来源（state.cfg）：用户把「真太阳时」关掉、把换日改成 0 点，
+    // 八字与六壬必须一起变，不能各按各的默认。显式入参（geo 里带）优先于全局配置。
+    trueSolarTime: cfg.trueSolarTime !== false,
+    lateZiMode: cfg.lateZi === '00' ? '00' : '23',
+    ...geo,
+    year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(),
+    hour: at.getHours(), minute: at.getMinutes(), second: typeof at.getSeconds === 'function' ? at.getSeconds() : 0,
+  });
+  const sz = {
+    yearGanZhi: ts.yearGanZhi, monthGanZhi: ts.monthGanZhi,
+    dayGanZhi: ts.dayGanZhi, timeGanZhi: ts.timeGanZhi,
+  };
+  const cal = ts.calendar;
+  const gan = ts.dayGan, dz = ZHI.indexOf(ts.dayZhi);
+  // 占时支：**取时柱的地支**，不再用钟面小时除 2。日柱/时柱/占时因此必然同源（P0-2）。
+  const t = ts.timeZhiIndex;
 
-  let sunLon = 0, sunSign = '';
+  // 月将：太阳所在星次（吃真实 UT 瞬时的太阳黄经，与西占/印度同一个引擎）
+  let sunLon = 0, sunSign = '', yjNote = '';
   try {
-    const tx = shouyeTianxiang(at);
+    const tx = shouyeTianxiang(new Date(ts.utcMs ?? at.getTime()));
     const sun = tx.bodies.find((b) => b.id === 'sun');
     if (sun) { sunLon = sun.lon; sunSign = sun.signName; }
-  } catch (e) { /* 天文不可用时退回近似：按节气月 */ }
-  const yj = yueJiangOf(sunLon);
+    else yjNote = '太阳黄经不可用';
+  } catch (e) { yjNote = '太阳黄经不可用'; }
+  const yj = yjNote ? yueJiangFallback(ts.monthGanZhi, cal.prevJieqi) : yueJiangOf(sunLon);
+  if (yjNote) yjNote = `${yjNote}：月将按节气月近似（最多差一将）`;
 
   // 天地盘：月将加时（月将压占时之支，余支顺布）
   const tian = [];
@@ -291,8 +328,8 @@ export function qiKe(at = nowDate()) {
   });
 
   return {
-    at, sz, cal, gan, dz, t, tian, g, ke4, chuan: chuanInfo, ti, note, faYong: FA_YONG[ti] || '', faKe,
-    yj, sunLon, sunSign, isDay, grZhi, grPos, fwd, jiang, jiangOfZhi,
+    at, ts, sz, cal, gan, dz, t, tian, g, ke4, chuan: chuanInfo, ti, note, faYong: FA_YONG[ti] || '', faKe,
+    yj, yjNote, sunLon, sunSign, isDay, grZhi, grPos, fwd, jiang, jiangOfZhi,
     xun: xk, dunGan, ss, nianMing,
     liuqin: (z) => liuqin(gan, z),
     yangDay,
@@ -435,9 +472,9 @@ function verdict(r) {
   return { level, pros, cons, rhythm, score };
 }
 
-function __renderDaLiuRen(at = nowDate()) {
+function __renderDaLiuRen(at = nowDate(), geo = nowGeoArgs()) {
   if (!isCasted('daliuren')) return gateHTML('daliuren');
-  const r = qiKe(at);
+  const r = qiKe(at, geo);
   const td = TI_DUAN[r.ti] || { jue: '', duan: '', src: '' };
   const { items, good, bad } = readPan(r);
   const vd = verdict(r);
@@ -517,8 +554,12 @@ function __renderDaLiuRen(at = nowDate()) {
         <span>四柱 ${r.sz.yearGanZhi} ${r.sz.monthGanZhi} ${r.sz.dayGanZhi} ${r.sz.timeGanZhi} · ${r.cal.nongli}</span>
       </div>
       <div class="dl-meta dim">
+        <span>时间口径 ${timeBasis(r.ts)}</span>
+      </div>
+      <div class="dl-meta dim">
         <span>${T('旬', 'dl-xun')} ${r.xun.xunName} · ${T('旬空', 'dl-ss-旬空')} ${r.xun.kong.map((z) => ZHI[z]).join(' ')}${r.nianMing !== null ? ' · 本命 ' + ZHI[r.nianMing] : ''}</span>
       </div>
+      ${renderWarnings({ warnings: r.ts.warnings.concat(r.yjNote ? [r.yjNote] : []) })}
     </div>
 
     <div class="dl-pan-card glass-card">
@@ -568,14 +609,17 @@ function fmt(d) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-export function daLiuRenCopyText(at = nowDate()) {
-  const r = qiKe(at);
+// 时间口径文案：与奇门/小六壬/梅花共用 app/js/timebasis.js（同一份 ts → 同一句话）
+
+export function daLiuRenCopyText(at = nowDate(), geo = nowGeoArgs()) {
+  const r = qiKe(at, geo);
   const td = TI_DUAN[r.ti] || { jue: '', duan: '', src: '' };
   const { items, good, bad } = readPan(r);
   const vd = verdict(r);
   const lines = [
     `【大六壬 · 起课】${fmt(at)}`,
     `四柱：${r.sz.yearGanZhi} ${r.sz.monthGanZhi} ${r.sz.dayGanZhi} ${r.sz.timeGanZhi} · ${r.cal.nongli}`,
+    `时间口径：${timeBasis(r.ts)}`,
     `月将：${ZHI[r.yj]}（太阳在${r.sunSign || '—'}） · 占时：${ZHI[r.t]}时 · ${r.isDay ? '昼占' : '夜占'}`,
     `旬：${r.xun.xunName} · 旬空：${r.xun.kong.map((z) => ZHI[z]).join(' ')}${r.nianMing !== null ? ' · 本命：' + ZHI[r.nianMing] : ''}`,
     `天地盘：月将${ZHI[r.yj]}加${ZHI[r.t]}时`,

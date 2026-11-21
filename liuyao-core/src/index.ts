@@ -35,6 +35,10 @@ export type {
   CivilTime, CityTimeZone, DstRuleId, TimeResolveInput, TimeResolution,
   LateZiMode, PaipanCivil, TzEstimate, ChinaHistZone,
 } from './timeContext.js';
+// 排盘时间同步层：给前端独占盘（大六壬等）复用的统一时间 + 四柱入口，
+// 保证「日柱 / 时柱 / 占时支」与八字、六爻、奇门、子午流注同源同分钟。
+export { resolvePaipanTime } from './timeSync.js';
+export type { PaipanTimeState } from './timeSync.js';
 export { castManual, castCoins, castTianji } from './input.js';
 // 统一入参校验层（内校层）：所有排盘入口共用同一套日期/时间/坐标/性别规则
 export {
@@ -128,7 +132,7 @@ export type {
 export type { PlanetId } from './astro-constants.js';
 
 // 实时中国传统星象：二十八宿躔次（纯天文历法事实，不作吉凶）
-export { mansionSnapshot, riChan, yueLi, zhiSu } from './mansion.js';
+export { mansionSnapshot, mansionAtLon, riChan, yueLi, zhiSu } from './mansion.js';
 export type {
   MansionSnapshot, BodyInMansion, MansionFrame,
   MansionObserver, ZhiSu,

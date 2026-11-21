@@ -1,9 +1,10 @@
 // 今日日课卡（M5 场景1）：把钦天监首页已显示的四柱/农历/节气/子午流注/当下天象
 // 合成一张可读的"日课"卡，一键复制给外部 AI 或存档。
 // 红线：只报事实与典籍口径的中性描述，不给"今日宜/忌""吉凶"判断。
-import { getDayCalendar, getMeridian, shouyeTianxiang } from '../vendor/liuyao-core.js?v=133';
-import { siZhuZi } from './zischool.js?v=133';
-import { $ } from './state.js?v=133';
+// 时间口径（audit4 · fix_r4）：四柱/农历与首页、八字同源（resolvePaipanTime），不再各自对钟面排。
+import { getMeridian, shouyeTianxiang, resolvePaipanTime } from '../vendor/liuyao-core.js?v=133';
+import * as CORE from '../vendor/liuyao-core.js?v=133'; // 新 API 命名空间取值，旧 bundle 时优雅退回
+import { $, panTimeArgs } from './state.js?v=133';
 
 const P_CN = { sun:'太阳', moon:'月亮', mercury:'水星', venus:'金星', mars:'火星',
   jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星' };
@@ -13,6 +14,16 @@ function beijing(iso){ try{ return new Date(iso).toLocaleString('zh-CN',{timeZon
 function pad(n){ return String(n).padStart(2,'0'); }
 function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
+// 子午流注：用折算后的钟面（真太阳时）取，与首页/八字同一份时间
+function meridianOf(ts, fallback) {
+  const c = ts.civil;
+  const fn = CORE.getMeridianByTime;
+  if (typeof fn === 'function') {
+    try { return fn({ ...c, trueSolarTime: false }); } catch { /* 退回落表接口 */ }
+  }
+  return getMeridian(new Date(c.year, c.month - 1, c.day, c.hour, c.minute || 0));
+}
+
 function dateStr(d){
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 }
@@ -20,10 +31,10 @@ function dateStr(d){
 // 合成一份"日课"纯文本，供"复制"按钮使用；也作为卡内渲染的源数据。
 function buildRike(now){
   const d = new Date(now.getTime());
-  const y=d.getFullYear(), m=d.getMonth()+1, day=d.getDate(), h=d.getHours(), mi=d.getMinutes();
-  const sz = siZhuZi({ year:y, month:m, day, hour:h, minute:mi });
-  const cal = getDayCalendar({ year:y, month:m, day, hour:h, minute:mi });
-  const md = getMeridian(d);
+  const ts = resolvePaipanTime(panTimeArgs(d));
+  const sz = ts;
+  const cal = ts.pillarCalendar; // 与日柱同一天的农历（23 点换日跟着进次日）
+  const md = meridianOf(ts, d);
   let tx = null;
   try { tx = shouyeTianxiang(d); } catch { /* 天象不可用时降级 */ }
 
@@ -95,7 +106,7 @@ export function renderTodayCard(now = new Date()){
 
       ${upcomingRows ? `<div class="tc-sec-h">近期天时</div>${upcomingRows}` : ''}
 
-      <div class="tc-foot">只列事实与天文时刻，不判断宜忌吉凶；时刻均为北京时间。</div>
+      <div class="tc-foot">只列事实与天文时刻，不判断宜忌吉凶；四柱按观测地真太阳时折算，天文时刻为北京时间。</div>
     </div>`;
 
   const copyBtn = host.querySelector('.tc-copy');

@@ -240,6 +240,35 @@ export function resolveCastDate(date = new Date()) {
   return cfg.apparentSolarTime ? toTrueSolar(d) : d;
 }
 
+/**
+ * **视图层唯一的时间入口**：把「浏览器钟面 + 观测地」装成内核
+ * `resolvePaipanTime()` / `paiQiMen()` / `paipan()` / `meiHuaByTime()` 都吃的那份入参。
+ *
+ * 为什么要有它（audit4 · fix_r4）：大六壬/小六壬/奇门/梅花/六爻曾各自决定「折不折真太阳时、
+ * 按哪个时区、要不要夏令时」。口径开关只该有一个来源（`cfg`），地点只该有一个来源
+ * （`nowGeoArgs()`），于是统一在这里拼一次；视图里不许再出现 `at.getHours()` 之类的时间推算。
+ *
+ * 口径开关与八字完全同源：
+ *   - 真太阳时 → `cfg.trueSolarTime !== false`（默认开；旧的 `cfg.apparentSolarTime` 只管起卦输入框的
+ *     即时预览，不再决定任何盘的排盘口径）
+ *   - 晚子时换日 → `cfg.lateZi === '00' ? '00' : '23'`
+ * 显式传入的 geo 字段优先于全局配置（便于测试与复现码调用）。
+ *
+ * @param {Date} date 浏览器本地钟面（`panAt.now` 或 `new Date()`）
+ * @param {object} geo 观测地参数（city/place/lat/lonEast/…），默认 `nowGeoArgs()`
+ */
+export function panTimeArgs(date = nowDate(), geo = nowGeoArgs()) {
+  const d = new Date(date && date.getTime ? date.getTime() : date);
+  return {
+    trueSolarTime: cfg.trueSolarTime !== false,
+    lateZiMode: cfg.lateZi === '00' ? '00' : '23',
+    ...(geo || {}),
+    year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(),
+    hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds(),
+  };
+}
+
+
 // 通用一键复制：优先 Clipboard API（微信内置浏览器等需用户手势触发），失败降级 execCommand
 export async function copyText(text, btnEl = null) {
   let done = false;

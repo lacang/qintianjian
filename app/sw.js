@@ -41,6 +41,7 @@ const ASSETS = [
   './js/skyview.js?v=133',
   './js/zodiac.js?v=133',
   './js/solartime.js?v=133',
+  './js/timebasis.js?v=133', // 时间口径文案（cast.js 静态依赖，首屏必用，必须预缓存）
   './js/glossary.js?v=133',
   './js/meaning.js?v=133',
   './js/verdict.js?v=133',

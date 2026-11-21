@@ -62,8 +62,16 @@ export function paiQiMen(input: QiMenInput): QiMenPan {
   const second = eff.civil.second ?? 0;
 
   const lunar = Solar.fromYmdHms(year, month, day, hour, minute, second).getLunar();
-  const y = lunar.getYearInGanZhiExact();
-  const m = lunar.getMonthInGanZhiExact();
+  // 年柱/月柱走绝对时刻钟面（节气候是物理瞬间，不折真太阳时、不随经度平移）；
+  // 日柱/时柱仍用真太阳时钟面。见 timeContext.civilForPaipan 的混合口径说明。
+  const sw = eff.switchCivil;
+  const sameBasis = sw.year === year && sw.month === month && sw.day === day
+    && sw.hour === hour && sw.minute === minute && (sw.second ?? 0) === second;
+  const lunarJq = sameBasis
+    ? lunar
+    : Solar.fromYmdHms(sw.year, sw.month, sw.day, sw.hour, sw.minute, sw.second ?? 0).getLunar();
+  const y = lunarJq.getYearInGanZhiExact();
+  const m = lunarJq.getMonthInGanZhiExact();
   const d = lunar.getDayInGanZhiExact();
   const t = lunar.getTimeInGanZhi();
 
