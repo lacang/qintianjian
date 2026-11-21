@@ -2,11 +2,11 @@
 // 一个透明天球上：177 颗真实裸眼亮星（J2000 赤道坐标）+ 黄道/赤道圈 + 日月行星实时位置。
 // 行星由 astronomy-engine（liuyao-core 打包）实时计算；3D 用 three.js r160（MIT，本地内置、离线）。
 // 单指拖拽旋转、滚轮/双指缩放；点天体名出数据卡；顶部时间条/播放可快进，直观看到每颗星在球面上运行。
-import * as THREE from '../vendor/three/three.module.js';
-import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=129';
-import { getPlace } from './geo.js?v=129';
-import { $, nowDate, pad } from './state.js?v=129';
-import { STARS3 } from './stars.js?v=129';
+import * as THREE from '../vendor/three/three.module.js?v=133';
+import { shouyeTianxiang } from '../vendor/liuyao-core.js?v=133';
+import { getPlace } from './geo.js?v=133';
+import { $, nowDate, pad } from './state.js?v=133';
+import { STARS3 } from './stars.js?v=133';
 
 const R = 10;                         // 天球半径
 const D2R = Math.PI / 180;

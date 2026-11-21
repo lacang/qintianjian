@@ -12,15 +12,17 @@
  * 3. 流年干支复用 bazi.ts 的 liuNianGanZhiSequence（甲子=公元 4 年，60 循环），不另造表；
  *    流月的月干用五虎遁从流年干推出，月支按节气月（立春起寅）排列。
  * 4. 旺衰依据按「得令 / 得地 / 得生 / 得助 + 月令旺相休囚死」逐条列出，定强弱公式与
- *    app/js/verdicts.js judgeBazi 同型（得令分 + 日支生扶 1 分 > 0 判旺）。
- *    ⚠️ verdicts.js 的 wxRel 在「生」的两支上方向反了（月令生我判成我生月令），
- *    本文件按五行正理实现，两者结论不一致时 consistent=false，由上层显式提示（见 fix_E 报告）。
+ *    app/js/verdicts.js judgeBazi 同型（月令同气/生我 +2、我生/我克 -1、克我 -2；
+ *    日支同气或生我 +1；合计 >0 判偏旺）。
+ *    consistent 字段是「漂移探针」：本文件独立复刻一遍 verdicts.js 的公式（legacy* 变量），
+ *    与本节结论比对。两者不一致说明 app 侧公式又被改动，需同步——不是流派分歧。
  */
 import { Solar } from 'lunar-javascript';
 import type { BaziResult, HiddenGan } from './bazi.js';
 import { tenGod, liuNianGanZhiSequence } from './bazi.js';
 import { xunKongOf, listJieqiInRange } from './calendar.js';
 import { lingTaiOf, type LingTai } from './wangshuai.js';
+import { YANG_REN } from './shensha.js';
 import type { DiZhi, TianGan, WuXing } from './types.js';
 
 const GAN: TianGan[] = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
@@ -48,8 +50,8 @@ const PILLAR_CN: Record<PillarPos, string> = { year: '年柱', month: '月柱', 
 // 一、神煞
 // =====================================================================
 
-/** 神煞查法起点：子平日法以日干/日支为主，年干/年支为古法（禄命法）遗存，两者并列不混 */
-export type ShenShaRef = '日干' | '日支' | '年干' | '年支' | '月支';
+/** 神煞查法起点：子平日法以日干/日支为主，年干/年支为古法（禄命法）遗存，两者并列不混；日柱＝整柱（旬空起点） */
+export type ShenShaRef = '日干' | '日支' | '日柱' | '年干' | '年支' | '月支';
 
 export interface ShenShaHit {
   name: string;
@@ -162,18 +164,7 @@ const WEN_CHANG: Record<TianGan, DiZhi> = {
   甲: '巳', 乙: '午', 丙: '申', 丁: '酉', 戊: '申',
   己: '酉', 庚: '亥', 辛: '子', 壬: '寅', 癸: '卯',
 };
-/**
- * 羊刃：取「禄前一位」——《三命通会·论阳刃》「阳者阴阳之阳，刃者刀刃之刃，即禄前一位」，
- * 故 甲卯 乙辰 丙戊午 丁己未 庚酉 辛戌 壬子 癸丑（与金舆=禄前二位互为印证）。
- * 流派分歧（已在此显式保留，不静默）：
- *   ① 禄前一位（本文件采用，全十干）。
- *   ② 帝旺位（阴干逆行）：乙寅、丁巳、己巳、辛申、癸亥 —— 本仓六爻 shensha.ts 的羊刃表即此说。
- *   ③ 只论五阳干：甲卯、丙午、戊午、庚酉、壬子，谓「阴干无刃」（《三命通会》论阳刃亦存此句）。
- */
-const YANG_REN: Record<TianGan, DiZhi> = {
-  甲: '卯', 乙: '辰', 丙: '午', 丁: '未', 戊: '午',
-  己: '未', 庚: '酉', 辛: '戌', 壬: '子', 癸: '丑',
-};
+// 羊刃表不在此定义：与六爻神煞层共用 shensha.ts 的 YANG_REN（出处《三命通会·论羊刃》）。
 /** 金舆：禄前二位。甲辰 乙巳 丙戊未 丁己申 庚戌 辛亥 壬丑 癸寅 */
 const JIN_YU: Record<TianGan, DiZhi> = {
   甲: '辰', 乙: '巳', 丙: '未', 丁: '申', 戊: '未',
@@ -199,7 +190,7 @@ const SHEN_SHA_SPECS: ShenShaSpec[] = [
     rule: '甲戊庚牛羊，乙己鼠猴乡，丙丁猪鸡位，壬癸兔蛇藏，六辛逢马虎，此是贵人方。',
     refs: ['日干', '年干'],
     targetKind: '支',
-    note: '《渊海子平》原文作「甲戊兼牛羊……庚辛逢马虎」，则庚见午寅、辛见丑未；本盘从《三命通会》通行本（甲戊庚同取丑未，辛独取午寅）。辰戌为魁罡，天乙不临，两说皆然。',
+    note: '《渊海子平·论起玉堂天乙贵人》原文作「甲戊兼牛羊……庚辛逢马虎」，则甲戊同取丑未、庚辛同取午寅（庚不复取丑未，辛亦非丑未）；本盘从《三命通会》通行本「甲戊庚牛羊……六辛逢马虎」，庚并取丑未。辰戌为魁罡，天乙不临，两说皆然。',
   },
   {
     name: '文昌',
@@ -227,10 +218,10 @@ const SHEN_SHA_SPECS: ShenShaSpec[] = [
   {
     name: '羊刃',
     source: '《三命通会·论阳刃》《论羊刃》',
-    rule: '阳刃者即禄前一位：甲卯、乙辰、丙戊午、丁己未、庚酉、辛戌、壬子、癸丑。',
-    refs: ['日干', '年干'],
+    rule: '羊刃常居禄前一辰：甲卯、乙辰、丙戊午、丁己未、庚酉、辛戌、壬子、癸丑。',
+    refs: ['日干'],
     targetKind: '支',
-    note: '三说并存：①禄前一位（本盘采用，全十干）；②帝旺位（阴干逆行）乙寅丁巳己巳辛申癸亥，本仓六爻神煞表用此说；③只论五阳干、阴干无刃。',
+    note: '子平论刃只以日干（年干不论刃，故不再并列年干）。表与六爻神煞层共用 shensha.ts 的 YANG_REN。「惟五阳干有刃」是《论阳刃》的阳刃格之说，不是本条神煞，详见 shensha.ts 表注。',
   },
   {
     name: '空亡',
@@ -321,6 +312,7 @@ function refValueOf(bz: BaziResult, ref: ShenShaRef): { value: string; kind: '�
   switch (ref) {
     case '日干': return { value: bz.day.gan, kind: '干' };
     case '日支': return { value: bz.day.zhi, kind: '支' };
+    case '日柱': return { value: bz.day.ganZhi, kind: '支' };
     case '年干': return { value: bz.year.gan, kind: '干' };
     case '年支': return { value: bz.year.zhi, kind: '支' };
     case '月支': return { value: bz.month.zhi, kind: '支' };
@@ -361,7 +353,7 @@ export function baziShenSha(bz: BaziResult): BaziShenSha {
       if (positions.length) {
         hits.push({
           name: '空亡',
-          ref: '日支',
+          ref: '日柱',
           refValue: bz.day.ganZhi,
           target: positions.map((k) => bz[k].zhi).join('、'),
           targetKind: '支',
@@ -924,8 +916,9 @@ export interface WangShuaiEvidence {
   score: number;
   conclusion: '偏旺' | '偏弱';
   conclusionText: string;
-  /** 与 app/js/verdicts.js judgeBazi 的定强弱是否一致 */
+  /** 与 app/js/verdicts.js judgeBazi 的定强弱是否一致（漂移探针，非流派比对） */
   consistent: boolean;
+  /** 复刻 verdicts.js 公式得出的结论；与 conclusion 不等即表示两处公式已分叉 */
   legacyConclusion: '偏旺' | '偏弱';
   note: string;
 }
@@ -1034,14 +1027,15 @@ export function wangShuaiEvidence(bz: BaziResult): WangShuaiEvidence {
   const score = delingScore + (dediHit ? 1 : 0);
   const conclusion: '偏旺' | '偏弱' = score > 0 ? '偏旺' : '偏弱';
 
-  // 旧卡口径（verdicts.js judgeBazi）：relMonth = wxRel(月令, 我)，
-  // 该函数在「生」的两支上方向与子平正理相反（月令生我 → 判成我生月令），此处原样复刻以便比对。
-  const legacySheng = SHENG[mWx] === me ? -1 : SHENG[me] === mWx ? 2 : null;
+  // 漂移探针：独立复刻 app/js/verdicts.js judgeBazi 的公式（月令：同气/生我 +2、我生/我克 -1、
+  // 克我 -2；日支：同气/生我 +1），与本文件结论比对。verdicts.js 已修正「生」两支的方向，
+  // 此处必须同步——两处公式一旦再次分叉，consistent=false 会在页面上显式报出。
+  const legacySheng = SHENG[mWx] === me ? 2 : SHENG[me] === mWx ? -1 : null;
   const legacyDeling = mWx === me ? 2
     : legacySheng !== null ? legacySheng
       : KE[mWx] === me ? -2
         : KE[me] === mWx ? -1 : 0;
-  const legacyDayGood = dWx === me || SHENG[me] === dWx; // 旧卡把「日主生日支」也算生扶
+  const legacyDayGood = dWx === me || SHENG[dWx] === me; // 日支同气或日支生我 → 生扶
   const legacyScore = legacyDeling + (legacyDayGood ? 1 : 0);
   const legacyConclusion: '偏旺' | '偏弱' = legacyScore > 0 ? '偏旺' : '偏弱';
 

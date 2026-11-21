@@ -14,13 +14,18 @@
 import { Solar } from 'lunar-javascript';
 import type { SolarDateInput, TianGan, DiZhi, WuXing } from './types.js';
 import { xunKongOf } from './calendar.js';
-import { civilForPaipan, type TimeResolveInput } from './timeContext.js';
+import { civilForPaipan, lateZiLabel, type LateZiMode, type TimeResolveInput } from './timeContext.js';
 
 export type Gender = '男' | '女';
 
-export interface BaziInput extends SolarDateInput {
-  gender: Gender;
-}
+/**
+ * 八字入参：年月日时 + 性别，另可带统一时间层的可选字段
+ * （city / place / lat / lon / utcOffsetHours / trueSolarTime / tzPolicy / lateZiMode）。
+ * 带这些字段就自动扣夏令时、算真太阳时、按城市或经纬度定时区。
+ */
+export type BaziInput = SolarDateInput
+  & { gender: Gender }
+  & Partial<Omit<TimeResolveInput, 'year' | 'month' | 'day' | 'hour' | 'minute'>>;
 
 export interface HiddenGan {
   gan: TianGan;
@@ -68,6 +73,10 @@ export interface BaziResult {
     list: DaYunItem[];
   };
   wuXingCount: Record<WuXing, number>; // 含天干本气+地支藏干（本中余各计1）
+  /** 换日口径标注（如「23 点（子初）换日」） */
+  dayBoundary?: string;
+  /** 时间口径提示（时区估算、经纬度冲突、夏令时…） */
+  timeWarnings?: string[];
 }
 
 const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const;
@@ -145,9 +154,8 @@ export function paiBazi(input: BaziInput): BaziResult {
   // 时区 / 夏令时 / 真太阳时统一折算：给了城市或时区就用折算后的钟面时间，
   // 没给则原样返回（不传地点的调用与旧实现逐字节一致）。折算可能跨日，换日逻辑自然跟着走。
   const eff = civilForPaipan(input as unknown as TimeResolveInput);
-  const birth = eff.applied
-    ? eff.civil
-    : { year: input.year, month: input.month, day: input.day, hour: input.hour, minute: input.minute ?? 0 };
+  // eff.civil 恒为「已定口径的钟面时间」（无地点时原样返回；'00' 口径会把 23:xx 拨回同日 00:xx）
+  const birth = eff.civil;
   const { year, month, day, hour, gender } = { ...input, ...birth };
   const minute = birth.minute ?? 0;
   const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
@@ -224,6 +232,8 @@ export function paiBazi(input: BaziInput): BaziResult {
       list,
     },
     wuXingCount: count,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
   };
 }
 

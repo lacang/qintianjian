@@ -5,8 +5,8 @@ import {
   listFirdariaPeriods,
   listProfectionYears,
   paiBazi,
-} from '../vendor/liuyao-core.js?v=129';
-import { $ } from './state.js?v=129';
+} from '../vendor/liuyao-core.js?v=133';
+import { $, cfg } from './state.js?v=133';
 
 const PLANET_COLOR = {
   sun: 'var(--cinnabar)', moon: 'var(--ink)',
@@ -31,13 +31,18 @@ export function renderRhythm(birth, ascSignIndex, day){
   // 窄屏轨道估算宽度（px），用于标签防重叠筛选；宁稀疏不堆叠
   const TRACK_PX = 300;
 
-  // 八字大运
+  // 八字大运：性别决定顺逆（阳年男/阴年女顺行，反之逆行），必须传；
+  // 地点参数一并透传，与八字本命页、六爻盘统一真太阳时/夏令时口径。
   let bazi = null;
   try {
     bazi = paiBazi({
       year: birth.year, month: birth.month, day: birth.day,
       hour: birth.hour, minute: birth.minute,
-      lat: birth.lat, lonEast: birth.lonEast,
+      gender: birth.gender || cfg.gender || '男',
+      city: birth.city, place: birth.place,
+      lat: birth.lat ?? birth.latitude, lonEast: birth.lonEast ?? birth.longitude,
+      utcOffsetHours: birth.utcOffsetHours,
+      trueSolarTime: birth.trueSolarTime,
     });
   } catch {}
   const daYunList = bazi?.daYun?.list || [];

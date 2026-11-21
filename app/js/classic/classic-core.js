@@ -17,8 +17,8 @@
 //   一念三观 = 分层抽样（按思想群）    → 三条来自不同群，构成多角度而非三条同质
 //   遇见     = 跨群交错遍历            → 连续两条必不同群，一轮内不重复，走完即耗尽
 
-import { activeClassic } from './classic-registry.js';
-import { LAYER_KEYS, packCapabilities } from './classic-schema.js';
+import { activeClassic } from './classic-registry.js?v=133';
+import { LAYER_KEYS, packCapabilities } from './classic-schema.js?v=133';
 
 /** 当前经典内容包 */
 function C() {

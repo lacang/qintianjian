@@ -34,14 +34,14 @@ import {
   FEEDBACK, feedbackEffect, topicsOf, poolNodes,
   debateList, getDebate, debateFor, stanceOf, debateAfterword,
   exploreEntries, detailLayers, correctionsFor, visibleRelations,
-} from './classic-core.js';
-import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js';
+} from './classic-core.js?v=133';
+import { readingOf, THEMES, themeById, themeSeq, LINK_LABEL } from './reading.js?v=133';
 import {
   loadMarks, setMark, markOf, markStats, keptIds,
   MARK_KEEP, MARK_DOUBT,
-} from './feed-state.js';
-import { renderFeedPanel, bindFeedGesture, doFeedAction, startNextRound } from './feed.js';
-import { $, $$, toast } from '../state.js?v=129';
+} from './feed-state.js?v=133';
+import { renderFeedPanel, bindFeedGesture, doFeedAction, startNextRound } from './feed.js?v=133';
+import { $, $$, toast } from '../state.js?v=133';
 
 const NOTE_KEY = 'qintian.classic.journal';   // 思想手记：{ nodeId: [{ text, at, fb }] }
 

@@ -89,16 +89,17 @@ describe('神煞 · 十二项口诀对账', () => {
     expect(hitsOf(CASE1985, '羊刃')).toContain('日干壬→子@year,month'); // 正例②
     expect(hitsOf(BEN, '羊刃')).toContain('日干己→未@month,day');   // 正例③（阴干亦有刃说）
     expect(names(ZENG)).not.toContain('羊刃');                     // 反例：丙→午、辛→戌，俱无
-    // 流派②帝旺说（乙寅）与流派①（乙辰）在此显式分叉，本盘取①
+    // 与六爻神煞层共用一张表（shensha.ts YANG_REN）；子平论刃只以日干，年干不再并列
     const spec = baziShenSha(BEN).specs.find((s) => s.name === '羊刃')!;
-    expect(spec.note).toContain('帝旺位');
-    expect(spec.note).toContain('阴干无刃');
+    expect(spec.refs).toEqual(['日干']);
+    expect(spec.rule).toContain('禄前一辰');
+    expect(spec.note).toContain('YANG_REN');
   });
 
   it('6 空亡（旬空）：甲子旬戌亥、甲戌旬申酉、甲申旬午未、甲午旬辰巳、甲辰旬寅卯、甲寅旬子丑', () => {
     expect(names(MAO)).toContain('空亡');                          // 正例①：丁酉属甲午旬，年月支巳、时支辰俱空
-    expect(hitsOf(MAO, '空亡')[0]).toBe('日支丁酉→巳、辰@year,time');
-    expect(hitsOf(CASE1985, '空亡')[0]).toBe('日支壬寅→巳@time');   // 正例②：壬寅属甲午旬
+    expect(hitsOf(MAO, '空亡')[0]).toBe('日柱丁酉→巳、辰@year,time');
+    expect(hitsOf(CASE1985, '空亡')[0]).toBe('日柱壬寅→巳@time');   // 正例②：壬寅属甲午旬
     expect(names(BEN)).not.toContain('空亡');                      // 反例：己未属甲寅旬，空子丑，四柱无子丑
   });
 
@@ -539,7 +540,7 @@ describe('旺衰依据 · 逐条可指认', () => {
     expect(ws.counts['得令']).toBe(0);
   });
 
-  it('月令生我必须判得令（丙火生卯月：木生火）——旧卡方向相反的回归锚', () => {
+  it('月令生我必须判得令（丙火生卯月：木生火）——「生」两支方向的回归锚', () => {
     const bz = paiBazi({ year: 1990, month: 4, day: 1, hour: 10, minute: 0, gender: '男' });
     expect(bz.dayMaster).toBe('丙');
     expect(bz.month.zhi).toBe('卯');
@@ -548,9 +549,10 @@ describe('旺衰依据 · 逐条可指认', () => {
     expect(ws.deling.text).toContain('月令生我（得令）');
     expect(ws.deling.text).toContain('木生火');
     expect(ws.conclusion).toBe('偏旺');
-    // 旧卡（verdicts.js）在此把「月令生我」写成「我生月令（泄气）」，故结论相反 → 显式暴露不一致
-    expect(ws.legacyConclusion).toBe('偏弱');
-    expect(ws.consistent).toBe(false);
+    // verdicts.js 已修正为「月令生我也 +2」；两处公式同向，consistent 应为 true。
+    // 若此处变成 false，说明 app 侧公式又分叉了（探针报错），不是流派差异。
+    expect(ws.legacyConclusion).toBe('偏旺');
+    expect(ws.consistent).toBe(true);
     expect(ws.note).toContain('judgeBazi');
   });
 
@@ -562,8 +564,32 @@ describe('旺衰依据 · 逐条可指认', () => {
     expect(ws.deling.hit).toBe(false);
     expect(ws.deling.text).toContain('我生月令（泄气）');
     expect(ws.conclusion).toBe('偏弱');
-    expect(ws.legacyConclusion).toBe('偏旺'); // 旧卡方向相反
-    expect(ws.consistent).toBe(false);
+    expect(ws.legacyConclusion).toBe('偏弱'); // verdicts.js 已同向（我生 −1）
+    expect(ws.consistent).toBe(true);
+  });
+
+  it('批量自证：248 盘（1980–2010 各季）consistent 全为 true，且结论与独立算式一致', () => {
+    // 独立算式（不引用被测模块的表）：月令同气/生我 +2、我生/我克 −1、克我 −2；日支同气/生我 +1
+    const SHENG: Record<string, string> = { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' };
+    const KE: Record<string, string> = { 木: '土', 土: '水', 水: '火', 火: '金', 金: '木' };
+    const ZHI_WX: Record<string, string> = { 子: '水', 丑: '土', 寅: '木', 卯: '木', 辰: '土', 巳: '火', 午: '火', 未: '土', 申: '金', 酉: '金', 戌: '土', 亥: '水' };
+    let n = 0;
+    const bad: string[] = [];
+    for (let y = 1980; y <= 2010; y++) for (const m of [2, 5, 8, 11]) for (const d of [7, 21]) {
+      const bz = paiBazi({ year: y, month: m, day: d, hour: 10, minute: 0, gender: '女' });
+      const me = bz.dayMasterWuXing;
+      const mw = ZHI_WX[bz.month.zhi], dw = ZHI_WX[bz.day.zhi];
+      const deling = mw === me || SHENG[mw] === me ? 2 : SHENG[me] === mw || KE[me] === mw ? -1 : -2;
+      const dedi = dw === me || SHENG[dw] === me ? 1 : 0;
+      const expectConc = deling + dedi > 0 ? '偏旺' : '偏弱';
+      const ws = wangShuaiEvidence(bz);
+      n++;
+      if (!ws.consistent || ws.conclusion !== expectConc) {
+        bad.push(`${bz.year.ganZhi}${bz.month.ganZhi}${bz.day.ganZhi} 库=${ws.conclusion} 算=${expectConc} consistent=${ws.consistent}`);
+      }
+    }
+    expect(n).toBe(248);
+    expect(bad).toEqual([]);
   });
 
   it('结论文本与月令状态自洽，且不改断语卡结论字段', () => {

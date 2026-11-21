@@ -28139,7 +28139,20 @@ var require_earthlyBranch5 = __commonJS({
   "node_modules/iztro/lib/i18n/locales/en-US/earthlyBranch.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = {};
+    exports.default = {
+      ziEarthly: "zi",
+      chouEarthly: "chou",
+      yinEarthly: "yin",
+      maoEarthly: "mao",
+      chenEarthly: "chen",
+      siEarthly: "si",
+      wuEarthly: "woo",
+      weiEarthly: "wei",
+      shenEarthly: "shen",
+      youEarthly: "you",
+      xuEarthly: "xu",
+      haiEarthly: "hai"
+    };
   }
 });
 
@@ -28166,7 +28179,18 @@ var require_heavenlyStem5 = __commonJS({
   "node_modules/iztro/lib/i18n/locales/en-US/heavenlyStem.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = {};
+    exports.default = {
+      jiaHeavenly: "jia",
+      yiHeavenly: "yi",
+      bingHeavenly: "bing",
+      dingHeavenly: "ding",
+      wuHeavenly: "wu",
+      jiHeavenly: "ji",
+      gengHeavenly: "geng",
+      xinHeavenly: "xin",
+      renHeavenly: "ren",
+      guiHeavenly: "gui"
+    };
   }
 });
 
@@ -37470,6 +37494,9 @@ var GravSimEndpoint = class {
 };
 
 // src/timeContext.ts
+function lateZiLabel(mode) {
+  return mode === "00" ? "0 \u70B9\uFF08\u5B50\u6B63\uFF09\u6362\u65E5" : "23 \u70B9\uFF08\u5B50\u521D\uFF09\u6362\u65E5";
+}
 var CITY_ROWS = [
   // —— 中国大陆：官方一律 +8（含新疆西藏），1986–1991 有夏令时 ——
   ["\u5317\u4EAC", "beijing", "\u4E2D\u56FD", "Asia/Shanghai", 39.9042, 116.4074, 8, "CN1986"],
@@ -37736,6 +37763,77 @@ function lookupCityTimeZone(query) {
 function listCityTimeZones() {
   return CITY_TZ_TABLE.map((c) => ({ ...c }));
 }
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const rad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * rad;
+  const dLon = (lon2 - lon1) * rad;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+var VALID_UTC_OFFSETS = [
+  -11,
+  -10,
+  -9.5,
+  -9,
+  -8,
+  -7,
+  -6,
+  -5,
+  -4,
+  -3.5,
+  -3,
+  -2,
+  -1,
+  0,
+  1,
+  2,
+  3,
+  3.5,
+  4,
+  4.5,
+  5,
+  5.5,
+  5.75,
+  6,
+  6.5,
+  7,
+  8,
+  8.75,
+  9,
+  9.5,
+  10,
+  10.5,
+  11,
+  12,
+  12.75,
+  13,
+  14
+];
+function offsetFromLongitude(lon) {
+  const raw = lon / 15;
+  let best = VALID_UTC_OFFSETS[0];
+  for (const o of VALID_UTC_OFFSETS) {
+    if (Math.abs(o - raw) < Math.abs(best - raw)) best = o;
+  }
+  return best;
+}
+function nearestCityByCoords(lat, lon, maxKm = 600) {
+  let best = null;
+  for (const c of CITY_TZ_TABLE) {
+    const km = haversineKm(lat, lon, c.lat, c.lon);
+    if (!best || km < best.km) best = { city: c, km };
+  }
+  if (!best || best.km > maxKm) return null;
+  return best;
+}
+function estimateTzFromCoords(lat, lon) {
+  const near = nearestCityByCoords(lat, lon);
+  if (near) return { offset: near.city.stdOffset, method: "nearest-city", km: Math.round(near.km), city: near.city };
+  return { offset: offsetFromLongitude(lon), method: "longitude", km: null, city: null };
+}
+var GEO_CONFLICT_KM = 200;
+var GEO_MERIDIAN_TOLERANCE_MIN = 180;
 var CN_DST_WINDOWS = {
   // 年: [起月, 起日, 止月, 止日]
   1986: [5, 4, 9, 14],
@@ -37899,14 +37997,36 @@ function resolveTime(input) {
   const cityHit = lookupCityTimeZone(input.city) ?? lookupCityTimeZone(input.place);
   let longitude = Number.isFinite(lonRaw) ? lonRaw : null;
   let latitude = Number.isFinite(latRaw) ? latRaw : null;
+  let geoConflict = false;
+  let geoConflictNote = null;
   if (cityHit && (longitude == null || latitude == null)) {
     longitude = longitude ?? cityHit.lon;
     latitude = latitude ?? cityHit.lat;
+  }
+  if (cityHit && longitude != null && latitude != null) {
+    const km = haversineKm(latitude, longitude, cityHit.lat, cityHit.lon);
+    if (km > GEO_CONFLICT_KM) {
+      geoConflict = true;
+      const head = `\u7ECF\u7EAC\u5EA6\uFF08${longitude.toFixed(2)}, ${latitude.toFixed(2)}\uFF09\u4E0E\u57CE\u5E02\u300C${cityHit.name}\u300D\u76F8\u8DDD\u7EA6 ${Math.round(km)}km`;
+      if (input.preferCoordinates) {
+        geoConflictNote = `${head}\uFF1B\u5DF2\u6309\u7ECF\u7EAC\u5EA6\u7B97\u771F\u592A\u9633\u65F6\uFF0C\u4F46\u65F6\u533A\u4ECD\u7528\u300C${cityHit.name}\u300D\u7684 ${formatOffsetName(cityHit.stdOffset)}\u2014\u2014\u8BF7\u786E\u8BA4\u54EA\u4E00\u4E2A\u624D\u662F\u51FA\u751F\u5730`;
+      } else {
+        longitude = cityHit.lon;
+        latitude = cityHit.lat;
+        geoConflictNote = `${head}\uFF1B\u5DF2\u6309\u57CE\u5E02\u300C${cityHit.name}\u300D\u7684\u5750\u6807\u4E0E\u65F6\u533A\u91CD\u7B97\uFF08\u57CE\u5E02\u51B3\u5B9A\u65F6\u533A\uFF0C\u7ECF\u7EAC\u5EA6\u89C6\u4E3A\u65E7\u5730\u70B9\u6B8B\u7559\uFF09`;
+      }
+      warnings.push(geoConflictNote);
+    }
   }
   let tzSource;
   let baseOffset;
   let sourceTzName;
   let tzFallback = false;
+  let tzEstimated = false;
+  let tzEstimateMethod = null;
+  let tzEstimateKm = null;
+  let tzEstimateCity = null;
+  let tzCity = cityHit;
   if (Number.isFinite(input.utcOffsetHours)) {
     baseOffset = input.utcOffsetHours;
     tzSource = "explicit";
@@ -37915,15 +38035,47 @@ function resolveTime(input) {
     baseOffset = cityHit.stdOffset;
     tzSource = "city";
     sourceTzName = cityHit.tz;
+  } else if (longitude != null && latitude != null) {
+    const est = estimateTzFromCoords(latitude, longitude);
+    if (est.method !== "nearest-city" && input.tzPolicy === "strict") {
+      throw new Error(
+        `\u65E0\u6CD5\u53EF\u9760\u786E\u5B9A\u65F6\u533A\uFF1A\u5B9A\u4F4D\u70B9\uFF08${longitude.toFixed(2)}, ${latitude.toFixed(2)}\uFF09600km \u5185\u6CA1\u6709\u5185\u7F6E\u57CE\u5E02\uFF0C\u7ECF\u5EA6\u63A8\u7B97\u6CD5\u5728 strict \u6A21\u5F0F\u4E0B\u4E0D\u4F5C\u6570\u3002\u8BF7\u8865\u9009\u57CE\u5E02\uFF0C\u6216\u76F4\u63A5\u7ED9 utcOffsetHours\u3002`
+      );
+    }
+    baseOffset = est.offset;
+    tzSource = "estimated";
+    tzEstimated = true;
+    tzEstimateMethod = est.method;
+    tzEstimateKm = est.km;
+    tzEstimateCity = est.city ? est.city.name : null;
+    tzCity = est.city;
+    sourceTzName = est.city ? est.city.tz : formatOffsetName(est.offset);
+    warnings.push(
+      est.city ? `\u672A\u9009\u57CE\u5E02\uFF1A\u65F6\u533A\u6309\u6700\u8FD1\u7684\u300C${est.city.name}\u300D\uFF08\u7EA6 ${est.km}km\uFF09\u4F30\u7B97\u4E3A ${formatOffsetName(est.offset)}\uFF0C\u590F\u4EE4\u65F6\u89C4\u5219\u6CBF\u7528\u8BE5\u57CE\u5E02\u2014\u2014\u5982\u4E0D\u7B26\u8BF7\u8865\u9009\u57CE\u5E02` : `\u672A\u9009\u57CE\u5E02\uFF1A\u65F6\u533A\u6309\u7ECF\u5EA6 ${longitude.toFixed(2)}\xB0 \u4F30\u7B97\u4E3A ${formatOffsetName(est.offset)}\uFF08\u5DF2\u5438\u9644\u5230\u6CD5\u5B9A\u504F\u79FB\uFF0C**\u672A\u8BA1\u590F\u4EE4\u65F6**\uFF09\u2014\u2014\u8BF7\u6838\u5BF9`
+    );
   } else {
+    if (input.tzPolicy === "strict") {
+      throw new Error("\u65E0\u6CD5\u786E\u5B9A\u65F6\u533A\uFF1A\u65E2\u6CA1\u6709\u57CE\u5E02\uFF0C\u4E5F\u6CA1\u6709\u7ECF\u7EAC\u5EA6\u6216 utcOffsetHours\u3002\u8BF7\u8865\u9F50\u51FA\u751F\u5730\u540E\u518D\u6392\u76D8\u3002");
+    }
     baseOffset = 8;
     tzSource = "fallback";
     sourceTzName = formatOffsetName(8);
     tzFallback = true;
     warnings.push("\u672A\u8BC6\u522B\u51FA\u751F\u5730\u65F6\u533A\uFF0C\u5DF2\u6309\u4E1C\u516B\u533A\uFF08UTC+8\uFF09\u515C\u5E95\u2014\u2014\u8BF7\u8865\u9009\u57CE\u5E02\u6216\u624B\u52A8\u6307\u5B9A\u65F6\u533A");
   }
+  let trueSolarBlockedByConflict = false;
+  if (tzSource === "explicit" && longitude != null) {
+    const lonOffsetMin = 4 * (longitude - baseOffset * 15);
+    if (Math.abs(lonOffsetMin) > GEO_MERIDIAN_TOLERANCE_MIN) {
+      geoConflict = true;
+      trueSolarBlockedByConflict = true;
+      geoConflictNote = `\u7ECF\u5EA6 ${longitude.toFixed(2)}\xB0 \u4E0E\u6240\u8BBE\u65F6\u533A ${formatOffsetName(baseOffset)} \u7684\u4E2D\u592E\u7ECF\u7EBF\u5DEE ${(lonOffsetMin / 60).toFixed(1)} \u5C0F\u65F6\uFF1B\u5224\u5B9A\u4E3A\u65E7\u5730\u70B9\u6B8B\u7559\uFF0C\u771F\u592A\u9633\u65F6\u5DF2\u505C\u7528\uFF08\u6539\u7528\u6807\u51C6\u65F6\uFF09\u2014\u2014\u8BF7\u91CD\u9009\u57CE\u5E02\uFF0C\u6216\u8865\u586B\u8BE5\u5730\u771F\u5B9E\u7ECF\u5EA6`;
+      warnings.push(geoConflictNote);
+      longitude = null;
+    }
+  }
   const civilMs = wallEpoch(civil.year, civil.month, civil.day, civil.hour, civil.minute, civil.second);
-  const rule = cityHit ? cityHit.dst : "none";
+  const rule = tzCity ? tzCity.dst : "none";
   let inDst = false;
   if (tzSource !== "explicit" && rule !== "none") {
     if (dstActiveAtStdWall(rule, baseOffset, civilMs - HOUR)) inDst = true;
@@ -37950,7 +38102,7 @@ function resolveTime(input) {
   let equationOfTime = null;
   if (trueSolarTimeEnabled) {
     if (longitude == null) {
-      warnings.push("\u7F3A\u51FA\u751F\u5730\u7ECF\u5EA6\uFF0C\u771F\u592A\u9633\u65F6\u672A\u6821\u6B63");
+      if (!trueSolarBlockedByConflict) warnings.push("\u7F3A\u51FA\u751F\u5730\u7ECF\u5EA6\uFF0C\u771F\u592A\u9633\u65F6\u672A\u6821\u6B63");
     } else {
       const eot = equationOfTimeMinutes(new Date(utcMs));
       const lonOffset = 4 * (longitude - stdMeridian);
@@ -37990,6 +38142,12 @@ function resolveTime(input) {
     tzSource,
     sourceTzName,
     tzFallback,
+    tzEstimated,
+    tzEstimateMethod,
+    tzEstimateKm,
+    tzEstimateCity,
+    geoConflict,
+    geoConflictNote,
     stdMeridian,
     longitude,
     latitude,
@@ -38009,10 +38167,15 @@ function formatCivilTime(t, withSeconds = false) {
   const base = `${t.year}-${pad2(t.month)}-${pad2(t.day)} ${pad2(t.hour)}:${pad2(t.minute)}`;
   return withSeconds ? `${base}:${pad2(t.second)}` : base;
 }
+function applyLateZi(t, mode) {
+  if (mode !== "00" || t.hour !== 23) return { civil: t, applied: false };
+  return { civil: { ...t, hour: 0 }, applied: true };
+}
 function civilForPaipan(input) {
   const num = (v) => typeof v === "number" && Number.isFinite(v);
   const hasTzHint = input.city != null || input.place != null || num(input.utcOffsetHours);
   const hasGeo = num(input.lat) || num(input.latitude) || num(input.lon) || num(input.lonEast) || num(input.longitude);
+  const lateZiMode = input.lateZiMode === "00" ? "00" : "23";
   const raw = {
     year: input.year,
     month: input.month,
@@ -38021,14 +38184,33 @@ function civilForPaipan(input) {
     minute: input.minute ?? 0
   };
   if (!hasTzHint && !hasGeo) {
-    return { civil: raw, applied: false, usedTrueSolar: false, crossedDay: false, resolution: null };
+    const z2 = applyLateZi(raw, lateZiMode);
+    return {
+      civil: z2.civil,
+      applied: false,
+      usedTrueSolar: false,
+      crossedDay: false,
+      lateZiApplied: z2.applied,
+      lateZiMode,
+      resolution: null
+    };
   }
   const r = resolveTime(input);
   const useSolar = !!(r.trueSolar && r.trueSolarTimeEnabled);
   const t = useSolar ? r.trueSolar : r.standard;
-  const civil = { year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute };
+  const conv = { year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute };
+  const z = applyLateZi(conv, lateZiMode);
+  const civil = z.civil;
   const crossedDay = civil.year !== raw.year || civil.month !== raw.month || civil.day !== raw.day;
-  return { civil, applied: true, usedTrueSolar: useSolar, crossedDay, resolution: r };
+  return {
+    civil,
+    applied: true,
+    usedTrueSolar: useSolar,
+    crossedDay,
+    lateZiApplied: z.applied,
+    lateZiMode,
+    resolution: r
+  };
 }
 
 // src/calendar.ts
@@ -38268,17 +38450,56 @@ function toApparentSolarTime(date, longitude, standardMeridian = 120) {
 }
 function castByTime(dateInput, options = {}) {
   const original = typeof dateInput === "number" ? new Date(dateInput) : dateInput;
+  const hasTzLayer = options.city != null || options.place != null || options.utcOffsetHours != null || [options.lat, options.latitude, options.lon, options.lonEast].some((v) => typeof v === "number" && Number.isFinite(v));
+  if (hasTzLayer) {
+    const eff = civilForPaipan({
+      year: original.getFullYear(),
+      month: original.getMonth() + 1,
+      day: original.getDate(),
+      hour: original.getHours(),
+      minute: original.getMinutes(),
+      second: original.getSeconds(),
+      city: options.city,
+      place: options.place,
+      lat: options.lat,
+      latitude: options.latitude,
+      lon: options.lon ?? options.longitude,
+      lonEast: options.lonEast,
+      utcOffsetHours: options.utcOffsetHours,
+      // 调用方已做过真太阳时校正（applyTst/applyTstAt）时，别二次校正
+      trueSolarTime: options.alreadyApparent ? false : void 0,
+      tzPolicy: options.tzPolicy,
+      lateZiMode: options.lateZiMode
+    });
+    const c = eff.civil;
+    const core2 = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, 0, eff.lateZiMode);
+    const shown = new Date(c.year, c.month - 1, c.day, c.hour, c.minute ?? 0, 0);
+    return {
+      ...core2,
+      apparentSolarTime: shown,
+      civil: c,
+      dayBoundary: lateZiLabel(eff.lateZiMode),
+      timeWarnings: eff.resolution ? eff.resolution.warnings : []
+    };
+  }
   const apparent = options.longitude !== void 0 && !options.alreadyApparent ? toApparentSolarTime(original, options.longitude) : new Date(original.getTime());
   const bj = new Date(apparent.getTime() + 8 * 36e5);
-  const y = bj.getUTCFullYear();
-  const mo = bj.getUTCMonth() + 1;
-  const d = bj.getUTCDate();
-  const hh = bj.getUTCHours();
-  const mm = bj.getUTCMinutes();
-  const ss = bj.getUTCSeconds();
+  const core = castFromClock(
+    bj.getUTCFullYear(),
+    bj.getUTCMonth() + 1,
+    bj.getUTCDate(),
+    bj.getUTCHours(),
+    bj.getUTCMinutes(),
+    bj.getUTCSeconds(),
+    options.lateZiMode
+  );
+  return { ...core, apparentSolarTime: apparent };
+}
+function castFromClock(y, mo, d, hh, mm, ss, lateZiMode) {
   const solar = import_lunar_javascript2.Solar.fromYmdHms(y, mo, d, hh, mm, ss);
   const lunar = solar.getLunar();
-  const lunarBase = hh === 23 ? import_lunar_javascript2.Solar.fromYmdHms(y, mo, d, 0, 0, 0).next(1).getLunar() : lunar;
+  const rollDay = hh === 23 && lateZiMode !== "00";
+  const lunarBase = rollDay ? import_lunar_javascript2.Solar.fromYmdHms(y, mo, d, 0, 0, 0).next(1).getLunar() : lunar;
   const yearZhi = lunarBase.getYearInGanZhiExact().charAt(1);
   const hourZhi = lunar.getTimeInGanZhi().charAt(1);
   const yearBranchOrder = ZHI_ORDER2[yearZhi];
@@ -38308,8 +38529,7 @@ function castByTime(dateInput, options = {}) {
     yearBranchOrder,
     lunarMonth,
     lunarDay,
-    hourBranchOrder,
-    apparentSolarTime: apparent
+    hourBranchOrder
   };
 }
 
@@ -38668,15 +38888,15 @@ var RI_LU = {
 };
 var YANG_REN = {
   \u7532: "\u536F",
-  \u4E59: "\u5BC5",
+  \u4E59: "\u8FB0",
   \u4E19: "\u5348",
-  \u4E01: "\u5DF3",
+  \u4E01: "\u672A",
   \u620A: "\u5348",
-  \u5DF1: "\u5DF3",
+  \u5DF1: "\u672A",
   \u5E9A: "\u9149",
-  \u8F9B: "\u7533",
+  \u8F9B: "\u620C",
   \u58EC: "\u5B50",
-  \u7678: "\u4EA5"
+  \u7678: "\u4E11"
 };
 var WEN_CHANG = {
   \u7532: "\u5DF3",
@@ -38792,7 +39012,29 @@ function paipan(input) {
     }
   }
   const yaoValues = values;
-  const sz = solarToSiZhu(input);
+  const eff = civilForPaipan({
+    year: input.year,
+    month: input.month,
+    day: input.day,
+    hour: input.hour,
+    minute: input.minute,
+    city: input.city,
+    place: input.place,
+    lat: input.lat,
+    latitude: input.latitude,
+    lon: input.lon,
+    lonEast: input.lonEast,
+    longitude: input.longitude,
+    utcOffsetHours: input.utcOffsetHours,
+    trueSolarTime: input.trueSolarTime,
+    tzPolicy: input.tzPolicy,
+    lateZiMode: input.lateZiMode
+  });
+  const sz = solarToSiZhu(
+    { ...input, ...eff.civil },
+    // 时区层已经把夏令时扣过一遍了，不能再扣第二次
+    { applyChinaDst: !eff.applied }
+  );
   const { upper, lower } = getTrigramsFromValues(yaoValues);
   const benMeta = withShouGua(getGuaMeta(upper, lower));
   const benNajia = getFullNajia(upper, lower);
@@ -38891,7 +39133,12 @@ function paipan(input) {
     movingPositions,
     fuShenList,
     shenSha,
-    guaShen
+    guaShen,
+    civil: eff.civil,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    timeApplied: eff.applied,
+    usedTrueSolar: eff.usedTrueSolar
   };
 }
 function NajiaYinYang(v) {
@@ -39668,7 +39915,7 @@ function buildPillar(ganZhi, dayGan, naYin, isDay) {
 }
 function paiBazi(input) {
   const eff = civilForPaipan(input);
-  const birth = eff.applied ? eff.civil : { year: input.year, month: input.month, day: input.day, hour: input.hour, minute: input.minute ?? 0 };
+  const birth = eff.civil;
   const { year, month, day, hour, gender } = { ...input, ...birth };
   const minute = birth.minute ?? 0;
   const lunar = import_lunar_javascript3.Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
@@ -39732,7 +39979,9 @@ function paiBazi(input) {
       startText: `${yun.getStartYear()}\u5E74${yun.getStartMonth()}\u6708${yun.getStartDay()}\u5929`,
       list
     },
-    wuXingCount: count
+    wuXingCount: count,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : []
   };
 }
 function liuNianGanZhiSequence(fromYear, years) {
@@ -39878,18 +40127,6 @@ var WEN_CHANG2 = {
   \u58EC: "\u5BC5",
   \u7678: "\u536F"
 };
-var YANG_REN2 = {
-  \u7532: "\u536F",
-  \u4E59: "\u8FB0",
-  \u4E19: "\u5348",
-  \u4E01: "\u672A",
-  \u620A: "\u5348",
-  \u5DF1: "\u672A",
-  \u5E9A: "\u9149",
-  \u8F9B: "\u620C",
-  \u58EC: "\u5B50",
-  \u7678: "\u4E11"
-};
 var JIN_YU = {
   \u7532: "\u8FB0",
   \u4E59: "\u5DF3",
@@ -39937,7 +40174,7 @@ var SHEN_SHA_SPECS = [
     rule: "\u7532\u620A\u5E9A\u725B\u7F8A\uFF0C\u4E59\u5DF1\u9F20\u7334\u4E61\uFF0C\u4E19\u4E01\u732A\u9E21\u4F4D\uFF0C\u58EC\u7678\u5154\u86C7\u85CF\uFF0C\u516D\u8F9B\u9022\u9A6C\u864E\uFF0C\u6B64\u662F\u8D35\u4EBA\u65B9\u3002",
     refs: ["\u65E5\u5E72", "\u5E74\u5E72"],
     targetKind: "\u652F",
-    note: "\u300A\u6E0A\u6D77\u5B50\u5E73\u300B\u539F\u6587\u4F5C\u300C\u7532\u620A\u517C\u725B\u7F8A\u2026\u2026\u5E9A\u8F9B\u9022\u9A6C\u864E\u300D\uFF0C\u5219\u5E9A\u89C1\u5348\u5BC5\u3001\u8F9B\u89C1\u4E11\u672A\uFF1B\u672C\u76D8\u4ECE\u300A\u4E09\u547D\u901A\u4F1A\u300B\u901A\u884C\u672C\uFF08\u7532\u620A\u5E9A\u540C\u53D6\u4E11\u672A\uFF0C\u8F9B\u72EC\u53D6\u5348\u5BC5\uFF09\u3002\u8FB0\u620C\u4E3A\u9B41\u7F61\uFF0C\u5929\u4E59\u4E0D\u4E34\uFF0C\u4E24\u8BF4\u7686\u7136\u3002"
+    note: "\u300A\u6E0A\u6D77\u5B50\u5E73\xB7\u8BBA\u8D77\u7389\u5802\u5929\u4E59\u8D35\u4EBA\u300B\u539F\u6587\u4F5C\u300C\u7532\u620A\u517C\u725B\u7F8A\u2026\u2026\u5E9A\u8F9B\u9022\u9A6C\u864E\u300D\uFF0C\u5219\u7532\u620A\u540C\u53D6\u4E11\u672A\u3001\u5E9A\u8F9B\u540C\u53D6\u5348\u5BC5\uFF08\u5E9A\u4E0D\u590D\u53D6\u4E11\u672A\uFF0C\u8F9B\u4EA6\u975E\u4E11\u672A\uFF09\uFF1B\u672C\u76D8\u4ECE\u300A\u4E09\u547D\u901A\u4F1A\u300B\u901A\u884C\u672C\u300C\u7532\u620A\u5E9A\u725B\u7F8A\u2026\u2026\u516D\u8F9B\u9022\u9A6C\u864E\u300D\uFF0C\u5E9A\u5E76\u53D6\u4E11\u672A\u3002\u8FB0\u620C\u4E3A\u9B41\u7F61\uFF0C\u5929\u4E59\u4E0D\u4E34\uFF0C\u4E24\u8BF4\u7686\u7136\u3002"
   },
   {
     name: "\u6587\u660C",
@@ -39965,10 +40202,10 @@ var SHEN_SHA_SPECS = [
   {
     name: "\u7F8A\u5203",
     source: "\u300A\u4E09\u547D\u901A\u4F1A\xB7\u8BBA\u9633\u5203\u300B\u300A\u8BBA\u7F8A\u5203\u300B",
-    rule: "\u9633\u5203\u8005\u5373\u7984\u524D\u4E00\u4F4D\uFF1A\u7532\u536F\u3001\u4E59\u8FB0\u3001\u4E19\u620A\u5348\u3001\u4E01\u5DF1\u672A\u3001\u5E9A\u9149\u3001\u8F9B\u620C\u3001\u58EC\u5B50\u3001\u7678\u4E11\u3002",
-    refs: ["\u65E5\u5E72", "\u5E74\u5E72"],
+    rule: "\u7F8A\u5203\u5E38\u5C45\u7984\u524D\u4E00\u8FB0\uFF1A\u7532\u536F\u3001\u4E59\u8FB0\u3001\u4E19\u620A\u5348\u3001\u4E01\u5DF1\u672A\u3001\u5E9A\u9149\u3001\u8F9B\u620C\u3001\u58EC\u5B50\u3001\u7678\u4E11\u3002",
+    refs: ["\u65E5\u5E72"],
     targetKind: "\u652F",
-    note: "\u4E09\u8BF4\u5E76\u5B58\uFF1A\u2460\u7984\u524D\u4E00\u4F4D\uFF08\u672C\u76D8\u91C7\u7528\uFF0C\u5168\u5341\u5E72\uFF09\uFF1B\u2461\u5E1D\u65FA\u4F4D\uFF08\u9634\u5E72\u9006\u884C\uFF09\u4E59\u5BC5\u4E01\u5DF3\u5DF1\u5DF3\u8F9B\u7533\u7678\u4EA5\uFF0C\u672C\u4ED3\u516D\u723B\u795E\u715E\u8868\u7528\u6B64\u8BF4\uFF1B\u2462\u53EA\u8BBA\u4E94\u9633\u5E72\u3001\u9634\u5E72\u65E0\u5203\u3002"
+    note: "\u5B50\u5E73\u8BBA\u5203\u53EA\u4EE5\u65E5\u5E72\uFF08\u5E74\u5E72\u4E0D\u8BBA\u5203\uFF0C\u6545\u4E0D\u518D\u5E76\u5217\u5E74\u5E72\uFF09\u3002\u8868\u4E0E\u516D\u723B\u795E\u715E\u5C42\u5171\u7528 shensha.ts \u7684 YANG_REN\u3002\u300C\u60DF\u4E94\u9633\u5E72\u6709\u5203\u300D\u662F\u300A\u8BBA\u9633\u5203\u300B\u7684\u9633\u5203\u683C\u4E4B\u8BF4\uFF0C\u4E0D\u662F\u672C\u6761\u795E\u715E\uFF0C\u8BE6\u89C1 shensha.ts \u8868\u6CE8\u3002"
   },
   {
     name: "\u7A7A\u4EA1",
@@ -40068,6 +40305,8 @@ function refValueOf(bz, ref) {
       return { value: bz.day.gan, kind: "\u5E72" };
     case "\u65E5\u652F":
       return { value: bz.day.zhi, kind: "\u652F" };
+    case "\u65E5\u67F1":
+      return { value: bz.day.ganZhi, kind: "\u652F" };
     case "\u5E74\u5E72":
       return { value: bz.year.gan, kind: "\u5E72" };
     case "\u5E74\u652F":
@@ -40084,7 +40323,7 @@ function targetsOf(name, refValue, refKind) {
     case "\u6587\u660C":
       return refKind === "\u5E72" ? [WEN_CHANG2[key]] : [];
     case "\u7F8A\u5203":
-      return refKind === "\u5E72" ? [YANG_REN2[key]] : [];
+      return refKind === "\u5E72" ? [YANG_REN[key]] : [];
     case "\u91D1\u8206":
       return refKind === "\u5E72" ? [JIN_YU[key]] : [];
     case "\u9A7F\u9A6C":
@@ -40124,7 +40363,7 @@ function baziShenSha(bz) {
       if (positions.length) {
         hits.push({
           name: "\u7A7A\u4EA1",
-          ref: "\u65E5\u652F",
+          ref: "\u65E5\u67F1",
           refValue: bz.day.ganZhi,
           target: positions.map((k) => bz[k].zhi).join("\u3001"),
           targetKind: "\u652F",
@@ -40687,9 +40926,9 @@ function wangShuaiEvidence(bz) {
   items.push({ label: ratio >= 0.5 ? "\u5F97\u52BF" : ratio <= 0.25 ? "\u5931\u52BF" : "\u52BF\u5747", text: deshiText, src: "\u300A\u6E0A\u6D77\u5B50\u5E73\xB7\u8BBA\u65E5\u4E3B\u5F3A\u5F31\u300B\uFF08\u53C2\u8003\u9879\uFF0C\u4E0D\u53C2\u4E0E\u5B9A\u5F3A\u5F31\uFF09", good: ratio >= 0.5 ? true : ratio <= 0.25 ? false : null });
   const score = delingScore + (dediHit ? 1 : 0);
   const conclusion = score > 0 ? "\u504F\u65FA" : "\u504F\u5F31";
-  const legacySheng = SHENG2[mWx] === me ? -1 : SHENG2[me] === mWx ? 2 : null;
+  const legacySheng = SHENG2[mWx] === me ? 2 : SHENG2[me] === mWx ? -1 : null;
   const legacyDeling = mWx === me ? 2 : legacySheng !== null ? legacySheng : KE2[mWx] === me ? -2 : KE2[me] === mWx ? -1 : 0;
-  const legacyDayGood = dWx === me || SHENG2[me] === dWx;
+  const legacyDayGood = dWx === me || SHENG2[dWx] === me;
   const legacyScore = legacyDeling + (legacyDayGood ? 1 : 0);
   const legacyConclusion = legacyScore > 0 ? "\u504F\u65FA" : "\u504F\u5F31";
   const conclusionText = conclusion === "\u504F\u65FA" ? `\u65E5\u4E3B${me}\u504F\u65FA\u2014\u2014\u559C\u8D22\uFF08\u6211\u514B\uFF09\u3001\u5B98\u6740\uFF08\u514B\u6211\uFF09\u3001\u98DF\u4F24\uFF08\u6211\u751F\uFF09\u6765\u514B\u6CC4\uFF0C\u5FCC\u518D\u6DFB\u5370\u6BD4\u3002` : `\u65E5\u4E3B${me}\u504F\u5F31\u2014\u2014\u559C\u5370\uFF08\u751F\u6211\uFF09\u3001\u6BD4\u52AB\uFF08\u540C\u6211\uFF09\u6765\u751F\u6276\uFF0C\u5FCC\u8D22\u5B98\u98DF\u4F24\u518D\u8017\u3002`;
@@ -40741,10 +40980,13 @@ function shichenIndex(hour, minute = 0) {
   return Math.floor((h + 1) / 2);
 }
 function getMeridian(date) {
-  const idx = shichenIndex(date.getHours(), date.getMinutes());
+  return meridianFromClock(date.getHours(), date.getMinutes());
+}
+function meridianFromClock(hour, minute = 0) {
+  const idx = shichenIndex(hour, minute);
   const row = TABLE[idx];
-  const h = date.getHours();
-  const m = date.getMinutes();
+  const h = hour;
+  const m = minute;
   let endHour;
   if (h === 23) endHour = 25;
   else if (h === 0) endHour = 1;
@@ -40764,6 +41006,19 @@ function getMeridian(date) {
     paired: row.paired,
     nextZhi: ZHI2[(idx + 1) % 12],
     minutesToNext
+  };
+}
+function getMeridianByTime(input) {
+  const eff = civilForPaipan(input);
+  const c = eff.civil;
+  const info = meridianFromClock(c.hour, c.minute ?? 0);
+  return {
+    ...info,
+    civil: c,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    applied: eff.applied,
+    usedTrueSolar: eff.usedTrueSolar
   };
 }
 
@@ -41423,8 +41678,9 @@ function shiJiaGenerate(hourStem, hourBranch, juNumber, dun, fourPillars, solarT
 
 // src/qimen.ts
 function paiQiMen(input) {
-  const { year, month, day, hour } = input;
-  const minute = input.minute ?? 0;
+  const eff = civilForPaipan(input);
+  const { year, month, day, hour } = eff.civil;
+  const minute = eff.civil.minute ?? 0;
   const lunar = import_lunar_javascript5.Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
   const y = lunar.getYearInGanZhiExact();
   const m = lunar.getMonthInGanZhiExact();
@@ -41457,6 +41713,9 @@ function paiQiMen(input) {
     zhiShi: { door: chart.zhiShiDoor, palace: chart.zhiShiPalace },
     timeKongWang: chart.kongWang,
     palaces: [...chart.palaces].sort((a, b) => a.palaceNumber - b.palaceNumber),
+    civil: eff.civil,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
     _chart: chart
   };
 }
@@ -46141,7 +46400,14 @@ function toPalaces(a) {
 }
 function buildZiwei(rawInput) {
   const eff = civilForPaipan(rawInput);
-  const input = eff.applied ? { ...rawInput, year: eff.civil.year, month: eff.civil.month, day: eff.civil.day, hour: eff.civil.hour, minute: eff.civil.minute } : rawInput;
+  const input = {
+    ...rawInput,
+    year: eff.civil.year,
+    month: eff.civil.month,
+    day: eff.civil.day,
+    hour: eff.civil.hour,
+    minute: eff.civil.minute
+  };
   const { gender, fixLeap = true } = input;
   const { solar: effectiveSolarDate, timeIndex, displayTimeIndex, lateZi } = effectiveBirth(input);
   const inputSolar = `${input.year}-${input.month}-${input.day}`;
@@ -46166,6 +46432,8 @@ function buildZiwei(rawInput) {
       siZhu: a.chineseDate,
       yearGanZhi: ygz ?? "",
       yearGanZhiNote: `\u5E74\u67F1\uFF1A${ygz ?? ""}\uFF08\u519C\u5386\u5E74\uFF0C\u6625\u8282\u4E3A\u754C\uFF1B\u56DB\u67F1\u53E6\u6709\u7ACB\u6625\u53E3\u5F84\uFF09`,
+      dayBoundary: lateZiLabel(eff.lateZiMode),
+      timeWarnings: eff.resolution ? eff.resolution.warnings : [],
       monthGanZhi: mgz ?? "",
       dayGanZhi: dgz ?? "",
       timeGanZhi: tgz ?? "",
@@ -47856,6 +48124,7 @@ export {
   WUXING_SHENG,
   ZHOUYI_META,
   analyzeNajia,
+  applyLateZi,
   baziExtra,
   baziRelations,
   baziShenSha,
@@ -47868,6 +48137,7 @@ export {
   chinaDstAppliesToCivil,
   chinaDstInEffect,
   chinaDstWindow,
+  civilForPaipan,
   computeYuanJiChou,
   drawCards,
   drawOHPair,
@@ -47875,6 +48145,7 @@ export {
   drawSpread,
   ensureBuiltinCards,
   equationOfTimeMinutes,
+  estimateTzFromCoords,
   evalYao,
   formatCivilTime,
   formatCopyText,
@@ -47887,6 +48158,7 @@ export {
   getGuaAnnotation,
   getGuaMeta,
   getMeridian,
+  getMeridianByTime,
   getMovingLineAnnotation,
   getReadingDomain,
   getShouGuaName,
@@ -47896,8 +48168,10 @@ export {
   getWing,
   guDianTuiYun,
   guDuToDeg,
+  haversineKm,
   hourToTimeIndex,
   huaJinTui,
+  lateZiLabel,
   lingTaiOf,
   listCityTimeZones,
   listDecks,
@@ -47917,9 +48191,12 @@ export {
   mansionSnapshot,
   meiHuaByNumbers,
   meiHuaByTime,
+  meridianFromClock,
   moonPhaseName,
   naYinOf,
   natalUnits,
+  nearestCityByCoords,
+  offsetFromLongitude,
   paiBazi,
   paiQiMen,
   paiZiwei,

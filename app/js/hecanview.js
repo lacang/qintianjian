@@ -7,15 +7,15 @@
 //   每盘的可比维度一律取自该盘自己的结论卡（judgeXxx），不另造分数、不伪造强度。
 //   未接入的盘（六爻需摇卦）明写「未接入」，不进任何一轨的计数。
 // 不调用任何 AI，不请求外部接口：全部本地 liuyao-core + 各盘既有算法。
-import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan } from '../vendor/liuyao-core.js?v=132';
+import { meiHuaByTime, paiQiMen, paiZiwei, paipanXingpan } from '../vendor/liuyao-core.js?v=133';
 import {
   judgeMeiHua, judgeQiMen, judgeBazi, judgeZiwei, judgeAstro,
   comparePans, natalGradeOf, GRADE_ZH,
-} from './verdicts.js?v=132';
-import { paiBaziZi } from './zischool.js?v=132';
+} from './verdicts.js?v=133';
+import { paiBaziZi } from './zischool.js?v=133';
 import {
   resolveCastDate, nowDate, pad, escapeHtml, toLocalInputValue, parseLocalDateTime, birthArgs,
-} from './state.js?v=132';
+} from './state.js?v=133';
 
 // 盘位固定：顺序即页面显示顺序。track=null 表示本阶段未接入。
 const PAN_KEYS = ['meihua', 'qimen', 'bazi', 'ziwei', 'astro', 'liuyao'];
@@ -69,7 +69,7 @@ function computeQiMen(castDate) {
 function computeNatal() {
   const a = birthArgs();
   const out = { bazi: null, ziwei: null, astro: null };
-  try { out.bazi = paiBaziZi({ year: a.year, month: a.month, day: a.day, hour: a.hour, minute: a.minute, gender: a.gender }); } catch { /* 缺数据即未接 */ }
+  try { out.bazi = paiBaziZi({ ...a, lat: a.lat ?? a.latitude, lonEast: a.lonEast ?? a.longitude }); } catch { /* 缺数据即未接 */ }
   try { out.ziwei = paiZiwei(a); } catch { /* 同上 */ }
   try { out.astro = paipanXingpan(a); } catch { /* 同上 */ }
   return out;

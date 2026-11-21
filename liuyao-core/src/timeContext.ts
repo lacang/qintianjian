@@ -40,6 +40,21 @@ export interface CivilTime {
 /** 夏令时规则标识 */
 export type DstRuleId = 'none' | 'CN1986' | 'EU' | 'US' | 'AU' | 'NZ' | 'CL' | 'IL';
 
+/**
+ * 晚子时（23:00–23:59）换日口径。四家用的是同一组传统分歧，不是各术数特有的：
+ *  - '23' 子初换日（通行口径，也是本应用默认）：23:00 一交子时即进位次日，
+ *         日柱/农历日/时柱一起提前换，奇门的三元符头也跟着走。
+ *  - '00' 子正换日（夜子时留当日）：23:00–23:59 仍按出生当日算，时支取子、
+ *         时干按当日日干起（等价于把这一段当成次日的早子时来排）。
+ * 无论哪种，同一个盘面上「日柱」与「时柱」必须来自同一口径——这是硬约束。
+ */
+export type LateZiMode = '23' | '00';
+
+/** 换日口径在人话里的名字（界面标注用） */
+export function lateZiLabel(mode?: LateZiMode): string {
+  return mode === '00' ? '0 点（子正）换日' : '23 点（子初）换日';
+}
+
 /** 城市 → 时区表的一行 */
 export interface CityTimeZone {
   /** 中文名（界面展示、查表主键） */
@@ -82,6 +97,16 @@ export interface TimeResolveInput {
   utcOffsetHours?: number;
   /** 是否算真太阳时（默认 true） */
   trueSolarTime?: boolean;
+  /**
+   * 时区推断策略（只在「没给城市、也没给 utcOffsetHours」时起作用）：
+   *  - 'estimate'（默认）按经纬度推算，返回 tzEstimated=true 并要求前端提示；
+   *  - 'strict' 推算不可靠时直接抛错，宁可拒绝排盘也不静默算错。
+   */
+  tzPolicy?: 'estimate' | 'strict';
+  /** true = 城市与经纬度冲突时以经纬度为准（默认以城市为准，因为时区由城市决定） */
+  preferCoordinates?: boolean;
+  /** 晚子时换日口径（默认 '23'） */
+  lateZiMode?: LateZiMode;
 }
 
 export interface TimeResolution {
@@ -108,11 +133,26 @@ export interface TimeResolution {
   /** 命中的夏令时窗口（标准时口径，含首尾日期与回拨时刻） */
   dstWindow: { startLocal: string; endLocal: string } | null;
   /** 时区来源 */
-  tzSource: 'explicit' | 'city' | 'fallback';
+  tzSource: 'explicit' | 'city' | 'estimated' | 'fallback';
   /** 时区名（IANA；兜底/显式时给 UTC±HH:MM） */
   sourceTzName: string;
   /** true = 没查到城市、按东八区兜底（前端必须显示出来） */
   tzFallback: boolean;
+  /**
+   * true = 时区是由经纬度**推算**出来的（城市表没命中），不是权威值：
+   * 前端必须显示「时区为估算」的警告，用户需要能补选城市/时区。
+   */
+  tzEstimated: boolean;
+  /** 推算方式：最近城市 / 纯经度；没推算为 null */
+  tzEstimateMethod: 'nearest-city' | 'longitude' | null;
+  /** 推算依据离定位点多远（km，纯经度推算时为 null） */
+  tzEstimateKm: number | null;
+  /** 推算时参照的城市名（纯经度推算时为 null） */
+  tzEstimateCity: string | null;
+  /** true = 城市与经纬度互相矛盾（相距过远 / 经度与本时区不符），已按规则取舍 */
+  geoConflict: boolean;
+  /** 冲突说明（含两边的数值，便于用户判断该信哪一个） */
+  geoConflictNote: string | null;
   /** 时区中央经线（东经为正，如北京时 120） */
   stdMeridian: number;
   /** 出生地经度（东正），缺省 null */
@@ -439,6 +479,75 @@ export function listCityTimeZones(): CityTimeZone[] {
 }
 
 /* ============================================================
+   一·五、经纬度 → 时区推算（没有城市名时的兜底，绝不静默 +8）
+   ------------------------------------------------------------
+   历史缺陷：只要给了经纬度、没给城市，旧实现一律按 +8 兜底。
+   纽约 (-74.01, 40.71) 11:45 被算成 UTC+8 → 真太阳时前移 13 小时，
+   日柱都错了一天。这里改成两级推算，并把「这是估算」一路标出去。
+   ============================================================ */
+
+/** 球面距离（km，haversine，地球平均半径 6371） */
+export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const rad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * rad;
+  const dLon = (lon2 - lon1) * rad;
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+/** 现存法定时区偏移（含半小时 / 三刻钟地区），用于把经度吸附到真实时区 */
+const VALID_UTC_OFFSETS: number[] = [
+  -11, -10, -9.5, -9, -8, -7, -6, -5, -4, -3.5, -3, -2, -1, 0, 1, 2, 3, 3.5, 4, 4.5,
+  5, 5.5, 5.75, 6, 6.5, 7, 8, 8.75, 9, 9.5, 10, 10.5, 11, 12, 12.75, 13, 14,
+];
+
+/** 经度 → 最接近的法定时区偏移（round(lon/15) 再吸附到真实存在的偏移上） */
+export function offsetFromLongitude(lon: number): number {
+  const raw = lon / 15;
+  let best = VALID_UTC_OFFSETS[0];
+  for (const o of VALID_UTC_OFFSETS) {
+    if (Math.abs(o - raw) < Math.abs(best - raw)) best = o;
+  }
+  return best;
+}
+
+export interface TzEstimate {
+  offset: number;
+  method: 'nearest-city' | 'longitude';
+  km: number | null;
+  city: CityTimeZone | null;
+}
+
+/** 经纬度 600km 内最近的已知城市（用于判定「这地方大概属于哪个时区」） */
+export function nearestCityByCoords(lat: number, lon: number, maxKm = 600): { city: CityTimeZone; km: number } | null {
+  let best: { city: CityTimeZone; km: number } | null = null;
+  for (const c of CITY_TZ_TABLE) {
+    const km = haversineKm(lat, lon, c.lat, c.lon);
+    if (!best || km < best.km) best = { city: c, km };
+  }
+  if (!best || best.km > maxKm) return null;
+  return best;
+}
+
+/**
+ * 经纬度 → 时区估算。
+ * 先找 600km 内最近的城市（能带上该城市的夏令时规则与 IANA 名），
+ * 找不到才退回「经度吸附法定时区」（拿不到夏令时规则，只能给标准时）。
+ */
+export function estimateTzFromCoords(lat: number, lon: number): TzEstimate {
+  const near = nearestCityByCoords(lat, lon);
+  if (near) return { offset: near.city.stdOffset, method: 'nearest-city', km: Math.round(near.km), city: near.city };
+  return { offset: offsetFromLongitude(lon), method: 'longitude', km: null, city: null };
+}
+
+/** 城市与经纬度相差多远才算「矛盾」（km）。200km 内按用户经纬度（更精细），超出按城市 */
+export const GEO_CONFLICT_KM = 200;
+/** 经度与本时区中央经线相差多少才算矛盾（分）。180 分 = 45°，超出必是旧地点残留 */
+export const GEO_MERIDIAN_TOLERANCE_MIN = 180;
+
+/* ============================================================
    二、夏令时规则
    ============================================================ */
 
@@ -682,16 +791,43 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
   const cityHit = lookupCityTimeZone(input.city) ?? lookupCityTimeZone(input.place);
   let longitude = Number.isFinite(lonRaw as number) ? (lonRaw as number) : null;
   let latitude = Number.isFinite(latRaw as number) ? (latRaw as number) : null;
+  let geoConflict = false;
+  let geoConflictNote: string | null = null;
+
   if (cityHit && (longitude == null || latitude == null)) {
     // 只选了城市、没给经纬度：用城市中心补上（真太阳时才有得算）
     longitude = longitude ?? cityHit.lon;
     latitude = latitude ?? cityHit.lat;
   }
 
+  // 城市与经纬度互相矛盾：不许静默混搭，按规则取舍并留痕
+  if (cityHit && longitude != null && latitude != null) {
+    const km = haversineKm(latitude, longitude, cityHit.lat, cityHit.lon);
+    if (km > GEO_CONFLICT_KM) {
+      geoConflict = true;
+      const head = `经纬度（${longitude.toFixed(2)}, ${latitude.toFixed(2)}）与城市「${cityHit.name}」相距约 ${Math.round(km)}km`;
+      if (input.preferCoordinates) {
+        geoConflictNote = `${head}；已按经纬度算真太阳时，但时区仍用「${cityHit.name}」的 ${formatOffsetName(cityHit.stdOffset)}——请确认哪一个才是出生地`;
+      } else {
+        // 城市才是时区的权威来源，经纬度当旧地点残留
+        longitude = cityHit.lon;
+        latitude = cityHit.lat;
+        geoConflictNote = `${head}；已按城市「${cityHit.name}」的坐标与时区重算（城市决定时区，经纬度视为旧地点残留）`;
+      }
+      warnings.push(geoConflictNote);
+    }
+  }
+
   let tzSource: TimeResolution['tzSource'];
   let baseOffset: number;
   let sourceTzName: string;
   let tzFallback = false;
+  let tzEstimated = false;
+  let tzEstimateMethod: TimeResolution['tzEstimateMethod'] = null;
+  let tzEstimateKm: number | null = null;
+  let tzEstimateCity: string | null = null;
+  /** 时区所依据的城市（用于取夏令时规则）：显式查表命中，或估算时参照的最近城市 */
+  let tzCity: CityTimeZone | null = cityHit;
 
   if (Number.isFinite(input.utcOffsetHours as number)) {
     baseOffset = input.utcOffsetHours as number;
@@ -701,7 +837,32 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
     baseOffset = cityHit.stdOffset;
     tzSource = 'city';
     sourceTzName = cityHit.tz;
+  } else if (longitude != null && latitude != null) {
+    // 只有经纬度：按坐标推算时区（**绝不**静默按 +8）
+    const est = estimateTzFromCoords(latitude, longitude);
+    if (est.method !== 'nearest-city' && input.tzPolicy === 'strict') {
+      throw new Error(
+        `无法可靠确定时区：定位点（${longitude.toFixed(2)}, ${latitude.toFixed(2)}）600km 内没有内置城市，`
+        + '经度推算法在 strict 模式下不作数。请补选城市，或直接给 utcOffsetHours。',
+      );
+    }
+    baseOffset = est.offset;
+    tzSource = 'estimated';
+    tzEstimated = true;
+    tzEstimateMethod = est.method;
+    tzEstimateKm = est.km;
+    tzEstimateCity = est.city ? est.city.name : null;
+    tzCity = est.city;
+    sourceTzName = est.city ? est.city.tz : formatOffsetName(est.offset);
+    warnings.push(
+      est.city
+        ? `未选城市：时区按最近的「${est.city.name}」（约 ${est.km}km）估算为 ${formatOffsetName(est.offset)}，夏令时规则沿用该城市——如不符请补选城市`
+        : `未选城市：时区按经度 ${longitude.toFixed(2)}° 估算为 ${formatOffsetName(est.offset)}（已吸附到法定偏移，**未计夏令时**）——请核对`,
+    );
   } else {
+    if (input.tzPolicy === 'strict') {
+      throw new Error('无法确定时区：既没有城市，也没有经纬度或 utcOffsetHours。请补齐出生地后再排盘。');
+    }
     baseOffset = 8;
     tzSource = 'fallback';
     sourceTzName = formatOffsetName(8);
@@ -709,9 +870,24 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
     warnings.push('未识别出生地时区，已按东八区（UTC+8）兜底——请补选城市或手动指定时区');
   }
 
+  // 显式时区 + 经纬度互相矛盾（旧地点残留，如「手动选纽约、经纬度还是沈阳」）：
+  // 真太阳时按 793 分钟算能把 11:45 推到次日 00:42，必须停用，不能将错就错。
+  let trueSolarBlockedByConflict = false;
+  if (tzSource === 'explicit' && longitude != null) {
+    const lonOffsetMin = 4 * (longitude - baseOffset * 15);
+    if (Math.abs(lonOffsetMin) > GEO_MERIDIAN_TOLERANCE_MIN) {
+      geoConflict = true;
+      trueSolarBlockedByConflict = true;
+      geoConflictNote = `经度 ${longitude.toFixed(2)}° 与所设时区 ${formatOffsetName(baseOffset)} 的中央经线差 ${(lonOffsetMin / 60).toFixed(1)} 小时；`
+        + '判定为旧地点残留，真太阳时已停用（改用标准时）——请重选城市，或补填该地真实经度';
+      warnings.push(geoConflictNote);
+      longitude = null;
+    }
+  }
+
   // ---- 2) 夏令时：显式偏移视为「已含夏令时」，不再叠加 ----
   const civilMs = wallEpoch(civil.year, civil.month, civil.day, civil.hour, civil.minute, civil.second);
-  const rule: DstRuleId = cityHit ? cityHit.dst : 'none';
+  const rule: DstRuleId = tzCity ? tzCity.dst : 'none';
 
   let inDst = false;
   if (tzSource !== 'explicit' && rule !== 'none') {
@@ -746,7 +922,7 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
 
   if (trueSolarTimeEnabled) {
     if (longitude == null) {
-      warnings.push('缺出生地经度，真太阳时未校正');
+      if (!trueSolarBlockedByConflict) warnings.push('缺出生地经度，真太阳时未校正');
     } else {
       const eot = equationOfTimeMinutes(new Date(utcMs));
       const lonOffset = 4 * (longitude - stdMeridian);
@@ -789,6 +965,12 @@ export function resolveTime(input: TimeResolveInput): TimeResolution {
     tzSource,
     sourceTzName,
     tzFallback,
+    tzEstimated,
+    tzEstimateMethod,
+    tzEstimateKm,
+    tzEstimateCity,
+    geoConflict,
+    geoConflictNote,
     stdMeridian,
     longitude,
     latitude,
@@ -823,6 +1005,18 @@ export interface PaipanCivil {
 }
 
 /**
+ * 晚子时口径落到底层钟面上：
+ *  - '23' → 原样返回（23:40 仍是 23:40，下游按「23 点换日」进位，是通行口径）；
+ *  - '00' → 23:40 拨成**同日** 00:40（早子时），日柱不进阶、时干按当日日干起。
+ * 这样四家（八字/紫微/奇门/六爻）拿到的都是同一个已定好口径的钟面时间，
+ * 不会出现「日柱进位了、时柱没进」的自相矛盾。
+ */
+export function applyLateZi(t: PaipanCivil, mode?: LateZiMode): { civil: PaipanCivil; applied: boolean } {
+  if (mode !== '00' || t.hour !== 23) return { civil: t, applied: false };
+  return { civil: { ...t, hour: 0 }, applied: true };
+}
+
+/**
  * 把「用户录入的民用时」折成「排盘该用的钟面时间」。
  *
  * 规则：
@@ -837,23 +1031,38 @@ export function civilForPaipan(input: TimeResolveInput): {
   applied: boolean;
   usedTrueSolar: boolean;
   crossedDay: boolean;
+  /** 是否按 0 点子正口径把 23:00–23:59 拨回当日早子时 */
+  lateZiApplied: boolean;
+  /** 本次生效的换日口径（界面标注用） */
+  lateZiMode: LateZiMode;
   resolution: TimeResolution | null;
 } {
   const num = (v: unknown): boolean => typeof v === 'number' && Number.isFinite(v);
   const hasTzHint = input.city != null || input.place != null || num(input.utcOffsetHours);
   const hasGeo = num(input.lat) || num(input.latitude) || num(input.lon) || num(input.lonEast) || num(input.longitude);
+  const lateZiMode: LateZiMode = input.lateZiMode === '00' ? '00' : '23';
   const raw: PaipanCivil = {
     year: input.year, month: input.month, day: input.day,
     hour: input.hour, minute: input.minute ?? 0,
   };
   if (!hasTzHint && !hasGeo) {
-    return { civil: raw, applied: false, usedTrueSolar: false, crossedDay: false, resolution: null };
+    // 没有任何地点线索：仍按调用方给的钟面时间排，但换日口径照样统一执行
+    const z = applyLateZi(raw, lateZiMode);
+    return {
+      civil: z.civil, applied: false, usedTrueSolar: false,
+      crossedDay: false, lateZiApplied: z.applied, lateZiMode, resolution: null,
+    };
   }
   const r = resolveTime(input);
   const useSolar = !!(r.trueSolar && r.trueSolarTimeEnabled);
   const t = useSolar ? r.trueSolar! : r.standard;
-  const civil: PaipanCivil = { year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute };
+  const conv: PaipanCivil = { year: t.year, month: t.month, day: t.day, hour: t.hour, minute: t.minute };
+  const z = applyLateZi(conv, lateZiMode);
+  const civil = z.civil;
   const crossedDay = civil.year !== raw.year || civil.month !== raw.month || civil.day !== raw.day;
-  return { civil, applied: true, usedTrueSolar: useSolar, crossedDay, resolution: r };
+  return {
+    civil, applied: true, usedTrueSolar: useSolar, crossedDay,
+    lateZiApplied: z.applied, lateZiMode, resolution: r,
+  };
 }
 

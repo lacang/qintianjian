@@ -3,12 +3,12 @@
 //      / 中央五大主相位弦线；点星体或相位联动高亮；相位清单、元素·模式分布。
 // 全盘中文化：行星/交点用单字，星座环用「羊牛蟹狮…」，不依赖占星专用符号字体。
 // 出生时刻可由「时间条」或复现码覆盖。
-import { paipanXingpan, guDianTuiYun, shouyeTianxiang, listCityTimeZones } from '../vendor/liuyao-core.js?v=129';
-import { judgeAstro, verdictCardHtml } from './verdicts.js?v=129';
-import { birthArgs, $, setGeoOverride, getGeoOverride } from './state.js?v=129';
-import { guideHTML, T } from './tipview.js?v=129';
-import { foldVerdict } from './ritual.js?v=129';
-import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=129';
+import { paipanXingpan, guDianTuiYun, shouyeTianxiang, listCityTimeZones } from '../vendor/liuyao-core.js?v=133';
+import { judgeAstro, verdictCardHtml } from './verdicts.js?v=133';
+import { birthArgs, $, setGeoOverride, getGeoOverride } from './state.js?v=133';
+import { guideHTML, T } from './tipview.js?v=133';
+import { foldVerdict } from './ritual.js?v=133';
+import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=133';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -143,6 +143,8 @@ function birthTimeLine(chart){
   out.push(`${t.sourceTzName} · ${offLabel(t.baseUtcOffsetHours)}`);
   if(t.inDst) out.push(`夏令时已还原 −60 分${t.dstWindow?`（${t.dstWindow.startLocal} ~ ${t.dstWindow.endLocal}）`:''}`);
   if(t.tzFallback) out.push('<b style="color:#e2543f">⚠ 出生地时区未识别，按东八区兜底</b>');
+  if(t.tzEstimated) out.push(`<b style="color:#e2543f">⚠ 时区是按${t.tzEstimateMethod==='nearest-city'?`最近城市「${t.tzEstimateCity}」（约 ${t.tzEstimateKm}km）`:'经度'}估算的，请核对</b>`);
+  if(t.geoConflict) out.push(`<b style="color:#e2543f">⚠ ${t.geoConflictNote||'城市与经纬度不一致，已按其一重算'}</b>`);
   return out.join(' · ');
 }
 
@@ -443,10 +445,21 @@ export function setAstroStyle(key){
 }
 
 // ---------- 盘面模式（36 种）辅助 ----------
+// 第二人（本命2）的地理参数必须「整套换掉」：旧实现只覆盖 lat/lonEast/place，
+// 主盘的 city（如纽约）还留着，核心按 city 查时区 → 主盘纽约 + 副盘广州混搭，
+// 广州 09:00 会被当成纽约 09:00 算成 20:25（巳时→戌时）。
 function b2ArgsOf(base){
   const b2 = readB2Public(); if (!b2) return null;
   const city = CITIES.find(c=>c.name===b2.city) || CITIES[0];
-  return { ...base, year:+b2.year, month:+b2.month, day:+b2.day, hour:+b2.hour, minute:+b2.minute||0, lat:city.lat, lonEast:city.lonEast, place:city.name };
+  const out = {
+    ...base,
+    year:+b2.year, month:+b2.month, day:+b2.day, hour:+b2.hour, minute:+b2.minute||0,
+    city: city.name, place: city.name,
+    lat: city.lat, latitude: city.lat,
+    lonEast: city.lonEast, lon: city.lonEast, longitude: city.lonEast,
+  };
+  delete out.utcOffsetHours; // 万一主盘带了显式时区，会盖掉城市的时区
+  return out;
 }
 function modeBarHTML(mode){
   const GROUPS=[['natal','本命类'],['prog','推运类'],['time','时限类'],['rel','关系类']];

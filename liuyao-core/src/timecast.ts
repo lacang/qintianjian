@@ -20,12 +20,26 @@
 import { Solar } from 'lunar-javascript';
 import type { CastResult, YaoValue } from './types.js';
 import { normalizeValuesToCast } from './input.js';
+import {
+  civilForPaipan, lateZiLabel,
+  type LateZiMode, type PaipanCivil, type TimeResolveInput,
+} from './timeContext.js';
 
 export interface TimeCastOptions {
   /** 出生地/所在地经度（东经为正）。传入则先做真太阳时校正再排卦。 */
   longitude?: number;
   /** 已校正过的真太阳时可直接传 true 关闭内部二次校正。默认 false。 */
   alreadyApparent?: boolean;
+  /** 以下为「接统一时间层」用：给了就按城市/经纬度/显式时区整体折算（含夏令时） */
+  city?: string;
+  place?: string;
+  lat?: number;
+  latitude?: number;
+  lon?: number;
+  lonEast?: number;
+  utcOffsetHours?: number;
+  tzPolicy?: 'estimate' | 'strict';
+  lateZiMode?: LateZiMode;
 }
 
 export interface TimeCastResult {
@@ -38,7 +52,14 @@ export interface TimeCastResult {
   lunarDay: number;
   hourBranchOrder: number;
   apparentSolarTime: Date; // 实际用于起卦的真太阳时（未校正则等于传入时刻）
+  /** 实际用于起卦的钟面时间（接统一时间层时给出） */
+  civil?: PaipanCivil;
+  /** 换日口径标注 */
+  dayBoundary?: string;
+  /** 时间口径提示（时区估算、冲突、夏令时） */
+  timeWarnings?: string[];
 }
+
 
 const ZHI_ORDER: Record<string, number> = {
   子: 1, 丑: 2, 寅: 3, 卯: 4, 辰: 5, 巳: 6,
@@ -70,6 +91,44 @@ export function toApparentSolarTime(date: Date, longitude: number, standardMerid
 /** 梅花易数·时间起卦。date 为该时刻（默认按北京时间解释；给 longitude 则先做真太阳时校正）。 */
 export function castByTime(dateInput: number | Date, options: TimeCastOptions = {}): TimeCastResult {
   const original = typeof dateInput === 'number' ? new Date(dateInput) : dateInput;
+
+  // ---- 新路径：给了城市/经纬度/显式时区 → 整体走统一时间层（含夏令时、时区推算）----
+  const hasTzLayer = options.city != null || options.place != null
+    || options.utcOffsetHours != null
+    || [options.lat, options.latitude, options.lon, options.lonEast].some((v) => typeof v === 'number' && Number.isFinite(v));
+  if (hasTzLayer) {
+    const eff = civilForPaipan({
+      year: original.getFullYear(),
+      month: original.getMonth() + 1,
+      day: original.getDate(),
+      hour: original.getHours(),
+      minute: original.getMinutes(),
+      second: original.getSeconds(),
+      city: options.city,
+      place: options.place,
+      lat: options.lat,
+      latitude: options.latitude,
+      lon: options.lon ?? options.longitude,
+      lonEast: options.lonEast,
+      utcOffsetHours: options.utcOffsetHours,
+      // 调用方已做过真太阳时校正（applyTst/applyTstAt）时，别二次校正
+      trueSolarTime: options.alreadyApparent ? false : undefined,
+      tzPolicy: options.tzPolicy,
+      lateZiMode: options.lateZiMode,
+    });
+    const c = eff.civil;
+    const core = castFromClock(c.year, c.month, c.day, c.hour, c.minute ?? 0, 0, eff.lateZiMode);
+    // 展示用的「真太阳时」：把折算后的墙钟重新装成 Date（仅供界面显示，不参与计算）
+    const shown = new Date(c.year, c.month - 1, c.day, c.hour, c.minute ?? 0, 0);
+    return {
+      ...core,
+      apparentSolarTime: shown,
+      civil: c,
+      dayBoundary: lateZiLabel(eff.lateZiMode),
+      timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    };
+  }
+
   const apparent =
     options.longitude !== undefined && !options.alreadyApparent
       ? toApparentSolarTime(original, options.longitude)
@@ -78,22 +137,30 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
   // 用校正在同一 UTC+8 时区下表达：lunar-javascript 按"本地时钟分量"取年月日时，
   // 运行环境时区可能不是东八区，因此显式按 +8 取墙钟分量。
   const bj = new Date(apparent.getTime() + 8 * 3600_000);
-  const y = bj.getUTCFullYear();
-  const mo = bj.getUTCMonth() + 1;
-  const d = bj.getUTCDate();
-  const hh = bj.getUTCHours();
-  const mm = bj.getUTCMinutes();
-  const ss = bj.getUTCSeconds();
+  const core = castFromClock(
+    bj.getUTCFullYear(), bj.getUTCMonth() + 1, bj.getUTCDate(),
+    bj.getUTCHours(), bj.getUTCMinutes(), bj.getUTCSeconds(),
+    options.lateZiMode,
+  );
+  return { ...core, apparentSolarTime: apparent };
+}
 
+/** 由已定好的钟面分量起卦（castByTime 的内部实现） */
+function castFromClock(
+  y: number, mo: number, d: number, hh: number, mm: number, ss: number,
+  lateZiMode?: LateZiMode,
+): Omit<TimeCastResult, 'apparentSolarTime' | 'civil' | 'dayBoundary' | 'timeWarnings'> {
   const solar = Solar.fromYmdHms(y, mo, d, hh, mm, ss);
   const lunar = solar.getLunar();
 
-  // 晚子时（23:00 起）按 23:00 换日：年支与农历月日整体进次日，与日柱口径一致。
+  // 晚子时换日：'23' 口径下年支与农历月日整体进次日（与日柱口径一致），
   // 时支仍取本时刻（lunar-javascript 已按 23:00 进子时，时干按次日日干）。
   // 取次日时必须把时分归零：solar.next(1) 会保留 23:30，得到的是「次日 23:30」，
   // 立春前夜（如 2026-02-03 23:30）就此越过立春，年支错成丙午。
   // 归零到次日 00:00 才是「归属次日」的本义，立春前仍属前一年（乙巳）。
-  const lunarBase = hh === 23
+  // '00' 口径（子正换日）下调用方已把 23:xx 拨成同日 00:xx，这里不能再进次日。
+  const rollDay = hh === 23 && lateZiMode !== '00';
+  const lunarBase = rollDay
     ? Solar.fromYmdHms(y, mo, d, 0, 0, 0).next(1).getLunar()
     : lunar;
   const yearZhi = lunarBase.getYearInGanZhiExact().charAt(1);
@@ -133,6 +200,5 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
     lunarMonth,
     lunarDay,
     hourBranchOrder,
-    apparentSolarTime: apparent,
   };
 }

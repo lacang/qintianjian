@@ -19,9 +19,19 @@ export {
   equationOfTimeMinutes,
   formatOffsetName,
   formatCivilTime,
+  civilForPaipan,
+  applyLateZi,
+  lateZiLabel,
+  estimateTzFromCoords,
+  offsetFromLongitude,
+  nearestCityByCoords,
+  haversineKm,
   CITY_TZ_TABLE,
 } from './timeContext.js';
-export type { CivilTime, CityTimeZone, DstRuleId, TimeResolveInput, TimeResolution } from './timeContext.js';
+export type {
+  CivilTime, CityTimeZone, DstRuleId, TimeResolveInput, TimeResolution,
+  LateZiMode, PaipanCivil, TzEstimate,
+} from './timeContext.js';
 export { castManual, castCoins, castTianji } from './input.js';
 export { castByTime, toApparentSolarTime, type TimeCastOptions, type TimeCastResult } from './timecast.js';
 export { paipan, getShouGuaPan, type ShouGuaYao } from './paipan.js';
@@ -55,8 +65,8 @@ export type {
 } from './bazi.js';
 
 // 子午流注（纳子法当令经络）
-export { getMeridian, shichenIndex } from './meridian.js';
-export type { MeridianInfo } from './meridian.js';
+export { getMeridian, getMeridianByTime, meridianFromClock, shichenIndex } from './meridian.js';
+export type { MeridianInfo, MeridianAtTime } from './meridian.js';
 
 // 梅花易数
 export {

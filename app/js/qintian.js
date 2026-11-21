@@ -1,11 +1,14 @@
 // 钦天监首页：干支信息条 + 天时卦钟（纯钟面）+ 独立卦画卡
 // 全应用统一北京时间（八字牌另走自身口径）。只排事实，不做断语。
-import { castByTime, getDayCalendar, getMeridian, paipanXingpan } from '../vendor/liuyao-core.js?v=129';
-import { paipanZi, siZhuZi } from './zischool.js?v=129';
-import { $, pad, cfg, BIRTH } from './state.js?v=129';
-import { renderTodayCard } from './todaycard.js?v=129';
-import { renderRhythm } from './rhythmview.js?v=129';
-import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=129';
+import { castByTime, getDayCalendar, getMeridian, paipanXingpan } from '../vendor/liuyao-core.js?v=133';
+// 新 API 走命名空间取值：bundle 还没重建时 getMeridianByTime 是 undefined，
+// 用命名导入会直接链接失败（整个首页白屏），命名空间取值则能优雅退回旧接口。
+import * as CORE from '../vendor/liuyao-core.js?v=133';
+import { paipanZi, siZhuZi } from './zischool.js?v=133';
+import { $, pad, cfg, BIRTH, nowGeoArgs } from './state.js?v=133';
+import { renderTodayCard } from './todaycard.js?v=133';
+import { renderRhythm } from './rhythmview.js?v=133';
+import { renderTianxiangCalendar } from './tianxiangcalendar.js?v=133';
 
 const ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const ZHI_RANGE = ['23-1','1-3','3-5','5-7','7-9','9-11','11-13','13-15','15-17','17-19','19-21','21-23'];
@@ -96,9 +99,24 @@ function nextBoundary(date) {
   return d;
 }
 
+// 子午流注：用核心折算后的钟面时间（已含时区/夏令时/真太阳时），与八字同口径
+function meridianAt(castDate, r) {
+  const c = (r && r.civil) || {
+    year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
+    hour: castDate.getHours(), minute: castDate.getMinutes(),
+  };
+  const fn = CORE.getMeridianByTime;
+  if (typeof fn === 'function') {
+    try { return fn({ ...c, ...nowGeoArgs(), trueSolarTime: false }); } catch { /* 退回落表接口 */ }
+  }
+  // 旧 bundle：按钟面时刻直接取（与改动前一致）
+  return getMeridian(new Date(c.year, c.month - 1, c.day, c.hour, c.minute || 0));
+}
+
 function compute(now) {
-  const castDate = new Date(now.getTime()); // 北京时间
-  const r = castByTime(castDate, { alreadyApparent: false });
+  const castDate = new Date(now.getTime()); // 观测地钟面时间
+  // 时区 / 夏令时 / 真太阳时统一交给核心（按观测地）；境外不再默认按北京时间硬算
+  const r = castByTime(castDate, { ...nowGeoArgs() });
   return { r, castDate };
 }
 
@@ -129,7 +147,7 @@ export function updateHome() {
   }
 
   $('#clock-time').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  const md = getMeridian(castDate);
+  const md = meridianAt(castDate, r);
   $('#home-meridian').innerHTML = meridianBand(md, shIdx);
 
   const nb = nextBoundary(castDate);
@@ -188,7 +206,7 @@ export function homeCopyText() {
     year: castDate.getFullYear(), month: castDate.getMonth() + 1, day: castDate.getDate(),
     hour: castDate.getHours(), minute: castDate.getMinutes(),
   });
-  const md = getMeridian(castDate);
+  const md = meridianAt(castDate, r);
   const yaoTxt = r.cast.yaoValues.map((v, i) => {
     const yy = (v === 7 || v === 9) ? '阳' : '阴';
     const mv = (v === 6 || v === 9) ? '·动' : '';

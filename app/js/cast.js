@@ -1,10 +1,10 @@
 // 起卦：摇铜钱 / 天机（梅花易数时间起卦）/ 手录。完成后产出 yaoValues 交 main 排盘。
-import { $, $$, cfg, saveCfg, toast, parseLocalDateTime, toLocalInputValue } from './state.js?v=129';
-import { castCoins, castByTime, castManual } from '../vendor/liuyao-core.js?v=129';
-import { toTrueSolar, trueSolarOffsetMin } from './solartime.js?v=129';
-import { siZhuZi, ziMode } from './zischool.js?v=129';
-import { getPlace, isPlaceSet, refreshLocatedPlace } from './geo.js?v=129';
-import { openPlacePicker } from './placeui.js?v=129';
+import { $, $$, cfg, saveCfg, toast, parseLocalDateTime, toLocalInputValue, nowGeoArgs } from './state.js?v=133';
+import { castCoins, castByTime, castManual } from '../vendor/liuyao-core.js?v=133';
+import { toTrueSolar, trueSolarOffsetMin } from './solartime.js?v=133';
+import { siZhuZi, ziMode } from './zischool.js?v=133';
+import { getPlace, isPlaceSet, refreshLocatedPlace } from './geo.js?v=133';
+import { openPlacePicker } from './placeui.js?v=133';
 
 let coinTosses = []; // 6 轮
 let manualYaos = defaultManual();
@@ -79,7 +79,8 @@ export function initCast(onCast) {
       if (tjInput) { tjInput.value = toLocalInputValue(d); syncTianjiTime(); }
     }
     const dt = await applyTstAt(d);            // 起卦当时取一次定位，再按真太阳时校正
-    const r = castByTime(dt.getTime());
+    // dt 已按观测地做过真太阳时校正；这里只补时区/夏令时，不二次校正
+    const r = castByTime(dt.getTime(), { ...nowGeoArgs(), alreadyApparent: true });
     setTimeout(() => onCast(r.cast, 'tianji', dt), 350);
   });
 
@@ -235,7 +236,7 @@ function syncTianjiTime() {
   const d = parseLocalDateTime(input.value);
   if (!d) { echo.innerHTML = '<span class="mt-bad">时间无效，请重新选择</span>'; return; }
   const dT = applyTst(d);
-  const r = castByTime(dT.getTime());
+  const r = castByTime(dT.getTime(), { ...nowGeoArgs(), alreadyApparent: true });
   echo.innerHTML = `${siZhuEcho(dT)} · 上${TRI[r.upperNumber]}下${TRI[r.lowerNumber]} · 动${r.movingPosition}爻${tstNote(d)}`;
 }
 
@@ -286,8 +287,8 @@ function doToss(onCast) {
 }
 
 // 乾隆通宝真图：正面汉文四字对读，背面满文「宝泉」局名（assets/coin/）
-const COIN_IMG = './assets/coin/coin-z.jpg?v=129';
-const COIN_IMG_B = './assets/coin/coin-b.jpg?v=129';
+const COIN_IMG = './assets/coin/coin-z.jpg?v=133';
+const COIN_IMG_B = './assets/coin/coin-b.jpg?v=133';
 function coinHTML() {
   return `<span class="coin-inner">
     <span class="coin-face cf"><img class="coin-img" src="${COIN_IMG}" alt="字面（乾隆通宝）" draggable="false"></span>

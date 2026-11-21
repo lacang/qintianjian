@@ -1,19 +1,22 @@
 // 奇门遁甲视图：指定时刻 时家·转盘·拆补 局（只排事实，不做格局吉凶）
 // 统一北京时间；时刻可由「时间条」或复现码覆盖。
 // v55：九宫按卦五行分层底色、加方位标注、值符值使/空亡马星强化、补图例与典籍依据。
-import { paiQiMen } from '../vendor/liuyao-core.js?v=129';
-import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=129';
-import { resolveCastDate, nowDate, pad, toSec } from './state.js?v=129';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=129';
-import { QM_PALACE_DIR, wxKey } from './classical.js?v=129';
-import { guideHTML, T } from './tipview.js?v=129';
+import { paiQiMen } from '../vendor/liuyao-core.js?v=133';
+import { judgeQiMen, verdictCardHtml } from './verdicts.js?v=133';
+import { resolveCastDate, nowDate, nowGeoArgs, pad, toSec } from './state.js?v=133';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
+import { QM_PALACE_DIR, wxKey } from './classical.js?v=133';
+import { guideHTML, T } from './tipview.js?v=133';
 import {
   qmFuFan, qmFind, QM_STEPS, QM_YONGSHEN, QM_FUFAN_QUOTE,
-} from './reading.js?v=129';
+} from './reading.js?v=133';
 
 export function currentQiMen(date = nowDate()) {
-  const d = resolveCastDate(date); // 北京时间
-  const q = paiQiMen({ year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(), hour: d.getHours(), minute: d.getMinutes() });
+  const d = resolveCastDate(date); // 已按观测地做过真太阳时校正，核心只需扣时区/夏令时
+  const q = paiQiMen({
+    year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(), hour: d.getHours(), minute: d.getMinutes(),
+    ...nowGeoArgs(), trueSolarTime: false, // 经纬度已用于上面的真太阳时校正，别二次校正
+  });
   return { q, castDate: d };
 }
 
@@ -181,7 +184,8 @@ const QM_GUIDE = {
 export function renderQiMen(date = nowDate()) {
   if (!isCasted('qimen')) return gateHTML('qimen');
   const { q, castDate } = currentQiMen(date);
-  const hh = `${castDate.getFullYear()}年${pad(castDate.getMonth() + 1)}月${pad(castDate.getDate())}日 ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · 北京时间`;
+  // 换日口径必须亮出来：同一时刻按 23 点 / 0 点换日会差一整天的日柱
+  const hh = `${castDate.getFullYear()}年${pad(castDate.getMonth() + 1)}月${pad(castDate.getDate())}日 ${pad(castDate.getHours())}:${pad(castDate.getMinutes())} · ${q.dayBoundary || '23 点（子初）换日'}`;
   const byNum = Object.fromEntries(q.palaces.map((p) => [p.palaceNumber, p]));
 
   const html = `
@@ -229,7 +233,7 @@ export function qiMenCopyText(date = nowDate()) {
   const byNum = Object.fromEntries(q.palaces.map((p) => [p.palaceNumber, p]));
   const lines = [
     '【奇门遁甲 · 时辰局】',
-    `北京时间 ${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}`,
+    `${castDate.getFullYear()}-${pad(castDate.getMonth() + 1)}-${pad(castDate.getDate())} ${pad(castDate.getHours())}:${pad(castDate.getMinutes())}（${q.dayBoundary || '23 点换日'}）`,
     `${q.dun}${q.ju}局 · ${q.yuan} · ${q.jieQi}`,
     `四柱 ${q.siZhu.year} ${q.siZhu.month} ${q.siZhu.day} ${q.siZhu.time} · 旬空${q.timeKongWang.join('')}`,
     `值符 ${q.zhiFu.star}（${byNum[q.zhiFu.palace].palaceName}${q.zhiFu.palace}宫） · 值使 ${q.zhiShi.door}（${byNum[q.zhiShi.palace].palaceName}${q.zhiShi.palace}宫）`,

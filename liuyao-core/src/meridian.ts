@@ -9,6 +9,7 @@
  *   辰 7-9 胃 ｜ 巳 9-11 脾 ｜ 午 11-13 心 ｜ 未 13-15 小肠
  *   申 15-17 膀胱 ｜ 酉 17-19 肾 ｜ 戌 19-21 心包 ｜ 亥 21-23 三焦
  */
+import { civilForPaipan, lateZiLabel, type PaipanCivil, type TimeResolveInput } from './timeContext.js';
 
 export interface MeridianInfo {
   /** 时辰支名 */
@@ -64,12 +65,17 @@ export function shichenIndex(hour: number, minute = 0): number {
  * @param date 时刻（真太阳时校正请在调用前完成）
  */
 export function getMeridian(date: Date): MeridianInfo {
-  const idx = shichenIndex(date.getHours(), date.getMinutes());
+  return meridianFromClock(date.getHours(), date.getMinutes());
+}
+
+/** 由钟面时分取当令经络（getMeridian 与 getMeridianByTime 的共同实现） */
+export function meridianFromClock(hour: number, minute = 0): MeridianInfo {
+  const idx = shichenIndex(hour, minute);
   const row = TABLE[idx];
 
   // 计算距下一辰换经的分钟
-  const h = date.getHours();
-  const m = date.getMinutes();
+  const h = hour;
+  const m = minute;
   // 当前辰的结束整点：子跨 23→1
   let endHour: number;
   if (h === 23) endHour = 25; // 次日 1 点
@@ -91,5 +97,39 @@ export function getMeridian(date: Date): MeridianInfo {
     paired: row.paired,
     nextZhi: ZHI[(idx + 1) % 12],
     minutesToNext,
+  };
+}
+
+/** getMeridianByTime 的返回：经络信息 + 时间层口径 */
+export interface MeridianAtTime extends MeridianInfo {
+  /** 实际用于取经的钟面时间（真太阳时/夏令时/换日口径已生效） */
+  civil: PaipanCivil;
+  /** 换日口径标注 */
+  dayBoundary: string;
+  /** 时区/夏令时/冲突提示 */
+  timeWarnings: string[];
+  /** 是否真的做了时区/地点折算（没给地点时为 false） */
+  applied: boolean;
+  usedTrueSolar: boolean;
+}
+
+/**
+ * 子午流注（纳子法）·接统一时间层。
+ *
+ * 旧实现只有 getMeridian(Date)：调用方给什么钟点就用什么钟点，境外时区、夏令时、
+ * 真太阳时全靠上游自觉——乌鲁木齐 12:52（真太阳时 10:42，巳时）会被算成午时。
+ * 这个入口把 city/经纬度/utcOffsetHours 一次性交给 civilForPaipan，与八字、奇门、六爻同口径。
+ */
+export function getMeridianByTime(input: TimeResolveInput): MeridianAtTime {
+  const eff = civilForPaipan(input);
+  const c = eff.civil;
+  const info = meridianFromClock(c.hour, c.minute ?? 0);
+  return {
+    ...info,
+    civil: c,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    applied: eff.applied,
+    usedTrueSolar: eff.usedTrueSolar,
   };
 }

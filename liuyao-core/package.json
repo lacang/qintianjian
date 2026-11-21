@@ -21,7 +21,10 @@
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:vendor": "node ../tools/build-vendor.mjs",
+    "check:vendor": "node ../tools/check-vendor.mjs",
+    "verify:vendor": "node ../tools/build-vendor.mjs --check"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",

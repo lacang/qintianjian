@@ -1,16 +1,16 @@
 // 八字本命视图：指定出生时刻 四柱十神/藏干（本中余气）/纳音/五行分布 + 大运（只排事实，不做断语）
-import { tenGod, baziExtra, liuNianList, liuYueList } from '../vendor/liuyao-core.js?v=129';
-import { paiBaziZi, ziMode } from './zischool.js?v=129';
-import { judgeBazi, verdictCardHtml } from './verdicts.js?v=129';
-import { birthArgs, cfg, pad } from './state.js?v=129';
-import { GAN_WX, QI_WEIGHT, wxKey } from './classical.js?v=129';
+import { tenGod, baziExtra, liuNianList, liuYueList } from '../vendor/liuyao-core.js?v=133';
+import { paiBaziZi, ziMode } from './zischool.js?v=133';
+import { judgeBazi, verdictCardHtml } from './verdicts.js?v=133';
+import { birthArgs, cfg, pad } from './state.js?v=133';
+import { GAN_WX, QI_WEIGHT, wxKey } from './classical.js?v=133';
 // 元素对照：十神 / 纳音 的含义 key
 const BZ_GOD_KEY = { 比肩:'bz-god-bijian', 劫财:'bz-god-jiecai', 食神:'bz-god-shishen', 伤官:'bz-god-shangguan',
   偏财:'bz-god-piancai', 正财:'bz-god-zhengcai', 七杀:'bz-god-qisha', 正官:'bz-god-zhengguan',
   偏印:'bz-god-pianyin', 正印:'bz-god-zhengyin' };
 
-import { guideHTML, T } from './tipview.js?v=129';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=129';
+import { guideHTML, T } from './tipview.js?v=133';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=133';
 
 const POS = ['year', 'month', 'day', 'time'];
 const TITLE = { year: '年柱', month: '月柱', day: '日柱', time: '时柱' };
@@ -29,12 +29,12 @@ let cache = null;
 let cacheKey = '';
 function getBazi() {
   const a = birthArgs();
-  const key = `${a.year}-${a.month}-${a.day}-${a.hour}-${a.minute}-${a.gender}-${cfg.lateZi || '23'}`;
+  // 缓存键必须含地点/时区/真太阳时：出生地一改，真太阳时与夏令时折算随之变，四柱可能换时辰
+  const key = `${a.year}-${a.month}-${a.day}-${a.hour}-${a.minute}-${a.gender}-${a.city || ''}-${a.lat || ''}-${a.lonEast || a.longitude || ''}-${a.utcOffsetHours ?? ''}-${a.trueSolarTime ? 1 : 0}-${cfg.lateZi || '23'}`;
   if (!cache || cacheKey !== key) {
-    cache = paiBaziZi({
-      year: a.year, month: a.month, day: a.day,
-      hour: a.hour, minute: a.minute, gender: a.gender,
-    });
+    // 完整透传 birthArgs：city/place/lat/lonEast/utcOffsetHours/trueSolarTime 由内核 timeContext 折算
+    // （夏令时 −1h + 经度差 + 均时差），与六爻盘同一口径；只传年月日时会漏掉真太阳时。
+    cache = paiBaziZi({ ...a, lat: a.lat ?? a.latitude, lonEast: a.lonEast ?? a.longitude });
     cacheKey = key;
   }
   return cache;
@@ -105,7 +105,10 @@ function shenShaBlock(bz, ss) {
   const hit = ss.present.map((n) => {
     const spec = ss.specs.find((s) => s.name === n);
     const hs = ss.byName[n] || [];
-    const brief = hs.map((h) => `${h.ref}${h.refValue}→${h.target}·${relPosText(h.positions)}${h.luoKong ? '（落空）' : ''}`).join('；');
+    // 空亡的起点是「日柱」整柱（丙申），不是「日支」；只显示干支，避免「日支丙申」这种干支混称
+    const brief = n === '空亡'
+      ? hs.map((h) => `${h.refValue}→${h.target}·${relPosText(h.positions)}${h.luoKong ? '（落空）' : ''}`).join('；')
+      : hs.map((h) => `${h.ref}${h.refValue}→${h.target}·${relPosText(h.positions)}${h.luoKong ? '（落空）' : ''}`).join('；');
     const tip = `${n}｜${spec.rule}｜出处：${spec.source}${spec.note ? `｜${spec.note}` : ''}`;
     return `<div class="bz-chip" title="${esc(tip)}"><b>${n}</b> ${brief}</div>`;
   }).join('');
@@ -141,7 +144,7 @@ function wangShuaiBlock(bz, ws) {
     const body = it.text.startsWith(tag) ? it.text.slice(tag.length).replace(/^[：:，,\s]+/, '') : it.text;
     return `<div class="bz-chip" title="${esc(it.src)}"><b>${tag}</b> ${body}</div>`;
   }).join('');
-  const warn = ws.consistent ? '' : `<div class="bz-extras"><div class="bz-chip" style="border-color:var(--cinnabar);color:var(--cinnabar)" title="app/js/verdicts.js 的 wxRel 在「生」的两支上方向相反：月令生我判成我生月令、我生月令判成月令生我。本页依据按五行正理计算。">口径提示：断语卡判「${ws.legacyConclusion}」，本节按五行正理判「${ws.conclusion}」，以本节为准（旧卡月令生克方向反，待修）</div></div>`;
+  const warn = ws.consistent ? '' : `<div class="bz-extras"><div class="bz-chip" style="border-color:var(--cinnabar);color:var(--cinnabar)" title="本节的复刻公式与 app/js/verdicts.js judgeBazi 已不一致（漂移探针触发）。这属于两处公式分叉，不是流派差异；本页先用本节结果，请把该盘时间报修。">口径提示：断语卡判「${ws.legacyConclusion}」，本节判「${ws.conclusion}」，两处旺衰公式已分叉（以本节为准，待同步）</div></div>`;
   return `
     <div class="bz-section-title">旺衰依据 <span class="bz-sec-hint">（得令/得地/得生/得助 + 月令五态；只把推导露出来，不改断语结论）</span></div>
     <div class="liunian-row">
@@ -214,7 +217,7 @@ const BZ_GUIDE = {
     { t: '地支下面藏着的字＝藏干', d: '每个地支里暗藏一到三个天干（本气／中气／余气），是这一支的「内涵成分」，右边标的是它对日主的关系。', tip: 'canggan', sel: '.bz-col .bz-hide' },
     { t: '五行分布条＝全盘五行有多少', d: '把八个字加藏干一起按五行计数，点某一行会把含该五行的柱子高亮出来。', tip: 'wuxing', sel: '.wx-bars' },
     { t: '最下面＝大运', d: '每十年换一步大运，是人生的大阶段。高亮的那一格就是现在走的这一步。', tip: 'dayun', sel: '.dayun-row' },
-    { t: '神煞＝按口诀查出来的「标记」', d: '天乙、文昌、驿马、桃花、羊刃、空亡这些，都是拿日干/日支/年支去对照固定口诀查出来的位置。点一格能看到它依据哪句口诀、出自哪本书；流派不同的（比如阴干有没有羊刃）会直接写在格子里，不偷偷挑一种。', sel: '.bz-extras' },
+    { t: '神煞＝按口诀查出来的「标记」', d: '天乙、文昌、驿马、桃花、羊刃、空亡这些，都是拿日干/日支去对照固定口诀查出来的位置。点一格能看到它依据哪句口诀、出自哪本书；流派不同的（比如天乙贵人庚辛是取午寅还是丑未）会直接写在格子里，不偷偷挑一种。', sel: '.bz-extras' },
     { t: '连线＝四柱之间的刑冲合害', d: '把四根柱子当成四个点，冲、合、刑、害、破就是点与点之间的线。同一对柱子既合又破时，两条线都画出来，不合并、不吞掉。', sel: '.liunian-row' },
     { t: '流年流月＝今年、这个月走到哪一步', d: '流年按立春换年，流月按节气换月、月干用五虎遁推。每行都给出干支、十神、纳音、空亡、与四柱的刑冲合害，还有太岁关系。', sel: '.ln-pill' },
   ],
@@ -345,7 +348,7 @@ export function baziCopyText() {
   L.push('未见神煞：' + (ex.shenSha.absent.join('、') || '—'));
   const relText = [...ex.relations.zhi, ...ex.relations.gan].map((r) => `${r.name}(${relPosText(r.positions)})`);
   L.push('刑冲合害：' + (relText.join(' ') || '无'));
-  L.push(`旺衰依据：月令${ws.monthState.zhi}${ws.monthState.wuXing}为「${ws.monthState.state}」｜得令${ws.counts.得令} 得地${ws.counts.得地} 得生${ws.counts.得生} 得助${ws.counts.得助}｜通根${ws.tongGen}支｜合计${ws.score > 0 ? '+' : ''}${ws.score}→${ws.conclusion}${ws.consistent ? '' : `（断语卡判「${ws.legacyConclusion}」，旧卡月令生克方向相反）`}`);
+  L.push(`旺衰依据：月令${ws.monthState.zhi}${ws.monthState.wuXing}为「${ws.monthState.state}」｜得令${ws.counts.得令} 得地${ws.counts.得地} 得生${ws.counts.得生} 得助${ws.counts.得助}｜通根${ws.tongGen}支｜合计${ws.score > 0 ? '+' : ''}${ws.score}→${ws.conclusion}${ws.consistent ? '' : `（断语卡判「${ws.legacyConclusion}」，两处旺衰公式已分叉）`}`);
   const lc = liChunYear(bz);
   L.push('流年：' + liuNianList(bz, lc - 1, 6).map((y) => {
     const rs = [...y.zhiRelations, ...y.ganRelations].map(relShort).join('/');

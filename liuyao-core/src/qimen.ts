@@ -17,14 +17,14 @@ import { Solar } from 'lunar-javascript';
 import { chaiBuJuByGanZhi } from './vendor/bigfish-qimen/engines/chaibuquju.js';
 import { shiJiaGenerate } from './vendor/bigfish-qimen/engines/shijia.js';
 import type { QimenChart, QimenPalace } from './vendor/bigfish-qimen/types.js';
+import { civilForPaipan, lateZiLabel, type PaipanCivil, type TimeResolveInput } from './timeContext.js';
 
-export interface QiMenInput {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute?: number;
-}
+/**
+ * 奇门入参 = 统一时间层入参。
+ * 老调用方只给年月日时，与以前逐字节一致；给 city/经纬度/utcOffsetHours 就自动吃
+ * 夏令时 + 真太阳时 + 时区（以前完全不接，乌鲁木齐 12:52 会按钟面直接当时辰）。
+ */
+export type QiMenInput = TimeResolveInput;
 
 export interface QiMenPan {
   siZhu: { year: string; month: string; day: string; time: string };
@@ -38,16 +38,23 @@ export interface QiMenPan {
   timeKongWang: string[];
   /** 九宫，按 palaceNumber 1..9（洛书：坎1坤2震3巽4中5乾6兑7艮8离9） */
   palaces: QimenPalace[];
+  /** 实际用于起局的钟面时间（真太阳时/夏令时/换日口径已生效） */
+  civil: PaipanCivil;
+  /** 换日口径标注（如「23 点（子初）换日」） */
+  dayBoundary: string;
+  /** 时间口径提示（时区估算、经纬度冲突、夏令时…），界面应显示 */
+  timeWarnings: string[];
   _chart: QimenChart;
 }
 
 /**
  * 时家奇门排盘（转盘·拆补）。
- * 真太阳时校正由上层完成后传入对应北京墙钟分量（与六爻一致）。
+ * 时间统一走 civilForPaipan：给城市/经纬度就算真太阳时与夏令时，与八字、六爻同口径。
  */
 export function paiQiMen(input: QiMenInput): QiMenPan {
-  const { year, month, day, hour } = input;
-  const minute = input.minute ?? 0;
+  const eff = civilForPaipan(input);
+  const { year, month, day, hour } = eff.civil;
+  const minute = eff.civil.minute ?? 0;
 
   const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
   const y = lunar.getYearInGanZhiExact();
@@ -93,6 +100,9 @@ export function paiQiMen(input: QiMenInput): QiMenPan {
     zhiShi: { door: chart.zhiShiDoor, palace: chart.zhiShiPalace },
     timeKongWang: chart.kongWang,
     palaces: [...chart.palaces].sort((a, b) => a.palaceNumber - b.palaceNumber),
+    civil: eff.civil,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
     _chart: chart,
   };
 }

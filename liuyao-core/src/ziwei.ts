@@ -30,7 +30,7 @@
  *   `yearGanZhiNote`，把口径写明，供使用者自行对表。
  */
 import { astro, data } from 'iztro';
-import { civilForPaipan, type TimeResolveInput } from './timeContext.js';
+import { civilForPaipan, lateZiLabel, type LateZiMode, type TimeResolveInput } from './timeContext.js';
 
 export type ZiweiGender = '男' | '女';
 
@@ -43,6 +43,8 @@ export interface ZiweiInput {
   gender: ZiweiGender;
   /** 闰月是否前后半月分开算，默认 true */
   fixLeap?: boolean;
+  /** 晚子时换日口径（默认 '23' 子初换日；'00' = 子正换日，23:00–23:59 留当日） */
+  lateZiMode?: LateZiMode;
 }
 
 /** 四化 */
@@ -152,6 +154,10 @@ export interface ZiweiChart {
   yearGanZhi: string;
   /** 年柱口径标注：紫微取农历年（春节为界），四柱另有立春口径 */
   yearGanZhiNote: string;
+  /** 换日口径标注（如「23 点（子初）换日」） */
+  dayBoundary?: string;
+  /** 时间口径提示（时区估算、经纬度冲突、夏令时…） */
+  timeWarnings?: string[];
   monthGanZhi: string;
   dayGanZhi: string;
   timeGanZhi: string;
@@ -421,9 +427,13 @@ function buildZiwei(rawInput: ZiweiInput): { chart: ZiweiChart; astrolabe: Retur
   // 时区 / 夏令时 / 真太阳时统一折算：折算后的钟面时间再进 effectiveBirth（23 点折次日），
   // 两者不冲突——真太阳时可能把 23:50 推到次日 00:05，换日自然发生。
   const eff = civilForPaipan(rawInput as unknown as TimeResolveInput);
-  const input: ZiweiInput = eff.applied
-    ? { ...rawInput, year: eff.civil.year, month: eff.civil.month, day: eff.civil.day, hour: eff.civil.hour, minute: eff.civil.minute }
-    : rawInput;
+  // eff.civil 恒为已定口径的钟面时间：无地点时原样返回；'00' 口径下 23:xx 已成同日 00:xx，
+  // effectiveBirth 自然不会再把日期推到次日——日柱/命宫与时柱同一口径。
+  const input: ZiweiInput = {
+    ...rawInput,
+    year: eff.civil.year, month: eff.civil.month, day: eff.civil.day,
+    hour: eff.civil.hour, minute: eff.civil.minute,
+  };
   const { gender, fixLeap = true } = input;
   const { solar: effectiveSolarDate, timeIndex, displayTimeIndex, lateZi } = effectiveBirth(input);
   const inputSolar = `${input.year}-${input.month}-${input.day}`;
@@ -453,6 +463,8 @@ function buildZiwei(rawInput: ZiweiInput): { chart: ZiweiChart; astrolabe: Retur
       siZhu: a.chineseDate,
       yearGanZhi: ygz ?? '',
       yearGanZhiNote: `年柱：${ygz ?? ''}（农历年，春节为界；四柱另有立春口径）`,
+      dayBoundary: lateZiLabel(eff.lateZiMode),
+      timeWarnings: eff.resolution ? eff.resolution.warnings : [],
       monthGanZhi: mgz ?? '',
       dayGanZhi: dgz ?? '',
       timeGanZhi: tgz ?? '',

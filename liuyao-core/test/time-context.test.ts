@@ -17,6 +17,7 @@ import {
   chinaDstWindow,
   chinaDstAppliesToCivil,
   chinaDstInEffect,
+  offsetFromLongitude,
   formatOffsetName,
 } from '../src/timeContext.js';
 import { solarToSiZhu } from '../src/calendar.js';
@@ -196,12 +197,60 @@ describe('timeContext / 时区查表', () => {
     expect(names.size).toBe(listCityTimeZones().length); // 无重名
   });
 
-  it('查不到城市时兜底 +8 并打 tzFallback 标记', () => {
+  it('只有经纬度时按坐标推算时区，不再静默兜底 +8', () => {
+    // 伦敦：旧实现按 +8 兜底，12:00 会被当成北京时间；现在按最近城市推算
     const r = resolveTime({ year: 2024, month: 6, day: 15, hour: 12, lat: 51.5, lon: -0.12 });
+    expect(r.tzFallback).toBe(false);
+    expect(r.tzEstimated).toBe(true);
+    expect(r.tzSource).toBe('estimated');
+    expect(r.tzEstimateMethod).toBe('nearest-city');
+    expect(r.tzEstimateCity).toBe('伦敦');
+    expect(r.utcOffsetHours).toBe(1); // 6 月英国夏令时
+    expect(r.warnings.join()).toContain('估算');
+  });
+
+  it('无城市也无经纬度时才兜底 +8 并打 tzFallback 标记', () => {
+    const r = resolveTime({ year: 2024, month: 6, day: 15, hour: 12 });
     expect(r.utcOffsetHours).toBe(8);
     expect(r.tzFallback).toBe(true);
     expect(r.tzSource).toBe('fallback');
     expect(r.warnings.join()).toContain('兜底');
+  });
+
+  it('strict 策略下坐标推算不出可信时区则抛错，不静默算错', () => {
+    // 南太平洋 (0,0) 附近 600km 无内置城市，只能经度吸附
+    expect(() => resolveTime({ year: 2024, month: 6, day: 15, hour: 12, lat: 0, lon: 0, tzPolicy: 'strict' })).toThrow(/无法可靠确定时区/);
+    // estimate 策略下照样给结果，但必须标 tzEstimated + 未计夏令时
+    const r = resolveTime({ year: 2024, month: 6, day: 15, hour: 12, lat: 0, lon: 0 });
+    expect(r.tzEstimated).toBe(true);
+    expect(r.tzEstimateMethod).toBe('longitude');
+    expect(r.utcOffsetHours).toBe(0);
+  });
+
+  it('经度→时区吸附到真实法定偏移（含半小时/三刻区）', () => {
+    expect(offsetFromLongitude(0)).toBe(0);
+    expect(offsetFromLongitude(-74)).toBe(-5);
+    expect(offsetFromLongitude(123)).toBe(8);
+    expect(offsetFromLongitude(85)).toBe(5.75); // 尼泊尔
+    // 纯经度只能逼近整点：印度 77.2° 算出 +5，+5:30 是政治决定，得靠城市表
+    expect(offsetFromLongitude(77.2)).toBe(5);
+    const delhi = lookupCityTimeZone('新德里');
+    expect(delhi?.stdOffset).toBe(5.5);
+  });
+
+  it('城市与经纬度矛盾时以城市为准，并标 geoConflict', () => {
+    const r = resolveTime({ year: 2024, month: 6, day: 15, hour: 12, city: '纽约', lat: 41.8, lon: 123.43 });
+    expect(r.geoConflict).toBe(true);
+    expect(r.utcOffsetHours).toBe(-4);
+    expect(r.geoConflictNote).toContain('纽约');
+    expect(r.longitude).toBeCloseTo(-74.006, 2);
+  });
+
+  it('显式时区与经度矛盾（旧地点残留）时停用真太阳时', () => {
+    const r = resolveTime({ year: 1994, month: 8, day: 1, hour: 11, minute: 45, utcOffsetHours: -5, lat: 41.8, lon: 123.43 });
+    expect(r.geoConflict).toBe(true);
+    expect(r.trueSolar).toBeNull();
+    expect(r.warnings.join()).toContain('真太阳时已停用');
   });
 
   it('显式 utcOffsetHours 优先于城市表', () => {

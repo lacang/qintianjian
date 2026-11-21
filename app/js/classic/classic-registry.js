@@ -9,8 +9,8 @@
 // 董事长 2026-10-31 批示第五部分第 3 条：跨经典关联必须重新审核依据，
 // 不得仅因标签相同就宣称思想传承。因此本表只做「并列」，不做跨包关系推导。
 
-import { LUNYU } from './lunyu-data.js';
-import { validateClassic, packCapabilities } from './classic-schema.js';
+import { LUNYU } from './lunyu-data.js?v=133';
+import { validateClassic, packCapabilities } from './classic-schema.js?v=133';
 
 const REGISTRY = new Map();
 let ACTIVE = null;

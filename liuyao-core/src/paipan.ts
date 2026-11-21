@@ -21,6 +21,7 @@ import {
 } from 'mingpan/dist/services/liuyao/index.js';
 import type { BaGua as MpBaGua2 } from 'mingpan/dist/services/liuyao/index.js';
 import { solarToSiZhu } from './calendar.js';
+import { civilForPaipan, lateZiLabel, type PaipanCivil, type TimeResolveInput } from './timeContext.js';
 import { BAGUA_BITS, NAJIA_GAN, toSimplified } from './constants.js';
 import { getFullNajia, getGuaMeta, getShouGuaName, getTrigramsFromValues, type RawGuaMeta } from './guaTable.js';
 import { calcShenSha } from './shensha.js';
@@ -65,7 +66,22 @@ function withShouGua(meta: RawGuaMeta): GuaMeta {
   return { ...meta, shouGuaName: getShouGuaName(meta.gong) };
 }
 
-export function paipan(input: PaipanInput): Pan {
+export interface PanWithTime extends Pan {
+  /** 实际用于起卦的钟面时间（真太阳时/夏令时/换日口径已生效） */
+  civil?: PaipanCivil;
+  /** 换日口径标注 */
+  dayBoundary?: string;
+  /** 时间口径提示（时区估算、经纬度冲突、夏令时…） */
+  timeWarnings?: string[];
+  /** 是否真做了时区/地点折算 */
+  timeApplied?: boolean;
+  usedTrueSolar?: boolean;
+}
+
+/** 六爻入参：老字段不变，新增统一时间层的可选地点/时区字段 */
+export type PaipanInputWithTime = PaipanInput & Partial<Omit<TimeResolveInput, 'year' | 'month' | 'day' | 'hour' | 'minute'>>;
+
+export function paipan(input: PaipanInputWithTime): PanWithTime {
   const values = Array.isArray(input.yaoValues)
     ? input.yaoValues
     : (input.yaoValues as CastResult).yaoValues;
@@ -79,8 +95,24 @@ export function paipan(input: PaipanInput): Pan {
   }
   const yaoValues = values as YaoValue[];
 
-  // 1. 历法
-  const sz = solarToSiZhu(input);
+  // 1. 历法：先过统一时间层（时区/夏令时/真太阳时/换日口径），再转四柱。
+  //    老行为（不给地点）逐字节不变：civilForPaipan 直接原样返回，applyChinaDst 仍是 true。
+  const eff = civilForPaipan({
+    year: input.year, month: input.month, day: input.day,
+    hour: input.hour, minute: input.minute,
+    city: input.city, place: input.place,
+    lat: input.lat, latitude: input.latitude,
+    lon: input.lon, lonEast: input.lonEast, longitude: input.longitude,
+    utcOffsetHours: input.utcOffsetHours,
+    trueSolarTime: input.trueSolarTime,
+    tzPolicy: input.tzPolicy,
+    lateZiMode: input.lateZiMode,
+  });
+  const sz = solarToSiZhu(
+    { ...input, ...eff.civil },
+    // 时区层已经把夏令时扣过一遍了，不能再扣第二次
+    { applyChinaDst: !eff.applied },
+  );
 
   // 2. 本卦
   const { upper, lower } = getTrigramsFromValues(yaoValues);
@@ -197,6 +229,11 @@ export function paipan(input: PaipanInput): Pan {
     fuShenList,
     shenSha,
     guaShen,
+    civil: eff.civil,
+    dayBoundary: lateZiLabel(eff.lateZiMode),
+    timeWarnings: eff.resolution ? eff.resolution.warnings : [],
+    timeApplied: eff.applied,
+    usedTrueSolar: eff.usedTrueSolar,
   };
 }
 
