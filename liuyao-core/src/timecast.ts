@@ -90,7 +90,12 @@ export function castByTime(dateInput: number | Date, options: TimeCastOptions = 
 
   // 晚子时（23:00 起）按 23:00 换日：年支与农历月日整体进次日，与日柱口径一致。
   // 时支仍取本时刻（lunar-javascript 已按 23:00 进子时，时干按次日日干）。
-  const lunarBase = hh === 23 ? solar.next(1).getLunar() : lunar;
+  // 取次日时必须把时分归零：solar.next(1) 会保留 23:30，得到的是「次日 23:30」，
+  // 立春前夜（如 2026-02-03 23:30）就此越过立春，年支错成丙午。
+  // 归零到次日 00:00 才是「归属次日」的本义，立春前仍属前一年（乙巳）。
+  const lunarBase = hh === 23
+    ? Solar.fromYmdHms(y, mo, d, 0, 0, 0).next(1).getLunar()
+    : lunar;
   const yearZhi = lunarBase.getYearInGanZhiExact().charAt(1);
   const hourZhi = lunar.getTimeInGanZhi().charAt(1);
 

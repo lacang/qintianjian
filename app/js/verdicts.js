@@ -203,8 +203,8 @@ export function judgeBazi(bz, opt = {}) {
   const relMonth = wxRel(mWx, me); // 月令 对 日主
   let deling = 0;
   if (relMonth === 'same') { deling = 2; add(a, 2, `日主${me}生于${mZhi}月，月令同气（得令）——根基得时，主自身有力。`, DTJ, 'BZ_DE_LING'); }
-  else if (relMonth === 'beiSheng') { deling = 2; add(a, 2, `日主${me}生于${mZhi}月，月令生我（得令）——印星当令，主有靠山、有生扶。`, DTJ, 'BZ_DE_LING_SHENG'); }
-  else if (relMonth === 'sheng') { deling = -1; add(a, -1, `日主${me}生于${mZhi}月，我生月令（泄气）——身被泄，主劳心费力。`, DTJ, 'BZ_XIE_QI'); }
+  else if (relMonth === 'sheng') { deling = 2; add(a, 2, `日主${me}生于${mZhi}月，月令生我（得令）——印星当令，主有靠山、有生扶。`, DTJ, 'BZ_DE_LING_SHENG'); }
+  else if (relMonth === 'beiSheng') { deling = -1; add(a, -1, `日主${me}生于${mZhi}月，我生月令（泄气）——身被泄，主劳心费力。`, DTJ, 'BZ_XIE_QI'); }
   else if (relMonth === 'ke') { deling = -2; add(a, -2, `日主${me}生于${mZhi}月，月令克我（失令）——身受克，主根基不稳。`, DTJ, 'BZ_SHI_LING'); }
   else if (relMonth === 'beiKe') { deling = -1; add(a, -1, `日主${me}生于${mZhi}月，我克月令（耗气）——身被耗，主得财而身疲。`, DTJ, 'BZ_HAO_QI'); }
 
@@ -212,7 +212,7 @@ export function judgeBazi(bz, opt = {}) {
   const dZhi = bz.day && bz.day.zhi ? bz.day.zhi : '';
   const dWx = WX_ZHI[dZhi] || '';
   const relDay = wxRel(dWx, me);
-  if (relDay === 'same' || relDay === 'beiSheng') add(a, 1, `日主坐${dZhi}（${dWx}）——日支生扶，主自身有根、有底气。`, YZP, 'BZ_DE_DI');
+  if (relDay === 'same' || relDay === 'sheng') add(a, 1, `日主坐${dZhi}（${dWx}）——日支生扶，主自身有根、有底气。`, YZP, 'BZ_DE_DI');
   else if (relDay === 'ke' || relDay === 'beiKe') add(a, -1, `日主坐${dZhi}（${dWx}）——日支克耗，主自身受制、易疲。`, YZP, 'BZ_SHI_DI');
 
   // ③ 得势：五行力量统计（日主同类 + 印星）
@@ -224,7 +224,7 @@ export function judgeBazi(bz, opt = {}) {
   else if (mine / total <= 0.25) add(a, -1, `全局五行中比劫+印星仅 ${mine}/${total}（失势）——帮身者寡，多靠自己。`, YZP, 'BZ_SHI_SHI');
 
   // ④ 定强弱
-  const strong = deling + (relDay === 'same' || relDay === 'beiSheng' ? 1 : 0) > 0;
+  const strong = deling + (relDay === 'same' || relDay === 'sheng' ? 1 : 0) > 0;
   add(a, 0, strong
     ? `综合判断：日主${me}偏旺——喜财（克我）、官（克我）、食伤（我生）来克泄，忌再添印比。`
     : `综合判断：日主${me}偏弱——喜印（生我）、比劫（同我）来生扶，忌财官食伤再耗。`,
@@ -238,8 +238,8 @@ export function judgeBazi(bz, opt = {}) {
       const dGanWx = WX_GAN[cur.ganZhi[0]] || '';
       const dZhiWx = WX_ZHI[cur.ganZhi[1]] || '';
       const rG = wxRel(dGanWx, me);
-      const good = (r) => r === 'same' || r === 'beiSheng';
-      const bad = (r) => r === 'ke' || r === 'beiKe' || r === 'sheng';
+      const good = (r) => r === 'same' || r === 'sheng';
+      const bad = (r) => r === 'ke' || r === 'beiKe' || r === 'beiSheng';
       let dw = 0;
       if (good(rG)) dw += 1; else if (bad(rG)) dw -= 1;
       if (good(wxRel(dZhiWx, me))) dw += 1; else if (bad(wxRel(dZhiWx, me))) dw -= 1;
@@ -478,6 +478,105 @@ export function judgeZiwei(c) {
       { t: '诸星所居庙旺则吉，落陷则凶。', s: '《紫微斗数全书》（节引）' },
     ],
     note: `命宫在${c.soulBranch}、身宫在${c.bodyBranch}｜${c.fiveElementsClass}｜命主${c.soul}｜${c.generator}`,
+  };
+}
+
+// =====================================================================
+// 六、多盘合参的「可比维度」与机械对照（纯函数，供 hecanview 调用）
+// 立场：
+//   合参不是把几盘缝成一个故事，而是**分轨**各比各的：
+//   · 问事轨：同一时刻起的时占盘（梅花 / 奇门 / 六爻），比的是「对所问之事的方向」；
+//   · 本命轨：出生盘（八字 / 紫微 / 西方 / 吠陀），比的是「对本命格局档位的判读」。
+//   跨轨不比——本命盘不回答「这周这笔款能不能到账」，这是口径，不是态度。
+//   每盘的可比维度一律取自该盘自己的结论卡（judgeXxx 的 level），不另造分数。
+// =====================================================================
+
+/** 本命结论档位（-2..2）→ 命轨可比档 */
+export function natalGradeOf(level) {
+  if (level == null) return null;
+  if (level >= 1) return 'strong';
+  if (level <= -1) return 'weak';
+  return 'mid';
+}
+export const GRADE_ZH = { strong: '格局偏厚', mid: '格局中平', weak: '格局偏薄' };
+export const TRACK_LABEL = { question: '问事轨', natal: '本命轨' };
+
+const YES_NO = { yes: '肯定', no: '否定', flat: '平' };
+
+/**
+ * 分轨机械对照。
+ * pans: [{ key, name, track:'question'|'natal', answered, stance:'yes'|'no'|null, grade:'strong'|'mid'|'weak'|null }]
+ * 返回 { tracks:[...], same, none, clash, strength, why, strongest }
+ */
+export function comparePans(pans) {
+  const list = Array.isArray(pans) ? pans.filter((p) => p && p.answered) : [];
+  const tracks = [];
+
+  for (const key of ['question', 'natal']) {
+    const group = list.filter((p) => p.track === key);
+    const same = [];
+    const none = [];
+    const clash = [];
+
+    if (group.length < 2) {
+      none.push(`本轨仅 ${group.length} 盘有结果，无法交叉`);
+    } else {
+      for (let i = 0; i < group.length; i++) {
+        for (let j = i + 1; j < group.length; j++) {
+          const a = group[i], b = group[j];
+          const tag = `${a.name} × ${b.name}`;
+          if (key === 'question') {
+            if (!a.stance || !b.stance) { none.push(`${tag}：一方只列事实，未给方向`); continue; }
+            if (a.stance === 'flat' || b.stance === 'flat') {
+              if (a.stance === b.stance) same.push(`${tag}：均判「平」，无明显方向`);
+              else none.push(`${tag}：一方判平，与另一方的方向不构成对照`);
+              continue;
+            }
+            if (a.stance === b.stance) same.push(`${tag}：方向相同（${YES_NO[a.stance]}）`);
+            else clash.push(`${tag}：方向相反（${YES_NO[a.stance]} 对 ${YES_NO[b.stance]}）`);
+          } else {
+            if (!a.grade || !b.grade) { none.push(`${tag}：一方未给档位`); continue; }
+            if (a.grade === b.grade) same.push(`${tag}：档位相同（${GRADE_ZH[a.grade]}）`);
+            else if (a.grade !== 'mid' && b.grade !== 'mid') clash.push(`${tag}：档位相反（${GRADE_ZH[a.grade]} 对 ${GRADE_ZH[b.grade]}）`);
+            else none.push(`${tag}：一方中平，无可比方向`);
+          }
+        }
+      }
+    }
+
+    const pairs = group.length < 2 ? 0 : (group.length * (group.length - 1)) / 2;
+    let strength = '弱';
+    if (group.length >= 3 && clash.length === 0 && same.length >= 3) strength = '强';
+    else if (group.length >= 2 && clash.length === 0 && same.length >= 1) strength = '中';
+
+    // 本命轨最高只记「中」：八字/紫微/西方同出同一生辰、判据相互重叠（都看庙旺得地），
+    // 三盘一致不等于三方独立互证，不能凭此把强度抬到「强」。
+    let why = `${TRACK_LABEL[key]} 有效盘 ${group.length} 个 · 对子 ${pairs} 组 · 冲突 ${clash.length} 条`;
+    if (key === 'natal' && strength === '强') {
+      strength = '中';
+      why += ' · 三盘同源同数据、判据重叠，不构成独立互证，本轨最高记「中」';
+    }
+
+    tracks.push({
+      key, label: TRACK_LABEL[key], answered: group.length, pairs, same, none, clash, strength,
+      why,
+    });
+  }
+
+  // 总强度取各轨中最高的那一档，且必须说清是哪一轨撑起来的
+  const rank = { 弱: 0, 中: 1, 强: 2 };
+  const top = tracks.slice().sort((a, b) => rank[b.strength] - rank[a.strength])[0];
+  const strength = top ? top.strength : '弱';
+  const strongest = top && rank[top.strength] > 0 ? top.label : null;
+
+  return {
+    tracks,
+    same: tracks.flatMap((t) => t.same.map((x) => `〔${t.label}〕${x}`)),
+    none: tracks.flatMap((t) => t.none.map((x) => `〔${t.label}〕${x}`)),
+    clash: tracks.flatMap((t) => t.clash.map((x) => `〔${t.label}〕${x}`)),
+    strength,
+    strongest,
+    why: `${tracks.map((t) => `${t.label} ${t.answered} 盘/冲突 ${t.clash.length}`).join(' · ')}${strongest ? ` · 由${strongest}支撑` : ' · 无可交叉项'}`,
   };
 }
 

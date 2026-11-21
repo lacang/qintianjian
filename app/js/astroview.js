@@ -3,12 +3,12 @@
 //      / 中央五大主相位弦线；点星体或相位联动高亮；相位清单、元素·模式分布。
 // 全盘中文化：行星/交点用单字，星座环用「羊牛蟹狮…」，不依赖占星专用符号字体。
 // 出生时刻可由「时间条」或复现码覆盖。
-import { paipanXingpan, guDianTuiYun, shouyeTianxiang } from '../vendor/liuyao-core.js?v=128';
-import { judgeAstro, verdictCardHtml } from './verdicts.js?v=128';
-import { birthArgs, $ } from './state.js?v=128';
-import { guideHTML, T } from './tipview.js?v=128';
-import { foldVerdict } from './ritual.js?v=128';
-import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=128';
+import { paipanXingpan, guDianTuiYun, shouyeTianxiang, listCityTimeZones } from '../vendor/liuyao-core.js?v=129';
+import { judgeAstro, verdictCardHtml } from './verdicts.js?v=129';
+import { birthArgs, $, setGeoOverride, getGeoOverride } from './state.js?v=129';
+import { guideHTML, T } from './tipview.js?v=129';
+import { foldVerdict } from './ritual.js?v=129';
+import { ASTRO_MODES, curAstroMode, modeNeedsB2, CITIES, B2_KEY, RESET_KEY, readB2Public } from './astromodes.js?v=129';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -119,6 +119,97 @@ function calcAspects(chart){
 function birthText(){
   const a=birthArgs();
   return `${a.year}-${String(a.month).padStart(2,'0')}-${String(a.day).padStart(2,'0')} ${String(a.hour).padStart(2,'0')}:${String(a.minute).padStart(2,'0')}`;
+}
+
+/* ===== 出生时间口径：时区 / 夏令时 / 真太阳时（统一时间层 chart.time） ===== */
+const hhmm=(o)=>`${String(o.hour).padStart(2,'0')}:${String(o.minute).padStart(2,'0')}`;
+const sgnM=(v)=>`${v>=0?'+':''}${v.toFixed(1)}`;
+const offLabel=(h)=>`UTC${h>=0?'+':''}${h}`;
+
+/**
+ * 出生时刻那一行小字：真太阳时 + 北京时/当地时 + 经度差 + 均时差 + 时区/夏令时/兜底提示。
+ * 数据来自核心 timeContext（paipanXingpan 返回的 chart.time），前端不再自己算。
+ */
+function birthTimeLine(chart){
+  const t=chart&&chart.time;
+  if(!t) return '';
+  const stdName=t.baseUtcOffsetHours===8?'北京时':'当地时';
+  const out=[];
+  if(t.trueSolar){
+    out.push(`真太阳时 ${hhmm(t.trueSolar)}（${stdName} ${hhmm(t.standard)}，经度 ${sgnM(t.longitudeOffsetMinutes)} 分、均时差 ${sgnM(t.equationOfTimeMinutes)} 分）`);
+  }else{
+    out.push(`真太阳时未校正（缺经度）`);
+  }
+  out.push(`${t.sourceTzName} · ${offLabel(t.baseUtcOffsetHours)}`);
+  if(t.inDst) out.push(`夏令时已还原 −60 分${t.dstWindow?`（${t.dstWindow.startLocal} ~ ${t.dstWindow.endLocal}）`:''}`);
+  if(t.tzFallback) out.push('<b style="color:#e2543f">⚠ 出生地时区未识别，按东八区兜底</b>');
+  return out.join(' · ');
+}
+
+/** 出生地选择条：中国按省分组（citydata），境外取核心城市时区表；再给「手动时区」与「还原默认」 */
+let _overseasCache=null;
+function overseasCities(){
+  if(_overseasCache) return _overseasCache;
+  try{
+    _overseasCache=listCityTimeZones().filter(c=>!String(c.country).startsWith('中国'));
+  }catch{ _overseasCache=[]; }
+  return _overseasCache;
+}
+function birthPlaceBar(){
+  const cur=birthArgs();
+  const ov=getGeoOverride()||{};
+  const curCity=ov.city||cur.city||'';
+  const manual=Number.isFinite(ov.utcOffsetHours);
+  const byProv=new Map();
+  CITIES.forEach(c=>{ const k=c.prov||'其他'; if(!byProv.has(k)) byProv.set(k,[]); byProv.get(k).push(c); });
+  const cnOpts=[...byProv.entries()].map(([prov,list])=>
+    `<optgroup label="${escapeHtml(prov)}">${list.map(c=>`<option value="cn:${escapeHtml(c.name)}"${!manual&&c.name===curCity?' selected':''}>${escapeHtml(c.name)}</option>`).join('')}</optgroup>`).join('');
+  const byCountry=new Map();
+  overseasCities().forEach(c=>{ if(!byCountry.has(c.country)) byCountry.set(c.country,[]); byCountry.get(c.country).push(c); });
+  const outOpts=[...byCountry.entries()].map(([country,list])=>
+    `<optgroup label="${escapeHtml(country)}">${list.map(c=>`<option value="os:${escapeHtml(c.name)}"${!manual&&c.name===curCity?' selected':''}>${escapeHtml(c.name)}</option>`).join('')}</optgroup>`).join('');
+  return `<div class="astro-geo" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0 6px;font-size:12px">
+    <span class="ag-k" style="opacity:.7">出生地</span>
+    <select class="ag-sel" id="astro-birth-city" style="max-width:9.5em;font-size:12px;padding:2px 4px;border-radius:6px">
+      ${manual?'<option value="__cur__" selected>（当前：手动时区）</option>':''}
+      <optgroup label="中国（官方 +8）">${cnOpts}</optgroup>
+      ${outOpts}
+      <option value="__manual__">手动指定时区…</option>
+      <option value="__reset__">还原默认出生地</option>
+    </select>
+    <span class="ag-tz" style="opacity:.7">${escapeHtml(ov.place||cur.place||'')}</span>
+  </div>`;
+}
+
+/** 出生地切换：改 state 的 geo 覆盖后整盘重算（时区、DST、真太阳时全跟着变） */
+function wireBirthPlace(){
+  const sel=$('#astro-birth-city'); if(!sel) return;
+  sel.onchange=()=>{
+    const v=sel.value;
+    const cur=birthArgs();
+    if(v==='__cur__') return;
+    if(v.startsWith('cn:')){
+      const name=v.slice(3);
+      const city=CITIES.find(c=>c.name===name);
+      if(city) setGeoOverride({ city:name, place:name, lat:city.lat, latitude:city.lat, lonEast:city.lonEast, longitude:city.lonEast });
+    }else if(v.startsWith('os:')){
+      const name=v.slice(3);
+      const city=overseasCities().find(c=>c.name===name);
+      if(city) setGeoOverride({ city:name, place:`${name}（${city.country}）`, lat:city.lat, latitude:city.lat, lonEast:city.lon, longitude:city.lon });
+    }else if(v==='__manual__'){
+      const raw=prompt('手动指定出生地时区（相对 UTC 的小时数，如 8 / -5 / 5.5）', String(Number.isFinite(cur.utcOffsetHours)?cur.utcOffsetHours:(getGeoOverride()&&getGeoOverride().utcOffsetHours)||8));
+      if(raw===null){ renderAstro(); return; }
+      const n=Number(raw);
+      if(!Number.isFinite(n)||n<-12||n>14){ alert('时区须为 −12 ~ +14 之间的小时数'); renderAstro(); return; }
+      const keep={};
+      if(Number.isFinite(cur.latitude)){ keep.lat=cur.latitude; keep.latitude=cur.latitude; }
+      if(Number.isFinite(cur.longitude)){ keep.lonEast=cur.longitude; keep.longitude=cur.longitude; }
+      setGeoOverride({ ...keep, city:null, place:`手动时区 ${offLabel(n)}`, utcOffsetHours:n });
+    }else if(v==='__reset__'){
+      setGeoOverride(null);
+    }
+    renderAstro();
+  };
 }
 
 function dignityTags(d){
@@ -516,6 +607,7 @@ export function renderAstro(){
   <div class="astro-head">
     <div class="astro-title">${R.label||'本命星盘'}</div>
     <div class="astro-sub">${isNatal?`${birthText()} · ${args.place||''}`:mode.name+' · '+mode.sub}</div>
+    ${isNatal?`<div class="astro-tzline" style="font-size:12px;opacity:.8;line-height:1.6;margin-top:2px">${birthTimeLine(chart)}</div>${birthPlaceBar()}`:''}
     <div class="astro-angles">
       <span class="ax-line"><span class="ax-k">上升</span>${ch.ascSignName} ${fmt(ch.asc)}　<span class="ax-k">天顶</span>${fmt(ch.mc)}</span>
       <span class="ax-line">${ch.sect}盘 · 命主星 ${ch.chartRulerName}${ch.bodies[ruler]?`（${ch.bodies[ruler].signName}${ch.bodies[ruler].house}宫）`:''} · 整宫制${R.outer?' · 双轮':''}</span>
@@ -570,6 +662,7 @@ export function renderAstro(){
   ${b2Edit}
   <div class="astro-note">${isFake?'当前为变换类盘面：黄经经数学映射重排，宫位与黄道以变换后黄经计，与实天不一一对应，用于观察格局。':'整宫制 · 七政为古典核心，三王与北交仅列位不参与尊贵。相位为合/冲/刑/拱/六合五大主相位，通行容许度（日月加 1.5°），仅作客观成相呈现。尊贵：庙=入庙、旺=旺相、三分/界/面为次级尊贵，陷/落为失位，游为无尊贵。本地天文计算，对 JPL 级星历亚角分精度。'}</div>
   ${foldVerdict(verdictCardHtml(judgeAstro(chart)))}`;
+  wireBirthPlace();
 }
 
 // 一键复制
@@ -582,6 +675,7 @@ export function astroCopyText(){
   const aspects=calcAspects(chart);
   const L=['【本命星盘 · 西方古典占星】'];
   L.push(`${birthText()} · ${args.place||''}`);
+  if(chart.time) L.push(birthTimeLine(chart).replace(/<[^>]+>/g,''));
   L.push(`上升 ${chart.ascSignName} ${fmt(chart.asc)} · 天顶 ${fmt(chart.mc)} · ${chart.sect}盘 · 整宫制`);
   L.push(`命主星 ${chart.chartRulerName}（${chart.bodies[chart.chartRuler].signName}${chart.bodies[chart.chartRuler].house}宫）`);
   L.push('—— 行星落位 / 尊贵 / 宫位 ——');

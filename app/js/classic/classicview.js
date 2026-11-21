@@ -41,7 +41,7 @@ import {
   MARK_KEEP, MARK_DOUBT,
 } from './feed-state.js';
 import { renderFeedPanel, bindFeedGesture, doFeedAction, startNextRound } from './feed.js';
-import { $, $$, toast } from '../state.js?v=128';
+import { $, $$, toast } from '../state.js?v=129';
 
 const NOTE_KEY = 'qintian.classic.journal';   // 思想手记：{ nodeId: [{ text, at, fb }] }
 

@@ -1,15 +1,17 @@
 // 印度占星 · 吠陀 Jyotisha 本命盘子视图（v93）
-// 恒星黄道 Lahiri · 整宫 Rashi(D1) · 九曜 · 二十七宿 · D9 Navamsha · Vimshottari 大运 · Graha Drishti · Yoga
+// 恒星黄道 Lahiri · 整宫 Rashi(D1) · 九曜 · 二十七宿 · Panchanga 五要素 · D9/D10/D7 分盘（含 Navamsa Lagna）· Vimshottari 大运 · Graha Drishti · Yoga
 // 只依赖本地 caelus（已打进 vendor），不接任何在线服务。
-import { paipanVedic } from '../vendor/liuyao-core.js?v=128';
-import { birthArgs, $ } from './state.js?v=128';
-import { gateHTML, stage, isCasted } from './ritual.js?v=128';
+import { paipanVedic } from '../vendor/liuyao-core.js?v=129';
+import { birthArgs, $ } from './state.js?v=129';
+import { gateHTML, stage, isCasted } from './ritual.js?v=129';
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 const SIGN_SHORT = ['羊','牛','双','蟹','狮','女','秤','蝎','射','羯','瓶','鱼'];
 const SIGN_FULL  = ['白羊','金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼'];
 const SG_KEY = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'];
+/** 九曜单字（复现码与分盘格内共用） */
+const DIM_COPY = { sun:'日', moon:'月', mars:'火', mercury:'水', jupiter:'木', venus:'金', saturn:'土', rahu:'罗', ketu:'计' };
 const G_COLOR = {
   sun:'#f2b24b', moon:'#dfe6f2', mars:'#e06b51', mercury:'#9fb4c7',
   jupiter:'#d9a86a', venus:'#e7a7c4', saturn:'#cbb98c', rahu:'#7d9be8', ketu:'#b08ad6' };
@@ -22,6 +24,18 @@ const DIGNITY = {
 
 function fmt(d){ return `${String(d.degree).padStart(2,'0')}°${String(d.minute).padStart(2,'0')}′`; }
 const t = (key, text) => `<span class="gt" data-tip="${key}">${escapeHtml(text)}</span>`;
+
+// 本视图新增段落的样式（不写进 vedic.css，避免与主样式表的版本对齐冲突）
+const VD_EXTRA_CSS = `
+<style>
+.vd-pa-list{display:flex;flex-direction:column}
+.vd-pa-row{display:flex;align-items:baseline;gap:10px;padding:8px 2px;border-top:1px solid rgba(255,255,255,.05);font-size:13px;flex-wrap:wrap}
+.vd-pa-row:first-child{border-top:0}
+.vd-pa-k{flex:0 0 96px;color:var(--ink-faint);font-size:12px}
+.vd-pa-v{color:var(--ink)}
+.vd-pa-v small{color:var(--ink-faint);font-size:11px;margin-left:5px}
+.vd-pa-n{color:var(--ink-faint);font-size:11.5px;margin-left:auto;text-align:right}
+</style>`;
 
 function buildVedic(){
   const args = birthArgs();
@@ -36,8 +50,9 @@ function currentAge(a){
   if (m < 0 || (m === 0 && now.getDate() < a.day)) age--;
   return Math.max(0, age);
 }
-function ageLabel(y){ // 大运岁数 → 大致公历年
-  return Math.round(1994 + y);
+function ageLabel(y, birthYear){ // 大运岁数 → 大致公历年（用真实出生年加权，不再写死年份）
+  const by = Number.isFinite(birthYear) ? birthYear : new Date().getFullYear();
+  return Math.round(by + y);
 }
 
 export function renderVedic(){
@@ -82,10 +97,42 @@ export function renderVedic(){
         <div class="vd-ov-k">${t('vd-vimshottari','当前大运（你现 '+age+' 岁）')}</div>
         <div class="vd-ov-v" style="color:${G_COLOR[curDasa.graha]||'#e8c87a'}">${t('vd-vimshottari', curDasa.name+'大运')}
           ${curDasa.startYear.toFixed(1)}–${curDasa.endYear.toFixed(1)}岁
-          <small>约 ${ageLabel(curDasa.startYear)}–${ageLabel(curDasa.endYear)} 年</small></div>
+          <small>约 ${ageLabel(curDasa.startYear, args.year)}–${ageLabel(curDasa.endYear, args.year)} 年</small></div>
       </div>
     </div>
     ${guideBlock()}
+  </div>`;
+
+  // ---------- Panchanga 五要素 ----------
+  const P = chart.panchanga;
+  const riseMin = P.vara.sunrise ? Number(P.vara.sunrise.slice(0, 2)) * 60 + Number(P.vara.sunrise.slice(3, 5)) : null;
+  const beforeRise = riseMin != null && (args.hour * 60 + args.minute) < riseMin;
+  const varaTip = P.vara.basis === 'sunrise'
+    ? `以当日日出 ${P.vara.sunrise} 为一日之始（出生在日出${beforeRise ? '之前，仍算前一日' : '之后'}，故记${P.vara.name}）`
+    : '未取到当日日出，按钟面日期记日';
+  const pRow = (k, v, note) => `<div class="vd-pa-row"><span class="vd-pa-k">${k}</span><span class="vd-pa-v">${v}</span>${note ? `<span class="vd-pa-n">${note}</span>` : ''}</div>`;
+  const panchanga = `
+  <div class="vd-card">
+    <div class="vd-card-hd"><h3>五要素 Panchanga</h3>
+      <span class="vd-hd-note">月日黄经差 ${P.elongation.toFixed(2)}°｜同一次计算同时得出，供逐项核对</span></div>
+    <div class="vd-pa-list">
+      ${pRow('月相日 Tithi',
+        `<b>${P.tithi.name}</b> <small>${P.tithi.sa}</small>`,
+        `${P.tithi.pakshaZh} 第 ${P.tithi.num} 日（共 30）· 已过 ${(P.tithi.elapsed * 100).toFixed(1)}%`)}
+      ${pRow('宿 Nakshatra',
+        `<b>${P.nakshatra.zh}</b> <small>${P.nakshatra.sa}</small>`,
+        `第 ${P.nakshatra.pada} 足（共 4）· 宿主 ${G[P.nakshatra.lord] ? G[P.nakshatra.lord].name : ''}`)}
+      ${pRow('瑜伽 Yoga',
+        `<b>${P.yoga.sa}</b> <small>${P.yoga.zh}</small>`,
+        `第 ${P.yoga.num} / 27 · 日+月黄经和所在段`)}
+      ${pRow('卡拉纳 Karana',
+        `<b>${P.karana.name}</b> <small>${P.karana.sa}</small>`,
+        `第 ${P.karana.num} / 60（一个 Tithi = 两个 Karana，各 6°）`)}
+      ${pRow('七曜日 Vara',
+        `<b>${P.vara.name}</b> <small>${P.vara.sa}</small>`,
+        `值日星 ${P.vara.lordName} · ${varaTip}`)}
+    </div>
+    <div class="vd-sub-note">Tithi 按 (月−日黄经差)/12° 取整 +1；Yoga 按 (日+月)/13°20′；Karana 按每 6° 一个；Vara 以日出换日。五项均用同一恒星黄经（Lahiri），可逐项与任何一本印度历对照。</div>
   </div>`;
 
   // ---------- D1 南印度风格 12 宫格（按星座顺序排，宫号从上升起） ----------
@@ -120,6 +167,46 @@ export function renderVedic(){
     </div>
   </div>`;
 
+  // ---------- 分盘 D9 / D10 / D7：各以自身上升起，整宫十二宫 ----------
+  const DIM = DIM_COPY;
+  const vargaCell = (h, small) => {
+    const isAsc = h.house === 1;
+    const grahas = h.bodies.map(id => `<span class="vd-g" style="color:${G_COLOR[id]}" title="${G[id] ? G[id].sa : ''}">${DIM[id] || (G[id] ? G[id].short : '')}</span>`).join('');
+    return `<div class="vd-cell${isAsc ? ' vd-cell-asc' : ''}"${small ? ' style="min-height:62px;padding:6px 7px"' : ''}>
+      <div class="vd-cell-hd">
+        <span class="vd-csign"${small ? ' style="font-size:12px"' : ''}>${SIGN_SHORT[h.signIndex]}</span>
+        <span class="vd-chouse">${h.house}宫${isAsc ? ' ▲' : ''}</span>
+      </div>
+      <div class="vd-cgrahas">${grahas || '<span class="vd-empty">·</span>'}</div>
+      <div class="vd-clord" style="font-size:9.5px">主 ${DIM[h.lord] || ''}</div>
+    </div>`;
+  };
+  const vargaHd = (v) => `<b style="color:var(--gold)">${v.lagnaSignName}</b> ${fmt(v.lagnaDms)} <small>命主 ${DIM[v.houses[0].lord] || ''}</small>`;
+  const d9 = chart.navamsha, d10 = chart.dasamsa, d7 = chart.saptamsa;
+  const vargaCard = `
+  <div class="vd-card">
+    <div class="vd-card-hd"><h3>${t('vd-navamsha','九分盘 D9 · Navamsha')}</h3>
+      <span class="vd-hd-note">D9 上升 Navamsa Lagna：${vargaHd(d9)}｜每宫 3°20′ 一分，整宫从 D9 上升起</span></div>
+    <div class="vd-grid">${d9.houses.map(h => vargaCell(h, false)).join('')}</div>
+    <div class="vd-sub-note">D9 是印度盘里看婚姻与「内在真实力量」的盘：D1 里显得有力的星，若在 D9 落陷，多半是虚旺。
+      本盘第一格（▲）为 <b>D9 上升</b>，与 D1 上升是两回事——D1 上升 ${SIGN_FULL[chart.ascSignIndex]} ${fmt(chart.asc)}，D9 上升 ${SIGN_FULL[d9.lagnaSignIndex]} ${fmt(d9.lagnaDms)}。</div>
+  </div>
+  <div class="vd-card">
+    <div class="vd-card-hd"><h3>事业盘 D10 · 子女盘 D7</h3>
+      <span class="vd-hd-note">D10 上升 ${vargaHd(d10)}｜D7 上升 ${vargaHd(d7)}</span></div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px">
+      <div>
+        <div class="vd-sub-note" style="margin:0 0 6px">${d10.vargaZh} · 每 3° 一分（阳宫起本宫、阴宫起第 9 宫）</div>
+        <div class="vd-grid">${d10.houses.map(h => vargaCell(h, true)).join('')}</div>
+      </div>
+      <div>
+        <div class="vd-sub-note" style="margin:0 0 6px">${d7.vargaZh} · 每 4°17′ 一分（阳宫起本宫、阴宫起第 7 宫）</div>
+        <div class="vd-grid">${d7.houses.map(h => vargaCell(h, true)).join('')}</div>
+      </div>
+    </div>
+    <div class="vd-sub-note">D10 看事业与「做的事能不能立住」，D7 看子女与创造力（也看后代缘）。两盘同为整宫制，每宫星座 = 该盘上升星座顺延。</div>
+  </div>`;
+
   // ---------- 九曜明细表 ----------
   const order = ['sun','moon','mars','mercury','jupiter','venus','saturn','rahu','ketu'];
   const rows = order.map(id=>{
@@ -149,7 +236,7 @@ export function renderVedic(){
     return `<div class="vd-dasa-row${isCur?' is-cur':''}">
       <span class="vd-dasa-g" style="color:${G_COLOR[p.graha]}">${t('vd-vimshottari', p.name)}</span>
       <span class="vd-dasa-age">${p.startYear.toFixed(1)}–${p.endYear.toFixed(1)} 岁</span>
-      <span class="vd-dasa-year">${ageLabel(p.startYear)}–${ageLabel(p.endYear)}</span>
+      <span class="vd-dasa-year">${ageLabel(p.startYear, args.year)}–${ageLabel(p.endYear, args.year)}</span>
       ${isCur?'<span class="vd-dasa-now">现在</span>':''}
     </div>`;
   }).join('');
@@ -205,14 +292,14 @@ export function renderVedic(){
   // ---------- 分层声明 ----------
   const foot = `
   <div class="vd-foot">
-    <p>本盘为印度 <b>Parashari 吠陀占星</b>口径：恒星黄道 Lahiri 岁差 ${chart.ayanamsaDeg.toFixed(2)}°、整宫制、九曜（不含三王）、Vimshottari 大运。
+    <p>本盘为印度 <b>Parashari 吠陀占星</b>口径：恒星黄道 Lahiri 岁差 ${chart.ayanamsaDeg.toFixed(2)}°、整宫制、九曜（不含三王）、Vimshottari 大运、Panchanga 五要素、D9/D10/D7 分盘（各盘自身上升起、整宫十二宫）。
     与西方古典盘是两套坐标与体系，星座通常比回归盘退约一格，两者并列呈现、不混用。</p>
     <p>所列庙旺、照临、成格均为<b>客观成相/尊贵事实</b>；具体吉凶倾向由古法规则另卡给出。
     罗睺计都庙旺、部分 Yoga 判定流派分歧较大处，已标注「通行简化版」，不做唯一结论。</p>
     <p class="vd-src">依据：《Brihat Parashara Hora Shastra》《Brihat Jataka》(Varahamihira)《Surya Siddhanta》；岁差用印度官方 Lahiri 标准，星历本地计算，无联网。</p>
   </div>`;
 
-  body.innerHTML = stage(overview + d1 + grahaTable + dasaCard + aspCard + yogaCard + foot, 'vedic');
+  body.innerHTML = stage(VD_EXTRA_CSS + overview + panchanga + d1 + vargaCard + grahaTable + dasaCard + aspCard + yogaCard + foot, 'vedic');
 }
 
 function houseTip(h){ return 'hs-'+h; }
@@ -241,13 +328,18 @@ export function vedicCopyText(){
   L.push(`出生：${args.year}-${args.month}-${args.day} ${String(args.hour).padStart(2,'0')}:${String(args.minute).padStart(2,'0')}（UTC+8）${args.place||''}`);
   L.push(`岁差 Lahiri ${chart.ayanamsaDeg.toFixed(2)}°｜上升 ${chart.ascSignName} ${fmt(chart.asc)}｜命主星 ${chart.lagnaLordName}`);
   L.push(`月座 ${G.moon.signName}｜月宿 ${chart.moonNakshatra.zh}(${chart.moonNakshatra.sa}) 第${chart.moonNakshatra.pada}足`);
+  const pc = chart.panchanga;
+  L.push(`五要素 Tithi ${pc.tithi.name}(${pc.tithi.sa})｜Yoga ${pc.yoga.sa}｜Karana ${pc.karana.sa}(第${pc.karana.num}/60)｜Vara ${pc.vara.name}(${pc.vara.basis === 'sunrise' ? '日出' + pc.vara.sunrise + '起算' : '钟面日'})`);
+  const vg = (v) => `${v.varga} 上升 ${v.lagnaSignName} ${fmt(v.lagnaDms)}｜` + v.houses.map(h => `${h.house}:${SIGN_SHORT[h.signIndex]}${h.bodies.length ? '[' + h.bodies.map(id => DIM_COPY[id]).join('') + ']' : ''}`).join(' ');
+  L.push('— 分盘 —');
+  [chart.navamsha, chart.dasamsa, chart.saptamsa].forEach(v => L.push(vg(v)));
   L.push('— 九曜 —');
   ['sun','moon','mars','mercury','jupiter','venus','saturn','rahu','ketu'].forEach(id=>{
     const b=G[id];
     L.push(`${b.name}(${b.sa}) ${b.signName}${fmt(b.dms)} ${b.house}宫 D9-${SIGN_SHORT[b.navamshaSign]}${b.dignity==='exalted'?' 庙旺':b.dignity==='own'?' 本宫':b.dignity==='debilitated'?' 陷落':''}${b.retrograde?' 逆':''}`);
   });
   L.push('— Vimshottari 大运 —');
-  chart.vimshottari.sequence.forEach(p=>{ L.push(`${p.name} ${p.startYear.toFixed(1)}-${p.endYear.toFixed(1)}岁 (${ageLabel(p.startYear)}-${ageLabel(p.endYear)})${p===cur?' ← 当前':''}`); });
+  chart.vimshottari.sequence.forEach(p=>{ L.push(`${p.name} ${p.startYear.toFixed(1)}-${p.endYear.toFixed(1)}岁 (${ageLabel(p.startYear, args.year)}-${ageLabel(p.endYear, args.year)})${p===cur?' ← 当前':''}`); });
   L.push(`出生小限：${chart.vimshottari.antardasha.name}`);
   const pres=chart.yogas.filter(y=>y.present).map(y=>y.zh).join('、')||'无所列成格';
   L.push('成格：'+pres);

@@ -7,11 +7,14 @@
  * 口径：
  * - 真太阳时由上层校正后传入（本模块直接按北京时间分量解释 input）。
  * - 节气换月用 Exact；日柱走 getDayInGanZhiExact（23:00 换日），旬空由 xunKongOf(dayGZ) 自算，与日柱同源（同 calendar.ts）。
+ * - 纳音/胎元/胎息/命宫/身宫取自 EightChar，且强制 setSect(1)（晚子时日柱算次日），
+ *   与上面的日柱同口径——否则 23:00–23:59 的纳音/胎息会按 00:00 换日的「当天」算而错配。
  * - 大运：阳男阴女顺排、阴男阳女逆排，起运岁数取 lunar Yun；本模块每步大运附干支与起止年份/岁数。
  */
 import { Solar } from 'lunar-javascript';
 import type { SolarDateInput, TianGan, DiZhi, WuXing } from './types.js';
 import { xunKongOf } from './calendar.js';
+import { civilForPaipan, type TimeResolveInput } from './timeContext.js';
 
 export type Gender = '男' | '女';
 
@@ -139,10 +142,21 @@ function buildPillar(ganZhi: string, dayGan: TianGan, naYin: string, isDay: bool
 }
 
 export function paiBazi(input: BaziInput): BaziResult {
-  const { year, month, day, hour, gender } = input;
-  const minute = input.minute ?? 0;
+  // 时区 / 夏令时 / 真太阳时统一折算：给了城市或时区就用折算后的钟面时间，
+  // 没给则原样返回（不传地点的调用与旧实现逐字节一致）。折算可能跨日，换日逻辑自然跟着走。
+  const eff = civilForPaipan(input as unknown as TimeResolveInput);
+  const birth = eff.applied
+    ? eff.civil
+    : { year: input.year, month: input.month, day: input.day, hour: input.hour, minute: input.minute ?? 0 };
+  const { year, month, day, hour, gender } = { ...input, ...birth };
+  const minute = birth.minute ?? 0;
   const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  // EightChar 必须与本模块日柱同口径：默认 sect=2（00:00 换日）会让 23:00–23:59 出生者的
+  // 日纳音/胎息按「当天」算，而上面日柱走 getDayInGanZhiExact（23:00 换日）已进次日，
+  // 结果出现「日柱丙寅配乙丑的纳音」这类错配。setSect(1) = 晚子时日柱算次日，
+  // 与 getDayInGanZhiExact 完全同源（已扫描 2026 全年各时刻验证年/月/日/时四柱逐一相等）。
   const ec = lunar.getEightChar();
+  ec.setSect(1);
 
   const yearGZ = lunar.getYearInGanZhiExact();
   const monthGZ = lunar.getMonthInGanZhiExact();

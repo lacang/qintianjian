@@ -14,9 +14,14 @@
  *   即时柱进次日子时、日柱亦进次日。当前实现用 lunar-javascript `getDayInGanZhiExact()`
  *   （23:00 换日），与此口径一致；实测 2026-10-21 23:30 得己巳日甲子时，与 10-22 00:30 同日柱。
  *   另有以 00:00 换日的流派，本应用不采用，勿改回 setSect(2)。
- * - 真太阳时/经度校正不在本层处理，留给上层（UI/八字模块）。
+ * - 夏令时：中国 1986–1991 年 4–9 月实行过夏令时（钟面 = 标准时 + 1h）。本层在
+ *   转四柱前先把钟面时间还原成标准时（-1h），窗口表在 timeContext（chinaDstWindow）。
+ *   不还原的话那六年夏天出生的人时柱会整整错一个时辰，跨 23:00 的还会连带错日柱。
+ * - 真太阳时（经度差 + 均时差）仍不在本层：本层只认「标准时」。真太阳时由
+ *   timeContext.resolveTime 算好，八字/星盘层要用时把修正后的钟面传进来。
  */
 import { Solar } from 'lunar-javascript';
+import { chinaDstAppliesToCivil, chinaDstWindow } from './timeContext.js';
 import type { DiZhi, SiZhu, SolarDateInput, TianGan } from './types.js';
 
 const GAN_ORDER = '甲乙丙丁戊己庚辛壬癸';
@@ -43,11 +48,48 @@ export function xunKongOf(ganZhi: string): [DiZhi, DiZhi] {
   ];
 }
 
-export function solarToSiZhu(input: SolarDateInput): SiZhu {
+/** 四柱 + 夏令时还原信息（solarToSiZhu 的返回，比 SiZhu 多三项） */
+export interface SiZhuWithTime extends SiZhu {
+  /** 实际用于起四柱的标准时（夏令时已还原；无夏令时时等于 year/hour/minute 等） */
+  standardTime: { year: number; month: number; day: number; hour: number; minute: number };
+  /** 是否命中中国 1986–1991 夏令时 */
+  dstApplied: boolean;
+  /** 命中的夏令时窗口（标准时口径，如 1988-04-17 02:00 ~ 1988-09-11 01:00） */
+  dstWindow: { startLocal: string; endLocal: string } | null;
+}
+
+/**
+ * 公历（北京时间钟面）→ 四柱。
+ *
+ * 夏令时：1986–1991 年 4–9 月命中窗口时，先 -1h 还原标准时再起四柱；
+ * 返回的 year/month/day/hour/minute 仍是你传进来的**钟面值**（界面显示用），
+ * 真正用于四柱的时间在 standardTime 里。
+ */
+export function solarToSiZhu(
+  input: SolarDateInput,
+  opts: { applyChinaDst?: boolean } = {},
+): SiZhuWithTime {
   const { year, month, day, hour } = input;
   const minute = input.minute ?? 0;
 
-  const lunar = Solar.fromYmdHms(year, month, day, hour, minute, 0).getLunar();
+  // 夏令时还原：钟面 -1h（可能跨日，如 1986-05-04 02:30 → 01:30，跨日则连带日柱）
+  let dstApplied = false;
+  let stdYear = year;
+  let stdMonth = month;
+  let stdDay = day;
+  let stdHour = hour;
+  let stdMinute = minute;
+  if (opts.applyChinaDst !== false && chinaDstAppliesToCivil(year, month, day, hour, minute)) {
+    const d = new Date(Date.UTC(year, month - 1, day, hour, minute, 0) - 3600000);
+    stdYear = d.getUTCFullYear();
+    stdMonth = d.getUTCMonth() + 1;
+    stdDay = d.getUTCDate();
+    stdHour = d.getUTCHours();
+    stdMinute = d.getUTCMinutes();
+    dstApplied = true;
+  }
+
+  const lunar = Solar.fromYmdHms(stdYear, stdMonth, stdDay, stdHour, stdMinute, 0).getLunar();
 
   const yearGanZhi = lunar.getYearInGanZhiExact();
   const monthGanZhi = lunar.getMonthInGanZhiExact();
@@ -70,6 +112,9 @@ export function solarToSiZhu(input: SolarDateInput): SiZhu {
     dayZhi: dayGanZhi.charAt(1) as DiZhi,
     monthZhi: monthGanZhi.charAt(1) as DiZhi,
     xunKong,
+    standardTime: { year: stdYear, month: stdMonth, day: stdDay, hour: stdHour, minute: stdMinute },
+    dstApplied,
+    dstWindow: dstApplied ? chinaDstWindow(stdYear) : null,
   };
 }
 

@@ -6,7 +6,22 @@
  *
  * 许可：本包 MIT；运行时依赖 mingpan@0.1.8（Apache-2.0）、lunar-javascript（MIT）。
  */
-export { solarToSiZhu, getDayCalendar, listJieqiInRange, type DayCalendar, type JieqiItem } from './calendar.js';
+export { solarToSiZhu, getDayCalendar, listJieqiInRange, type DayCalendar, type JieqiItem, type SiZhuWithTime } from './calendar.js';
+// 统一时间层（时区 / 中国 1986–1991 夏令时 / 真太阳时）：核心与前端共用的唯一时间入口
+export {
+  resolveTime,
+  utcParts,
+  lookupCityTimeZone,
+  listCityTimeZones,
+  chinaDstWindow,
+  chinaDstInEffect,
+  chinaDstAppliesToCivil,
+  equationOfTimeMinutes,
+  formatOffsetName,
+  formatCivilTime,
+  CITY_TZ_TABLE,
+} from './timeContext.js';
+export type { CivilTime, CityTimeZone, DstRuleId, TimeResolveInput, TimeResolution } from './timeContext.js';
 export { castManual, castCoins, castTianji } from './input.js';
 export { castByTime, toApparentSolarTime, type TimeCastOptions, type TimeCastResult } from './timecast.js';
 export { paipan, getShouGuaPan, type ShouGuaYao } from './paipan.js';
@@ -28,6 +43,8 @@ export { toSimplified } from './constants.js';
 
 // 八字
 export { paiBazi, tenGod, liuNianGanZhiSequence } from './bazi.js';
+// 八字扩展层（神煞 / 刑冲合害 / 流年流月 / 旺衰依据）——只增一行，不动既有导出面
+export * from './bazi-extra.js';
 export type {
   BaziInput,
   BaziResult,
@@ -116,7 +133,7 @@ export {
 export type { ReadingDomain, YongShenRef, ClassicQuote } from './annotations/reading.js';
 
 // M6 紫微斗数（iztro 底座，MIT；只排盘列星曜/四化/大限，不作吉凶断语）
-export { paiZiwei, hourToTimeIndex } from './ziwei.js';
+export { paiZiwei, hourToTimeIndex, ziweiYunXian } from './ziwei.js';
 export type {
   ZiweiInput,
   ZiweiChart,
@@ -126,6 +143,11 @@ export type {
   ZwFlyHua,
   ZwFlyIn,
   ZiweiGender,
+  ZwYunHua,
+  ZwYunScope,
+  ZwYunMonthly,
+  ZiweiYunTarget,
+  ZiweiYunXian,
 } from './ziwei.js';
 
 // M7 通用可插拔卡牌框架（韦特 RWS 1909 PD 为默认牌组；只给牌义/位置/自问方向，不替用户断结果）

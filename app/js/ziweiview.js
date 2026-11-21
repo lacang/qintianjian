@@ -4,11 +4,11 @@
 // M8-a：点宫位→底部详情面板；三方四正高亮（本宫/对宫/三合三档）；只看重点；一键复制本宫。
 // M8-b：宫干四化（飞化）路径追踪（起点→化×→星→落宫，自化/飞入区分，独立配色）；
 //        飞入本宫清单；双宫对照台（只列客观事实，不做自然语言解读）。
-import { paiZiwei } from '../vendor/liuyao-core.js?v=128';
-import { judgeZiwei, verdictCardHtml } from './verdicts.js?v=128';
-import { birthArgs, $, copyText } from './state.js?v=128';
-import { guideHTML, T } from './tipview.js?v=128';
-import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=128';
+import { paiZiwei, ziweiYunXian } from '../vendor/liuyao-core.js?v=129';
+import { judgeZiwei, verdictCardHtml } from './verdicts.js?v=129';
+import { birthArgs, $, copyText } from './state.js?v=129';
+import { guideHTML, T } from './tipview.js?v=129';
+import { gateHTML, stage, foldVerdict, isCasted } from './ritual.js?v=129';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (
@@ -92,6 +92,8 @@ function cellHtml(p) {
 }
 
 function centerHtml(c) {
+  // 年柱口径：紫微取农历年（春节为界），四柱另有立春口径 —— 两者会冲突，故在盘面明确标注
+  const yearNote = c.yearGanZhiNote || `年柱：${c.yearGanZhi}（农历年，春节为界；四柱另有立春口径）`;
   return `
   <div class="zw-center" style="grid-area:center">
     <div class="zw-c-title">紫微斗数 · 天盘</div>
@@ -100,6 +102,8 @@ function centerHtml(c) {
     <div class="zw-c-row"><b>命宫</b>${esc(c.soulBranch)}<i class="zw-c-dot"></i><b>身宫</b>${esc(c.bodyBranch)}</div>
     <div class="zw-c-row zw-c-sub">${esc(c.lunarDate)} · ${esc(c.time)}（${esc(c.timeRange)}）</div>
     <div class="zw-c-row zw-c-sub">${esc(c.zodiac)} · ${esc(c.sign)} · ${esc(c.gender)}命</div>
+    <div class="zw-c-row zw-c-sub zw-c-yearbasis">${esc(yearNote)}</div>
+    ${c.lateZi ? '<div class="zw-c-row zw-c-sub zw-c-latezi">晚子时（23:00–23:59）按次日排：农历日期 · 命宫所在月 · 日柱 三者同步进位</div>' : ''}
   </div>`;
 }
 
@@ -485,11 +489,44 @@ const SI_HUA_NIAN = { // 十干四化（通行表）
   癸: { 禄:'破军', 权:'巨门', 科:'太阴', 忌:'贪狼' },
 };
 
+// ---------- 流年（农历年）----------
+// 紫微流年以【农历正月初一】换年：公历 1 月 1 日到春节前仍属上一个农历年
+// （例 2026-01-15 仍属乙巳年，不是丙午）。所以流年干支与虚岁都必须走农历年，
+// 并与同一张牌上的流年命宫（年支落宫）、大限（虚岁区间）同源，口径一致。
+const CN_DIGIT = { 〇: 0, 零: 0, 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9 };
+
+// 从农历串「二〇二五年冬月廿七」取出农历年号 2025；解析不出返回 null
+function lunarYearOfText(s) {
+  const m = /^([〇零一二三四五六七八九]{4})年/.exec(String(s == null ? '' : s));
+  if (!m) return null;
+  const y = parseInt([...m[1]].map((ch) => CN_DIGIT[ch]).join(''), 10);
+  return Number.isFinite(y) && y > 1800 ? y : null;
+}
+
+// 此刻所属农历年的年干支 + 农历年号。
+// 数据源：paiZiwei（iztro）算出的年柱，其换年基准正是农历正月初一，与紫微流年换年一致；
+// 排盘库取不到时退回公历年干支，并在 source 上标明，便于排查。
+function lunarYearInfo(now = new Date()) {
+  const y = now.getFullYear();
+  const mo = now.getMonth() + 1;
+  const d = now.getDate();
+  try {
+    const t = paiZiwei({ year: y, month: mo, day: d, hour: 12, minute: 0, gender: '男' });
+    const gz = String((t && t.yearGanZhi) || '');
+    if (/^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$/.test(gz)) {
+      return { ganZhi: gz, lunarYear: lunarYearOfText(t.lunarDate) ?? y, source: 'iztro' };
+    }
+  } catch { /* 排盘库不可用时走下面的兜底 */ }
+  return { ganZhi: yearGanZhi(y), lunarYear: y, source: 'solar-fallback' };
+}
+
 function yunXianCard(c, now = new Date()) {
-  const curYear = now.getFullYear();
-  const curGanZhi = yearGanZhi(curYear); // 流年干支
+  const info = lunarYearInfo(now);
+  const curGanZhi = info.ganZhi; // 流年干支（农历年，正月初一换年）
   const birthYear = parseInt(String(c.solarDate).split('-')[0], 10) || birthArgs().year;
-  const xuSui = curYear - birthYear + 1; // 虚岁（生年即 1 岁；以公历年差近似，跨春节数日误差已声明）
+  // 虚岁同走农历年：当前农历年 − 出生农历年 + 1（生年即 1 岁；出生盘 lunarDate 自带农历年）
+  const birthLunarYear = lunarYearOfText(c.lunarDate) ?? birthYear;
+  const xuSui = info.lunarYear - birthLunarYear + 1;
   // 大限宫：decadalRange 覆盖当前虚岁
   const dp = c.palaces.find((p) => p.decadalRange && xuSui >= p.decadalRange[0] && xuSui <= p.decadalRange[1]);
   // 流年命宫：年支所在宫
@@ -509,21 +546,48 @@ function yunXianCard(c, now = new Date()) {
     const pp = findStarPalace(star);
     return `<div class="yx-sihua"><i class="zw-muta ${ {禄:'lu',权:'quan',科:'ke',忌:'ji'}[k] }">${k}</i>${star}${pp ? ` → ${pp.name}（${pp.ganZhi}）` : ''}</div>`;
   }).join('');
+  // 大限四化：大限宫天干按十干四化表飞入本命盘，格式与流年四化一致（core 侧 ZiweiYunHua 同形）
+  const dHuaRows = (dp && dp.decadalHua ? dp.decadalHua : []).map((h) => {
+    const pp = c.palaces.find((p) => p.earthlyBranch === h.toBranch);
+    return `<div class="yx-sihua"><i class="zw-muta ${MUTA_CLASS[h.mutagen] || ''}">${h.mutagen}</i>${h.star}${pp ? ` → ${pp.name}（${pp.ganZhi}）` : ''}</div>`;
+  }).join('');
   const dMajor = dp ? (dp.majorStars || []).map((x) => x.name).join('、') : '';
   const lMajor = lp ? (lp.majorStars || []).map((x) => x.name).join('、') : '';
+  const ly = liuYueOf(c, now);
+  const lyLeap = ly && ly.monthly.isLeapMonth;
+  const lyRows = ly ? ly.monthly.hua.map((h) => {
+    const pp = c.palaces.find((p) => p.earthlyBranch === h.toBranch);
+    return `<div class="yx-sihua"><i class="zw-muta ${MUTA_CLASS[h.mutagen] || ''}">${h.mutagen}</i>${h.star}${pp ? ` → ${pp.name}（${pp.ganZhi}）` : ''}</div>`;
+  }).join('') : '';
   return `
   <div class="astro-card yx-card">
     <div class="ac-title">运限 · 大限与流年（${curGanZhi}年 · 虚岁 ${xuSui}）</div>
     ${dp ? `
-    <div class="at-row"><span class="at-k">当前大限</span><span class="at-v">虚岁 ${dp.decadalRange[0]}–${dp.decadalRange[1]} · 走「${dp.name}」（${dp.ganZhi}）${dMajor ? ' · 坐 ' + dMajor : ' · 空宫借对宫'}</span></div>` : ''}
+    <div class="at-row"><span class="at-k">当前大限</span><span class="at-v">虚岁 ${dp.decadalRange[0]}–${dp.decadalRange[1]} · 走「${dp.name}」（${dp.ganZhi}）${dMajor ? ' · 坐 ' + dMajor : ' · 空宫借对宫'}</span></div>
+    <div class="at-row"><span class="at-k">大限四化</span><span class="at-v yx-sihua-list">${dHuaRows}</span></div>` : ''}
     ${lp ? `
     <div class="at-row"><span class="at-k">流年命宫</span><span class="at-v">${curGanZhi}年年支${yz} → 本命「${lp.name}」（${lp.ganZhi}）${lMajor ? ' · 坐 ' + lMajor : ' · 空宫借对宫'}</span></div>` : ''}
     <div class="at-row"><span class="at-k">流年四化</span><span class="at-v yx-sihua-list">${shRows}</span></div>
-    <div class="cb-note">大限＝十年运限，古法虚岁起限（生年干支顺逆依阴阳男女而异）；流年命宫＝太岁地支落宫；流年四化＝年干十干四化表飞入本命盘。断限须合参本命格局与大限三方四正，本卡只排盘面事实。出处：《紫微斗数全书》卷二「定大限」「定流年」。</div>
+    ${ly ? `
+    <div class="at-row"><span class="at-k">流月命宫</span><span class="at-v">农历${ly.monthly.monthLabel}（${ly.monthly.ganZhi}）→ 本命「${ly.monthly.palaceName}」（${ly.monthly.palaceGanZhi}）${lyLeap && ly.monthly.lunarDay > 15 ? ' · 闰月十六起归次月' : ''}</span></div>
+    <div class="at-row"><span class="at-k">流月四化</span><span class="at-v yx-sihua-list">${lyRows}</span></div>` : ''}
+    <div class="cb-note">大限＝十年运限，古法虚岁起限（生年干支顺逆依阴阳男女而异）；大限四化＝大限宫天干按十干四化表飞入本命盘。流年以农历正月初一换年，流年干支与虚岁同按农历年（虚岁＝当前农历年−出生农历年+1），故公历 1 月至春节前仍属上一流年；流年命宫＝太岁地支落宫；流年四化＝年干十干四化表飞入本命盘。流月以农历月为界（闰月十六起归次月），流月命宫与流月四化同取 iztro 运限，入参为当日阳历。断限须合参本命格局与大限三方四正，本卡只排盘面事实。出处：《紫微斗数全书》卷二「定大限」「定流年」。</div>
   </div>`;
 }
 
-// 以公历年推年干支（紫微流年通用农历年，立春前后数日之差如实声明，不影响宫位判定）
+/**
+ * 取「当前所处」的流月（大限/流年/流月同源 iztro horoscope）。
+ * 入参必须是本命盘 c 的出生参数，否则返回 null —— 宁可少一块，不可张冠李戴。
+ */
+function liuYueOf(c, now) {
+  try {
+    const yx = ziweiYunXian(birthArgs(), { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() });
+    if (yx && yx.chart && yx.chart.siZhu === c.siZhu && yx.chart.soulBranch === c.soulBranch) return yx;
+  } catch { /* 排盘失败则不显示流月 */ }
+  return null;
+}
+
+// 公历年干支：仅作排盘库不可用时的兜底（正常路径见 lunarYearInfo，走农历年干支）
 function yearGanZhi(y) {
   const G = '甲乙丙丁戊己庚辛壬癸', Z = '子丑寅卯辰巳午未申酉戌亥';
   return G[(((y - 4) % 10) + 10) % 10] + Z[(((y - 4) % 12) + 12) % 12];
@@ -568,7 +632,7 @@ export function renderZiwei() {
       <span><i class="zw-dot fly-self"></i>自化</span>
       <span class="zw-lg-sep">点「宫干四化」任一条，按此三档高亮（与三方四正配色区分）</span>
     </div>
-    <div class="zw-note">大限数字为该宫十年虚岁区间；空宫＝本宫无十四主星，借对宫安星。三方四正为纯地支关系（对宫＋三合），无流派差异。宫干四化为本宫宫干按十干四化表飞出的星与落宫（自化＝落回本宫）；庚干「阳武阴同」、壬干「梁紫左武」采通行表，各家或异。底座 ${esc(c.generator)}（MIT），本地离线排盘，只列盘面事实。<span class="zw-ver">v44</span></div>
+    <div class="zw-note">大限数字为该宫十年虚岁区间；空宫＝本宫无十四主星，借对宫安星。三方四正为纯地支关系（对宫＋三合），无流派差异。宫干四化为本宫宫干按十干四化表飞出的星与落宫（自化＝落回本宫）；庚干「阳武阴同」、壬干「梁紫左武」采通行表，各家或异。晚子时（23:00–23:59）按次日换日：农历日期/命宫所在月/日柱同步进位（含闰月后半月归次月）。年柱取农历年（春节为界），四柱另有立春口径，两者冲突时以本行标注为准。底座 ${esc(c.generator)}（MIT），本地离线排盘，只列盘面事实。<span class="zw-ver">v44</span></div>
     ${foldVerdict(verdictCardHtml(judgeZiwei(c)))}
     <div class="zw-detail" id="zw-detail"></div>`, 'ziwei');
   bindEvents();
@@ -581,8 +645,9 @@ export function renderZiwei() {
 export function ziweiCopyText() {
   const c = paiZiwei(birthArgs());
   const L = ['【紫微斗数 · 天盘（本命）】'];
-  L.push(`${c.solarDate}（${c.lunarDate}）${c.time} ${c.gender}命`);
+  L.push(`${c.solarDate}（${c.lunarDate}）${c.time} ${c.gender}命${c.lateZi ? `｜晚子时按次日排，有效排盘日 ${c.effectiveSolarDate}` : ''}`);
   L.push(`四柱 ${c.siZhu}｜${c.fiveElementsClass}｜命宫在${c.soulBranch} 身宫在${c.bodyBranch}｜命主${c.soul} 身主${c.body}`);
+  L.push(c.yearGanZhiNote || `年柱：${c.yearGanZhi}（农历年，春节为界；四柱另有立春口径）`);
   L.push('—— 十二宫 ——');
   const order = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   const byBr = Object.fromEntries(c.palaces.map((p) => [p.earthlyBranch, p]));
@@ -593,7 +658,12 @@ export function ziweiCopyText() {
     const major = p.majorStars.length ? p.majorStars.map((s) => sline(s, true)).join('、') : '空宫';
     const minor = p.minorStars.length ? '｜辅：' + p.minorStars.map((s) => sline(s, false)).join('、') : '';
     const adj = p.adjectiveStars.length ? '｜杂：' + p.adjectiveStars.map((s) => s.name).join('、') : '';
-    L.push(`${p.ganZhi} ${gongName(p)}${tag}（大限${p.decadalRange[0]}-${p.decadalRange[1]}）：${major}${minor}${adj}`);
+    L.push(`${p.ganZhi} ${gongName(p)}${tag}（大限${p.decadalRange[0]}-${p.decadalRange[1]} ${p.decadalGanZhi}）：${major}${minor}${adj}`);
+  }
+  L.push('—— 大限四化（大限宫天干 → 禄权科忌落宫）——');
+  for (const p of [...c.palaces].sort((x, y) => x.decadalRange[0] - y.decadalRange[0])) {
+    const list = (p.decadalHua || []).map((h) => `${h.mutagen}${h.star}→${h.toPalaceName}${h.toBranch ? `(${h.toBranch})` : ''}`).join('、');
+    L.push(`虚岁 ${p.decadalRange[0]}-${p.decadalRange[1]} ${gongName(p)}（${p.decadalGanZhi}）：${list}`);
   }
   return L.join('\n');
 }
@@ -629,4 +699,9 @@ export const __zwTest = {
   copyCompareContext,
   boardHtml,
   gongName,
+  centerHtml,
+  // 流年（农历年）口径：回归测试直接测真实实现，不复制逻辑
+  yunXianCard,
+  lunarYearInfo,
+  lunarYearOfText,
 };

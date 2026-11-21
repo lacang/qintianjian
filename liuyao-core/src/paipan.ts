@@ -168,8 +168,9 @@ export function paipan(input: PaipanInput): Pan {
   // 6. 神煞
   const shenSha = calcShenSha(sz.dayGan, sz.dayZhi, sz.monthZhi);
 
-  // 7. 卦身（由世爻位置推算）
-  const guaShen = calcGuaShen(benMeta.shiPosition);
+  // 7. 卦身（《增删卜易·卦身章》：阳爻持世子起、阴爻持世午起，数至世位）
+  //    必须传世爻【本身的阴阳】，不能只看世位奇偶（见 guashen.ts 注释）。
+  const guaShen = calcGuaShen(benMeta.shiPosition, yaoList[benMeta.shiPosition - 1]!.yinYang);
 
   return {
     solar: {

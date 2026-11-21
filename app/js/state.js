@@ -5,6 +5,8 @@ export const BIRTH = {
   longitude: 123.4328, // 沈阳（出生配置）
   latitude: 41.8057,
   place: '辽宁沈阳',
+  city: '沈阳', // 时区查表主键：核心按它决定 UTC 偏移（境外出生改这里，别再写死 +8）
+  trueSolarTime: true, // 真太阳时（经度差 + 均时差）默认开，只影响展示/四柱口径，不改宫位
 };
 
 const CFG_KEY = 'qintian.cfg.v1';
@@ -13,9 +15,9 @@ export const cfg = loadCfg();
 function loadCfg() {
   try {
     // 全局统一用北京时间（仅八字牌保留自身出生时间口径，与此开关无关）
-    return { gender: '男', showShensha: true, showCangyao: true, lateZi: '23', apparentSolarTime: false, ...JSON.parse(localStorage.getItem(CFG_KEY) || '{}') };
+    return { gender: '男', showShensha: true, showCangyao: true, lateZi: '23', apparentSolarTime: false, trueSolarTime: true, ...JSON.parse(localStorage.getItem(CFG_KEY) || '{}') };
   } catch {
-    return { gender: '男', showShensha: true, showCangyao: true, lateZi: '23', apparentSolarTime: false };
+    return { gender: '男', showShensha: true, showCangyao: true, lateZi: '23', apparentSolarTime: false, trueSolarTime: true };
   }
 }
 export function saveCfg() {
@@ -47,13 +49,31 @@ export function birthDate() {
 export function birthArgs(extra = {}) {
   const d = birthDate();
   const geo = panAt.geo || {};
-  return {
+  const out = {
     ...BIRTH,
     ...geo,
     year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(),
     hour: d.getHours(), minute: d.getMinutes(),
     ...extra,
   };
+  // 真太阳时开关：默认开（配置里显式关掉才关）
+  if (out.trueSolarTime === undefined) out.trueSolarTime = cfg.trueSolarTime !== false;
+  // 时区偏移：只有真给了数值才传，否则让核心按 city/place 查表（境外出生全靠这一步）
+  if (!Number.isFinite(out.utcOffsetHours)) delete out.utcOffsetHours;
+  return out;
+}
+
+/**
+ * 出生地覆盖（地点 + 城市 + 时区）。
+ * 传 null 恢复默认出生地；传 { city, place, lat, lonEast, utcOffsetHours } 覆盖。
+ * 经纬度两套字段名都写，兼顾核心（lat/lonEast/longitude）与老代码（latitude/longitude）。
+ */
+export function setGeoOverride(geo) {
+  panAt.geo = geo ? { ...geo } : null;
+  return panAt.geo;
+}
+export function getGeoOverride() {
+  return panAt.geo ? { ...panAt.geo } : null;
 }
 
 /** 当前生效的起盘时刻（梅花 / 奇门 / 天象） */

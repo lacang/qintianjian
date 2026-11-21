@@ -9,9 +9,14 @@
  *
  * 口径要点（实测，勿改）：
  * 1. caelus chart() 吃【UT 墙钟分量】，不是本地钟；lat 在前、lonEast(东经为正)在后。
- * 2. 本命/事件用本地墙钟 + utcOffsetHours 换算 UT（北京 +8，无夏令时）。
+ * 2. 本命/事件用「本地墙钟 + 出生地时区」换算 UT，统一走 timeContext.resolveTime：
+ *    显式 utcOffsetHours 优先，其次按城市查表，最后才兜底 +8（并回传 tzFallback 标记）。
+ *    中国 1986–1991 夏令时、境外 DST 都在那一层还原，本文件不再自己算偏移。
  * 3. 行运/首页基于 new Date() 绝对时刻，库内部处理 UT/TDB，时区无关。
- * 4. 只排盘报事实，不做吉凶解读。
+ * 4. 真太阳时（经度差 + 均时差）**只用于命理口径展示/四柱**，绝不参与本命盘换算：
+ *    宫位/上升取决于真实 UT 瞬间 + 经纬度，拿真太阳时再折 UT 会把经度算两遍。
+ *    本层把它算好放在 chart.time 里，前端标注「真太阳时 …（北京时 …，经度 +x 分、均时差 y 分）」。
+ * 5. 只排盘报事实，不做吉凶解读。
  */
 import { Engine } from 'caelus';
 import { embeddedData } from 'caelus/data-embedded';
@@ -26,6 +31,7 @@ import {
   PLANET_ORDER, SEVEN, PLANET_ZH, SIGN_ZH,
   type PlanetId,
 } from './astro-constants.js';
+import { resolveTime, type TimeResolution } from './timeContext.js';
 
 // 模块级单例（与中式引擎一致），embeddedData 内联、约 378KB，随 bundle 永久离线。
 let _engine: Engine | null = null;
@@ -48,10 +54,14 @@ export interface AstroInput {
   /** 出生地经度（东正东，沈阳 123.4328）；兼容 longitude */
   lonEast?: number;
   longitude?: number;
-  /** 出生时区相对 UTC 的小时偏移（北京 +8，无夏令时）；缺省按 +8 */
+  /** 出生时区相对 UTC 的小时偏移（北京 +8）；不传则按 city/place 查表，最后兜底 +8 */
   utcOffsetHours?: number;
-  /** 出生地（仅展示用，可选） */
+  /** 出生地（展示 + 城市查表；如「辽宁沈阳」「New York」） */
   place?: string;
+  /** 出生地城市（查表主键，优先于 place） */
+  city?: string;
+  /** 是否计算真太阳时（默认 true；只影响 chart.time，不影响宫位排布） */
+  trueSolarTime?: boolean;
 }
 
 export interface Dms {
@@ -90,6 +100,8 @@ export interface Dignity {
 export interface NatalChart {
   /** 世界时儒略日 */
   jdUt: number;
+  /** 统一时间层解析结果：民用时/标准时/UT、夏令时、真太阳时、时区来源 */
+  time: TimeResolution;
   /** 昼夜盘 */
   sect: '昼' | '夜';
   asc: Dms;
@@ -124,35 +136,45 @@ function toDms(lon: number): Dms {
 
 const SIGN_ORDER = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'] as const;
 
-/** 入参归一化：兼容 lat/latitude、lonEast/longitude，时区缺省 +8 */
+/**
+ * 入参归一化：兼容 lat/latitude、lonEast/longitude；时区走 timeContext（显式 > 城市 > +8 兜底）。
+ * 返回里带 `time`（TimeResolution），调用方要 UT、夏令时、真太阳时都从这里取。
+ */
 export function normalizeAstroInput(input: AstroInput) {
-  const lat = input.lat ?? input.latitude;
-  const lonEast = input.lonEast ?? input.longitude;
-  const utcOffsetHours = input.utcOffsetHours ?? 8;
+  const latRaw = input.lat ?? input.latitude;
+  const lonRaw = input.lonEast ?? input.longitude;
+  const time = resolveTime({
+    year: input.year, month: input.month, day: input.day,
+    hour: input.hour, minute: input.minute, second: input.second,
+    city: input.city ?? input.place,
+    place: input.place,
+    lat: latRaw,
+    lonEast: lonRaw,
+    utcOffsetHours: input.utcOffsetHours,
+    trueSolarTime: input.trueSolarTime,
+  });
+  const lat = latRaw ?? time.latitude;
+  const lonEast = lonRaw ?? time.longitude;
   if (lat == null || lonEast == null || !Number.isFinite(lat) || !Number.isFinite(lonEast)) {
     throw new Error('占星排盘缺少有效的出生地纬度/经度（lat/latitude、lonEast/longitude）');
   }
   return {
     year: input.year, month: input.month, day: input.day,
     hour: input.hour, minute: input.minute ?? 0, second: input.second ?? 0,
-    lat, lonEast, utcOffsetHours, place: input.place ?? '',
+    lat, lonEast,
+    // 生效偏移（含夏令时）：vedic 等直接吃这个字段的调用方因此自动拿到正确时区
+    utcOffsetHours: time.utcOffsetHours,
+    place: input.place ?? '',
+    time,
   };
 }
 
 type NormInput = ReturnType<typeof normalizeAstroInput>;
 
-/** 本地墙钟分量 + UTC 偏移 → caelus 需要的 UT 墙钟分量 */
+/** UT 墙钟分量：直接用统一时间层算好的绝对时刻，避免各处再减一次偏移 */
 function toUtParts(input: NormInput) {
-  const d = new Date(Date.UTC(input.year, input.month - 1, input.day, input.hour, input.minute, input.second));
-  d.setUTCMinutes(d.getUTCMinutes() - input.utcOffsetHours * 60);
-  return {
-    y: d.getUTCFullYear(),
-    mo: d.getUTCMonth() + 1,
-    day: d.getUTCDate(),
-    h: d.getUTCHours(),
-    mi: d.getUTCMinutes(),
-    s: d.getUTCSeconds(),
-  };
+  const u = input.time.utc;
+  return { y: u.year, mo: u.month, day: u.day, h: u.hour, mi: u.minute, s: u.second };
 }
 
 export function paipanXingpan(rawInput: AstroInput): NatalChart {
@@ -229,6 +251,7 @@ export function paipanXingpan(rawInput: AstroInput): NatalChart {
 
   return {
     jdUt,
+    time: input.time,
     sect: day ? '昼' : '夜',
     asc: toDms(chart.angles.asc),
     mc: toDms(chart.angles.mc),

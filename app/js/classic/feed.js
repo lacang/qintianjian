@@ -21,7 +21,7 @@ import {
   loadFeed, advanceFeed, nextFeedRound, setMark, markOf,
   MARK_KEEP, MARK_DOUBT, markStats,
 } from './feed-state.js';
-import { toast } from '../state.js?v=128';
+import { toast } from '../state.js?v=129';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({

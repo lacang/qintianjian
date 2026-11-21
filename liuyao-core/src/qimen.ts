@@ -58,8 +58,16 @@ export function paiQiMen(input: QiMenInput): QiMenPan {
   // 定局节气：日归属口径（非 Exact）。
   const jieQi = lunar.getPrevJieQi().getName();
 
-  // 拆补定局（bigfish 内部已处理 23:00+ 换日；本项目晚子时统一口径见 TODO）
-  const ju = chaiBuJuByGanZhi(jieQi, d.charAt(0), d.charAt(1), hour);
+  // 拆补定局。口径（唯一换日点）：
+  // - 拆补按「日」取符头，晚子时（23:00 起）归次日——这一步由 vendor 按 hour>=23 内部 +1；
+  // - 因此这里必须传【未换日】的普通日柱 getDayInGanZhi()（00:00 换日），
+  //   绝不能传上面已按 23:00 换日的 d（getDayInGanZhiExact），否则 23:00–23:59 会位移两次
+  //   （癸日尤其明显：同一子时 23:30 与次日 00:30 会给出不同的元/局）。
+  // - 四柱仍用 Exact（与六爻 calendar.ts 一致），二者用途不同。
+  // lunar-javascript 的 .d.ts 补丁未声明 getDayInGanZhi，运行时存在；按 calendar.ts 既有写法做断言。
+  const lunarAny = lunar as unknown as { getDayInGanZhi(): string };
+  const dayPlain = lunarAny.getDayInGanZhi();
+  const ju = chaiBuJuByGanZhi(jieQi, dayPlain.charAt(0), dayPlain.charAt(1), hour);
 
   const chart = shiJiaGenerate(
     t.charAt(0),
